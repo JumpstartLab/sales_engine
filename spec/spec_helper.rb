@@ -4,3 +4,9 @@ SimpleCov.start do
 end
 
 require './merchant'
+require './invoice'
+require './item'
+require './sales_engine'
+require './invoice_item'
+require './transaction'
+require './customer'

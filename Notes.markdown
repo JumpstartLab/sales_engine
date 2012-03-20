@@ -21,9 +21,10 @@ InvoiceItem
 	#item return instance of item
 
 ### Other Items
-Data_Parser
+Sales_engine
 	* Knows how to get data from a csv
 	* Called when you start up, loads each csv and saves it as a method that can be called by the classes.
+	* has arrays of all merchants, invoices, invoiceitems, items, transactions, customers
 
 ### Overall class structure
 
@@ -35,3 +36,6 @@ Import data (from Merchants/Items)
 * create Customer
 
 invoice = Invoice.new(:customer_id => customer, :merchant_id => merchant, :status => "shipped", :items => [item1, item2, item3], :transaction => transaction)
+
+### outstanding questions
+* Class method .find_by_X(match) should this search the array that our SalesEngine stores, 
