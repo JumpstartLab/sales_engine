@@ -1,11 +1,23 @@
 require './item'
 require './invoice'
+require 'csv'
 # require './customer' should only need to reference invoices > transactions
 
 class Merchant
 
   # id,name,created_at,updated_at
+  attr_accessor :id, :name, :created_at, :updated_at
 
+  def initialize(attributes={})
+    #@file = CSV.open("merchants.csv", {:headers => true, :header_converters => :symbol})
+    #load(file)
+  end
+
+  def load
+    file = CSV.open("merchants.csv", {:headers => true, :header_converters => :symbol})
+    merchants = file.collect { |merchant| Merchant.new(merchant) }
+    puts "#{merchants}"
+  end
 
   def items
     #returns a collection of Item instances associated with that merchant for the products they sell
