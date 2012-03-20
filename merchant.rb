@@ -9,7 +9,10 @@ class Merchant
   end
 
   def items(sales_engine)
-    # HOW DO I KNOW WHERE THE MASTER LIST OF ITEMS IS
     sales_engine.find_all_items_by_merchant_id(self.id)
+  end
+
+  def invoices(sales_engine)
+      sales_engine.find_all_invoices_by_merchant_id(self.id)
   end
 end

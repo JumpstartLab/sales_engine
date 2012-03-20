@@ -18,6 +18,14 @@ describe SalesEngine do
     end
   end
 
+  describe "#load_invoices_data" do
+    it "reads in invoice data from a file & stores the result as an invoice master list" do
+      se = SalesEngine.new
+      se.load_invoices_data('./test/data/invoices.csv')
+      se.invoices.count.should == 4
+    end
+  end
+
   describe "#add_merchant_to_list" do
     it "allows you to add a new merchant object to the master merchant list" do
       se = SalesEngine.new
