@@ -2,6 +2,8 @@ require './merchant'
 require './invoice_item'
 
 class Item
+ 
+ # id,name,description,unit_price,merchant_id,created_at,updated_at
 
   def invoice_items
     #invoice_items returns an instance of InvoiceItems associated with this object

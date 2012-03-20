@@ -1,8 +1,11 @@
 require './item'
 require './invoice'
-require './customer'
+# require './customer' should only need to reference invoices > transactions
 
 class Merchant
+
+  # id,name,created_at,updated_at
+
 
   def items
     #returns a collection of Item instances associated with that merchant for the products they sell
@@ -33,6 +36,7 @@ class Merchant
 
   def favorite_customer
     #favorite_customer returns the Customer who has conducted the most transactions
+    # should reference invoices > transactions
   end
 
   def customers_with_pending_invoices

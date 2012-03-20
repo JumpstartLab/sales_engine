@@ -5,6 +5,7 @@ require './item'
 
 class Invoice
 
+  # id,customer_id,merchant_id,status,created_at,updated_ats
   # invoice = Invoice.new(:customer_id => customer, :merchant_id => merchant, :status => "shipped", :items => [item1, item2, item3], :transaction => transaction)
 
   def transactions
