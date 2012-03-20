@@ -10,13 +10,11 @@ describe SalesEngine::Customer do
 			SalesEngine::Customer.records.first.id.should == '1'
 		end
 		it "stores a first_name" do
-			pending
-			SalesEngine::Customer.records.should be_an Array
+			SalesEngine::Customer.records.first.first_name.should == "Lemke"
 
 		end
 		it "stores a last_name" do
-			pending
-			SalesEngine::Customer.records.should be_an Array
+			SalesEngine::Customer.records.first.last_name.should == "Eliezer"
 		end
 	end
 end
