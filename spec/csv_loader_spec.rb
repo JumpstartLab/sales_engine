@@ -1,9 +1,9 @@
 require './spec/spec_helper'
 
 describe SalesEngine::CSVLoader do
-	describe ".open" do
+	describe ".load" do
 		context "loads a non-empty CSV file" do
-			let(:raw_lines) { SalesEngine::CSVLoader.open('./spec/test_data.csv') }
+			let(:raw_lines) { SalesEngine::CSVLoader.load('./spec/test_data.csv') }
 			it "returns an array" do
 				raw_lines.should be_an Array
 			end
@@ -24,10 +24,10 @@ describe SalesEngine::CSVLoader do
 		end
 		context "loads an empty CSV file" do
 			it "doesn't raise an error" do
-				expect{SalesEngine::CSVLoader.open('./spec/empty.csv')}.to_not raise_error
+				expect{SalesEngine::CSVLoader.load('./spec/empty.csv')}.to_not raise_error
 			end
 			it "returns an empty array" do
-				SalesEngine::CSVLoader.open('./spec/empty.csv').should == []
+				SalesEngine::CSVLoader.load('./spec/empty.csv').should == []
 			end
 		end
 	end
