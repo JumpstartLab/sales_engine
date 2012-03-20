@@ -33,5 +33,3 @@ module SalesEngine
 
 	end
 end
-
-#id,name,description,unit_price,merchant_id

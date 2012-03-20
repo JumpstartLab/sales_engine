@@ -28,6 +28,5 @@ describe SalesEngine::Item do
 	end
 end
 
-
-
+#id,name,description,unit_price,merchant_id,created_at,updated_at
 #1,Item Necessitatibus Facilis,Omnis error accusantium est ea enim sint. Vero accusantium voluptatem natus et commodi deleniti. Autem soluta omnis in qui commodi. Qui corporis est ut blanditiis. Sit corrupti magnam sit dolores nostrum unde esse.,16180,1

@@ -25,3 +25,6 @@ describe SalesEngine::Merchant do
 	end
 
 end
+
+#id,name,created_at,updated_at
+#1,"Brekke, Haley and Wolff",2012-02-26 20:56:50 UTC,2012-02-26 20:56:50 UTC

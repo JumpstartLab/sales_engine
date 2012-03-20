@@ -18,3 +18,6 @@ describe SalesEngine::Customer do
 		end
 	end
 end
+
+#id,first_name,last_name,created_at,updated_at
+#1,Lemke,Eliezer,2012-02-26 20:56:56 UTC,2012-02-26 20:56:56 UTC
