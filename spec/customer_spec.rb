@@ -12,6 +12,7 @@ describe SalesEngine::Customer do
 		it "stores a first_name" do
 			pending
 			SalesEngine::Customer.records.should be_an Array
+
 		end
 		it "stores a last_name" do
 			pending
