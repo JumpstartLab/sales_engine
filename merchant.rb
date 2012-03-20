@@ -9,6 +9,5 @@ class Merchant
     self.merchant_name = merchant[:name].to_s
     self.create_date = merchant[:created_at].to_s
     self.update_date = merchant[:updated_at].to_s
-
   end
 end

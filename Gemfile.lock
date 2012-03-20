@@ -1,0 +1,38 @@
+GEM
+  specs:
+    crack (0.3.1)
+    diff-lcs (1.1.3)
+    ffi (1.0.11)
+    growl (1.0.3)
+    guard (1.0.1)
+      ffi (>= 0.5.0)
+      thor (~> 0.14.6)
+    guard-rspec (0.6.0)
+      guard (>= 0.10.0)
+    multi_json (1.1.0)
+    rspec (2.9.0)
+      rspec-core (~> 2.9.0)
+      rspec-expectations (~> 2.9.0)
+      rspec-mocks (~> 2.9.0)
+    rspec-core (2.9.0)
+    rspec-expectations (2.9.0)
+      diff-lcs (~> 1.1.3)
+    rspec-mocks (2.9.0)
+    ruby_gntp (0.3.4)
+    simplecov (0.6.1)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.5.3)
+    simplecov-html (0.5.3)
+    thor (0.14.6)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  crack
+  growl
+  guard
+  guard-rspec
+  rspec
+  ruby_gntp
+  simplecov

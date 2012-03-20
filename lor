@@ -1,0 +1,49 @@
+[31mF[0m[31mF[0m[31mF[0m[31mF[0m[31mF[0m
+
+Failures:
+
+  1) Customer.random returns a customer
+     [31mFailure/Error:[0m [31mCustomer.random.class.should == Customer[0m
+     [31mNoMethodError:[0m
+       [31mundefined method `instance' for DataStore:Class[0m
+[36m     # ./customer.rb:22:in `random'[0m
+[36m     # ./spec/customer_spec.rb:6:in `block (3 levels) in <top (required)>'[0m
+
+  2) Customer.random returns different customers on two calls
+     [31mFailure/Error:[0m [31mCustomer.random.should_not == Customer.random[0m
+     [31mNoMethodError:[0m
+       [31mundefined method `instance' for DataStore:Class[0m
+[36m     # ./customer.rb:22:in `random'[0m
+[36m     # ./spec/customer_spec.rb:10:in `block (3 levels) in <top (required)>'[0m
+
+  3) DataLoader.load_customers returns a collection
+     [31mFailure/Error:[0m [31mDataLoader.load_customers.should respond_to(:each)[0m
+     [31mNoMethodError:[0m
+       [31mundefined method `load_file' for DataLoader:Class[0m
+[36m     # ./data_loader.rb:3:in `load_customers'[0m
+[36m     # ./spec/data_loader_spec.rb:6:in `block (3 levels) in <top (required)>'[0m
+
+  4) DataLoader.load_customers returns customers
+     [31mFailure/Error:[0m [31mDataLoader.load_customers.each do |c|[0m
+     [31mNoMethodError:[0m
+       [31mundefined method `load_file' for DataLoader:Class[0m
+[36m     # ./data_loader.rb:3:in `load_customers'[0m
+[36m     # ./spec/data_loader_spec.rb:10:in `block (3 levels) in <top (required)>'[0m
+
+  5) DataLoader.load_customers returns at least one customer
+     [31mFailure/Error:[0m [31mDataLoader.load_customers.count.should >= 1[0m
+     [31mNoMethodError:[0m
+       [31mundefined method `load_file' for DataLoader:Class[0m
+[36m     # ./data_loader.rb:3:in `load_customers'[0m
+[36m     # ./spec/data_loader_spec.rb:16:in `block (3 levels) in <top (required)>'[0m
+
+Finished in 0.00398 seconds
+[31m5 examples, 5 failures[0m
+
+Failed examples:
+
+[31mrspec ./spec/customer_spec.rb:5[0m [36m# Customer.random returns a customer[0m
+[31mrspec ./spec/customer_spec.rb:9[0m [36m# Customer.random returns different customers on two calls[0m
+[31mrspec ./spec/data_loader_spec.rb:5[0m [36m# DataLoader.load_customers returns a collection[0m
+[31mrspec ./spec/data_loader_spec.rb:9[0m [36m# DataLoader.load_customers returns customers[0m
+[31mrspec ./spec/data_loader_spec.rb:15[0m [36m# DataLoader.load_customers returns at least one customer[0m
