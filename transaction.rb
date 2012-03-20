@@ -12,4 +12,10 @@ class Transaction
     end
   end
 
+  def invoice
+    Invoice.find_by_id(invoice_id)
+  end
+
+
+
 end

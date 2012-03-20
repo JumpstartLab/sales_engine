@@ -35,7 +35,7 @@ class Merchant
   end
 
   def invoices
-    @invoices ||= []
+    Invoice.find_all_by_merchant_id(self.id)
   end
 
   def items=(value)
