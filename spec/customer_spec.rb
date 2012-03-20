@@ -1,7 +1,7 @@
 require './spec/spec_helper'
 
 describe SalesEngine::Customer do
-	describe "#load" do
+	describe ".get_customers" do
 		before(:each) { SalesEngine::Customer.get_customers }
 		it "stores records from customer.csv in @@records" do
 			SalesEngine::Customer.records.map(&:class).uniq.should == [SalesEngine::Customer]

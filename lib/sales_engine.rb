@@ -1,4 +1,5 @@
 $LOAD_PATH.unshift("./")
+require 'bigdecimal'
 
 require 'sales_engine/customer'
 require 'sales_engine/invoice'
