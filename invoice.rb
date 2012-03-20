@@ -1,5 +1,6 @@
 class Invoice
   ATTRIBUTES = ["merchant_id","id","customer_id","status","created_at", "updated_at"]
+
   class_eval do
     ATTRIBUTES.each do |attribute|
       attr_accessor attribute.to_sym
@@ -23,7 +24,6 @@ class Invoice
         end
         matches
       end
-      
     end
   end
 end
