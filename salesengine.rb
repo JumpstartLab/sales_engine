@@ -17,13 +17,6 @@ class SalesEngine
     self.customers = file.collect{ |line| Customer.new(line) }
   end
 
-  def load_transactions(filename="transactions.csv")
-    puts "Loading transactions..."
-    file = CSV.open(filename, { :headers => true,
-                                :header_converters => :symbol})
-    self.transactions = file.collect{ |line| Transaction.new(line) }
-  end
-
   def load_items(filename="items.csv")
     puts "Loading items..."
     file = CSV.open(filename, { :headers => true,
@@ -44,15 +37,9 @@ class SalesEngine
                                 :header_converters => :symbol})
     self.invoice_items = file.collect{ |line| InvoiceItem.new(line) }
   end
-
-  def load_invoices(filename="invoices.csv")
-    puts "Loading invoices..."
-    file = CSV.open(filename, { :headers => true,
-                                :header_converters => :symbol})
-    self.invoices = file.collect{ |line| Invoice .new(line) }
-  end
 end
 
-SE = SalesEngine.new()
-SE.load_invoices
-puts SE.invoices
+# SE = SalesEngine.new()
+Transaction.load()
+# SE.load_invoices
+# puts SE.invoices

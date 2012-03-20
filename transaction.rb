@@ -1,5 +1,6 @@
 class Transaction
   attr_accessor :id, :invoice_id, :credit_card_number, :credit_card_expiration_date, :result, :created_at, :updated_at
+  @@transaction_list = [ ]
 
   def initialize(attributes)
     self.id = attributes[:id]
@@ -10,4 +11,24 @@ class Transaction
     self.created_at = attributes[:created_at]
     self.updated_at = attributes[:updated_at]
   end
+
+  def self.load(filename="transactions.csv")
+    puts "Loading transactions..."
+    file = CSV.open(filename, { :headers => true,
+                                :header_converters => :symbol})
+    self.transaction_list = file.collect{ |line| Transaction.new(line) }
+  end
+
+  def self.transaction_list=(foo)
+    @@transaction_list = foo
+  end
+
+  def self.find_by_id(id)
+    @@transaction_list.detect{ |transaction| transaction.id == id }
+  end
+
+  def invoice
+    Invoice.find_by_id(self.invoice_id)
+  end
+
 end
