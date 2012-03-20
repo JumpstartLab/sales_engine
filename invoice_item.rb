@@ -1,1 +1,3 @@
-class 
+class Invoice
+
+end
