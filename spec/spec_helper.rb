@@ -1,12 +1,15 @@
-require 'simplecov'
-SimpleCov.start do
-	add_filter "/spec"
-end
+$LOAD_PATH << './lib'
 
-require './merchant'
-require './invoice'
-require './item'
-require './sales_engine'
-require './invoice_item'
-require './transaction'
-require './customer'
+require 'bundler'
+Bundler.require(:test)
+SimpleCov.start 
+
+require './lib/merchant'
+require './lib/invoice'
+require './lib/item'
+require './lib/sales_engine'
+require './lib/invoice_item'
+require './lib/transaction'
+require './lib/customer'
+
+

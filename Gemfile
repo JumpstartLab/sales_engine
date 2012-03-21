@@ -1,7 +1,9 @@
 source :rubygems
 
-gem 'rspec'
-gem "guard"
-gem "guard-rspec"
-gem 'simplecov', :require => false, :group => :test
-gem 'ruby_gntp'
+group :test do
+  gem 'rspec'
+  gem "guard"
+  gem "guard-rspec"
+  gem 'simplecov'
+  gem 'ruby_gntp'
+end
