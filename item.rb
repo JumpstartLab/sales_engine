@@ -10,7 +10,7 @@ class Item
     "created_at",
     "updated_at"
     ]
-    
+
   def initialize(attributes)
     self.id = attributes[:id]
     self.name = attributes[:name]
@@ -24,6 +24,12 @@ class Item
   ITEM_ATTS.each do |att|
     define_singleton_method ("find_by_" + att).to_sym do |param|
       Database.instance.item_list.detect{ |item| item.send(att.to_sym) == param }
+    end
+  end
+
+  ITEM_ATTS.each do |att|
+    define_singleton_method ("find_all_by_" + att).to_sym do |param|
+      Database.instance.item_list.select{ |item| item if item.send(att.to_sym) == param }
     end
   end
 end

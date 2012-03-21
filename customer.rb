@@ -22,4 +22,10 @@ class Customer
       Database.instance.customer_list.detect{ |customer| customer.send(att.to_sym) == param }
     end
   end
+
+  CUSTOMER_ATTS.each do |att|
+    define_singleton_method ("find_all_by_" + att).to_sym do |param|
+      Database.instance.customer_list.select{ |customer| customer if customer.send(att.to_sym) == param }
+    end
+  end
 end

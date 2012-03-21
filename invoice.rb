@@ -31,4 +31,10 @@ class Invoice
       Database.instance.invoice_list.detect{ |invoice| invoice.send(att.to_sym) == param }
     end
   end
+
+  INVOICE_ATTS.each do |att|
+    define_singleton_method ("find_all_by_" + att).to_sym do |param|
+      Database.instance.invoice_list.select{ |invoice| invoice if invoice.send(att.to_sym) == param }
+    end
+  end
 end
