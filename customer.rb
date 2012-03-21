@@ -40,5 +40,97 @@ class Customer
     end
     found[rand(found.count)]
   end
+
+  def self.find_all_by_cust_id(match)
+    found = []
+    found = self.customers.each do |customer|
+      if customer.cust_id == match
+        found <<customer
+      end
+    end
+    found
+  end
+
+  def self.find_by_first_name(match)
+    found = []
+    found = self.customers.each do |customer|
+      if customer.first_name == match
+        found <<customer
+      end
+    end
+    found[rand(found.count)]
+  end
+
+  def self.find_all_by_first_name(match)
+    found = []
+    found = self.customers.each do |customer|
+      if customer.first_name == match
+        found <<customer
+      end
+    end
+    found
+  end
+
+  def self.find_by_last_name(match)
+    found = []
+    found = self.customers.each do |customer|
+      if customer.last_name == match
+        found <<customer
+      end
+    end
+    found[rand(found.count)]
+  end
+
+  def self.find_all_by_last_name(match)
+    found = []
+    found = self.customers.each do |customer|
+      if customer.last_name == match
+        found <<customer
+      end
+    end
+    found
+  end
+
+  def self.find_by_create_date(match)
+    found = []
+    found = self.customers.each do |customer|
+      if customer.create_date == match
+        found <<customer
+      end
+    end
+    found[rand(found.count)]
+  end
+
+  def self.find_all_by_create_date(match)
+    found = []
+    found = self.customers.each do |customer|
+      if customer.create_date == match
+        found <<customer
+      end
+    end
+    found
+  end
+
+  def self.find_by_update_date(match)
+    found = []
+    found = self.customers.each do |customer|
+      if customer.update_date == match
+        found <<customer
+      end
+    end
+    found[rand(found.count)]
+  end
+
+  def self.find_all_by_update_date(match)
+    found = []
+    found = self.customers.each do |customer|
+      if customer.update_date == match
+        found <<customer
+      end
+    end
+    found
+  end
+
+
 end
 
