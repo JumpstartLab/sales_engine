@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift("./")
 require 'bigdecimal'
 
+require 'sales_engine/searchable/searchable'
 require 'sales_engine/customer'
 require 'sales_engine/invoice'
 require 'sales_engine/invoice_item'

@@ -1,5 +1,6 @@
 module SalesEngine
 	class Customer
+		extend Searchable
 		attr_accessor :first_name, :last_name, :id
 
 		def self.records

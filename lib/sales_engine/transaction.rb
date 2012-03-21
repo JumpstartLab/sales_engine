@@ -1,5 +1,6 @@
 module SalesEngine
 	class Transaction
+		extend Searchable
 		attr_accessor :id, :invoice_id, :credit_card_number
 		attr_accessor :credit_card_expiration_date, :result
 

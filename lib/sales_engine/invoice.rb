@@ -1,5 +1,6 @@
 module SalesEngine
 	class Invoice
+		extend Searchable
 		attr_accessor :customer_id, :id, :merchant_id, :status
 
 		def self.records

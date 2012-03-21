@@ -1,5 +1,6 @@
 module SalesEngine
 	class Item
+		extend Searchable
 		attr_accessor :name, :id, :description, :unit_price, :merchant_id
 
 		def self.records

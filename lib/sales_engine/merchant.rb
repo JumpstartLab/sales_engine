@@ -1,5 +1,6 @@
 module SalesEngine
 	class Merchant
+		extend SalesEngine::Searchable
 		attr_accessor :name, :id
 
 		def self.records
