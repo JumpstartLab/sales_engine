@@ -8,7 +8,7 @@ module SalesEngine
 		end
 
 		def self.get_items
-			CSVLoader.load('data_files/items.csv').collect do |record|
+			CSVLoader.load('data/items.csv').collect do |record|
 				Item.new(record)
 			end
 		end

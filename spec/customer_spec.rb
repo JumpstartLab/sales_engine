@@ -6,8 +6,8 @@ describe SalesEngine::Customer do
 		it "stores records from customer.csv" do
 			SalesEngine::Customer.records.map(&:class).uniq.should == [SalesEngine::Customer]
 		end
-		{id: "1", first_name: "Lemke",
-		last_name: "Eliezer"}.each do |attribute, value|
+		{id: "1", first_name: "Eliezer",
+		last_name: "Lemke"}.each do |attribute, value|
 			it "records #{attribute}" do
 			  SalesEngine::Customer.records.first.send(attribute).should == value
 		  end

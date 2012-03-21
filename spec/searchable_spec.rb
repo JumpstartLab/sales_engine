@@ -1,13 +1,12 @@
 require './spec/spec_helper'
 
-CLASSES = [SalesEngine::Merchant, SalesEngine::Customer, SalesEngine::Item, SalesEngine::Invoice, SalesEngine::InvoiceItem, SalesEngine::Transaction]
+CLASSES = {SalesEngine::Merchant => "merchants", SalesEngine::Customer => "customers", SalesEngine::Item => "items", SalesEngine::Invoice => "invoices", SalesEngine::InvoiceItem => "invoice_items", SalesEngine::Transaction => "transactions"}
 
-CLASSES.each do |klass|
+CLASSES.each do |klass, attribute|
 	describe "#{klass}" do
-	  describe ".all" do
-	  	it "returns all of the existing #{klass} records" do
-	  		attribute = underscore(klass.to_s.gsub("SalesEngine::", "").downcase + "s").to_sym
-				klass.all.should == SalesEngine::Engine.instance.send(attribute)
+		describe ".all" do
+			it "returns all of the existing #{klass} records" do
+				klass.all.should == SalesEngine::Engine.instance.send(attribute.to_sym)
 			end
 		end
 	end

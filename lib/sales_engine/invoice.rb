@@ -8,7 +8,7 @@ module SalesEngine
 		end
 
 		def self.get_invoices
-			CSVLoader.load('data_files/invoices.csv').collect do |record|
+			CSVLoader.load('data/invoices.csv').collect do |record|
 				Invoice.new(record)
 			end
 		end

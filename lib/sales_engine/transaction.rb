@@ -9,7 +9,7 @@ module SalesEngine
 		end
 
 		def self.get_transactions
-			CSVLoader.load('data_files/transactions.csv').collect do |record|
+			CSVLoader.load('data/transactions.csv').collect do |record|
 				Transaction.new(record)
 			end
 		end
