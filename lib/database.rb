@@ -1,5 +1,5 @@
 class Database
   class << self
-    attr_accessor :merchants, :invoices, :items
+    attr_accessor :merchants, :invoices, :items, :invoice_items
   end
 end

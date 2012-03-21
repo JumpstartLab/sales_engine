@@ -19,4 +19,12 @@ class Item
   def self.elements
     Database.items
   end
+
+  def merchant
+    Database.merchants.find { |merchant| merchant.id == id}
+  end
+
+  def invoice_items
+    Database.invoice_items.select { |invoice_item| invoice_item.item_id == id}
+  end
 end
