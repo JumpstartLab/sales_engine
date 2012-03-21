@@ -19,4 +19,12 @@ class Merchant < Record
   def self.random
     SalesEngine.instance.get_random_record("merchant")
   end
+
+  def self.find_by_id(id)
+    SalesEngine.instance.find_merchant_by_id(id)
+  end
+
+  def self.find_by_name(name)
+    SalesEngine.instance.find_merchant_by_name(name)
+  end
 end

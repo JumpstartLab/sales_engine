@@ -61,5 +61,62 @@ describe Merchant do
         se.merchants.include?(Merchant.random).should be_true
       end
     end
+
+    context "when there are no merchants in the datastore" do
+      it "returns nil" do
+        se.clear_all_data
+        Merchant.random.should be_nil
+      end
+    end
   end
+
+  describe ".find_by_id" do
+    context "when merchants exist in the datastore" do
+      it "returns the correct merchant record that matches the id" do
+        Merchant.find_by_id(2).should == merchant_2
+      end
+
+      it "returns nothing if no merchant records match the id" do
+        Merchant.find_by_id(100).should be_nil
+      end
+    end
+
+    context "when there are no merchants in the datastore" do
+      it "returns nothing" do
+        se.clear_all_data
+        Merchant.find_by_id(1).should be_nil
+      end
+    end
+  end
+  
+  describe ".find_by_name" do
+    context "when merchants exist in the datastore" do
+      before(:each) do
+        merchant_1.name = "Jane"
+        merchant_2.name = "Beth"
+      end
+
+      it "returns the correct merchant record that matches the name" do
+        Merchant.find_by_name('beth').should == merchant_2
+      end
+
+      it "returns nothing if no merchant records match the name" do
+        Merchant.find_by_name('conan').should be_nil
+      end
+    end
+
+    context "when there are no merchants in the datastore" do
+      it "returns nothing" do
+        se.clear_all_data
+        Merchant.find_by_name('beth').should be_nil
+      end
+    end
+  end
+  
+  describe ".find_by_created_at" do
+  end
+  
+  describe ".find_by_updated_at" do
+  end
+  
 end
