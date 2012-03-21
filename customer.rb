@@ -34,7 +34,7 @@ require './module'
       # found = self.customers.select {|customer| customer.cust_id == match}
       # found[rand(found.count)]
       # puts found[rand(found.count)].cust_id
-      self.find_by(cust_id, match, self.customers)
+      Search.find_by("cust_id", match, self.customers)
     end
 
     def self.find_all_by_cust_id(match)

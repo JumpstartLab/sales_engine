@@ -6,10 +6,11 @@
 
     def self.find_all_by(attribute, match, array)
       found = []
-      found = array.select { |item| item.attribute = match }
+      found = array.select { |item| item.send(attribute.to_sym) == match }
     end
 
     def self.find_by(attribute, match, array)
-      find_all_by(attribute, match, array).sample
+      mel =  find_all_by(attribute, match, array).sample
+      puts mel.send(attribute.to_sym)
     end
   end
