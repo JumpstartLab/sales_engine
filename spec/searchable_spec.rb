@@ -9,5 +9,18 @@ CLASSES.each do |klass, attribute|
 				klass.all.should == SalesEngine::Engine.instance.send(attribute.to_sym)
 			end
 		end
+		describe ".random" do
+			it "returns a single instance of #{klass}" do
+				klass.send(:random).should be_a(klass)
+			end
+		end
+	  describe ".find_all_by_id('10')" do
+			it "returns the instance of #{klass} with ID '10' " do
+				klass.send(:find_all_by_id, '10').first.id.should == '10'
+			end
+		end
+
+
+
 	end
 end
