@@ -5,7 +5,8 @@ require "bigdecimal"
 
 
 class Merchant
-  attr_accessor  :id, :name, :created_at, :updated_at
+  ATTRIBUTES = [:id, :name, :created_at, :updated_at]
+  extend SearchMethods
   def initialize (attributes = {})
     define_attributes(attributes)
   end

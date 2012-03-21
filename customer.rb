@@ -1,6 +1,6 @@
 class Customer
-  attr_accessor :id, :first_name, :last_name, :created_at, :updated_at
-
+  ATTRIBUTES = [:id, :first_name, :last_name, :created_at, :updated_at]
+  extend SearchMethods
   def initialize (attributes = {})
     define_attributes(attributes)
   end
