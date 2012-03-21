@@ -9,9 +9,14 @@ require 'invoice_item'
 
 describe SalesEngine do
   describe "#initialize" do
+    let(:classes) do
+      [:customer, :item, :invoice_item, :merchant, :transaction, :invoice]
+    end
     let(:test_sales_engine){ SalesEngine.new }
     it "creates a key => array pair for each data type" do
-      test_sales_engine.data.keys.count.should == 6
+      classes.each do |klass|
+        Database.instance.send(klass).count.should_not == 0
+      end
     end
   end
 end

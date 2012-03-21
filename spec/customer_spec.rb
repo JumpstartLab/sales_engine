@@ -1,4 +1,5 @@
 require 'spec_helper.rb'
+require "sales_engine"
 require "merchant"
 require "customer"
 require "transaction"
@@ -9,10 +10,10 @@ require "rspec"
 require "date"
 
 describe Customer do
+  test_sales_engine = SalesEngine.new
   describe '.random' do
     it "returns a Customer object" do
       a = Customer.random
-      puts a.inspect
       a.should be_is_a(Customer)
     end
   end
@@ -74,7 +75,9 @@ describe Customer do
   context "#favorite_merchant" do
     it "returns a Merchant object" do
       fav_merchant = test_customer.favorite_merchant
-      fav_merchant.should be_nil || be_is_a(Merchant)
+      if fav_merchant
+        fav_merchant.should be_is_a(Merchant)
+      end
     end
   end
 

@@ -33,12 +33,16 @@ class Customer
     sorted_array = merchant_hash.sort_by do |key, value|
       value
     end
-    fav_merchant_id = sorted_array.first[0]
-    Merchant.find_by_id(merchant_id)
+    if sorted_array.any?
+      fav_merchant_id = sorted_array.first[0]
+      Merchant.find_by_id(fav_merchant_id)
+    else
+      nil
+    end
   end
 
   def successful_transactions
-    self.transactions.select { transaction.successful? }
+    self.transactions.select {|transaction| transaction.successful? }
   end
 
 

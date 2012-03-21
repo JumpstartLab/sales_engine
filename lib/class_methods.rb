@@ -1,33 +1,30 @@
+require 'singleton'
 module SearchMethods
   def self.extended(base)
     base.class_eval do
       self::ATTRIBUTES.each do |attribute|
 
         define_singleton_method("find_by_#{attribute}") do |query|
-          matches = []
-          ObjectSpace.each_object(self) do |instance|
-            if instance.send(attribute) == query
-              matches << instance 
+          instances_of_class = Database.instance.send(base.to_s.downcase)
+          instances_of_class.each do |instance|
+            if instance.send("#{attribute}") == query
+              return instance
             end
           end
-          matches.first
+          nil
         end
 
         define_singleton_method("find_all_by_#{attribute}") do |query|
-          matches = []
-          ObjectSpace.each_object(self) do |instance|
-            if instance.send(attribute) == query
-              matches << instance 
-            end
+          instances_of_class = Database.instance.send(base.to_s.downcase)
+          instances_of_class.select do |instance|
+            instance.send("#{attribute}") == query
           end
-          matches
         end
 
         define_singleton_method("random") do
-          all_instances = []
-          ObjectSpace.each_object(self) { |instance| all_matched << instance }
-          all_instances.shuffle
-          all_instances.first
+          instances_of_class = Database.instance.send("#{base.to_s.downcase}")
+          num_instances = instances_of_class.count
+          instances_of_class[rand(0...num_instances)]
         end
       end
     end
@@ -52,5 +49,20 @@ module AccessorBuilder
   def headers
     ATTRIBUTES
   end
+end
+
+
+class Database 
+  ATTRIBUTES = [:customer, :item, :invoice_item,
+                :merchant, :transaction, :invoice]
+  include Singleton
+  include AccessorBuilder
+
+  def initialize
+    ATTRIBUTES.each do |attribute|
+      send("#{attribute}=", Array.new)
+    end
+  end
+
 end
 

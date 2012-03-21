@@ -6,7 +6,7 @@ require 'merchant'
 require 'item'
 require 'invoice'
 require 'invoice_item'
-require 'database'
+require 'class_methods'
 
 class SalesEngine
   CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
@@ -19,28 +19,21 @@ class SalesEngine
     Transaction => "transactions.csv"}
 
   def initialize
-    @data = Hash.new() {|hash, key| hash[key] = []}
     CLASS_FILES.each do |klass, filename|
       file_to_objects(klass, filename)
     end
   end
 
   def load(filename)
-    puts "#{filename} LOADING"
     CSV.open("data/#{filename}", CSV_OPTIONS)
   end
 
   def file_to_objects(klass, filename)
     file = load(filename)
-    key = filename.delete(".csv")
+    method_name = filename.sub("s.csv","")
     file.each do |line|
       instance = klass.new(line.to_hash)
-      self.data[key.to_sym] << instance
+      Database.instance.send("#{method_name}") << instance
     end
-  end
-
-
-  def data
-    @data
   end
 end

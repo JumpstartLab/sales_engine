@@ -1,3 +1,4 @@
+require 'class_methods'
 require 'singleton'
 
 class Database 
@@ -6,7 +7,7 @@ class Database
   include Singleton
   include AccessorBuilder
 
-  def intialize (contents = [])
+  def initialize
     ATTRIBUTES.each do |attribute|
       send(attribute, Array.new)
     end
