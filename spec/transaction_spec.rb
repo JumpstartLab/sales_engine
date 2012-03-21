@@ -1,4 +1,4 @@
-require './spec_helper.rb'
+require './spec/spec_helper.rb'
 
 describe Transaction do
 
