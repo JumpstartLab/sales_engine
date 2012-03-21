@@ -3,15 +3,10 @@ class Item
   ATTRIBUTES = [:id, :name, :description, :unit_price, :merchant_id,
     :created_at, :updated_at]
     extend SearchMethods
+    extend AccessorBuilder
 
     def initialize(attributes = {})
       define_attributes(attributes)
-    end
-
-    def define_attributes (attributes)  
-      attributes.each do |key, value|
-        send("#{key}=",value)
-      end
     end
 
     def invoice_items

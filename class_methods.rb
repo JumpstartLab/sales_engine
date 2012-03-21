@@ -2,7 +2,6 @@ module SearchMethods
   def self.extended(base)
     base.class_eval do
       self::ATTRIBUTES.each do |attribute|
-        attr_accessor attribute.to_sym
 
         define_singleton_method("find_by_#{attribute}") do |query|
           matches = []
@@ -33,6 +32,26 @@ module SearchMethods
 
       end
     end
+  end
+end
+
+module AccessorBuilder
+  def self.extended(base)
+    base.class_eval do
+      self::ATTRIBUTES.each do |attribute|
+        attr_accessor attribute
+      end
+    end
+  end
+
+  def define_attributes (attributes)  
+    attributes.each do |key, value|
+      send("#{key}=",value)
+    end
+  end
+
+  def headers
+    ATTRIBUTES
   end
 end
 

@@ -3,6 +3,7 @@ class Invoice
   ATTRIBUTES = [:id, :customer_id, :merchant_id, :status, :created_at,
     :updated_at]
   extend SearchMethods
+  extend AccessorBuilder
 
 
   def initialize(attributes = {})
@@ -24,10 +25,4 @@ class Invoice
   def customer
     Customer.find_all_by_invoice_id(self.id)
   end
-
-  def define_attributes (attributes)  
-    attributes.each do |key, value|
-      send("#{key}=",value)
-    end
-  end 
 end

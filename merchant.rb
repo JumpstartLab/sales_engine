@@ -7,14 +7,10 @@ require "bigdecimal"
 class Merchant
   ATTRIBUTES = [:id, :name, :created_at, :updated_at]
   extend SearchMethods
+  extend AccessorBuilder
+
   def initialize(attributes = {})
     define_attributes(attributes)
-  end
-
-  def define_attributes(attributes)  
-    attributes.each do |key, value|
-      send("#{key}=",value)
-    end
   end
 
   def revenue(date=nil)
@@ -37,10 +33,6 @@ class Merchant
 
   def items
     Item.find_all_by_merchant_id(self.id)
-  end
-
-  def self.find_by_id(id)
-    Merchant.new
   end
 
 end

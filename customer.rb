@@ -1,14 +1,9 @@
 class Customer
   ATTRIBUTES = [:id, :first_name, :last_name, :created_at, :updated_at]
   extend SearchMethods
+  extend AccessorBuilder
   def initialize (attributes = {})
     define_attributes(attributes)
-  end
-
-  def define_attributes (attributes)  
-    attributes.each do |key, value|
-      send("#{key}=",value)
-    end
   end
 
   def invoices
@@ -16,7 +11,11 @@ class Customer
   end
 
   def transactions
-    Transaction.find_all_by_customer_id(self.id)
+    all_invoices = self.invoices
+    transactions = all_invoices.collect do |invoice|
+      invoice.transactions
+    end
+    transactions.flatten
   end
 
   def favorite_merchant
