@@ -1,16 +1,28 @@
 require 'csv'
+require 'singleton'
 require './merchant'
 require './item'
 require './invoice'
 
 class SalesEngine
+  include Singleton
   CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
   attr_accessor :merchants, :items, :invoices
 
   def initialize
+    clear_all_data
+  end
+
+  def clear_all_data
     self.merchants = []
     self.items = []
     self.invoices = []
+  end
+
+  def get_random_record(class_name)
+    case class_name
+    when 'merchant' then self.merchants[rand(self.merchants.count)]
+    end
   end
 
   def load_merchants_data(filename)

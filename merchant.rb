@@ -8,11 +8,15 @@ class Merchant < Record
     self.name = attributes[:name]
   end
 
-  def items(sales_engine)
-    sales_engine.find_all_items_by_merchant_id(self.id)
+  def items
+    SalesEngine.instance.find_all_items_by_merchant_id(self.id)
   end
 
-  def invoices(sales_engine)
-      sales_engine.find_all_invoices_by_merchant_id(self.id)
+  def invoices
+    SalesEngine.instance.find_all_invoices_by_merchant_id(self.id)
+  end
+
+  def self.random
+    SalesEngine.instance.get_random_record("merchant")
   end
 end

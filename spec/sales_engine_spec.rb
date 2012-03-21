@@ -1,10 +1,14 @@
-require './sales_engine'
-require './merchant'
+require './spec/spec_helper'
 
 describe SalesEngine do
+  let(:se) { SalesEngine.instance }
+
+  before(:each) do
+    se.clear_all_data
+  end
+
   describe "#load_merchants_data" do
     it "reads in merchant data from a file & stores the result as a merchant master list" do
-      se = SalesEngine.new
       se.load_merchants_data('./test/data/merchants.csv')
       se.merchants.count.should == 3
     end
@@ -12,7 +16,6 @@ describe SalesEngine do
 
   describe "#load_items_data" do
     it "reads in item data from a file & stores the result as an item master list" do
-      se = SalesEngine.new
       se.load_items_data('./test/data/items.csv')
       se.items.count.should == 2
     end
@@ -20,7 +23,6 @@ describe SalesEngine do
 
   describe "#load_invoices_data" do
     it "reads in invoice data from a file & stores the result as an invoice master list" do
-      se = SalesEngine.new
       se.load_invoices_data('./test/data/invoices.csv')
       se.invoices.count.should == 4
     end
@@ -28,7 +30,6 @@ describe SalesEngine do
 
   describe "#add_merchant_to_list" do
     it "allows you to add a new merchant object to the master merchant list" do
-      se = SalesEngine.new
       se.add_merchant_to_list(Merchant.new)
       se.merchants.count.should == 1
     end
@@ -36,7 +37,6 @@ describe SalesEngine do
 
   describe "#add_item_to_list" do
     it "allows you to add a new item object to the master item list" do
-      se = SalesEngine.new
       se.add_item_to_list(Item.new)
       se.items.count.should == 1
     end
