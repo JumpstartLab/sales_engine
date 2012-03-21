@@ -6,13 +6,13 @@ class Invoice
                 :create_date,
                 :update_date
 
-  def initialize(invoice)
-    self.invoice_id = invoice[:id].to_s
-    self.cust_id = invoice[:customer_id].to_s
-    self.merchant_id = invoice[:merchant_id].to_s
-    self.status = invoice[:status].to_s
-    self.create_date = invoice[:created_at].to_s
-    self.update_date = invoice[:updated_at].to_s
+  def initialize(attributes={})
+    self.invoice_id = attributes[:id].to_s
+    self.cust_id = attributes[:customer_id].to_s
+    self.merchant_id = attributes[:merchant_id].to_s
+    self.status = attributes[:status].to_s
+    self.create_date = attributes[:created_at].to_s
+    self.update_date = attributes[:updated_at].to_s
   end
 
 end

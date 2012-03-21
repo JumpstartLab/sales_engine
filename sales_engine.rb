@@ -6,9 +6,9 @@ require './merchant'
 require './invoice_item'
 require './item'
 require './transaction'
+require './data_store'
 
 class SalesEngine
-  OPTIONS = {:headers => true, :header_converters => :symbol}
 
   attr_accessor :customers,
                 :invoices,
@@ -18,23 +18,21 @@ class SalesEngine
                 :merchants
 
   def initialize
-    self.customers = load_file("customers.csv").collect {|line| Customer.new(line)}
-    self.invoices = load_file("invoices.csv").collect {|line| Invoice.new(line)}   
-    self.merchants = load_file("merchants.csv").collect {|line| Merchant.new(line)}
-    self.items = load_file("items.csv").collect {|line| Item.new(line)}
-    self.invoice_items = load_file("invoice_items.csv").collect {|line| InvoiceItem.new(line)}
-    self.transactions = load_file("transactions.csv").collect {|line| Transaction.new(line)}
+    data = DataStore.new
   end
 
-  def load_file(filename)
-    CSV.open(filename, OPTIONS)
+  def printtest
+    printf INVOICES[0]
   end
+
 end
 
 
 
 se = SalesEngine.new
-cu = Customer.new()
+Customer.random
+Customer.find_by_cust_id(3)
+Customer.find_all_by_cust_id(3)
 #se.customers.random
 #customer_instance = Customer.new(customers)
 #customer_instance.random

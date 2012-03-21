@@ -4,10 +4,10 @@ class Merchant
                 :create_date,
                 :update_date
 
-  def initialize(merchant)
-    self.merchant_id = merchant[:id].to_s
-    self.merchant_name = merchant[:name].to_s
-    self.create_date = merchant[:created_at].to_s
-    self.update_date = merchant[:updated_at].to_s
+  def initialize(attributes={})
+    self.merchant_id = attributes[:id]
+    self.merchant_name = attributes[:name]
+    self.create_date = attributes[:created_at]
+    self.update_date = attributes[:updated_at]
   end
 end

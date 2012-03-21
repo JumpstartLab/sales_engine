@@ -7,13 +7,13 @@ class Transaction
                 :create_date,
                 :update_date
 
-  def initialize(transaction)
-    self.transaction_id = transaction[:id].to_s
-    self.invoice_id = transaction[:invoice_id].to_s
-    self.cc_number = transaction[:credit_card_number].to_s
-    self.cc_expiration = transaction[:credit_card_expiration_date].to_s
-    self.result = transaction[:result].to_s
-    self.create_date = transaction[:created_at].to_s
-    self.update_date = transaction[:updated_at].to_s
+  def initialize(attributes={})
+    self.transaction_id = attributes[:id].to_s
+    self.invoice_id = attributes[:invoice_id].to_s
+    self.cc_number = attributes[:credit_card_number].to_s
+    self.cc_expiration = attributes[:credit_card_expiration_date].to_s
+    self.result = attributes[:result].to_s
+    self.create_date = attributes[:created_at].to_s
+    self.update_date = attributes[:updated_at].to_s
   end
 end

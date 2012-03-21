@@ -1,4 +1,3 @@
-require './data_loader'
 require './data_store'
 
 class Customer
@@ -8,37 +7,36 @@ class Customer
                 :create_date,
                 :update_date
 
-  def initialize(customer)
-    self.cust_id = customer[:id].to_s
-    self.first_name = customer[:first_name].to_s
-    self.last_name = customer[:last_name].to_s
-    self.create_date = customer[:created_at].to_s
-    self.update_date = customer[:updated_at].to_s
+  def initialize(attributes={})
+    self.cust_id = attributes[:id].to_s
+    self.first_name = attributes[:first_name].to_s
+    self.last_name = attributes[:last_name].to_s
+    self.create_date = attributes[:created_at].to_s
+    self.update_date = attributes[:updated_at].to_s
   end
 
-  def self.customers=(value)
-    @@customers = value
-  end
 
   def self.customers
-    self.customers = []
-    ObjectSpace.each_object(Customer) {|o| @@customers<<o}
-    @@customers
+    customers = []
+    ObjectSpace.each_object(Customer) {|o| customers<<o}
+    customers
   end
 
   def self.random
     random = rand(self.customers.count)
-    @@customers[random]
+    self.customers[random].first_name
+    puts self.customers[random].first_name
   end
 
   def self.find_by_cust_id(match)
     found = []
-    found = self.customers.each do |customer|
+    found = self.customers.select |customer|
       if customer.cust_id == match
         found <<customer
       end
     end
     found[rand(found.count)]
+    puts found[rand(found.count)].cust_id
   end
 
   def self.find_all_by_cust_id(match)
@@ -49,6 +47,7 @@ class Customer
       end
     end
     found
+    puts found
   end
 
   def self.find_by_first_name(match)
@@ -59,6 +58,7 @@ class Customer
       end
     end
     found[rand(found.count)]
+    puts found[rand(found.count)].first_name
   end
 
   def self.find_all_by_first_name(match)
@@ -69,6 +69,7 @@ class Customer
       end
     end
     found
+    puts found
   end
 
   def self.find_by_last_name(match)
@@ -79,6 +80,7 @@ class Customer
       end
     end
     found[rand(found.count)]
+    puts found[rand(found.count)].last_name
   end
 
   def self.find_all_by_last_name(match)
@@ -89,6 +91,7 @@ class Customer
       end
     end
     found
+    puts found
   end
 
   def self.find_by_create_date(match)
@@ -99,6 +102,7 @@ class Customer
       end
     end
     found[rand(found.count)]
+    puts found[rand(found.count)].create_date
   end
 
   def self.find_all_by_create_date(match)
@@ -109,6 +113,7 @@ class Customer
       end
     end
     found
+    puts found
   end
 
   def self.find_by_update_date(match)
@@ -119,6 +124,7 @@ class Customer
       end
     end
     found[rand(found.count)]
+    puts found[rand(found.count)].update_date
   end
 
   def self.find_all_by_update_date(match)
@@ -129,8 +135,7 @@ class Customer
       end
     end
     found
+    puts found
   end
-
-
 end
 

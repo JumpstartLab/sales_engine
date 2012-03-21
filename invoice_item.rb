@@ -7,13 +7,13 @@ class InvoiceItem
                 :create_date,
                 :update_date
 
-  def initialize(invoice_items)
-    self.invoice_item_id = invoice_items[:id].to_s
-    self.item_id = invoice_items[:item_id].to_s
-    self.invoice_id = invoice_items[:invoice_id].to_s
-    self.quantity = invoice_items[:quantity].to_s
-    self.unit_price = invoice_items[:unit_price].to_s
-    self.create_date = invoice_items[:created_at].to_s
-    self.update_date = invoice_items[:updated_at].to_s
+  def initialize(attributes={})
+    self.invoice_item_id = attributes[:id].to_s
+    self.item_id = attributes[:item_id].to_s
+    self.invoice_id = attributes[:invoice_id].to_s
+    self.quantity = attributes[:quantity].to_s
+    self.unit_price = attributes[:unit_price].to_s
+    self.create_date = attributes[:created_at].to_s
+    self.update_date = attributes[:updated_at].to_s
   end
 end
