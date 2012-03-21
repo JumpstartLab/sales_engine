@@ -16,6 +16,10 @@ class Merchant
     Database.invoices.select { |invoice| invoice.merchant_id == id }
   end
 
+  def items
+    Database.items.select { |item| item.merchant_id == id }
+  end
+
   def self.elements
     Database.merchants
   end  

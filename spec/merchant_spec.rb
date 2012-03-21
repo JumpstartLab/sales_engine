@@ -1,6 +1,7 @@
 require './lib/merchant'
 require './lib/invoice'
 require './lib/database'
+require './lib/item'
 require 'spec_helper'
 
 describe Merchant do
@@ -119,6 +120,43 @@ describe Merchant do
       it "returns an empty array" do
         merchant = Merchant.new(3, "", "", "")
         merchant.invoices.should == []
+      end
+    end
+  end
+
+  describe "#items" do
+    let(:item1) { mock(Item) }
+    let(:item2) { mock(Item) }
+    let(:item3) { mock(Item) }
+
+    before(:each) do
+      item1.stub(:merchant_id).and_return(1)
+      item2.stub(:merchant_id).and_return(2)
+      item3.stub(:merchant_id).and_return(1)
+
+      items = [item1, item2, item3]
+      Database.stub(:items).and_return(items)
+    end
+
+
+    context "when merchant has one item" do
+      it "returns an array containing the single item" do
+        merchant = Merchant.new(2, "", "", "")
+        merchant.items.should == [item2]
+      end
+    end
+
+    context "when merchant has multiple items" do
+      it "returns all items" do
+        merchant = Merchant.new(1, "", "", "")
+        merchant.items.should == [item1, item3]
+      end
+    end
+
+    context "when merchant has no items" do
+      it "returns an empty array" do
+        merchant = Merchant.new(3, "", "", "")
+        merchant.items.should == []
       end
     end
   end

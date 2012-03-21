@@ -1,4 +1,5 @@
 require "sales_engine"
+require "database"
 
 class Invoice
   include SalesEngine
