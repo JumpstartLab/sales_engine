@@ -33,7 +33,7 @@ class Customer
 
   def favorite_merchant
     successful = successful_transactions
-    merchant_hash = Hash(0)
+    merchant_hash = Hash.new(0)
     successful.each do |transaction|
       merchant_hash[transaction.merchant.id] += 1
     end

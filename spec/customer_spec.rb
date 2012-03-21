@@ -37,6 +37,7 @@ describe Customer do
     attr_hash = {first_name: "Horatio", last_name: "Casimir", id:7, created_at:Date.today-1, updated_at: Date.today }
     Customer.new(attr_hash)
   end
+
   context "#invoices" do
     it "returns an array" do
       invoices = test_customer.invoices
@@ -66,8 +67,12 @@ describe Customer do
   end
 
   # context "#favorite_merchant" do
+  #   let(:test_transaction) do 
+  #     Transaction.new({})
+  #   end
   #   it "returns a Merchant object" do
-  #     test_customer.favorite_merchant.should be_is_a(Merchant)
+  #     fav_merchant = test_customer.favorite_merchant
+  #     fav_merchant.should be_nil || be_is_a(Merchant)
   #   end
   # end
 

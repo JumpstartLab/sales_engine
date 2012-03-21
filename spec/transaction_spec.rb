@@ -13,7 +13,7 @@ describe Transaction do
   end
 
   describe 'test accessors' do
-    let(:test_transaction) { Transaction.new }
+    let(:test_transaction) { Transaction.new({id: 10}) }
     Transaction::ATTRIBUTES.each do |attribute|
       context "responds to attr_accessors" do
         it "generates the reader" do
