@@ -52,6 +52,16 @@ class SalesEngine
     self.invoices << invoice
   end  
 
+  def find_by(class_name,attribute,search_value)   
+    self.send(class_name).find { |record| 
+      attribute_value = record.send(attribute)
+      if attribute_value.is_a?(String)
+        attribute_value.downcase == search_value.downcase
+      else
+        attribute_value == search_value
+      end }
+  end
+
   def find_all_items_by_merchant_id(id)
     item_list = []
     self.items.each do |item| 
@@ -78,5 +88,13 @@ class SalesEngine
 
   def find_merchant_by_name(name)
     self.merchants.find { |merchant| merchant.name.downcase == name.downcase }
+  end
+
+  def find_merchant_by_created_at(time)
+    self.merchants.find { |merchant| merchant.created_at == time }
+  end
+
+  def find_merchant_by_updated_at(time)
+    self.merchants.find { |merchant| merchant.updated_at == time }
   end
 end

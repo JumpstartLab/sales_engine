@@ -114,9 +114,51 @@ describe Merchant do
   end
   
   describe ".find_by_created_at" do
+    context "when merchants exist in the datastore" do
+      before(:each) do
+        merchant_1.created_at = "03/01/2012 12:00"
+        merchant_2.created_at = "01/11/2012 13:00"
+      end
+
+      it "returns the correct merchant record that matches the created_at time" do
+        Merchant.find_by_created_at("01/11/2012 13:00").should == merchant_2
+      end
+
+      it "returns nothing if no merchant records match the created_at time" do
+        Merchant.find_by_created_at("01/11/1979 10:00").should be_nil
+      end
+    end
+
+    context "when there are no merchants in the datastore" do
+      it "returns nothing" do
+        se.clear_all_data
+        Merchant.find_by_created_at("01/11/2012 13:00").should be_nil
+      end
+    end
   end
   
   describe ".find_by_updated_at" do
+      context "when merchants exist in the datastore" do
+      before(:each) do
+        merchant_1.updated_at = "03/01/2012 12:00"
+        merchant_2.updated_at = "01/11/2012 13:00"
+      end
+
+      it "returns the correct merchant record that matches the updated_at time" do
+        Merchant.find_by_updated_at("01/11/2012 13:00").should == merchant_2
+      end
+
+      it "returns nothing if no merchant records match the updated_at time" do
+        Merchant.find_by_updated_at("01/11/1979 10:00").should be_nil
+      end
+    end
+
+    context "when there are no merchants in the datastore" do
+      it "returns nothing" do
+        se.clear_all_data
+        Merchant.find_by_updated_at("01/11/2012 13:00").should be_nil
+      end
+    end
   end
   
 end
