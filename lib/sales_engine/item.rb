@@ -3,16 +3,11 @@ module SalesEngine
 		attr_accessor :name, :id, :description, :unit_price, :merchant_id
 
 		def self.records
-			@@records ||= []
-		end
-
-		def self.records=(value)
-			@@records = value
+			Engine.instance.items
 		end
 
 		def self.get_items
-			raw_records = SalesEngine::CSVLoader.load('data_files/items.csv')
-			self.records = raw_records.collect do |record|
+			CSVLoader.load('data_files/items.csv').collect do |record|
 				Item.new(record)
 			end
 		end

@@ -2,19 +2,15 @@ require './spec/spec_helper'
 
 describe SalesEngine::Customer do
 	describe ".get_customers" do
-		before(:each) { SalesEngine::Customer.get_customers }
-		it "stores records from customer.csv in @@records" do
+		before(:all) { SalesEngine::Customer.get_customers }
+		it "stores records from customer.csv" do
 			SalesEngine::Customer.records.map(&:class).uniq.should == [SalesEngine::Customer]
 		end
-		it "stores an id" do
-			SalesEngine::Customer.records.first.id.should == '1'
-		end
-		it "stores a first_name" do
-			SalesEngine::Customer.records.first.first_name.should == "Lemke"
-
-		end
-		it "stores a last_name" do
-			SalesEngine::Customer.records.first.last_name.should == "Eliezer"
+		{id: "1", first_name: "Lemke",
+		last_name: "Eliezer"}.each do |attribute, value|
+			it "records #{attribute}" do
+			  SalesEngine::Customer.records.first.send(attribute).should == value
+		  end
 		end
 	end
 end

@@ -2,19 +2,16 @@ require './spec/spec_helper'
 
 describe SalesEngine::Merchant do
 	describe ".get_merchants" do
-		before(:each) { SalesEngine::Merchant.get_merchants }
+		before(:all) { SalesEngine::Merchant.get_merchants }
 		it "stores records from merchants.csv in @@records" do
 			SalesEngine::Merchant.records.map(&:class).uniq.should == [SalesEngine::Merchant]
 		end
 
-	  it "stores an id" do
-			SalesEngine::Merchant.records.first.id.should == '1'
+		{id: "1", name: "Brekke, Haley and Wolff"}.each do |attribute, value|
+			it "records #{attribute}" do
+				SalesEngine::Merchant.records.first.send(attribute).should == value
+			end
 		end
-
-		it "stores a name" do
-			SalesEngine::Merchant.records.first.name.should == "Brekke, Haley and Wolff"
-		end
-
 	end
 
 	describe ".by_most_items" do

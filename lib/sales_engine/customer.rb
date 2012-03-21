@@ -3,16 +3,11 @@ module SalesEngine
 		attr_accessor :first_name, :last_name, :id
 
 		def self.records
-			@@records ||= []
-		end
-
-		def self.records=(value)
-			@@records = value
+			Engine.instance.customers
 		end
 
 		def self.get_customers
-			raw_records = SalesEngine::CSVLoader.load('data_files/customers.csv')
-			self.records = raw_records.collect do |record|
+			CSVLoader.load('data_files/customers.csv').collect do |record|
 				Customer.new(record)
 			end
 		end
