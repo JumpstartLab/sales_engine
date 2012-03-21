@@ -1,4 +1,5 @@
-require './spec/spec_helper.rb'
+require 'spec_helper'
+require './lib/database'
 
 describe Database do
 end
