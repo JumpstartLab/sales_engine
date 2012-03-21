@@ -1,3 +1,4 @@
+require './spec/spec_helper.rb'
 require "./merchant"
 require "./customer"
 require "./transaction"

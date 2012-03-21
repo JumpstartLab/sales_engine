@@ -1,3 +1,4 @@
+require './spec/spec_helper.rb'
 require "./transaction.rb"
 
 describe Transaction do
