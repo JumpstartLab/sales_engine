@@ -1,3 +1,3 @@
-require 'date'
-
-require './lib/merchant'
+require 'simplecov'
+SimpleCov.start
+require './sales_engine'
