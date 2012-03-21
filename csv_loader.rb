@@ -12,10 +12,10 @@ class CSVLoader
   def initialize
     load_transactions
     load_customers
-    # load_items
-    # load_merchants
-    # load_invoice_items
-    # load_invoice
+    load_items
+    load_merchants
+    load_invoice_items
+    load_invoices
   end
 
   def load_transactions(filename="transactions.csv")
@@ -54,7 +54,7 @@ class CSVLoader
     Database.instance.invoice_item_list = file.collect{ |line| InvoiceItem.new(line) }
   end
 
-  def self.load(filename="invoices.csv")
+  def load_invoices(filename="invoices.csv")
     puts "Loading invoices..."
     file = CSV.open(filename, { :headers => true,
                                 :header_converters => :symbol})

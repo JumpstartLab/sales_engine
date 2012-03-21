@@ -17,18 +17,11 @@ class Transaction
     self.updated_at = attributes[:updated_at]
   end
 
-  def self.transaction_list=(foo)
-    Database.instance.transaction_list = foo
-  end
-
   def invoice
     Invoice.find_by_id(self.invoice_id)
   end
 
-  # TRANSACTION_ATTS.each do |att|
-  #   define_singleton_method ("find_by_" + att).to_sym do |param|
-  #     Database.instance.transaction_list.detect{ |trans| trans.send(att.to_sym) == param }
-  #   end
-  # end
-
+  def self.find_by_invoice_id(invoice_id)
+    Database.instance.transaction_list.select{ |trans| trans if trans.invoice_id == invoice_id }
+  end
 end

@@ -8,6 +8,7 @@ class Database
 
   def initialize
     self.transaction_list = []
+    self.invoice_list = []
   end
 
 end
