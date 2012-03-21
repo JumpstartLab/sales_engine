@@ -1,4 +1,5 @@
 require './lib/merchant'
+require './lib/invoice'
 require './lib/database'
 require 'spec_helper'
 
@@ -59,7 +60,7 @@ describe Merchant do
       merchant2.stub(:id).and_return(2)
       duplicate_merchant.stub(:id).and_return(1)
     end
-    
+
     it "calls find_all_by attribute" do
       Database.stub(:merchants).and_return(merchants)
       Merchant.find_all_by_id(1).should == [merchant, duplicate_merchant]
@@ -82,6 +83,43 @@ describe Merchant do
     end
     it "returns false for a method that doesn't exist" do
       merchant.respond_to?("foo").should == false
+    end
+  end
+
+  describe "#invoices" do
+    let(:invoice1) { mock(Invoice) }
+    let(:invoice2) { mock(Invoice) }
+    let(:invoice3) { mock(Invoice) }
+
+    before(:each) do
+      invoice1.stub(:merchant_id).and_return(1)
+      invoice2.stub(:merchant_id).and_return(2)
+      invoice3.stub(:merchant_id).and_return(1)
+
+      invoices = [invoice1, invoice2, invoice3]
+      Database.stub(:invoices).and_return(invoices)
+    end
+
+
+    context "when merchant has one invoice" do
+      it "returns an array containing the single invoice" do
+        merchant = Merchant.new(2, "", "", "")
+        merchant.invoices.should == [invoice2]
+      end
+    end
+
+    context "when merchant has multiple invoices" do
+      it "returns all invoices" do
+        merchant = Merchant.new(1, "", "", "")
+        merchant.invoices.should == [invoice1, invoice3]
+      end
+    end
+
+    context "when merchant has no invoices" do
+      it "returns an empty array" do
+        merchant = Merchant.new(3, "", "", "")
+        merchant.invoices.should == []
+      end
     end
   end
 end
