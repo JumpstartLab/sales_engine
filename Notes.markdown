@@ -22,9 +22,13 @@ InvoiceItem
 
 ### Other Items
 Sales_engine
-	* Knows how to get data from a csv
-	* Called when you start up, loads each csv and saves it as a method that can be called by the classes.
-	* has arrays of all merchants, invoices, invoiceitems, items, transactions, customers
+	* Called when you start up, initiates the database.
+	* has reference to database
+
+Database
+	* implemented as a singleton
+	* has arrays containing the 6 data items
+	* can load data from csv
 
 ### Overall class structure
 

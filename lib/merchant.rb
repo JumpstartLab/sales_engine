@@ -1,8 +1,15 @@
 class Merchant
 	# attr_accessor :items, :invoices
 
+	def initialize(attributes)
+		@id = attributes[:id]
+		@name = attributes[:name]
+		@created_at = attributes[:created_at]
+		@updated_at = attributes[:updated_at]
+	end
+
 	def self.random
-		# return a random Merchant
+		# Database.get_a_random_merchant
 	end
 
 	# def self.find_by_X(match)

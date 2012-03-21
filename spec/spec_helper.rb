@@ -11,5 +11,6 @@ require './lib/sales_engine'
 require './lib/invoice_item'
 require './lib/transaction'
 require './lib/customer'
+require './lib/database'
 
 
