@@ -21,7 +21,6 @@ class Merchant < Record
   end
 
   def self.find_by_id(id)
-    # SalesEngine.instance.find_merchant_by_id(id)
     SalesEngine.instance.find_by("merchants", "id", id)
   end
 
