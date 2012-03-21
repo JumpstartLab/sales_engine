@@ -31,20 +31,12 @@ class Merchant
     end
   end
 
-  def invoices=(value)
-    @invoices = value
-  end
-
   def invoices
     Invoice.find_all_by_merchant_id(self.id)
   end
 
-  def items=(value)
-    @items = value
-  end
-
   def items
-    @items ||= []
+    Items.find_all_by_merchant_id(self.id)
   end
 
   def add_item(item)

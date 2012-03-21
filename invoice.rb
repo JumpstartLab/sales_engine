@@ -9,8 +9,21 @@ class Invoice
   end
 
   def transactions
-    Transactions.find_all_by_invoice_id(id)
+    Transaction.find_all_by_invoice_id(self.id)
   end
+
+  def invoice_items
+    Invoice.find_all_by_invoice_id(self.id)
+  end
+
+  def items
+    Item.find_all_by_invoice_id(self.id)
+  end
+
+  def customer
+    Customer.find_all_by_invoice_id(self.id)
+  end
+
   def define_attributes (attributes)  
     attributes.each do |key, value|
       send("#{key}=",value)

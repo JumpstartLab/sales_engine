@@ -24,6 +24,13 @@ module SearchMethods
           matches
         end
 
+        define_singleton_method("random") do |query|
+          all_instances = []
+          ObjectSpace.each_object(self) { |instance| all_matched << instance }
+          all_instances.shuffle
+          all_instances.first
+        end
+
       end
     end
   end
