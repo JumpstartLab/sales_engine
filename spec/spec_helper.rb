@@ -1,0 +1,6 @@
+require './customer'
+require './item'
+require './invoice'
+require './transaction'
+require './invoiceitem'
+require './merchant'
