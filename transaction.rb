@@ -14,14 +14,6 @@ class Transaction
     self.updated_at = attributes[:updated_at]
   end
 
-  def self.load(filename="transactions.csv")
-    puts "Loading transactions..."
-
-    file = CSV.open(filename, { :headers => true,
-                                :header_converters => :symbol})
-    Database.instance.transaction_list = file.collect{ |line| Transaction.new(line) }
-  end
-
   def self.transaction_list=(foo)
     Database.instance.transaction_list = foo
   end

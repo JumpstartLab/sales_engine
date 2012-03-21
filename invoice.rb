@@ -16,13 +16,6 @@ class Invoice
     self.updated_at = attributes[:updated_at]
   end
 
-  def self.load_me(filename="invoices.csv")
-    puts "Loading invoices..."
-    file = CSV.open(filename, { :headers => true,
-                                :header_converters => :symbol})
-    self.invoice_list = file.collect{ |line| Invoice.new(line) }
-  end
-
   def self.invoice_list=(foo)
     @@invoice_list = foo
   end
