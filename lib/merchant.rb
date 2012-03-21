@@ -1,20 +1,11 @@
+require "sales_engine"
+
 class Merchant
+  include SalesEngine
   attr_accessor :id, :name, :created_at, :updated_at
   
   def initialize(id, name, created_at, updated_at)
 
-  end
-
-  def self.find_by(attribute, value)
-    merchants = Database.merchants
-    if merchants
-
-    merchants.find do |merchant| 
-      merchant.send(attribute) == value[0] 
-    end
-    else
-      nil
-    end
   end
 
   def self.random
@@ -28,18 +19,18 @@ class Merchant
 
   def self.method_missing(meth, *args, &block)
     if meth.to_s =~ /^find_by_(.+)$/
-      self.find_by($1, args)
+      SalesEngine::find_by(Database.merchants, $1, args)
     else
       super
     end
   end
 
   def respond_to?(meth)
-        if meth.to_s =~ /^find_by_.*$/
-          true
-        else
-          super
-        end
+    if meth.to_s =~ /^find_by_.*$/
+      true
+    else
+      super
+    end
   end
 end
 
