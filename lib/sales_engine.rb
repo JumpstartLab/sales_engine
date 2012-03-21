@@ -29,4 +29,10 @@ module SalesEngine
 
 	end
 
+	def self.startup
+		# Hi, Jeff!
+	end
+
 end
+
+extend SalesEngine
