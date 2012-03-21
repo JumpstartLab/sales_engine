@@ -29,18 +29,40 @@ describe Merchant do
   end
 
   describe ".find_by" do
+    let(:merchant) { mock(Merchant) }
+    let(:merchant2) { mock(Merchant) }
+    let(:merchant3) { mock(Merchant) }
+    let(:duplicate_merchant) { mock(Merchant) }
+    let(:merchants) { [merchant, merchant2, merchant3, duplicate_merchant] }
+
+    before(:each) do
+      merchant.stub(:id).and_return(1)
+      merchant2.stub(:id).and_return(2)
+      merchant3.stub(:id).and_return(3)
+      duplicate_merchant.stub(:id).and_return(1)
+    end
+
     it "calls find_by attribute" do
-      Database.stub(:merchants).and_return([])
-      SalesEngine.should_receive(:find_by).with([], "id", [2])
-      Merchant.find_by_id(2)
+      Database.stub(:merchants).and_return(merchants)
+      Merchant.find_by_id(2).should == merchant2
     end
   end
 
   describe ".find_all_by" do
+    let(:merchant) { mock(Merchant) }
+    let(:merchant2) { mock(Merchant) }
+    let(:duplicate_merchant) { mock(Merchant) }
+    let(:merchants) { [merchant, merchant2, duplicate_merchant] }
+
+    before(:each) do
+      merchant.stub(:id).and_return(1)
+      merchant2.stub(:id).and_return(2)
+      duplicate_merchant.stub(:id).and_return(1)
+    end
+    
     it "calls find_all_by attribute" do
-      Database.stub(:merchants).and_return([])
-      SalesEngine.should_receive(:find_all_by).with([], "id", [2])
-      Merchant.find_all_by_id(2)
+      Database.stub(:merchants).and_return(merchants)
+      Merchant.find_all_by_id(1).should == [merchant, duplicate_merchant]
     end
   end
 
