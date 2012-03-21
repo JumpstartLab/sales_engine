@@ -9,10 +9,11 @@ describe Transaction do
   let(:invoice_two) { Invoice.new(:id => "2") }
 
   describe "#invoice" do
-    it "return an invoice" do
+    it "return an invoice associated with a given transaction" do
       Transaction.transaction_list = [ transaction_one, transaction_two, transaction_three ]
       Invoice.invoice_list = [ invoice_one, invoice_two ]
       transaction_one.invoice.should == invoice_one
     end
+
   end
 end
