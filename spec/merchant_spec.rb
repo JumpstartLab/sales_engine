@@ -93,11 +93,11 @@ describe Merchant do
     context "when merchants exist in the datastore" do
       before(:each) do
         merchant_1.name = "Jane"
-        merchant_2.name = "Beth"
+        merchant_2.name = "beth"
       end
 
       it "returns the correct merchant record that matches the name" do
-        Merchant.find_by_name('beth').should == merchant_2
+        Merchant.find_by_name('Beth').should == merchant_2
       end
 
       it "returns nothing if no merchant records match the name" do
@@ -161,4 +161,106 @@ describe Merchant do
     end
   end
   
+  describe ".find_all_by_id" do
+    context "when merchants exist in the datastore" do
+      it "returns the correct merchant records that matches the id" do
+        Merchant.find_all_by_id(2).should == [merchant_2]
+      end
+
+      it "returns nothing if no merchant records match the id" do
+        Merchant.find_all_by_id(100).should == []
+      end
+    end
+
+    context "when there are no merchants in the datastore" do
+      it "returns nothing" do
+        se.clear_all_data
+        Merchant.find_all_by_id(1).should == []
+      end
+    end
+  end
+
+    describe ".find_all_by_name" do
+    context "when merchants exist in the datastore" do
+      let(:merchant_3) { Merchant.new({ :id => 3 }) }
+
+      before(:each) do
+        merchant_1.name = "Jane"
+        merchant_2.name = "Beth"
+        merchant_3.name = "jane"
+        se.add_merchant_to_list(merchant_3)
+      end
+
+      it "returns the correct merchant records that matches the name" do
+        Merchant.find_all_by_name("Jane").should == [merchant_1, merchant_3]
+      end
+
+      it "returns nothing if no merchant records match the name" do
+        Merchant.find_all_by_name('conan').should == []
+      end
+    end
+
+    context "when there are no merchants in the datastore" do
+      it "returns nothing" do
+        se.clear_all_data
+        Merchant.find_all_by_name('beth').should == []
+      end
+    end
+  end
+
+  describe ".find_all_by_created_at" do
+    context "when merchants exist in the datastore" do
+      let(:merchant_3) { Merchant.new({ :id => 3 }) }
+
+      before(:each) do
+        merchant_1.created_at = "03/01/2012 12:00"
+        merchant_2.created_at = "01/11/2012 13:00"
+        merchant_3.created_at = "01/11/2012 13:00"
+        se.add_merchant_to_list(merchant_3)
+      end
+
+      it "returns the correct merchant records that matches the created_at time" do
+        Merchant.find_all_by_created_at("01/11/2012 13:00").should == [merchant_2, merchant_3]
+      end
+
+      it "returns nothing if no merchant records match the created_at time" do
+        Merchant.find_all_by_created_at("01/11/1979 10:00").should == []
+      end
+    end
+
+    context "when there are no merchants in the datastore" do
+      it "returns nothing" do
+        se.clear_all_data
+        Merchant.find_all_by_created_at("01/11/2012 13:00").should == []
+      end
+    end
+  end
+
+  describe ".find_by_updated_at" do
+      context "when merchants exist in the datastore" do
+      let(:merchant_3) { Merchant.new({ :id => 3 }) }
+      before(:each) do
+        merchant_1.updated_at = "03/01/2012 12:00"
+        merchant_2.updated_at = "01/11/2012 13:00"
+        merchant_3.updated_at = "01/11/2012 13:00"
+        se.add_merchant_to_list(merchant_3)
+      end
+
+      it "returns the correct merchant records that matches the updated_at time" do
+        Merchant.find_all_by_updated_at("01/11/2012 13:00").should == [merchant_2, merchant_3]
+      end
+
+      it "returns nothing if no merchant records match the updated_at time" do
+        Merchant.find_all_by_updated_at("01/11/1979 10:00").should == []
+      end
+    end
+
+    context "when there are no merchants in the datastore" do
+      it "returns nothing" do
+        se.clear_all_data
+        Merchant.find_all_by_updated_at("01/11/2012 13:00").should == []
+      end
+    end
+  end
+
 end

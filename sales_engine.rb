@@ -62,6 +62,16 @@ class SalesEngine
       end }
   end
 
+  def find_all_by(class_name,attribute,search_value)   
+    self.send(class_name).find_all { |record| 
+      attribute_value = record.send(attribute)
+      if attribute_value.is_a?(String)
+        attribute_value.downcase == search_value.downcase
+      else
+        attribute_value == search_value
+      end }
+  end
+
   def find_all_items_by_merchant_id(id)
     item_list = []
     self.items.each do |item| 

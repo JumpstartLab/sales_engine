@@ -35,4 +35,20 @@ class Merchant < Record
   def self.find_by_updated_at(time)
     SalesEngine.instance.find_by("merchants", "updated_at", time)
   end
+
+  def self.find_all_by_id(id)
+    SalesEngine.instance.find_all_by("merchants", "id", id)
+  end
+
+  def self.find_all_by_name(name)
+    SalesEngine.instance.find_all_by("merchants", "name", name)
+  end
+
+  def self.find_all_by_created_at(time)
+    SalesEngine.instance.find_all_by("merchants", "created_at", time)
+  end
+
+  def self.find_all_by_updated_at(time)
+    SalesEngine.instance.find_all_by("merchants", "updated_at", time)
+  end
 end
