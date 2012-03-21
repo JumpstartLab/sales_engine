@@ -1,22 +1,37 @@
 require './item'
 require './invoice'
 require 'csv'
+require './sales_engine'
 # require './customer' should only need to reference invoices > transactions
 
 class Merchant
+  #extend SalesEngine
+  
+  #MERCHANTS     = []
+  #CSV_OPTIONS   = {:headers => true, :header_converters => :symbol}
+  #MERCHANT_DATA = "merchants.csv"
 
-  # id,name,created_at,updated_at
   attr_accessor :id, :name, :created_at, :updated_at
 
   def initialize(attributes={})
-    #@file = CSV.open("merchants.csv", {:headers => true, :header_converters => :symbol})
-    #load(file)
+    if !attributes.nil? 
+      self.id         = attributes[:id]
+      self.name       = attributes[:name]
+      self.created_at = attributes[:created_at]
+      self.updated_at = attributes[:updated_at]
+    end
   end
 
-  def load
-    file = CSV.open("merchants.csv", {:headers => true, :header_converters => :symbol})
-    merchants = file.collect { |merchant| Merchant.new(merchant) }
-    puts "#{merchants}"
+  # def self.load_data
+  #   merch_file = CSV.open(MERCHANT_DATA, CSV_OPTIONS)
+  #   merch_file.collect do |m| 
+  #     MERCHANTS << Merchant.new(m)
+  #   end
+  #   #puts "Loaded Merchant data."
+  # end
+
+  def first_name
+
   end
 
   def items

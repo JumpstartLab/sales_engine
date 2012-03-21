@@ -1,5 +1,11 @@
 require 'csv'
+require './database'
 require './merchant'
+require './customer'
+require './item'
+require './invoice'
+require './invoice_item'
+require './transaction'
 
 class SalesEngine
 
@@ -11,45 +17,48 @@ class SalesEngine
   INVOICE_ITEMS_DATA  = "invoice_items.csv"
   TRANSACTION_DATA    = "transactions.csv"
 
-  attr_accessor :merchants, :customers, :items, :invoices, 
-                :invoice_items, :transactions
-
   def initialize
-    load_merchants 
+    load_merchants
     load_customers
     load_items
     load_invoices 
-    load_invoice_items
     load_transactions
+    load_invoice_items
   end
 
   def load_merchants
     merch_file = CSV.open(MERCHANT_DATA, CSV_OPTIONS)
-    merchants = merch_file.collect { |m| Merchant.new(m) }
+    Database.instance.merchants = merch_file.collect { |m| Merchant.new(m) }
+    puts "Merchants loaded."
   end
 
   def load_customers 
     cust_file = CSV.open(CUSTOMER_DATA, CSV_OPTIONS)
-    customers = cust_file.collect { |c| Customer.new(c) }
+    Database.instance.customers = cust_file.collect { |c| Customer.new(c) }
+    puts "Customers loaded."
   end 
 
   def load_items
     items_file = CSV.open(ITEM_DATA, CSV_OPTIONS)
-    items = items_file.collect { |i| Item.new(i) }
+    Database.instance.items = items_file.collect { |i| Item.new(i) }
+    puts "Items loaded."
   end
 
   def load_invoices
     inv_file = CSV.open(INVOICE_DATA, CSV_OPTIONS)
-    invoices = inv_file.collect { |i| Invoice.new(i) }
+    Database.instance.invoices = inv_file.collect { |i| Invoice.new(i) }
+    puts "Invoices loaded."
   end
 
   def load_invoice_items
-    inv_item_file = CSV.open(INVOICE_ITEMS_DATA, CSV_OPTIONS)
-    invoice_items = inv_item_file.collect { |i| InvoiceItem.new(i) }
-  end   
+    ii_file = CSV.open(INVOICE_ITEMS_DATA, CSV_OPTIONS)
+    Database.instance.invoice_items = ii_file.collect { |i| InvoiceItem.new(i).inspect }
+    puts "Invoice items loaded."
+  end 
 
   def load_transactions
-    trans_file = CSV.open(TRANSACTION_DATA, CSV_OPTIONS)
-    transactions = trans_file.collect { |t| Transaction.new(t) }
+    t_file = CSV.open(TRANSACTION_DATA, CSV_OPTIONS)
+    Database.instance.transactions = t_file.collect { |t| Transaction.new(t) }
+    puts "Transactions loaded."
   end
 end
