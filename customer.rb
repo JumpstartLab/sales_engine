@@ -11,24 +11,12 @@ class Customer
     end
   end
 
-  def invoices=(value)
-    @invoices = value
-  end
-
   def invoices
-    @invoices ||= []
-  end
-
-  def transactions=(value)
-    @transactions = value
+    Invoice.find_all_by_customer_id(self.id)
   end
 
   def transactions
-    @transactions ||= []
-  end
-
-  def add_transaction(transaction)
-    self.transactions << transaction
+    Transaction.find_all_by_customer_id(self.id)
   end
 
   def favorite_merchant

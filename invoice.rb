@@ -1,6 +1,7 @@
 require "./class_methods"
 class Invoice
-  ATTRIBUTES = ["merchant_id","id","customer_id","status","created_at", "updated_at"]
+  ATTRIBUTES = [:id, :customer_id, :merchant_id, :status, :created_at,
+    :updated_at]
   extend SearchMethods
 
 
