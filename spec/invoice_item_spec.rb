@@ -1,3 +1,4 @@
+require './lib/item'
 require './lib/invoice_item'
 require './lib/database'
 require 'spec_helper'
@@ -16,7 +17,6 @@ describe InvoiceItem do
       end
 
       it "returns a invoice_item" do
-        puts InvoiceItem.random.inspect
         InvoiceItem.random.is_a?(mock(InvoiceItem).class).should == true
       end
     end
@@ -82,6 +82,22 @@ describe InvoiceItem do
     end
     it "returns false for a method that doesn't exist" do
       invoice_item.respond_to?("foo").should == false
+    end
+  end
+
+  describe ".item" do
+    let(:invoice_item) { InvoiceItem.new(1, 1, 1, 1, 0, Date.today, Date.today) }
+    let(:item) { mock(Item) }
+    let(:other_item) { mock(Item) }
+
+    before(:each) do
+      item.stub(:id).and_return(1)
+      other_item.stub(:id).and_return(2)
+      Database.stub(:items).and_return([item, other_item])
+    end
+    
+    it "returns the item with matching item_id" do
+      invoice_item.item.should == item
     end
   end
 end

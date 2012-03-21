@@ -16,7 +16,6 @@ describe Invoice do
       end
 
       it "returns a invoice" do
-        puts Invoice.random.inspect
         Invoice.random.is_a?(mock(Invoice).class).should == true
       end
     end

@@ -18,7 +18,6 @@ describe Merchant do
       end
 
       it "returns a merchant" do
-        puts Merchant.random.inspect
         Merchant.random.is_a?(mock(Merchant).class).should == true
       end
     end

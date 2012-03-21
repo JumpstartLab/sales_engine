@@ -19,4 +19,8 @@ class InvoiceItem
   def self.elements
     Database.invoice_items
   end
+
+  def item 
+    Database.items.find { |item| item.id == item_id }  
+  end
 end

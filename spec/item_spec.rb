@@ -18,7 +18,6 @@ describe Item do
       end
 
       it "returns a item" do
-        puts Item.random.inspect
         Item.random.is_a?(mock(Item).class).should == true
       end
     end
