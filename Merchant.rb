@@ -5,9 +5,9 @@ class Merchant
 
   # end
 
-  # def load(filename)
-
-  # end
+  def find_by(attribute)
+    
+  end
 
   # def items
   #   # returns a collection of Item instances associated with that merchant for the products they sell

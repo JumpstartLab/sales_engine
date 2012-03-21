@@ -3,6 +3,7 @@ SimpleCov.start do
   add_filter "/spec/"
 end
 
+require './database'
 require './customer'
 require './item'
 require './invoice'
