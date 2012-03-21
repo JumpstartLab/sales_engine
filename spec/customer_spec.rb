@@ -8,6 +8,30 @@ require "rspec"
 require "date"
 
 describe Customer do
+  describe 'find_by_#{attribute}(attribute) methods' do
+    Customer::ATTRIBUTES.each do |attribute|
+      context ".find_by_#{attribute}" do
+        it "should have generated the class method" do
+          Customer.should be_respond_to("find_by_#{attribute}")
+        end
+      end
+    end
+  end
+
+  describe 'test accessors' do
+    let(:test_customer) { Customer.new }
+    Customer::ATTRIBUTES.each do |attribute|
+      context "responds to attr_accessors" do
+        it "generates the reader" do
+          test_customer.should be_respond_to("#{attribute}")
+        end
+        it "generates the writer" do
+          test_customer.should be_respond_to("#{attribute}=")
+        end
+      end
+    end
+  end
+
   let(:test_customer) do
     attr_hash = {first_name: "Horatio", last_name: "Casimir", id:7, created_at:Date.today-1, updated_at: Date.today }
     Customer.new(attr_hash)

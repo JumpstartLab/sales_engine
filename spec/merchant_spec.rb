@@ -7,7 +7,32 @@ require "./invoice_item"
 require "rspec"
 require "date"
 
+
 describe Merchant do
+
+  describe 'find_by_#{attribute}(attribute) methods' do
+    Merchant::ATTRIBUTES.each do |attribute|
+      context ".find_by_#{attribute}" do
+        it "should have generated the class method" do
+          Merchant.should be_respond_to("find_by_#{attribute}")
+        end
+      end
+    end
+  end
+
+  describe 'test accessors' do
+    let(:test_merchant) { Merchant.new }
+    Merchant::ATTRIBUTES.each do |attribute|
+      context "responds to attr_accessors" do
+        it "generates the reader" do
+          test_merchant.should be_respond_to("#{attribute}")
+        end
+        it "generates the writer" do
+          test_merchant.should be_respond_to("#{attribute}=")
+        end
+      end
+    end
+  end
 
   let(:test_merchant) do 
     attr_hash = {id: 1,name: "Joe's Crab Shack", created_at:Date.today, updated_at: Date.today}

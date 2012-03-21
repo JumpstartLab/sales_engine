@@ -1,10 +1,27 @@
 require "./transaction.rb"
 
-# describe Transaction do
-#   context "#items" do
-#     it "returns an array of items" do
-#       t = Transaction.new
-#       t.items.should be_is_a(Array) #love that natural language!
-#     end
-#   end
-# end
+describe Transaction do
+  describe 'find_by_#{attribute}(attribute) methods' do
+    Transaction::ATTRIBUTES.each do |attribute|
+      context ".find_by_#{attribute}" do
+        it "should have generated the class method" do
+          Transaction.should be_respond_to("find_by_#{attribute}")
+        end
+      end
+    end
+  end
+
+  describe 'test accessors' do
+    let(:test_transaction) { Transaction.new }
+    Transaction::ATTRIBUTES.each do |attribute|
+      context "responds to attr_accessors" do
+        it "generates the reader" do
+          test_transaction.should be_respond_to("#{attribute}")
+        end
+        it "generates the writer" do
+          test_transaction.should be_respond_to("#{attribute}=")
+        end
+      end
+    end
+  end
+end

@@ -10,23 +10,25 @@ require 'ap'
 
 describe Invoice do
   describe 'find_by_#{attribute}(attribute) methods' do
-    context ".find_by_id" do
-      it "should have generated the class method" do
-        Invoice.should be_respond_to(:find_by_id)
-      end
-      it "should return an Invoice or nil" do
-        invoice = Invoice.find_by_id(1)
-        invoice.should be_nil || be_is_a(Invoice)
+    Invoice::ATTRIBUTES.each do |attribute|
+      context ".find_by_#{attribute}" do
+        it "should have generated the class method" do
+          Invoice.should be_respond_to("find_by_#{attribute}")
+        end
       end
     end
+  end
 
-    context ".find_by_merchant_id" do
-      it "should have generated the class method" do
-        Invoice.should be_respond_to(:find_by_merchant_id)
-      end
-      it "should return an Invoice or nil" do
-        invoice = Invoice.find_by_merchant_id(1)
-        invoice.should be_nil || be_is_a(Invoice)
+  describe 'test accessors' do
+    let(:test_invoice) { Invoice.new }
+    Invoice::ATTRIBUTES.each do |attribute|
+      context "responds to attr_accessors" do
+        it "generates the reader" do
+          test_invoice.should be_respond_to("#{attribute}")
+        end
+        it "generates the writer" do
+          test_invoice.should be_respond_to("#{attribute}=")
+        end
       end
     end
   end
