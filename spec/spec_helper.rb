@@ -1,5 +1,5 @@
-# require 'bundler'
-# Bundler.require(:default)
+require 'bundler'
+Bundler.require
 
 require 'simplecov'
 SimpleCov.start
