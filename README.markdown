@@ -4,6 +4,16 @@
 
 This project will be completed over two weeks beginning Monday, March 13 and due Thursday, March 29.
 
+### Assignment
+
+The current version of the assignment is always here:
+
+http://tutorials.jumpstartlab.com/projects/sales_engine.html
+
+If you'd like to track the most recent changes, check out the git log:
+
+https://github.com/JumpstartLab/curriculum/commits/master/source/projects/sales_engine.markdown
+
 ### Teams
 
 You will work in pairs. Here are the pairings:
