@@ -36,7 +36,7 @@ module SearchMethods
 end
 
 module AccessorBuilder
-  def self.extended(base)
+  def self.included(base)
     base.class_eval do
       self::ATTRIBUTES.each do |attribute|
         attr_accessor attribute

@@ -1,13 +1,13 @@
-require './class_methods'
-require './merchant'
-require './invoice_item'
+require 'class_methods'
+require 'merchant'
+require 'invoice_item'
 require "date"
 
 class Item
   ATTRIBUTES = [:id, :name, :description, :unit_price, :merchant_id,
     :created_at, :updated_at]
     extend SearchMethods
-    extend AccessorBuilder
+    include AccessorBuilder
 
     def initialize(attributes = {})
       define_attributes(attributes)

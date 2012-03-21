@@ -1,6 +1,6 @@
-require './class_methods'
-require "./item.rb"
-require "./invoice.rb"
+require 'class_methods'
+require "item.rb"
+require "invoice.rb"
 require "date"
 require "bigdecimal"
 
@@ -8,7 +8,7 @@ require "bigdecimal"
 class Merchant
   ATTRIBUTES = [:id, :name, :created_at, :updated_at]
   extend SearchMethods
-  extend AccessorBuilder
+  include AccessorBuilder
 
   def initialize(attributes = {})
     define_attributes(attributes)
@@ -37,7 +37,6 @@ class Merchant
   end
 
 end
-
 
 
 
