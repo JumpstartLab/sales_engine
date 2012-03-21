@@ -1,10 +1,18 @@
+$LOAD_PATH << './'
+$LOAD_PATH << './lib'
 require 'csv'
+require 'customer'
+require 'transaction'
+require 'merchant'
+require 'item'
+require 'invoice'
+require 'invoice_item'
 
 class SalesEngine
   CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
-  CLASS_FILES = {Customer : "customers.csv", Invoice : "invoice_items.csv",
-    Invoice : "invoices.csv", Item : "items.csv", Merchant : "merchants.csv",
-    Transaction : "transactions.csv"}
+  CLASS_FILES = {Customer => "customers.csv", Invoice => "invoice_items.csv",
+    Invoice => "invoices.csv", Item => "items.csv",
+    Merchant => "merchants.csv", Transaction => "transactions.csv"}
 
     def initialize
       @data = Hash.new([])
