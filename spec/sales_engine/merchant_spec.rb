@@ -1,8 +1,8 @@
-require './spec/spec_helper.rb'
+require 'spec_helper'
 
-describe Merchant do
+describe SalesEngine::Merchant do
 
-	let (:test_merchant){ Merchant.new }
+	let (:test_merchant){ SalesEngine::Merchant.new }
 	
   describe "items" do
 
