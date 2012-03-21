@@ -6,6 +6,7 @@ require 'item'
 require 'merchant'
 require 'invoice_item'
 require 'invoice'
+require 'database'
 
 class SalesEngine
   attr_accessor :customers, :transactions, :items, :merchants, :invoice_items, :invoices
@@ -40,6 +41,6 @@ class SalesEngine
 end
 
 # SE = SalesEngine.new()
-Transaction.load()
+d = Transaction.load()
 # SE.load_invoices
 # puts SE.invoices
