@@ -81,20 +81,4 @@ class SalesEngine
     end
     invoice_list.sort_by { |invoice| invoice.merchant_id }
   end
-
-  def find_merchant_by_id(id)
-    self.merchants.find { |merchant| merchant.id == id }
-  end
-
-  def find_merchant_by_name(name)
-    self.merchants.find { |merchant| merchant.name.downcase == name.downcase }
-  end
-
-  def find_merchant_by_created_at(time)
-    self.merchants.find { |merchant| merchant.created_at == time }
-  end
-
-  def find_merchant_by_updated_at(time)
-    self.merchants.find { |merchant| merchant.updated_at == time }
-  end
 end
