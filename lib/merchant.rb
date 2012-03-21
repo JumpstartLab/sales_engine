@@ -20,13 +20,15 @@ class Merchant
   def self.method_missing(meth, *args, &block)
     if meth.to_s =~ /^find_by_(.+)$/
       SalesEngine::find_by(Database.merchants, $1, args)
+    elsif meth.to_s =~ /^find_all_by_(.+)$/
+      SalesEngine::find_all_by(Database.merchants, $1, args) 
     else
       super
     end
   end
 
   def respond_to?(meth)
-    if meth.to_s =~ /^find_by_.*$/
+    if meth.to_s =~ /^find_by_.*$/ || meth.to_s =~ /^find_all_by_.*$/
       true
     else
       super

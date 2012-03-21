@@ -36,6 +36,14 @@ describe Merchant do
     end
   end
 
+  describe ".find_all_by" do
+    it "calls find_all_by attribute" do
+      Database.stub(:merchants).and_return([])
+      SalesEngine.should_receive(:find_all_by).with([], "id", [2])
+      Merchant.find_all_by_id(2)
+    end
+  end
+
   describe "method missing" do
     it "invokes the normal no method error" do
       expect{Merchant.foo}.should raise_error
