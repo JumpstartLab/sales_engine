@@ -36,7 +36,7 @@ class Merchant
   end
 
   def items
-    Items.find_all_by_merchant_id(self.id)
+    Item.find_all_by_merchant_id(self.id)
   end
 
   def add_item(item)
