@@ -1,4 +1,4 @@
-require './spec/spec_helper.rb'
+require './spec_helper.rb'
 
 describe Transaction do
 
@@ -14,6 +14,5 @@ describe Transaction do
       Invoice.invoice_list = [ invoice_one, invoice_two ]
       transaction_one.invoice.should == invoice_one
     end
-
   end
 end

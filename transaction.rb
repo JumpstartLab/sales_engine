@@ -3,8 +3,9 @@ require 'database'
 
 class Transaction
   attr_accessor :id, :invoice_id, :credit_card_number, :credit_card_expiration_date, :result, :created_at, :updated_at
-  TRANSACTION_ATTS = [ "id", "invoice_id", "credit_card_number", "credit_card_expiration_date",
-    "result", "created_at", "updated_at" ]
+  # Overachievers:
+  # TRANSACTION_ATTS = [ "id", "invoice_id", "credit_card_number", "credit_card_expiration_date",
+  #   "result", "created_at", "updated_at" ]
 
   def initialize(attributes)
     self.id = attributes[:id]
@@ -24,10 +25,10 @@ class Transaction
     Invoice.find_by_id(self.invoice_id)
   end
 
-  TRANSACTION_ATTS.each do |att|
-    define_singleton_method ("find_by_" + att).to_sym do |param|
-      Database.instance.transaction_list.detect{ |trans| trans.send(att.to_sym) == param }
-    end
-  end
+  # TRANSACTION_ATTS.each do |att|
+  #   define_singleton_method ("find_by_" + att).to_sym do |param|
+  #     Database.instance.transaction_list.detect{ |trans| trans.send(att.to_sym) == param }
+  #   end
+  # end
 
 end
