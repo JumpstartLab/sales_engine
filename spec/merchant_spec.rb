@@ -49,4 +49,17 @@ describe Merchant do
       expect{Merchant.foo}.should raise_error
     end
   end
+
+  describe "respond to" do
+    let(:merchant) { Merchant.new(1, "Name", Date.today, Date.today)}
+    it "returns true for find_by" do
+      merchant.respond_to?("find_by_id").should == true
+    end
+    it "returns true for find_all_by" do
+      merchant.respond_to?("find_all_by_id").should == true
+    end
+    it "returns false for a method that doesn't exist" do
+      merchant.respond_to?("foo").should == false
+    end
+  end
 end
