@@ -30,112 +30,58 @@ class Customer
 
   def self.find_by_cust_id(match)
     found = []
-    found = self.customers.select |customer|
-      if customer.cust_id == match
-        found <<customer
-      end
-    end
+    found = self.customers.select {|customer| customer.cust_id == match}
     found[rand(found.count)]
     puts found[rand(found.count)].cust_id
   end
 
   def self.find_all_by_cust_id(match)
     found = []
-    found = self.customers.each do |customer|
-      if customer.cust_id == match
-        found <<customer
-      end
-    end
+    found = self.customers.select {|customer| customer.cust_id == match}
     found
-    puts found
+    puts found.inspect
   end
 
   def self.find_by_first_name(match)
     found = []
-    found = self.customers.each do |customer|
-      if customer.first_name == match
-        found <<customer
-      end
-    end
+    found = self.customers.select {|customer| customer.first_name == match}
     found[rand(found.count)]
     puts found[rand(found.count)].first_name
   end
 
   def self.find_all_by_first_name(match)
     found = []
-    found = self.customers.each do |customer|
-      if customer.first_name == match
-        found <<customer
-      end
-    end
+    found = self.customers.select {|customer| customer.first_name == match}
     found
-    puts found
-  end
-
-  def self.find_by_last_name(match)
-    found = []
-    found = self.customers.each do |customer|
-      if customer.last_name == match
-        found <<customer
-      end
-    end
-    found[rand(found.count)]
-    puts found[rand(found.count)].last_name
-  end
-
-  def self.find_all_by_last_name(match)
-    found = []
-    found = self.customers.each do |customer|
-      if customer.last_name == match
-        found <<customer
-      end
-    end
-    found
-    puts found
-  end
-
-  def self.find_by_create_date(match)
-    found = []
-    found = self.customers.each do |customer|
-      if customer.create_date == match
-        found <<customer
-      end
-    end
-    found[rand(found.count)]
-    puts found[rand(found.count)].create_date
-  end
-
-  def self.find_all_by_create_date(match)
-    found = []
-    found = self.customers.each do |customer|
-      if customer.create_date == match
-        found <<customer
-      end
-    end
-    found
-    puts found
+    puts found.inspect
   end
 
   def self.find_by_update_date(match)
     found = []
-    found = self.customers.each do |customer|
-      if customer.update_date == match
-        found <<customer
-      end
-    end
+    found = self.customers.select {|customer| customer.update_date == match}
     found[rand(found.count)]
     puts found[rand(found.count)].update_date
   end
 
   def self.find_all_by_update_date(match)
     found = []
-    found = self.customers.each do |customer|
-      if customer.update_date == match
-        found <<customer
-      end
-    end
+    found = self.customers.select {|customer| customer.update_date == match}
     found
-    puts found
+    puts found.inspect
+  end
+
+  def self.find_by_create_date(match)
+    found = []
+    found = self.customers.select {|customer| customer.create_date == match}
+    found[rand(found.count)]
+    puts found[rand(found.count)].create_date
+  end
+
+  def self.find_all_by_create_date(match)
+    found = []
+    found = self.customers.select {|customer| customer.create_date == match}
+    found
+    puts found.inspect
   end
 end
 
