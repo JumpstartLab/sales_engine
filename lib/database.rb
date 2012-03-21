@@ -1,6 +1,6 @@
 require 'csv'
 require 'singleton'
-require './merchant'
+require 'sales_engine/merchant'
 
 class Database
   include Singleton
