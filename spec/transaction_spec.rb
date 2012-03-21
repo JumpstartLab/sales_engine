@@ -1,5 +1,5 @@
-require './spec/spec_helper.rb'
-require "./transaction.rb"
+require 'spec_helper.rb'
+require "transaction.rb"
 
 describe Transaction do
   describe 'find_by_#{attribute}(attribute) methods' do

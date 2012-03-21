@@ -1,14 +1,22 @@
-require './spec/spec_helper.rb'
-require "./merchant"
-require "./customer"
-require "./transaction"
-require "./invoice"
-require "./item"
-require "./invoice_item"
+require 'spec_helper.rb'
+require "merchant"
+require "customer"
+require "transaction"
+require "invoice"
+require "item"
+require "invoice_item"
 require "rspec"
 require "date"
 
 describe Customer do
+  describe '.random' do
+    it "returns a Customer object" do
+      a = Customer.random
+      puts a.inspect
+      a.should be_is_a(Customer)
+    end
+  end
+
   describe 'find_by_#{attribute}(attribute) methods' do
     Customer::ATTRIBUTES.each do |attribute|
       context ".find_by_#{attribute}" do
@@ -33,10 +41,7 @@ describe Customer do
     end
   end
 
-  let(:test_customer) do
-    attr_hash = {first_name: "Horatio", last_name: "Casimir", id:7, created_at:Date.today-1, updated_at: Date.today }
-    Customer.new(attr_hash)
-  end
+  let(:test_customer) { Customer.random }
 
   context "#invoices" do
     it "returns an array" do
@@ -66,14 +71,11 @@ describe Customer do
     end
   end
 
-  # context "#favorite_merchant" do
-  #   let(:test_transaction) do 
-  #     Transaction.new({})
-  #   end
-  #   it "returns a Merchant object" do
-  #     fav_merchant = test_customer.favorite_merchant
-  #     fav_merchant.should be_nil || be_is_a(Merchant)
-  #   end
-  # end
+  context "#favorite_merchant" do
+    it "returns a Merchant object" do
+      fav_merchant = test_customer.favorite_merchant
+      fav_merchant.should be_nil || be_is_a(Merchant)
+    end
+  end
 
 end

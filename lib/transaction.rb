@@ -14,4 +14,9 @@ class Transaction
   def invoice
     Invoice.find_by_id(invoice_id)
   end
+
+  def successful?
+    self.result == "success"
+  end
+
 end

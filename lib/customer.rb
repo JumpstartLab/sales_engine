@@ -7,7 +7,7 @@ class Customer
   ATTRIBUTES = [:id, :first_name, :last_name, :created_at, :updated_at]
   extend SearchMethods
   include AccessorBuilder
-  
+
   def initialize (attributes = {})
     define_attributes(attributes)
   end
@@ -26,14 +26,14 @@ class Customer
 
   def favorite_merchant
     successful = successful_transactions
-    merchant_hash = Hash.new(0)
+    merchant_hash = Hash.new() {|hash, key| hash[key] = 0}
     successful.each do |transaction|
-      merchant_hash[transaction.merchant.id] += 1
+      merchant_hash[transaction.invoice.merchant_id] += 1
     end
     sorted_array = merchant_hash.sort_by do |key, value|
       value
     end
-    merchant_id = sorted_array.first[0]
+    fav_merchant_id = sorted_array.first[0]
     Merchant.find_by_id(merchant_id)
   end
 

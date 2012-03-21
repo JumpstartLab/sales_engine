@@ -1,10 +1,10 @@
-require './spec/spec_helper.rb'
-require "./merchant"
-require "./customer"
-require "./transaction"
-require "./invoice"
-require "./item"
-require "./invoice_item"
+require 'spec_helper.rb'
+require "merchant"
+require "customer"
+require "transaction"
+require "invoice"
+require "item"
+require "invoice_item"
 require "rspec"
 require "date"
 require 'ap'
