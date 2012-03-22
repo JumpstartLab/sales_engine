@@ -1,0 +1,31 @@
+require './spec/spec_helper'
+
+describe InvoiceItem do
+  let(:se) { Database.instance}
+  let(:invoice_item_1) { InvoiceItem.new({:id => 1}) }
+  let(:invoice_item_2) { InvoiceItem.new({:id => 2}) }
+
+  before(:each) do
+    se.clear_all_data
+    se.add_to_list(invoice_item_1)
+    se.add_to_list(invoice_item_2)
+  end
+
+  describe "#invoice" do
+    context "where there are invoices in the database" do
+      let(:invoice_1) { Invoice.new({ :id => 1 }) }
+      let(:invoice_2) { Invoice.new({ :id => 2 }) }
+
+      before(:each) do
+        se.add_to_list(invoice_1)
+        se.add_to_list(invoice_2)
+        invoice_item_1.invoice_id = invoice_2.id
+        invoice_item_2.invoice_id = invoice_1.id
+      end
+
+      it "returns an instance of Invoice associated with this object" do
+        invoice_item_1.invoice.should == invoice_2
+      end
+    end
+  end
+end

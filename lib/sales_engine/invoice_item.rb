@@ -10,4 +10,8 @@ class InvoiceItem < Record
     self.quantity = attributes[:quantity]
     self.unit_price = attributes[:unit_price]
   end
+
+  def invoice
+    Database.instance.find_by("invoices", "id", self.invoice_id)
+  end
 end
