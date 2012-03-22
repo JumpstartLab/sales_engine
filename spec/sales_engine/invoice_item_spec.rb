@@ -19,5 +19,18 @@ describe SalesEngine::InvoiceItem do
       end
     end
   end
+
+  describe "#invoice" do
+    context "returns an invoice associated with this invoice_item" do
+
+      it "returns an invoice" do
+        test_invoice_item.invoice.is_a?(SalesEngine::Invoice).should == true
+      end
+
+      it "returns an invoice associated with this invoice item" do
+        test_invoice_item.invoice.id.should == test_invoice_item.invoice_id
+      end
+    end
+  end
 end
 
