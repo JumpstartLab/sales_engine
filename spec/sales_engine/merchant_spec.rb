@@ -90,43 +90,21 @@ describe SalesEngine::Merchant do
     end
   end
 
-  # context "#favorite_customer" do
-  #   it "returns a customer object" do
-  #     test_merchant.favorite_customer.should be_is_a(Customer)
-  #   end
+  context ".most_items(x)" do
+    x = 10
+    it "returns an array of size x" do 
+      top_merchants = SalesEngine::Merchant.most_items(x)
+      top_merchants.count.should == x
+    end
 
-  #   it "returns the customer with highest number of transactions" do
-  #     c1 = Customer.new(:transactions => [Transaction.new, Transaction.new])
-  #     c2 = Customer.new(:transactions => [Transaction.new])
-  #     t1 = 
-  #     test_merchant
-  #   end
-  # end
+    it "orders merchants by items" do
+      top_merchants = SalesEngine::Merchant.most_items(x)
+      top_merchants.each_slice(2) do |a,b|
+        if b
+          a.items_sold.should >= b.items_sold
+        end
+      end
+    end
+  end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

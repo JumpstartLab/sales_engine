@@ -25,6 +25,7 @@ module SalesEngine
                 return instance
               end
             end
+            nil
           end
 
           define_singleton_method("find_all_by_#{attribute}") do |query|
@@ -32,6 +33,7 @@ module SalesEngine
             instances_of_class.select do |instance|
               instance.send("#{attribute}") == query
             end
+            []
           end
 
           define_singleton_method("random") do
