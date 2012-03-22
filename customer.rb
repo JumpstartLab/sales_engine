@@ -3,18 +3,18 @@ require './module'
 
   class Customer
     extend Search
-    attr_accessor :cust_id,
+    attr_accessor :id,
                   :first_name,
                   :last_name,
-                  :create_date,
-                  :update_date
+                  :created_at,
+                  :updated_at
 
     def initialize(attributes={})
-      self.cust_id = attributes[:id].to_s
+      self.id = attributes[:id].to_s
       self.first_name = attributes[:first_name].to_s
       self.last_name = attributes[:last_name].to_s
-      self.create_date = attributes[:created_at].to_s
-      self.update_date = attributes[:updated_at].to_s
+      self.created_at = attributes[:created_at].to_s
+      self.updated_at = attributes[:updated_at].to_s
     end
 
 
@@ -29,61 +29,44 @@ require './module'
         puts self.customers.sample
     end
 
-    def self.find_by_cust_id(match)
-      # found = []
-      # found = self.customers.select {|customer| customer.cust_id == match}
-      # found[rand(found.count)]
-      # puts found[rand(found.count)].cust_id
-      Search.find_by("cust_id", match, self.customers)
+    def self.find_by_id(match)
+      puts Search.find_all_by("id", match, self.customers).sample.inspect
     end
 
-    def self.find_all_by_cust_id(match)
-      found = []
-      found = self.customers.select {|customer| customer.cust_id == match}
-      found
-      puts found.inspect
+    def self.find_all_by_id(match)
+      puts Search.find_all_by("id", match, self.customers).inspect
     end
 
     def self.find_by_first_name(match)
-      found = []
-      found = self.customers.select {|customer| customer.first_name == match}
-      found[rand(found.count)]
-      puts found[rand(found.count)].first_name
+      puts Search.find_all_by("first_name", match, self.customers).sample.inspect
     end
 
     def self.find_all_by_first_name(match)
-      found = []
-      found = self.customers.select {|customer| customer.first_name == match}
-      found
-      puts found.inspect
+      puts Search.find_all_by("first_name", match, self.customers).inspect
     end
 
-    def self.find_by_update_date(match)
-      found = []
-      found = self.customers.select {|customer| customer.update_date == match}
-      found[rand(found.count)]
-      puts found[rand(found.count)].update_date
+    def self.find_by_last_name(match)
+      puts Search.find_all_by("last_name", match, self.customers).sample.inspect
     end
 
-    def self.find_all_by_update_date(match)
-      found = []
-      found = self.customers.select {|customer| customer.update_date == match}
-      found
-      puts found.inspect
+    def self.find_all_by_last_name(match)
+      puts Search.find_all_by("last_name", match, self.customers).inspect
     end
 
-    def self.find_by_create_date(match)
-      found = []
-      found = self.customers.select {|customer| customer.create_date == match}
-      found[rand(found.count)]
-      puts found[rand(found.count)].create_date
+    def self.find_by_updated_at(match)
+      puts Search.find_all_by("update_at", match, self.customers).sample.inspect
     end
 
-    def self.find_all_by_create_date(match)
-      found = []
-      found = self.customers.select {|customer| customer.create_date == match}
-      found
-      puts found.inspect
+    def self.find_all_by_updated_at(match)
+      puts Search.find_all_by("updated_at", match, self.customers).inspect
+    end
+
+    def self.find_by_created_at(match)
+      puts Search.find_all_by("created_at", match, self.customers).sample.inspect
+    end
+
+    def self.find_all_by_created_at(match)
+      puts Search.find_all_by("created_at", match, self.customers).inspect
     end
   end
 
