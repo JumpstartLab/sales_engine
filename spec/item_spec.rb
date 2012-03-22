@@ -413,4 +413,22 @@ describe Item do
       end
     end
   end
+
+  describe "#merchant" do
+    context "when merchants exist in the datastore" do
+      let(:merchant_1) { Merchant.new({ :id => 1 }) }
+      let(:merchant_2) { Merchant.new({ :id => 2 }) }
+
+      before(:each) do
+        se.add_to_list(merchant_1)
+        se.add_to_list(merchant_2)
+        item_1.merchant_id = merchant_2.id
+        item_2.merchant_id = merchant_1.id
+      end
+
+      it "returns an instance of Merchant associated with this object" do
+        item_1.merchant.should == merchant_2
+      end
+    end
+  end
 end
