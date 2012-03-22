@@ -1,6 +1,6 @@
 require './spec/spec_helper.rb'
 
-describe Merchant do
+describe SalesEngine::Merchant do
   describe ".random" do
     it "returns a random instance of Merchant" do
       result = Merchant.random  

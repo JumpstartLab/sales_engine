@@ -6,9 +6,9 @@ end
 require 'bundler'
 Bundler.require
 
-require './merchant'
-require './item'
-require './invoice_item'
-require './invoice'
-require './customer'
-require './transaction'
+require './lib/sales_engine/merchant'
+require './lib/sales_engine/item'
+require './lib/sales_engine/invoice_item'
+require './lib/sales_engine/invoice'
+require './lib/sales_engine/customer'
+require './lib/sales_engine/transaction'
