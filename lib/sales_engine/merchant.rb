@@ -9,7 +9,7 @@ module SalesEngine
 
 		def self.get_merchants
 		  CSVLoader.load('data/merchants.csv').collect do |record|
-				merchant = Merchant.new(record)
+				Merchant.new(record)
 			end
 		end
 
