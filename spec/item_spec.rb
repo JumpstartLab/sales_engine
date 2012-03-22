@@ -1,8 +1,9 @@
+require 'spec_helper'
 require './lib/item'
 require './lib/database'
 require './lib/merchant'
 require './lib/invoice_item'
-require 'spec_helper'
+
 
 describe Item do
   describe ".random" do

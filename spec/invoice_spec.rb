@@ -1,6 +1,6 @@
+require 'spec_helper'
 require './lib/invoice'
 require './lib/database'
-require 'spec_helper'
 
 describe Invoice do
   describe ".random" do
