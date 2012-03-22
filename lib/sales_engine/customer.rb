@@ -16,7 +16,7 @@ module SalesEngine
     end     
 
     def self.elements
-      Database.transactions
+      Database.customers
     end
 
     def invoices

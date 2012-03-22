@@ -5,7 +5,8 @@ describe "Models" do
             SalesEngine::Item => "items",
             SalesEngine::InvoiceItem => "invoice_items",
             SalesEngine::Invoice => "invoices",
-            SalesEngine::Transaction => "transactions"}
+            SalesEngine::Transaction => "transactions",
+            SalesEngine::Customer => "customers"}
 
   models.each do |model, method|
     describe ".random" do
