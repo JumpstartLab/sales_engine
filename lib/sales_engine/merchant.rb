@@ -12,7 +12,7 @@ class SalesEngine
     end
 
     def self.random
-      # Database.get_a_random_merchant
+      SalesEngine::Database.instance.get_merchants.sample
     end
 
     # def self.find_by_X(match)
@@ -30,7 +30,6 @@ class SalesEngine
           correct_items << item
         end
       end
-
       return correct_items
     end
 
