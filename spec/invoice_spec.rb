@@ -378,6 +378,7 @@ describe Invoice do
         invoice_1.transactions.should == []
       end
     end
+
     describe "#items" do
       context "where there are invoice items & items in the database" do
         let(:item_1) { Item.new({ :id => 1 }) }
@@ -414,6 +415,24 @@ describe Invoice do
       context "where there are no invoice items & items in the database" do
         it "returns nothing" do
           invoice_1.items.should == []
+        end
+      end
+    end
+
+    describe "#customer" do
+      context "where there are customers in the database" do
+        let(:customer_1) { Customer.new({ :id => 1 }) }
+        let(:customer_2) { Customer.new({ :id => 2 }) }
+
+        before(:each) do
+          invoice_1.customer_id = customer_2.id
+          invoice_2.customer_id = customer_1.id
+          se.add_to_list(customer_1)
+          se.add_to_list(customer_2)
+        end
+
+        it "returns an instance of Customer associated with this object" do
+          invoice_1.customer.should == customer_2
         end
       end
     end

@@ -29,6 +29,10 @@ class Invoice < Record
       Database.instance.find_by("items", "id", invoice_item.item_id) }
   end
 
+  def customer
+    Database.instance.find_by("customers", "id", self.customer_id)
+  end
+
   def self.find_by_id(id)
     Database.instance.find_by("invoices", "id", id)
   end
