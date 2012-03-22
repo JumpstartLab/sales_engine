@@ -7,8 +7,8 @@ describe Item do
 
   before(:each) do
     se.clear_all_data
-    se.add_item_to_list(item_1)
-    se.add_item_to_list(item_2)
+    se.add_to_list(item_1)
+    se.add_to_list(item_2)
   end
 
   describe ".random" do
@@ -103,7 +103,7 @@ describe Item do
         item_1.unit_price = 5
         item_2.unit_price = 10
         item_3.unit_price = 5555
-        se.add_item_to_list(item_3)
+        se.add_to_list(item_3)
       end
 
       it "returns the correct item record that matches the unit price" do
@@ -131,7 +131,7 @@ describe Item do
         item_1.merchant_id = 5
         item_2.merchant_id = 10
         item_3.merchant_id = 5555
-        se.add_item_to_list(item_3)
+        se.add_to_list(item_3)
       end
 
       it "returns the correct item record that matches the merchant id" do
@@ -226,7 +226,7 @@ describe Item do
         item_1.name = "Widget"
         item_2.name = "sprocket"
         item_3.name = "widget"
-        se.add_item_to_list(item_3)
+        se.add_to_list(item_3)
       end
 
       it "returns the correct item records that matches the name" do
@@ -256,8 +256,8 @@ describe Item do
         item_2.description = "Two Inch Wood Nail"
         item_3.description = "two inch wood nail"
         item_4.description = "five inch wood nail"
-        se.add_item_to_list(item_3)
-        se.add_item_to_list(item_4)
+        se.add_to_list(item_3)
+        se.add_to_list(item_4)
       end
 
       it "returns the correct item records that match the description" do
@@ -285,7 +285,7 @@ describe Item do
         item_1.unit_price = 10
         item_2.unit_price = 10
         item_3.unit_price = 5555
-        se.add_item_to_list(item_3)
+        se.add_to_list(item_3)
       end
 
       it "returns the correct item records that match the unit price" do
@@ -313,7 +313,7 @@ describe Item do
         item_1.merchant_id = 5
         item_2.merchant_id = 10
         item_3.merchant_id = 10
-        se.add_item_to_list(item_3)
+        se.add_to_list(item_3)
       end
 
       it "returns the correct item records that match the merchant id" do
@@ -341,7 +341,7 @@ describe Item do
         item_1.created_at = "03/01/2012 12:00"
         item_2.created_at = "01/11/2012 13:00"
         item_3.created_at = "01/11/2012 13:00"
-        se.add_item_to_list(item_3)
+        se.add_to_list(item_3)
       end
 
       it "returns the correct item records that matches the created_at time" do
@@ -368,7 +368,7 @@ describe Item do
         item_1.updated_at = "03/01/2012 12:00"
         item_2.updated_at = "01/11/2012 13:00"
         item_3.updated_at = "01/11/2012 13:00"
-        se.add_item_to_list(item_3)
+        se.add_to_list(item_3)
       end
 
       it "returns the correct item records that matches the updated_at time" do

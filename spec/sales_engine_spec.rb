@@ -28,17 +28,10 @@ describe SalesEngine do
     end
   end
 
-  describe "#add_merchant_to_list" do
-    it "allows you to add a new merchant object to the master merchant list" do
-      se.add_merchant_to_list(Merchant.new)
+  describe "#add_to_list" do
+    it "allows you to add a new object to the appropriate master list" do
+      se.add_to_list(Merchant.new)
       se.merchants.count.should == 1
-    end
-  end
-
-  describe "#add_item_to_list" do
-    it "allows you to add a new item object to the master item list" do
-      se.add_item_to_list(Item.new)
-      se.items.count.should == 1
     end
   end
 end

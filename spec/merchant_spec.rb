@@ -7,8 +7,8 @@ describe Merchant do
 
   before(:each) do
     se.clear_all_data
-    se.add_merchant_to_list(merchant_1)
-    se.add_merchant_to_list(merchant_2)
+    se.add_to_list(merchant_1)
+    se.add_to_list(merchant_2)
   end
 
   describe "#items" do
@@ -21,9 +21,9 @@ describe Merchant do
       item_1.merchant_id = 1
       item_2.merchant_id = 1
       item_3.merchant_id = 2
-      se.add_item_to_list(item_1)
-      se.add_item_to_list(item_2)
-      se.add_item_to_list(item_3)
+      se.add_to_list(item_1)
+      se.add_to_list(item_2)
+      se.add_to_list(item_3)
       merchant_1.items.should == [item_1, item_2]
     end
 
@@ -42,9 +42,9 @@ describe Merchant do
       invoice_1.merchant_id = 2
       invoice_2.merchant_id = 1
       invoice_3.merchant_id = 1
-      se.add_invoice_to_list(invoice_1)
-      se.add_invoice_to_list(invoice_2)
-      se.add_invoice_to_list(invoice_3)
+      se.add_to_list(invoice_1)
+      se.add_to_list(invoice_2)
+      se.add_to_list(invoice_3)
       merchant_1.invoices.should == [invoice_2, invoice_3]
     end
 
@@ -188,7 +188,7 @@ describe Merchant do
         merchant_1.name = "Jane"
         merchant_2.name = "Beth"
         merchant_3.name = "jane"
-        se.add_merchant_to_list(merchant_3)
+        se.add_to_list(merchant_3)
       end
 
       it "returns the correct merchant records that matches the name" do
@@ -216,7 +216,7 @@ describe Merchant do
         merchant_1.created_at = "03/01/2012 12:00"
         merchant_2.created_at = "01/11/2012 13:00"
         merchant_3.created_at = "01/11/2012 13:00"
-        se.add_merchant_to_list(merchant_3)
+        se.add_to_list(merchant_3)
       end
 
       it "returns the correct merchant records that matches the created_at time" do
@@ -243,7 +243,7 @@ describe Merchant do
         merchant_1.updated_at = "03/01/2012 12:00"
         merchant_2.updated_at = "01/11/2012 13:00"
         merchant_3.updated_at = "01/11/2012 13:00"
-        se.add_merchant_to_list(merchant_3)
+        se.add_to_list(merchant_3)
       end
 
       it "returns the correct merchant records that matches the updated_at time" do

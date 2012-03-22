@@ -42,20 +42,8 @@ class SalesEngine
     self.invoices = @file.collect {|line| Invoice.new(line) }
   end
 
-  def add_merchant_to_list(merchant)
-    self.merchants << merchant
-  end
-
-  def add_item_to_list(item)
-    self.items << item
-  end
-
-  def add_invoice_to_list(invoice)
-    self.invoices << invoice
-  end  
-
-  def add_customer_to_list(customer)
-    self.customers << customer
+  def add_to_list(thing)
+    self.send(thing.class.to_s.downcase+"s") << thing
   end
 
   def find_by(class_name,attribute,search_value)   

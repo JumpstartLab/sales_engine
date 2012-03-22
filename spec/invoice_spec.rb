@@ -7,8 +7,8 @@ describe Invoice do
 
   before(:each) do
     se.clear_all_data
-    se.add_invoice_to_list(invoice_1)
-    se.add_invoice_to_list(invoice_2)
+    se.add_to_list(invoice_1)
+    se.add_to_list(invoice_2)
   end
 
   describe ".random" do
@@ -190,7 +190,7 @@ describe Invoice do
         invoice_1.customer_id = 1
         invoice_2.customer_id = 2
         invoice_3.customer_id = 1
-        se.add_invoice_to_list(invoice_3)
+        se.add_to_list(invoice_3)
       end
 
       it "returns the correct invoice records that matches the customer_id" do
@@ -218,7 +218,7 @@ describe Invoice do
         invoice_1.merchant_id = 1
         invoice_2.merchant_id = 2
         invoice_3.merchant_id = 1
-        se.add_invoice_to_list(invoice_3)
+        se.add_to_list(invoice_3)
       end
 
       it "returns the correct invoice records that matches the merchant_id" do
@@ -246,7 +246,7 @@ describe Invoice do
         invoice_1.status = "shipped"
         invoice_2.status = "nothing"
         invoice_3.status = "shipped"
-        se.add_invoice_to_list(invoice_3)
+        se.add_to_list(invoice_3)
       end
 
       it "returns the correct invoice records that match the status" do
@@ -274,7 +274,7 @@ describe Invoice do
         invoice_1.created_at = "03/01/2012 12:00"
         invoice_2.created_at = "01/11/2012 13:00"
         invoice_3.created_at = "01/11/2012 13:00"
-        se.add_invoice_to_list(invoice_3)
+        se.add_to_list(invoice_3)
       end
 
       it "returns the correct invoice records that matches the created_at time" do
@@ -301,7 +301,7 @@ describe Invoice do
         invoice_1.updated_at = "03/01/2012 12:00"
         invoice_2.updated_at = "01/11/2012 13:00"
         invoice_3.updated_at = "01/11/2012 13:00"
-        se.add_invoice_to_list(invoice_3)
+        se.add_to_list(invoice_3)
       end
 
       it "returns the correct invoice records that matches the updated_at time" do
