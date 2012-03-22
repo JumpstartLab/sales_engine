@@ -1,6 +1,6 @@
 class SalesEngine
   class Item
-    # attr_accessor :merchant
+    attr_accessor :merchant_id
 
     def initialize(attributes)
       # puts attributes.inspect
