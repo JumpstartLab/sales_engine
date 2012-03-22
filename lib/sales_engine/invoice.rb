@@ -18,6 +18,10 @@ class Invoice < Record
     Database.instance.find_all_by("transactions", "invoice_id", self.id)
   end
 
+  def invoice_items
+    Database.instance.find_all_by("invoiceitems", "invoice_id", self.id)
+  end
+
   def self.find_by_id(id)
     Database.instance.find_by("invoices", "id", id)
   end

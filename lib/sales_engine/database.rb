@@ -4,12 +4,14 @@ require './lib/sales_engine/merchant'
 require './lib/sales_engine/item'
 require './lib/sales_engine/invoice'
 require './lib/sales_engine/customer'
+require './lib/sales_engine/transaction'
+require './lib/sales_engine/invoice_item'
 
 class Database
   include Singleton
   CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
   attr_accessor :merchants, :items, :invoices, :transactions, 
-                :customers
+                :customers, :invoiceitems
 
   def initialize
     clear_all_data
@@ -21,6 +23,7 @@ class Database
     self.invoices = []
     self.transactions = []
     self.customers = []
+    self.invoiceitems = []
   end
 
   def get_random_record(class_name)

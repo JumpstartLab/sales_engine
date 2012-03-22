@@ -345,7 +345,36 @@ describe Invoice do
     end
 
     context "where there are no transactions in the database" do
+      it "returns nothing" do
+        invoice_1.transactions.should == []
+      end
+    end
+  end
+
+  describe "#invoice_items" do
+    context "where there are invoice items in the database" do
+      let(:invoice_item_1) { InvoiceItem.new({:id => 1, :invoice_id => invoice_1.id }) }
+      let(:invoice_item_2) { InvoiceItem.new({:id => 2, :invoice_id => invoice_2.id }) }
+      let(:invoice_item_3) { InvoiceItem.new({:id => 3, :invoice_id => invoice_1.id }) }
+      let(:invoice_3) { Invoice.new({ :id => 3 }) }
+
+      before(:each) do
+        se.add_to_list(invoice_item_1)
+        se.add_to_list(invoice_item_2)
+        se.add_to_list(invoice_item_3)
+        se.add_to_list(invoice_3)
+      end
+
+      it "returns all invoice items associated with a given invoice id" do
+        invoice_1.invoice_items.should == [invoice_item_1, invoice_item_3]
+      end
+
       it "returns nothing if no invoices have the id" do
+        invoice_3.invoice_items.should == []
+      end
+    end
+    context "where there are no invoice items in the database" do
+      it "returns nothing" do
         invoice_1.transactions.should == []
       end
     end
