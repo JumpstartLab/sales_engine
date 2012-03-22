@@ -28,4 +28,22 @@ describe InvoiceItem do
       end
     end
   end
+
+  describe "#item" do
+    context "where there are items in the database" do
+      let(:item_1) { Item.new({ :id => 1 }) }
+      let(:item_2) { Item.new({ :id => 2 }) }
+      
+      before(:each) do
+        se.add_to_list(item_1)
+        se.add_to_list(item_2)
+        invoice_item_1.item_id = item_2.id
+        invoice_item_2.item_id = item_1.id
+      end
+
+      it "returns an instance of Item associated with this object" do
+        invoice_item_1.item.should == item_2
+      end
+    end
+  end
 end
