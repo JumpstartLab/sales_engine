@@ -83,6 +83,19 @@ describe SalesEngine::Invoice do
     end
   end
 
+  describe "#invoices_items" do
+     it "returns an array of invoice items" do
+        SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]
+        inv_one.invoice_items.should == [ inv_item_one ]
+    end
+
+    context "when an invoice has no invoice items" do
+      it "returns an empty array" do
+        inv_three.invoice_items.should == [ ]
+      end
+    end
+
+  end
 
   # describe ".average_items" do
   #   #average item count for each processed invoice
