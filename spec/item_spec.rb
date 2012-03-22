@@ -388,4 +388,29 @@ describe Item do
     end
   end
 
+  describe "#invoice_items" do
+    context "when invoice items exist in the datastore" do
+      let(:invoice_item_1) { InvoiceItem.new({:id => 1, :item_id => item_1.id }) }
+      let(:invoice_item_2) { InvoiceItem.new({:id => 2, :item_id => item_1.id }) }
+      let(:invoice_item_3) { InvoiceItem.new({:id => 3, :item_id => item_2.id }) }
+      let(:invoice_item_4) { InvoiceItem.new({:id => 4, :item_id => item_1.id }) }
+      let(:item_3) { Item.new({ :id => 3 }) }
+
+      before(:each) do
+        se.add_to_list(invoice_item_1)
+        se.add_to_list(invoice_item_2)
+        se.add_to_list(invoice_item_3)
+        se.add_to_list(invoice_item_4)
+        se.add_to_list(item_3)
+      end
+
+      it "returns a collection of InvoiceItems associated with this object" do
+        item_1.invoice_items.should == [invoice_item_1, invoice_item_2, invoice_item_4]
+      end
+
+      it "returns nothing if no invoice items are associated with the item id" do
+        item_3.invoice_items.should == []
+      end
+    end
+  end
 end

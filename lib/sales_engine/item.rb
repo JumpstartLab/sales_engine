@@ -15,6 +15,10 @@ class Item < Record
     Database.instance.get_random_record("items")
   end
 
+  def invoice_items
+    Database.instance.find_all_by("invoiceitems", "item_id", self.id)
+  end
+
   def self.find_by_id(id)
     Database.instance.find_by("items", "id", id)
   end
