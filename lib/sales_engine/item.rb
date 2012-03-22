@@ -19,7 +19,6 @@ module SalesEngine
     def validate_attributes
       validates_presence_of :name, @name
       validates_presence_of :description, @description
-      validates_presence_of :unit_price, @unit_price
       validates_numericality_of :unit_price, @unit_price
       validates_presence_of :merchant, @merchant
     end
