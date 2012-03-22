@@ -6,7 +6,7 @@ CLASSES.each do |klass, attribute|
 	describe "#{klass}" do
 		describe ".all" do
 			it "returns all of the existing #{klass} records" do
-				klass.all.should == SalesEngine::Engine.instance.send(attribute.to_sym)
+				klass.all.should == klass.send(:records)
 			end
 		end
 
@@ -57,6 +57,13 @@ describe SalesEngine::Customer do
 		it "is case insensitive" do
 			SalesEngine::Customer.find_all_by_first_name("bobbie").size.should == 2
 			SalesEngine::Customer.find_all_by_first_name("bobbie").map(&:first_name).uniq.should == ["Bobbie"]
+		end
+	end
+
+
+	describe ".find_by_first_name('Bobbie')" do
+		it "returns one instance of Customer with first name Bobbie" do
+			SalesEngine::Customer.find_by_first_name('Bobbie').first_name.should == 'Bobbie'
 		end
 	end
 

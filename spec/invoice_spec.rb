@@ -62,9 +62,9 @@ describe SalesEngine::Invoice do
 				invoice.total_paid.should == BigDecimal("13060.97")
 			end
 
-			it "returns 0 if the transaction status is not 'success'" do
-				pending
-			end
+			# it "returns 0 if the transaction status is not 'success'" do
+			# 	pending
+			# end
 		end
 	end
 end

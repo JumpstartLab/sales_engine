@@ -4,7 +4,7 @@ module SalesEngine
 		attr_accessor :customer_id, :id, :merchant_id, :status
 
 		def self.records
-			Engine.instance.invoices
+			@invoices ||= get_invoices
 		end
 
 		def self.get_invoices
@@ -40,17 +40,17 @@ module SalesEngine
 		end
 
 		def total_paid
-			if successful_transaction
+			# if successful_transaction
 				@total_paid ||= invoice_items.map(&:line_total).inject(:+)
-			else
-				0
-			end
+		# 	else
+		# 		0
+		# 	end
 		end
 
 		private
 
-		def successful_transaction
-			@successful_transaction ||= transactions.map(&:result).include?("success")
-		end
+		# def successful_transaction
+		# 	@successful_transaction ||= transactions.map(&:result).include?("success")
+		# end
 	end
 end

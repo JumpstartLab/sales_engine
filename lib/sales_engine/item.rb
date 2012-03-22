@@ -4,7 +4,7 @@ module SalesEngine
 		attr_accessor :name, :id, :description, :unit_price, :merchant_id
 
 		def self.records
-			Engine.instance.items
+			@items ||= get_items
 		end
 
 		def self.get_items

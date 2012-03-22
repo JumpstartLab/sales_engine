@@ -4,7 +4,7 @@ module SalesEngine
 		attr_accessor :first_name, :last_name, :id
 
 		def self.records
-			Engine.instance.customers
+			@customers ||= get_customers
 		end
 
 		def self.get_customers

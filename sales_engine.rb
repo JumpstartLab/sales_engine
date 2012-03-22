@@ -12,25 +12,19 @@ require 'sales_engine/csv_loader'
 require 'singleton'
 
 module SalesEngine
-	class Engine
-		include Singleton
-
-		attr_accessor :merchants, :items, :invoice_items
-		attr_accessor :invoices, :customers, :transactions
-
-		def initialize
-			@merchants ||= Merchant.get_merchants
-			@items ||= Item.get_items
-			@invoice_items ||= InvoiceItem.get_invoice_items
-			@invoices ||= Invoice.get_invoices
-			@customers ||= Customer.get_customers
-			@transactions ||= Transaction.get_transactions
-		end
-
-	end
 
 	def self.startup
 		# Hi, Jeff!
+	end
+
+	def self.extended(extending_caller)
+		Customer.get_customers
+		Merchant.get_merchants
+		Item.get_items
+		InvoiceItem.get_invoice_items
+		Transaction.get_transactions
+		Invoice.get_invoices
+		InvoiceItem.populate_merchant_revenues
 	end
 
 end

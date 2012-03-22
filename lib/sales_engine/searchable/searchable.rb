@@ -20,6 +20,11 @@ module SalesEngine
 		  super(method, *args, &block)
 		end
 
+		#FIX THIS TO NOT TRUST THAT ID = INDEX
+		def find_by_id(id)
+			records[id-1]
+		end
+
 		def find_by(attribute, query)
 			find_all_by(attribute, query).first
 		end

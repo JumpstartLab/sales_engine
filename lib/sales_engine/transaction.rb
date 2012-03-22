@@ -5,7 +5,7 @@ module SalesEngine
 		attr_accessor :credit_card_expiration_date, :result
 
 		def self.records
-			Engine.instance.transactions
+			@transactions ||= get_transactions
 		end
 
 		def self.get_transactions

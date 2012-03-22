@@ -45,19 +45,14 @@ describe SalesEngine::Merchant do
 	context "business intelligence methods" do
 		describe ".most_revenue" do
 			it "returns an array of Merchants" do
-				# SalesEngine::Merchant.most_revenue(1).first.should be_a(Merchant)
+				SalesEngine::Merchant.most_revenue(1).first.should be_a(SalesEngine::Merchant)
 			end
 			it "returns merchants sorted by descending revenue" do
-				pending
-				merch_a = SalesEngine::Merchant.find_by_id("")
-				merch_b = SalesEngine::Merchant.find_by_id("")
-				merch_c = SalesEngine::Merchant.find_by_id("")
-				# SalesEngine::Merchant.most_revenue(3).should == [ merch_a, merch_b, merch_c ]
+				merch_a = SalesEngine::Merchant.find_by_id(54)
+				merch_b = SalesEngine::Merchant.find_by_id(7)
+				merch_c = SalesEngine::Merchant.find_by_id(58)
+				SalesEngine::Merchant.most_revenue(3).should == [ merch_a, merch_b, merch_c ]
 			end
-			#SalesEngine::Merchant.most_revenue(1).first.should == Merchant.find_by_id("foo")
-			# Merchant.sort_by sold_items_count
-			# def Merchant#sold_items_count { Item.find_all_by(:merchant_id, self.id).map(&:sold_count).inject(:+ )}
-			# Class Item def sold_count { InvoiceItem.find_all_by(:item_id, self.id).size }
 		end
 	end
 
