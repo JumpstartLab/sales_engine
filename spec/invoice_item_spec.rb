@@ -8,7 +8,7 @@ require "invoice_item"
 require "rspec"
 require "date"
 
-describe InvoiceItem do
+describe SalesEngine::InvoiceItem do
   describe 'test accessors' do
     let(:test_invoice_item) { InvoiceItem.new }
     InvoiceItem::ATTRIBUTES.each do |attribute|

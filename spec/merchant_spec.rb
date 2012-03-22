@@ -9,7 +9,7 @@ require "rspec"
 require "date"
 
 
-describe Merchant do
+describe SalesEngine::Merchant do
 
   describe 'find_by_#{attribute}(attribute) methods' do
     Merchant::ATTRIBUTES.each do |attribute|

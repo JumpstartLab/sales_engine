@@ -1,7 +1,7 @@
 require 'spec_helper.rb'
 require "transaction.rb"
 
-describe Transaction do
+describe SalesEngine::Transaction do
   describe 'find_by_#{attribute}(attribute) methods' do
     Transaction::ATTRIBUTES.each do |attribute|
       context ".find_by_#{attribute}" do

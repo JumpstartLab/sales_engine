@@ -9,8 +9,8 @@ require "invoice_item"
 require "rspec"
 require "date"
 
-describe Customer do
-  test_sales_engine = SalesEngine.new
+describe SalesEngine::Customer do
+  test_sales_engine = SalesEngine::SalesEngine.new
   describe '.random' do
     it "returns a Customer object" do
       a = Customer.random
