@@ -1,11 +1,11 @@
 require 'csv'
 require 'singleton'
-require './merchant'
-require './item'
-require './invoice'
-require './customer'
+require './lib/sales_engine/merchant'
+require './lib/sales_engine/item'
+require './lib/sales_engine/invoice'
+require './lib/sales_engine/customer'
 
-class SalesEngine
+class Database
   include Singleton
   CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
   attr_accessor :merchants, :items, :invoices, :transactions, 
@@ -85,7 +85,4 @@ class SalesEngine
     end
     invoice_list.sort_by { |invoice| invoice.merchant_id }
   end
-
-  # START OF DARRELL'S WORK
-
 end

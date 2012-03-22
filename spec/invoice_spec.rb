@@ -1,7 +1,7 @@
 require './spec/spec_helper'
 
 describe Invoice do
-  let(:se) { SalesEngine.instance}
+  let(:se) { Database.instance}
   let(:invoice_1) { Invoice.new({ :id => 1 }) }
   let(:invoice_2) { Invoice.new({ :id => 2 }) }
 

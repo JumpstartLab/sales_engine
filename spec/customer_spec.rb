@@ -1,7 +1,7 @@
 require './spec/spec_helper'
 
 describe Customer do
-  let(:se) { SalesEngine.instance}
+  let(:se) { Database.instance}
   let(:customer_1) { Customer.new({ :id => 1 }) }
   let(:customer_2) { Customer.new({ :id => 2 }) }
 

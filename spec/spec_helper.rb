@@ -3,8 +3,8 @@ SimpleCov.start do
   add_filter "/spec/"
 end
 
-require './sales_engine'
-require './merchant'
-require './item'
-require './invoice'
-require './customer'
+require './lib/sales_engine/database'
+require './lib/sales_engine/merchant'
+require './lib/sales_engine/item'
+require './lib/sales_engine/invoice'
+require './lib/sales_engine/customer'

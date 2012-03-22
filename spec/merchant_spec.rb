@@ -1,7 +1,7 @@
 require './spec/spec_helper'
 
 describe Merchant do
-  let(:se) { SalesEngine.instance}
+  let(:se) { Database.instance}
   let(:merchant_1) { Merchant.new({ :id => 1 }) }
   let(:merchant_2) { Merchant.new({ :id => 2 }) }
 

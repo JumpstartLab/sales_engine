@@ -1,7 +1,7 @@
 require './spec/spec_helper'
 
-describe SalesEngine do
-  let(:se) { SalesEngine.instance }
+describe Database do
+  let(:se) { Database.instance }
 
   before(:each) do
     se.clear_all_data
