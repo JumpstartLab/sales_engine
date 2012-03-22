@@ -17,7 +17,7 @@ class Merchant < Record
   end
 
   def self.random
-    SalesEngine.instance.get_random_record("merchant")
+    SalesEngine.instance.get_random_record("merchants")
   end
 
   def self.find_by_id(id)

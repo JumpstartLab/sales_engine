@@ -3,13 +3,13 @@ require 'singleton'
 require './merchant'
 require './item'
 require './invoice'
+require './customer'
 
 class SalesEngine
   include Singleton
   CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
-  attr_accessor :merchants, :items, :invoices, 
-  # START OF DARRELL'S WORK
-                :transactions
+  attr_accessor :merchants, :items, :invoices, :transactions, 
+                :customers
 
   def initialize
     clear_all_data
@@ -19,16 +19,12 @@ class SalesEngine
     self.merchants = []
     self.items = []
     self.invoices = []
-    # START OF DARRELL'S WORK
     self.transactions = []
+    self.customers = []
   end
 
   def get_random_record(class_name)
-    case class_name
-    when 'merchant' then self.merchants[rand(self.merchants.count)]
-    # START OF DARRELL'S WORK
-    when 'invoice' then self.invoices[rand(self.invoices.count)] 
-    end
+    self.send(class_name)[rand(self.send(class_name).count)]
   end
 
   def load_merchants_data(filename)
@@ -57,6 +53,10 @@ class SalesEngine
   def add_invoice_to_list(invoice)
     self.invoices << invoice
   end  
+
+  def add_customer_to_list(customer)
+    self.customers << customer
+  end
 
   def find_by(class_name,attribute,search_value)   
     self.send(class_name).find { |record| 

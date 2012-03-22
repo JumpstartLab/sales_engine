@@ -10,7 +10,7 @@ class Invoice < Record
 
   # START OF DARRELL'S WORK
   def self.random
-    SalesEngine.instance.get_random_record("invoice")
+    SalesEngine.instance.get_random_record("invoices")
   end
 
   def self.find_by_id(id)
