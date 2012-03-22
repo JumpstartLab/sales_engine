@@ -5,7 +5,5 @@ require 'sales_engine/invoice_item'
 require 'sales_engine/item'
 require 'sales_engine/merchant'
 require 'sales_engine/transaction'
-
-class SalesEngine
-end
+require 'sales_engine/sales_engine'
 
