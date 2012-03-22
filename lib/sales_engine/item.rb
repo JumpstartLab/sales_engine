@@ -1,6 +1,6 @@
 class SalesEngine
   class Item
-    attr_accessor :merchant_id
+    attr_accessor :merchant_id, :id, :item_id
 
     def initialize(attributes)
       # puts attributes.inspect
@@ -23,8 +23,16 @@ class SalesEngine
     # # def self.find_all_by_X(match)
     # # end
 
-    # def invoice_items
-    # end
+    def invoice_items
+      temp_invoice_items = SalesEngine::Database.instance.get_invoice_items
+      correct_invoice_items = []
+      temp_invoice_items.each do |invoice_item|
+        if invoice_item.item_id == @id
+          correct_invoice_items << invoice_item
+        end
+      end
+      return correct_invoice_items
+    end
 
     # def merchant
     # end
