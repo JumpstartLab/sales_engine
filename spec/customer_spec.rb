@@ -1,11 +1,11 @@
 require './spec/spec_helper.rb'
 
 describe Customer do
-  
 
-  # Still working on Customer code - revisit these tests 
+
+  # Still working on Customer code - revisit these tests
   # let(:customer_zero) { Customer.new(:id => "0") }
-  # let(:customer_one) { Customer.new(:id => "1") } 
+  # let(:customer_one) { Customer.new(:id => "1") }
   # let(:invoice_one) { Invoice.new(:id => "1", :customer_id => "0") }
   # let(:invoice_two) { Invoice.new(:id => "2", :customer_id => "2") }
   # let(:invoice_three) { Invoice.new(:id => "3", :customer_id => "0") }
@@ -42,7 +42,7 @@ describe Customer do
   #   end
 
   #   context "returns nil when there are no customers" do
-  #   end    
+  #   end
   # end
 
   # describe ".find_by_last_name" do
@@ -50,7 +50,7 @@ describe Customer do
   #   end
 
   #   context "returns nil when there are no customers" do
-  #   end    
+  #   end
   # end
 
   # describe ".find_by_created_at" do
@@ -58,7 +58,7 @@ describe Customer do
   #   end
 
   #   context "returns nil when there are no customers" do
-  #   end    
+  #   end
   # end
 
   # describe ".find_by_updated_at" do
@@ -66,6 +66,6 @@ describe Customer do
   #   end
 
   #   context "returns nil when there are no customers" do
-  #   end    
+  #   end
   # end
 end

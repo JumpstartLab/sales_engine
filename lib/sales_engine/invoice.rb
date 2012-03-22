@@ -28,13 +28,18 @@ class Invoice
 
   INVOICE_ATTS.each do |att|
     define_singleton_method ("find_by_" + att).to_sym do |param|
-      Database.instance.invoice_list.detect{ |invoice| invoice.send(att.to_sym) == param }
+      Database.instance.invoice_list.detect do |invoice|
+        invoice.send(att.to_sym).downcase == param.downcase
+      end
     end
   end
 
   INVOICE_ATTS.each do |att|
     define_singleton_method ("find_all_by_" + att).to_sym do |param|
-      Database.instance.invoice_list.select{ |invoice| invoice if invoice.send(att.to_sym) == param }
+      Database.instance.invoice_list.select do |invoice|
+        invoice if invoice.send(att.to_sym).downcase == param.downcase
+      end
     end
   end
+  
 end

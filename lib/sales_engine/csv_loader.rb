@@ -26,35 +26,35 @@ class CSVLoader
     Database.instance.transaction_list = file.collect{ |line| Transaction.new(line) }
   end
 
-  def load_customers(filename="customers.csv")
+  def load_customers(filename="../../data/customers.csv")
     puts "Loading customers..."
     file = CSV.open(filename, { :headers => true,
                                 :header_converters => :symbol} )
     Database.instance.customer_list = file.collect{ |line| Customer.new(line) }
   end
 
-  def load_items(filename="items.csv")
+  def load_items(filename="../../data/items.csv")
     puts "Loading items..."
     file = CSV.open(filename, { :headers => true,
                                 :header_converters => :symbol})
     Database.instance.item_list = file.collect{ |line| Item.new(line) }
   end
 
-  def load_merchants(filename="merchants.csv")
+  def load_merchants(filename="../../data/merchants.csv")
     puts "Loading merchants..."
     file = CSV.open(filename, { :headers => true,
                                 :header_converters => :symbol})
     Database.instance.merchant_list = file.collect{ |line| Merchant.new(line) }
   end
 
-  def load_invoice_items(filename="invoice_items.csv")
+  def load_invoice_items(filename="../../data/invoice_items.csv")
     puts "Loading invoice items..."
     file = CSV.open(filename, { :headers => true,
                                 :header_converters => :symbol})
     Database.instance.invoice_item_list = file.collect{ |line| InvoiceItem.new(line) }
   end
 
-  def load_invoices(filename="invoices.csv")
+  def load_invoices(filename="../../data/invoices.csv")
     puts "Loading invoices..."
     file = CSV.open(filename, { :headers => true,
                                 :header_converters => :symbol})
