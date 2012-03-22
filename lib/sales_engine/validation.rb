@@ -13,7 +13,11 @@ module SalesEngine
     end
 
     def validates_numericality_of(key, value, options = {})
-      error_msg = "Error!"
+      if options[:integer]
+        error_msg = "#{self.class} must have an integer #{key}"
+      else
+        error_msg = "#{self.class} must have a numeric #{key}"
+      end
 
       target_class = Numeric
       target_class = Integer if options[:integer]
