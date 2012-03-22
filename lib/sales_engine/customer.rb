@@ -18,5 +18,9 @@ module SalesEngine
 			self.last_name = raw_line[:last_name]
 			self.id = raw_line[:id]
 		end
+
+		def invoices
+			SalesEngine::Invoice.find_all_by_customer_id(self.id)
+		end
 	end
 end

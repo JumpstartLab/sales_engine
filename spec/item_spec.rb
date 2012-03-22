@@ -17,7 +17,27 @@ describe SalesEngine::Item do
 		it "stores a description" do
 			SalesEngine::Item.records.first.description.length.should == 214
 		end
+	end
 
+	context "instance methods" do
+		let(:item) { SalesEngine::Item.find_by_id('1') }
+		describe "#invoice_items" do
+			it "returns an array of invoice_items" do
+				item.invoice_items.should_not be_empty
+				item.invoice_items.first.should be_a(SalesEngine::InvoiceItem)
+			end
+			it "returns the invoice_items associated with this item" do
+				item.invoice_items.size.should == 10
+			end
+		end
+		describe "#merchant" do
+			it "returns a merchant" do
+				item.merchant.should be_a(SalesEngine::Merchant)
+			end
+			it "returns its merchant" do
+				item.merchant.should == SalesEngine::Merchant.find_by_id('1')
+			end
+		end
 	end
 end
 

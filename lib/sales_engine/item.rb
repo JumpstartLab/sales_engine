@@ -21,6 +21,14 @@ module SalesEngine
 			self.unit_price = clean_unit_price(raw_line[:unit_price])
 		end
 
+		def invoice_items
+			SalesEngine::InvoiceItem.find_all_by_item_id(self.id)
+		end
+
+		def merchant
+			SalesEngine::Merchant.find_by_id(self.merchant_id)
+		end
+
 		private
 
 		def clean_unit_price(raw_data)

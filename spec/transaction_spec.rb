@@ -12,6 +12,18 @@ describe SalesEngine::Transaction do
 			end
 		end
 	end
+
+	context "instance methods" do
+		let(:transaction) { SalesEngine::Transaction.find_by_id('1') }
+		describe "#invoice" do
+			it "returns an invoice" do
+				transaction.invoice.should be_a(SalesEngine::Invoice)
+			end
+			it "returns its invoice" do
+				transaction.invoice.should == SalesEngine::Invoice.find_by_id('1')
+			end
+		end
+	end
 end
 
 #id,invoice_id,credit_card_number,credit_card_expiration_date,result,created_at,updated_at

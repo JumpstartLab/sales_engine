@@ -29,9 +29,10 @@ module SalesEngine
 		end
 
 		def items
-			invoice_items.map(&:item_id).uniq.collect do |id|
-				SalesEngine::Item.find_by_id(id)
+			result = invoice_items.collect do |invoice_item|
+				invoice_item.item
 			end
+			result.uniq
 		end
 
 		def customer

@@ -22,6 +22,8 @@ module SalesEngine
 			self.result = raw_line[:result]
 		end
 
-
+		def invoice
+			SalesEngine::Invoice.find_by_id(self.invoice_id)
+		end
 	end
 end

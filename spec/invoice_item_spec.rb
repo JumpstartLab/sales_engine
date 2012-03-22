@@ -13,6 +13,26 @@ describe SalesEngine::InvoiceItem do
 		  end
 	  end
 	end
+
+	context "instance methods" do
+		let(:invoice_item) { SalesEngine::InvoiceItem.find_by_id('1') }
+		describe "#invoice" do
+			it "returns an invoice" do
+				invoice_item.invoice.should be_a(SalesEngine::Invoice)
+			end
+			it "returns the invoice associated with this invoice_item" do
+				invoice_item.invoice.should == SalesEngine::Invoice.find_by_id('1')
+			end
+		end
+		describe "#item" do
+			it "returns an item" do
+				invoice_item.item.should be_a(SalesEngine::Item)
+			end
+			it "returns the item associated with this invoice_item" do
+				invoice_item.item.should == SalesEngine::Item.find_by_id('2138')
+			end
+		end
+	end
 end
 
 # id,item_id,invoice_id,quantity,unit_price,created_at,updated_at
