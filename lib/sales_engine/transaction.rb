@@ -11,4 +11,7 @@ class Transaction < Record
     self.result = attributes[:result]
   end
 
+  def invoice
+    Database.instance.find_by("invoices", "id", self.invoice_id)
+  end
 end
