@@ -19,8 +19,8 @@ module SalesEngine
       self.customer_id = attributes[:customer_id]
       self.merchant_id = attributes[:merchant_id]
       self.status = attributes[:status]
-      self.created_at = attributes[:created_at]
-      self.updated_at = attributes[:updated_at]
+      self.created_at = DateTime.parse(attributes[:created_at]) if attributes[:created_at]
+      self.updated_at = DateTime.parse(attributes[:updated_at]) if attributes[:updated_at]
     end
 
     def transactions
@@ -52,9 +52,39 @@ module SalesEngine
       SalesEngine::Database.instance.invoice_list - successful_invoices
     end
 
-    def self.average_revenue
+    def self.find_all_by_date(date)
+      SalesEngine::Database.instance.invoice_list.select do |i|
+        dt = i.created_at
+        date = Date.parse(date) if date.kind_of? String
+        i if date == Date.new(dt.year, dt.mon, dt.mday)
+      end
+    end
+
+    def self.average_revenue(*date)
+      if date.empty?
+      #Right now, it says 'processed invoices' - does that mean successful? 
+      #We're assuming not and doing total count of invoices.
       #invoices = SalesEngine::Database.instance.invoice_list
-      SalesEngine::InvoiceItem.total_revenue / successful_invoices.size
+        return 0 if SalesEngine::Database.instance.invoice_list.empty?
+        avg_rev = SalesEngine::InvoiceItem.total_revenue / SalesEngine::Database.instance.invoice_list.size
+      # avg_rev = avg_rev.to_f.round(2)
+      else
+        #collect all the invoice ids that happened on date
+          #call Invoice Item's find total_rev_by_att on each invoice id
+          #sum all of them
+          #divide the sum by all the invoices that happened on date
+        total_rev = 0
+        date = Date.parse(date.first)
+        inv_on_date = find_all_by_date(date)
+        inv_ids_on_date = inv_on_date.collect { |inv| inv.id }
+        inv_ids_on_date.each do |inv_id|
+          total_rev += SalesEngine::InvoiceItem.total_revenue_by_att("invoice_id", inv_id)
+        end
+        
+        return 0 if inv_on_date.empty?
+        avg_rev = total_rev / inv_on_date.size
+        # SalesEngine::InvoiceItem.total_revenue(date) / find_all_by_date(date)
+      end
     end
 
   end
