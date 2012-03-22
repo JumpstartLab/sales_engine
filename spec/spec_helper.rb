@@ -1,8 +1,7 @@
-require 'bundler'
-Bundler.require(:default, :test)
 require 'simplecov'
 SimpleCov.start do
   add_filter "/spec/"
 end
 
-require 'sales_engine'
+require './customer'
+require './data_loader'
