@@ -9,28 +9,35 @@ require "invoice_item"
 require "rspec"
 require "date"
 
+test_sales_engine = SalesEngine::SalesEngine.new
 describe SalesEngine::Customer do
-  test_sales_engine = SalesEngine::SalesEngine.new
+
+    let(:test_customer) {SalesEngine::Customer.random}
+    let(:test_merchant) {SalesEngine::Merchant.random}
+    let(:test_invoice) {SalesEngine::Invoice.random}
+    let(:test_item) {SalesEngine::Item.random}
+    let(:test_transaction) {SalesEngine::Transaction.random}
+    let(:test_invoice_item) {SalesEngine::InvoiceItem.random}
+
   describe '.random' do
     it "returns a Customer object" do
-      a = Customer.random
-      a.should be_is_a(Customer)
+      a = SalesEngine::Customer.random
+      a.should be_is_a(SalesEngine::Customer)
     end
   end
 
   describe 'find_by_#{attribute}(attribute) methods' do
-    Customer::ATTRIBUTES.each do |attribute|
+    SalesEngine::Customer::ATTRIBUTES.each do |attribute|
       context ".find_by_#{attribute}" do
         it "should have generated the class method" do
-          Customer.should be_respond_to("find_by_#{attribute}")
+          SalesEngine::Customer.should be_respond_to("find_by_#{attribute}")
         end
       end
     end
   end
 
   describe 'test accessors' do
-    let(:test_customer) { Customer.new }
-    Customer::ATTRIBUTES.each do |attribute|
+    SalesEngine::Customer::ATTRIBUTES.each do |attribute|
       context "responds to attr_accessors" do
         it "generates the reader" do
           test_customer.should be_respond_to("#{attribute}")
@@ -42,8 +49,6 @@ describe SalesEngine::Customer do
     end
   end
 
-  let(:test_customer) { Customer.random }
-
   context "#invoices" do
     it "returns an array" do
       invoices = test_customer.invoices
@@ -53,7 +58,7 @@ describe SalesEngine::Customer do
     it "returns an array of Invoices" do
       invoices = test_customer.invoices
       invoices.each do |invoice|
-        invoice.should be_is_a(Invoice)
+        invoice.should be_is_a(SalesEngine::Invoice)
       end
     end
   end
@@ -67,7 +72,7 @@ describe SalesEngine::Customer do
     it "returns an array of Transactions" do
       transactions = test_customer.transactions
       transactions.each do |invoice|
-        invoice.should be_is_a(Transaction)
+        invoice.should be_is_a(SalesEngine::Transaction)
       end
     end
   end
@@ -76,7 +81,7 @@ describe SalesEngine::Customer do
     it "returns a Merchant object" do
       fav_merchant = test_customer.favorite_merchant
       if fav_merchant
-        fav_merchant.should be_is_a(Merchant)
+        fav_merchant.should be_is_a(SalesEngine::Merchant)
       end
     end
   end

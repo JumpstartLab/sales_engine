@@ -9,22 +9,31 @@ require "rspec"
 require "date"
 require 'ap'
 
+test_sales_engine = SalesEngine::SalesEngine.new
 describe SalesEngine::Invoice do
+  
+    let(:test_customer) {SalesEngine::Customer.random}
+    let(:test_merchant) {SalesEngine::Merchant.random}
+    let(:test_invoice) {SalesEngine::Invoice.random}
+    let(:test_item) {SalesEngine::Item.random}
+    let(:test_transaction) {SalesEngine::Transaction.random}
+    let(:test_invoice_item) {SalesEngine::InvoiceItem.random}
+    
   describe 'find_by_#{attribute}(attribute) methods' do
-    Invoice::ATTRIBUTES.each do |attribute|
+    SalesEngine::Invoice::ATTRIBUTES.each do |attribute|
       context ".find_by_#{attribute}" do
         it "should have generated the class method" do
-          Invoice.should be_respond_to("find_by_#{attribute}")
+          SalesEngine::Invoice.should be_respond_to("find_by_#{attribute}")
         end
       end
 
       context ".find_all_by#{attribute}" do
         it "generates the class method" do
-          Invoice.should be_respond_to("find_all_by_#{attribute}")
+          SalesEngine::Invoice.should be_respond_to("find_all_by_#{attribute}")
         end
 
         it "returns an array" do
-          invoices = Invoice.send("find_all_by_#{attribute}", 1234)
+          invoices = SalesEngine::Invoice.send("find_all_by_#{attribute}", 1234)
           invoices.should be_is_a(Array)
         end
       end
@@ -32,8 +41,7 @@ describe SalesEngine::Invoice do
   end
 
   describe 'test accessors' do
-    let(:test_invoice) { Invoice.new }
-    Invoice::ATTRIBUTES.each do |attribute|
+    SalesEngine::Invoice::ATTRIBUTES.each do |attribute|
       context "responds to attr_accessors" do
         it "generates the reader" do
           test_invoice.should be_respond_to("#{attribute}")
@@ -46,15 +54,12 @@ describe SalesEngine::Invoice do
   end
 
   describe "test instance methods" do
-    let(:test_invoice) { Invoice.new(id: "1",customer_id: "1",merchant_id: 
-      "92",status: "shipped",created_at: "2012-02-14 20:56:56 UTC",
-      updated_at: "2012-02-26 20:56:56 UTC") }
 
     context "#transactions returns a collection of associated Transaction instances" do
       it "returns an array of transactions" do
         transactions = test_invoice.transactions
         transactions.each do |transaction|
-          transaction.should be_is_a(Transaction)
+          transaction.should be_is_a(SalesEngine::Transaction)
         end
       end
 
@@ -62,8 +67,24 @@ describe SalesEngine::Invoice do
         it "returns an array of InvoiceItem objects" do
           invoice_items = test_invoice.invoice_items
           invoice_items.each do |invoice_item|
-            invoice_item.should be_is_a(InvoiceItem)
+            invoice_item.should be_is_a(SalesEngine::InvoiceItem)
           end
+        end
+      end
+
+      context "#items returns a collection of associated Item instances" do
+        it "returns an array of Item objects" do
+          items = test_invoice.items
+          items.each do |item|
+            item.should be_is_a(SalesEngine::Item)
+          end
+        end
+      end
+
+      context "#customer returns an instance of Customer associated with this object" do
+        it "returns a Customer" do
+          customer = test_invoice.customer
+          customer.should be_is_a(SalesEngine::Customer)
         end
       end
     end

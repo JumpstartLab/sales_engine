@@ -17,7 +17,7 @@ module SalesEngine
     def revenue(date=nil)
       if date
         invoices.inject(BigDecimal.new(0)) do |total_revenue, invoice|
-          if invoice.date == date
+          if invoice.created_at == date
             total_revenue += invoice.revenue
           end
         end

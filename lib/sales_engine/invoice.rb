@@ -25,11 +25,17 @@ module SalesEngine
       end
 
       def items
-        Item.find_all_by_invoice_id(self.id)
+        invoice_items = InvoiceItem.find_all_by_invoice_id(self.id)
+        matches = invoice_items.select do |invoice_item|
+          invoice_item.invoice_id == self.id
+        end
+        matches.collect do |invoice_item|
+          invoice_item.item
+        end
       end
 
       def customer
-        Customer.find_all_by_invoice_id(self.id)
+        Customer.find_by_id(self.customer_id)
       end
     end
   end

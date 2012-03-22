@@ -8,22 +8,28 @@ require "invoice_item"
 require "rspec"
 require "date"
 
-
+test_sales_engine = SalesEngine::SalesEngine.new
 describe SalesEngine::Merchant do
+  
+    let(:test_customer) {SalesEngine::Customer.random}
+    let(:test_merchant) {SalesEngine::Merchant.random}
+    let(:test_invoice) {SalesEngine::Invoice.random}
+    let(:test_item) {SalesEngine::Item.random}
+    let(:test_transaction) {SalesEngine::Transaction.random}
+    let(:test_invoice_item) {SalesEngine::InvoiceItem.random}
 
   describe 'find_by_#{attribute}(attribute) methods' do
-    Merchant::ATTRIBUTES.each do |attribute|
+    SalesEngine::Merchant::ATTRIBUTES.each do |attribute|
       context ".find_by_#{attribute}" do
         it "should have generated the class method" do
-          Merchant.should be_respond_to("find_by_#{attribute}")
+          SalesEngine::Merchant.should be_respond_to("find_by_#{attribute}")
         end
       end
     end
   end
 
   describe 'test accessors' do
-    let(:test_merchant) { Merchant.new }
-    Merchant::ATTRIBUTES.each do |attribute|
+    SalesEngine::Merchant::ATTRIBUTES.each do |attribute|
       context "responds to attr_accessors" do
         it "generates the reader" do
           test_merchant.should be_respond_to("#{attribute}")
@@ -35,11 +41,6 @@ describe SalesEngine::Merchant do
     end
   end
 
-  let(:test_merchant) do 
-    attr_hash = {id: 1,name: "Joe's Crab Shack", created_at:Date.today, updated_at: Date.today}
-    Merchant.new(attr_hash)
-  end
-
   context "#items" do
     it "returns an array of items" do
       items = test_merchant.items
@@ -49,7 +50,7 @@ describe SalesEngine::Merchant do
     it "should return and array of Items" do
       items = test_merchant.items
       items.each do |item|
-        item.should be_is_a(Item)
+        item.should be_is_a(SalesEngine::Item)
       end
     end
   end
@@ -63,7 +64,7 @@ describe SalesEngine::Merchant do
     it "returns an array of Invoices" do
       invoices = test_merchant.invoices
       invoices.each do |invoice|
-        invoice.should be_is_a(Invoice)
+        invoice.should be_is_a(SalesEngine::Invoice)
       end
     end
   end

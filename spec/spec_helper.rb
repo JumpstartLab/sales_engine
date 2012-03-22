@@ -6,4 +6,15 @@ SimpleCov.start do
   add_filter "/spec/"
 end
 require 'sales_engine'
-include SalesEngine
+extend SalesEngine
+# module CommonLets
+#   def self.extended(base)
+#     base.let!(:sales_engine) {SalesEngine.new}
+#     base.let(:customer) {Customer.random}
+#     base.let(:merchant) {Merchant.random}
+#     base.let(:invoice) {Invoice.random}
+#     base.let(:item) {Item.random}
+#     base.let(:transaction) {Transaction.random}
+#     base.let(:invoice_item) {InvoiceItem.random}
+#   end
+# end

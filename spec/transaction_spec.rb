@@ -1,20 +1,28 @@
 require 'spec_helper.rb'
 require "transaction.rb"
 
+test_sales_engine = SalesEngine::SalesEngine.new
 describe SalesEngine::Transaction do
+  
+    let(:test_customer) {SalesEngine::Customer.random}
+    let(:test_merchant) {SalesEngine::Merchant.random}
+    let(:test_invoice) {SalesEngine::Invoice.random}
+    let(:test_item) {SalesEngine::Item.random}
+    let(:test_transaction) {SalesEngine::Transaction.random}
+    let(:test_invoice_item) {SalesEngine::InvoiceItem.random}
+
   describe 'find_by_#{attribute}(attribute) methods' do
-    Transaction::ATTRIBUTES.each do |attribute|
+    SalesEngine::Transaction::ATTRIBUTES.each do |attribute|
       context ".find_by_#{attribute}" do
         it "should have generated the class method" do
-          Transaction.should be_respond_to("find_by_#{attribute}")
+          SalesEngine::Transaction.should be_respond_to("find_by_#{attribute}")
         end
       end
     end
   end
 
   describe 'test accessors' do
-    let(:test_transaction) { Transaction.new({id: 10}) }
-    Transaction::ATTRIBUTES.each do |attribute|
+    SalesEngine::Transaction::ATTRIBUTES.each do |attribute|
       context "responds to attr_accessors" do
         it "generates the reader" do
           test_transaction.should be_respond_to("#{attribute}")
