@@ -8,7 +8,7 @@ describe SalesEngine::Invoice do
   let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "3", :result => "failure")}
   let(:cust_one)    { SalesEngine::Customer.new( :id => "1") }
   let(:cust_two)    { SalesEngine::Customer.new( :id => "2") }
-  let(:inv_one)     { SalesEngine::Invoice.new( :id => "1", :customer_id => "0",
+  let(:inv_one)     { SalesEngine::Invoice.new( :id => "1", :customer_id => "1",
                                    :created_at => "2012-2-19" ) }
   let(:inv_two)     { SalesEngine::Invoice.new( :id => "2", :customer_id => "2",
                                    :created_at => "2012-9-09" ) }
@@ -94,9 +94,20 @@ describe SalesEngine::Invoice do
         inv_three.invoice_items.should == [ ]
       end
     end
-
   end
 
+  describe "#customer" do
+     it "returns an instance of customer" do
+        SalesEngine::Database.instance.customer_list = [ cust_one, cust_two ]
+        inv_one.customer.should == cust_one
+    end
+
+    context "when an invoice has no customer" do
+      it "returns nil" do
+        inv_three.customer.should be_nil
+      end
+    end
+  end
   # describe ".average_items" do
   #   #average item count for each processed invoice
   #   context "returns the average items for processed invoices" do
