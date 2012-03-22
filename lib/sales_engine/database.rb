@@ -8,7 +8,7 @@ class SalesEngine
 
     def initialize
       load_merchants
-      puts "Merchants loaded"
+      load_items
     end
 
     def load(filename)
@@ -21,11 +21,26 @@ class SalesEngine
       data.each do |line|
         @merchants << Merchant.new(line)
       end
+      puts "Merchants loaded"
     end
 
     def get_merchants
       @merchants
     end
+
+    def load_items
+      @items = []
+      data = load("data/items.csv")
+      data.each do |line|
+        @items << Item.new(line)
+      end
+      puts "Items Loaded"
+    end
+
+    def get_items
+      @items
+    end
+
   end
 end
 

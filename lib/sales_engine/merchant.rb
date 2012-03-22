@@ -5,7 +5,7 @@ class SalesEngine
     # attr_accessor :items, :invoices
 
     def initialize(attributes)
-      puts attributes.inspect
+      # puts attributes.inspect
       @id = attributes[:id]
       @name = attributes[:name]
       @created_at = attributes[:created_at]
