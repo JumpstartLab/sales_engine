@@ -1,11 +1,11 @@
 require "singleton"
 require 'csv'
-require './Customer'
-require './Invoice'
-require './InvoiceItem'
-require './Transaction'
-require './Item'
-require './Merchant'
+require './lib/Customer'
+require './lib/Invoice'
+require './lib/InvoiceItem'
+require './lib/Transaction'
+require './lib/Item'
+require './lib/Merchant'
 
 class Database
   include Singleton

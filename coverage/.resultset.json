@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/travisvalentine/hungry-projects/sales_engine/item.rb": [
+      "/Users/travisvalentine/hungry-projects/sales_engine/lib/item.rb": [
         1,
         1,
         null,
@@ -23,7 +23,7 @@
         null,
         null
       ],
-      "/Users/travisvalentine/hungry-projects/sales_engine/invoice.rb": [
+      "/Users/travisvalentine/hungry-projects/sales_engine/lib/invoice.rb": [
         1,
         1,
         null,
@@ -53,7 +53,7 @@
         null,
         null
       ],
-      "/Users/travisvalentine/hungry-projects/sales_engine/transaction.rb": [
+      "/Users/travisvalentine/hungry-projects/sales_engine/lib/transaction.rb": [
         1,
         1,
         null,
@@ -71,7 +71,7 @@
         null,
         null
       ],
-      "/Users/travisvalentine/hungry-projects/sales_engine/invoiceitem.rb": [
+      "/Users/travisvalentine/hungry-projects/sales_engine/lib/invoiceitem.rb": [
         1,
         1,
         null,
@@ -93,7 +93,7 @@
         null,
         null
       ],
-      "/Users/travisvalentine/hungry-projects/sales_engine/merchant.rb": [
+      "/Users/travisvalentine/hungry-projects/sales_engine/lib/merchant.rb": [
         1,
         1,
         null,
@@ -140,6 +140,6 @@
         null
       ]
     },
-    "timestamp": 1332371020
+    "timestamp": 1332421490
   }
 }

@@ -1,4 +1,4 @@
-require "./customer"
+require "./lib/customer"
 
 describe Customer do 
   describe 'initialize' do

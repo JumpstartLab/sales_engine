@@ -1,10 +1,11 @@
 require 'csv'
-require './Customer'
-require './Invoice'
-require './InvoiceItem'
-require './Transaction'
-require './Item'
-require './Merchant'
+require './lib/Customer'
+require './lib/Invoice'
+require './lib/InvoiceItem'
+require './liblib/Transaction'
+require './liblib/Item'
+require './liblib/Merchant'
+require './liblib/database'
 
 class SalesEngine
   CSV_OPTIONS = {:headers => true, :header_converters => :symbol}  

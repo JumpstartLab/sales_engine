@@ -8,6 +8,9 @@ GEM
       thor (~> 0.14.6)
     guard-rspec (0.6.0)
       guard (>= 0.10.0)
+    highline (1.6.11)
+    hitch (0.7.0)
+      highline (>= 1.6.2)
     multi_json (1.1.0)
     rspec (2.9.0)
       rspec-core (~> 2.9.0)
@@ -29,5 +32,6 @@ PLATFORMS
 DEPENDENCIES
   guard
   guard-rspec
+  hitch
   rspec
   simplecov

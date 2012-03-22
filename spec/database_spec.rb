@@ -1,4 +1,4 @@
-require './database'
+require 'database'
 require './spec/spec_helper'
 
 describe Database do

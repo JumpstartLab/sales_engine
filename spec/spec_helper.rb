@@ -3,10 +3,10 @@ SimpleCov.start do
   add_filter "/spec/"
 end
 
-require './database'
-require './customer'
-require './item'
-require './invoice'
-require './transaction'
-require './invoiceitem'
-require './merchant'
+require './lib/database'
+require './lib/customer'
+require './lib/item'
+require './lib/invoice'
+require './lib/transaction'
+require './lib/invoiceitem'
+require './lib/merchant'
