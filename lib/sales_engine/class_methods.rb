@@ -1,5 +1,11 @@
 require 'singleton'
 require 'pp'
+
+class String
+  def only_digits
+    self.gsub(/\D/,"")
+  end
+end
 module SalesEngine
 
   module SearchMethods
@@ -19,7 +25,6 @@ module SalesEngine
                 return instance
               end
             end
-            nil
           end
 
           define_singleton_method("find_all_by_#{attribute}") do |query|
@@ -50,16 +55,39 @@ module SalesEngine
 
     def define_attributes (attributes)  
       attributes.each do |key, value|
+        if DataCleaner.instance.respond_to?("clean_#{key}")
+          value = DataCleaner.instance.send("clean_#{key}",value)
+        end
         send("#{key}=",value)
       end
     end
 
-    def headers
-      ATTRIBUTES
+  end
+
+  class DataCleaner
+    include Singleton
+
+    def clean_id(id)
+      id.only_digits
+    end
+
+    def clean_updated_at(date)
+      Date.parse(date)
+    end
+
+    def clean_created_at(date)
+      Date.parse(date)
+    end
+
+    def clean_merchant_id(id)
+      clean_id(id)
+    end
+
+    def clean_item_id(id)
+      clean_id(id)
     end
 
   end
-
 
   class Database 
     ATTRIBUTES = [:customer, :item, :invoice_item,
@@ -72,7 +100,5 @@ module SalesEngine
           send("#{attribute}=", Array.new)
         end
       end
-
     end
   end
-

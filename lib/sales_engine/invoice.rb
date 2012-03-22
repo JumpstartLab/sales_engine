@@ -45,7 +45,9 @@ module SalesEngine
       end
 
       def successful?
-        transactions.last.successful?
+        if transactions.any?
+          transactions.last.successful?
+        end
       end
 
       def customer

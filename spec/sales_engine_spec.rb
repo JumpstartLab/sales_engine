@@ -1,14 +1,7 @@
-require 'csv'
-require 'sales_engine'
-require 'customer'
-require 'transaction'
-require 'merchant'
-require 'item'
-require 'invoice'
-require 'invoice_item'
+require "spec_helper"
+require "sales_engine"
 
-test_sales_engine = SalesEngine::SalesEngine.new
-describe SalesEngine::SalesEngine do
+describe SalesEngine do
   
     let(:test_customer) {SalesEngine::Customer.random}
     let(:test_merchant) {SalesEngine::Merchant.random}

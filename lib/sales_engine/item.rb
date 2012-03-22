@@ -18,7 +18,7 @@ module SalesEngine
       end
 
       def merchant
-        Merchant.find_all_by_item_id(self.id)
+        Merchant.find_by_id(merchant_id)
       end
 
   end
