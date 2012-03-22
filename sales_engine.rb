@@ -1,14 +1,13 @@
 $LOAD_PATH.unshift('./')
+$LOAD_PATH.unshift('./lib/sales_engine')
+
 require 'csv_loader'
 
-class SalesEngine
-  def initialize
-    CSVLoader.new
-  end
-
+def startup
+  SalesEngine::CSVLoader.new
 end
 
-SE = SalesEngine.new
+startup
 
 # SE.load_invoices
 # puts SE.invoices

@@ -1,6 +1,6 @@
 require './spec/spec_helper.rb'
 
-describe Customer do
+describe SalesEngine::Customer do
 
 
   # Still working on Customer code - revisit these tests

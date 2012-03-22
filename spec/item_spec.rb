@@ -1,5 +1,5 @@
 require './spec/spec_helper.rb'
 
-describe Item do
+# describe SaleEngine::Item do
 
-end
+# end

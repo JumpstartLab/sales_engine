@@ -1,5 +1,5 @@
 require './spec/spec_helper.rb'
 
-describe InvoiceItem do
+describe SalesEngine::InvoiceItem do
 
 end
