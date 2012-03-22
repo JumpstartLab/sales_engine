@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe SalesEngine::Merchant do
 
-	let (:test_merchant){ SalesEngine::Merchant.new }
+  test_attributes = [:id => '1', :name => "Brekkle, Haley, and Wolff", :created_at => "2012-02-26 20:56:50 UTC", :updated_at => "2012-02-26 20:56:50 UTC"]
+	let (:test_merchant){ SalesEngine::Merchant.new(test_attributes) }
 	
   describe "items" do
 
