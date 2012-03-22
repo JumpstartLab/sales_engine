@@ -17,13 +17,9 @@ describe SalesEngine::Merchant do
       end
 
       it "contains items associated with only this merchant" do
-        test_merchant.items.merchant_id.should == test_merchant.id
+        test_merchant.items.all? {|i| 
+          i.merchant_id == test_merchant.id}.should == true
       end
-    end
-
-    it "does not return items not associated with this merchant" do
-      test_merchant.id = "5"
-      test_merchant.items.merchant_id.should_not == test_merchant.id
     end
 
   end

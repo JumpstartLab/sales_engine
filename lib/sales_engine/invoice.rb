@@ -1,7 +1,15 @@
 class SalesEngine
   class Invoice
-    attr_accessor :customer_id, :merchant_id, :status, :items, :transaction
-
+    
+    def initialize(attributes)
+      # puts attributes.inspect
+      @id = attributes[:id]
+      @customer_id = attributes[:customer_id]
+      @merchant_id = attributes[:merchant_id]
+      @status = attributes[:status]
+      @created_at = attributes[:created_at]
+      @updated_at = attributes[:updated_at]
+    end
     # def self.random
     #   # return a random Merchant
     # end

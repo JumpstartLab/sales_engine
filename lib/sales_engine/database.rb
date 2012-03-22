@@ -1,6 +1,7 @@
 require 'csv'
 require 'singleton'
 require 'sales_engine/merchant'
+require 'sales_engine/invoice'
 
 class SalesEngine
   class Database
@@ -9,6 +10,7 @@ class SalesEngine
     def initialize
       load_merchants
       load_items
+      load_invoices
     end
 
     def load(filename)
@@ -39,6 +41,20 @@ class SalesEngine
 
     def get_items
       @items
+    end
+
+
+    def load_invoices
+      @invoices = []
+      data = load("data/invoices.csv")
+      data.each do |line|
+        @invoices << Invoice.new(line)
+      end
+      puts "Items Loaded"
+    end
+
+    def get_invoices
+      @invoices
     end
 
   end

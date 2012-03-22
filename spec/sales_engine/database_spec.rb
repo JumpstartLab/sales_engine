@@ -29,14 +29,27 @@ describe SalesEngine::Database do
         test_db.get_items.should_not == nil
       end
 
-      it "which contains at least one merchant" do
+      it "which contains at least one item" do
         test_db.get_items.count.should >= 1
       end
 
       it "loaded as many items as are in the CSV file"
-
     end
+  end
 
+  describe "#get_invoice" do
+    context "loads an invoice array" do
+
+      it "which is not nil" do
+        test_db.get_invoices.should_not == nil
+      end
+
+      it "which contains at least one invoice" do
+        test_db.get_invoices.count.should >= 1
+      end
+
+      it "loaded as many invoices as are in the CSV file"
+    end
   end
 
 end
