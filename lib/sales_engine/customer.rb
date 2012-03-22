@@ -1,23 +1,12 @@
 require './lib/sales_engine/database'
-#require './lib/sales_engine/invoice'
-#require './transaction'
-# require './merchant' should only need to reference invoices > transactions?
+require './lib/sales_engine/find'
 
-module SalesEngine
+module SalesEngine 
   class Customer
+    extend Find
     # id,first_name,last_name,created_at,updated_at
 
-    CUSTOMERS     = []
-    CSV_OPTIONS   = {:headers => true, :header_converters => :symbol}
-    CUSTOMER_DATA = "customers.csv"
-
     attr_accessor :id, :first_name, :last_name, :created_at, :updated_at
-
-    # define_method("find_by_#{attribute}") do |query|
-    #   klass.send(find, query)
-    # end
-
-    # Module: extended(base)
 
     def initialize(attributes={})
       self.id         = attributes[:id]
@@ -25,12 +14,20 @@ module SalesEngine
       self.last_name = attributes[:last_name]
       self.created_at = attributes[:created_at]
       self.updated_at = attributes[:updated_at]
+    end
 
-      # attributes.each do |attribute|
-      #   define_method("find_by_#{attribute}") { Database.instance.customers.find { |c| c.first_name == first_name} }
-      
-      # end
+    # Module: extended(base)
 
+    class << self
+      attributes = [:id, :first_name, :last_name, :created_at, :updated_at]
+      attributes.each do |attribute|
+        define_method "find_by_#{attribute}" do |input|
+          find_customers(attribute, input.to_s)
+        end
+        define_method "find_all_by_#{attribute}" do |input|
+          find_all_customers(attribute, input.to_s)
+        end
+      end
     end
 
     def invoices
@@ -50,13 +47,13 @@ module SalesEngine
     #   Search.call
     # end
 
-    def self.find_by_first_name(first_name)
-      Database.instance.customers.find { |c| c.first_name == first_name}
-    end
+    # def self.find_by_first_name(first_name)
+    #   Database.instance.customers.find { |c| c.first_name == first_name}
+    # end
 
-    def self.find_all_by_first_name(first_name)
-      Database.instance.customers.select { |c| c.first_name == first_name}
-    end
+    # def self.find_all_by_first_name(first_name)
+    #   Database.instance.customers.select { |c| c.first_name == first_name}
+    # end
 
   end
 end

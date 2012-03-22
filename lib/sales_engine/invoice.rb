@@ -5,13 +5,10 @@
 
 module SalesEngine
   class Invoice
+    extend Find
 
     # id,customer_id,merchant_id,status,created_at,updated_at
     # invoice = Invoice.new(:customer_id => customer, :merchant_id => merchant, :status => "shipped", :items => [item1, item2, item3], :transaction => transaction)
-
-    INVOICES            = []
-    CSV_OPTIONS         = {:headers => true, :header_converters => :symbol}
-    INVOICE_DATA        = "invoices.csv"
 
     attr_accessor :id, :customer_id, :merchant_id, :status, :created_at, :updated_at
 
@@ -24,12 +21,17 @@ module SalesEngine
       self.updated_at   = attributes[:updated_at]
     end
 
-    def self.load_data
-      inv_file = CSV.open(INVOICE_DATA, CSV_OPTIONS)
-      inv_file.collect do |i| 
-        INVOICES << Invoice.new(i)
+    class << self
+      attributes = [:id, :customer_id, :merchant_id, :status, 
+                    :created_at, :updated_at]
+      attributes.each do |attribute|
+        define_method "find_by_#{attribute}" do |input|
+          find_invoices(attribute, input.to_s)
+        end
+        define_method "find_all_by_#{attribute}" do |input|
+          find_all_invoices(attribute, input.to_s)
+        end
       end
-      puts "Loaded Invoice data."
     end
 
     def transactions

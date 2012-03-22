@@ -4,12 +4,9 @@ require './lib/sales_engine/database'
 
 module SalesEngine
   class Item
+    extend Find
    
    # id,name,description,unit_price,merchant_id,created_at,updated_at
-
-    ITEMS         = []
-    CSV_OPTIONS   = {:headers => true, :header_converters => :symbol}
-    ITEM_DATA     = "items.csv"
 
     attr_accessor :id, :name, :description, :unit_price, :merchant_id, 
                   :created_at, :updated_at
@@ -24,12 +21,17 @@ module SalesEngine
       self.updated_at   = attributes[:updated_at]
     end
 
-    def self.load_data
-      item_file = CSV.open(ITEM_DATA, CSV_OPTIONS)
-      item_file.collect do |i| 
-        ITEMS << Item.new(i)
+    class << self
+      attributes = [:id, :name, :description, :unit_price, :merchant_id, 
+                  :created_at, :updated_at]
+      attributes.each do |attribute|
+        define_method "find_by_#{attribute}" do |input|
+          find_items(attribute, input.to_s)
+        end
+        define_method "find_all_by_#{attribute}" do |input|
+          find_all_items(attribute, input.to_s)
+        end
       end
-      puts "Loaded Item data."
     end
 
     def invoice_items

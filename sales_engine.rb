@@ -52,7 +52,7 @@ module SalesEngine
 
   def self.load_invoice_items
     ii_file = CSV.open(INVOICE_ITEMS_DATA, CSV_OPTIONS)
-    Database.instance.invoice_items = ii_file.collect { |i| InvoiceItem.new(i).inspect }
+    Database.instance.invoice_items = ii_file.collect { |i| InvoiceItem.new(i) }
     puts "Invoice items loaded."
   end 
 

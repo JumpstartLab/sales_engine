@@ -1,8 +1,10 @@
 require './lib/sales_engine/database'
+require './lib/sales_engine/find'
 #require './invoice'
 
 module SalesEngine
   class Transaction
+    extend Find
     # id,invoice_id,credit_card_number,credit_card_expiration_date,result,created_at,updated_at
 
     attr_accessor :id, :invoice_id, :credit_card_number,
@@ -16,6 +18,20 @@ module SalesEngine
       self.credit_card_expiration_date  = attributes[:credit_card_expiration_date]
       self.result                       = attributes[:result]
       self.created_at                   = attributes[:updated_at]
+    end
+
+    class << self
+      attributes = [:id, :invoice_id, :credit_card_number,
+                  :credit_card_expiration_date, :result,
+                  :created_at, :updated_at]
+      attributes.each do |attribute|
+        define_method "find_by_#{attribute}" do |input|
+          find_transactions(attribute, input.to_s)
+        end
+        define_method "find_all_by_#{attribute}" do |input|
+          find_all_transactions(attribute, input.to_s)
+        end
+      end
     end
 
     def invoice

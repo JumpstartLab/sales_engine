@@ -1,7 +1,9 @@
 #require './invoice'
+require './lib/sales_engine/find'
 
 module SalesEngine
   class InvoiceItem
+    extend Find
 
     attr_accessor :id, :item_id, :invoice_id, :quantity, 
                   :unit_price, :created_at, :updated_at
@@ -14,6 +16,19 @@ module SalesEngine
       self.unit_price = attributes[:unit_price]
       self.created_at = attributes[:created_at]
       self.updated_at = attributes[:updated_at]
+    end
+
+    class << self
+      attributes = [:id, :item_id, :invoice_id, :quantity, 
+                  :unit_price, :created_at, :updated_at]
+      attributes.each do |attribute|
+        define_method "find_by_#{attribute}" do |input|
+          find_invoice_items(attribute, input.to_s)
+        end
+        define_method "find_all_by_#{attribute}" do |input|
+          find_all_invoice_items(attribute, input.to_s)
+        end
+      end
     end
 
     def invoice
