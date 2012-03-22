@@ -20,5 +20,23 @@ module SalesEngine
 			self.status = raw_line[:status]
 		end
 
+		def transactions
+			SalesEngine::Transaction.find_all_by_invoice_id(self.id)
+		end
+
+		def invoice_items
+			SalesEngine::InvoiceItem.find_all_by_invoice_id(self.id)
+		end
+
+		def items
+			invoice_items.map(&:item_id).uniq.collect do |id|
+				SalesEngine::Item.find_by_id(id)
+			end
+		end
+
+		def customer
+			SalesEngine::Customer.find_by_id(self.customer_id)
+		end
+
 	end
 end
