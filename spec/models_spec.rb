@@ -4,27 +4,24 @@ describe "Models" do
   models = {SalesEngine::Merchant => "merchants", 
             SalesEngine::Item => "items",
             SalesEngine::InvoiceItem => "invoice_items",
-            SalesEngine::Invoice => "invoices"}
+            SalesEngine::Invoice => "invoices",
+            SalesEngine::Transaction => "transactions"}
 
   models.each do |model, method|
     describe ".random" do
-      context "when database has element loaded" do
+      context "when database has #{method} loaded" do
         before(:each) do
           @elements = 10.times.collect { mock(model) } 
           SalesEngine::Database.stub(method).and_return(@elements)
         end
 
-        it "returns a random object from element array" do
+        it "returns a random object from #{method} array" do
           Random.stub(:rand).and_return(5)
           model.random.should == @elements[5]
         end
-
-        it "returns an element" do
-          model.random.is_a?(mock(model).class).should == true
-        end
       end
 
-      context "when database has no elements" do
+      context "when database has no #{method}" do
         it "returns nil" do
           model.random.should == nil
         end

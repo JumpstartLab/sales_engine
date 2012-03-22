@@ -25,5 +25,9 @@ module SalesEngine
     def item 
       Database.items.find { |item| item.id == item_id }  
     end
+
+    def invoice
+      Database.invoices.find { |invoice| invoice.id == invoice_id }  
+    end
   end
 end
