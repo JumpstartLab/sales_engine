@@ -3,10 +3,31 @@ require 'spec_helper'
 describe SalesEngine::Customer do 
 
   describe ".random" do 
-    it "returns a random instance of Customer" do
-      result = Customer.new 
-      result.class.should == Customer.class 
+    it "responds" do
+      SalesEngine::Customer.should respond_to("random".to_sym)
     end 
+  end
+
+  describe "find_by_" do
+    attributes = [:id, :first_name, :last_name, :created_at, :updated_at]
+    attributes.each do |attribute|
+      method_name = "find_by_#{attribute}".to_sym
+
+      it "responds to #{method_name}" do
+        SalesEngine::Customer.should respond_to(method_name)
+      end
+    end
+  end
+
+  describe "find_all_by_" do
+    attributes = [:id, :first_name, :last_name, :created_at, :updated_at]
+    attributes.each do |attribute|
+      method_name = "find_all_by_#{attribute}".to_sym
+
+      it "responds to #{method_name}" do
+        SalesEngine::Customer.should respond_to(method_name)
+      end
+    end
   end
 
   describe "#invoices" do 

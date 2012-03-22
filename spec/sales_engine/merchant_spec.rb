@@ -1,6 +1,29 @@
 require 'spec_helper.rb'
 
 describe SalesEngine::Merchant do
+  
+  describe "find_by_" do
+    attributes = [:id, :name, :created_at, :updated_at]
+    attributes.each do |attribute|
+      method_name = "find_by_#{attribute}".to_sym
+
+      it "responds to #{method_name}" do
+        SalesEngine::Merchant.should respond_to(method_name)
+      end
+    end
+  end
+
+  describe "find_all_by_" do
+    attributes = [:id, :name, :created_at, :updated_at]
+    attributes.each do |attribute|
+      method_name = "find_all_by_#{attribute}".to_sym
+
+      it "responds to #{method_name}" do
+        SalesEngine::Merchant.should respond_to(method_name)
+      end
+    end
+  end
+
   describe ".random" do
     it "returns a random instance of Merchant" do
       result = Merchant.random  

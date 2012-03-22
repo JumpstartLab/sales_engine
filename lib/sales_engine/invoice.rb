@@ -34,12 +34,26 @@ module SalesEngine
       end
     end
 
+    def self.random
+      puts "#{Database.instance.invoices.sample.inspect}"
+      Database.instance.invoices.sample
+    end
+
     def transactions
       # returns a collection of associated Transaction instances
+      "You called the transactions method."
+      #result = []
+      Database.instance.transactions.select do |t|
+        t.send(:invoice_id) == self.id
+      end
     end
 
     def invoice_items
       #invoice_items returns a collection of associated InvoiceItem instances
+      "You called the invoice items"
+      Database.instance.invoice_items.select do |ii|
+        ii.send(:invoice_id) == self.id
+      end
     end
 
     def items

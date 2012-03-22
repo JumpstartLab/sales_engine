@@ -30,6 +30,10 @@ module SalesEngine
       end
     end
 
+    def self.random
+      puts "#{Database.instance.customers.sample.inspect}"
+    end
+
     def invoices
       #invoices returns a collection of Invoice instances associated with this object.
     end
@@ -42,18 +46,6 @@ module SalesEngine
       #favorite_merchant returns an instance of Merchant where the customer has conducted the most transactions
       # will reference invoices > transactions class to determine count
     end
-
-    # def find_by_blah
-    #   Search.call
-    # end
-
-    # def self.find_by_first_name(first_name)
-    #   Database.instance.customers.find { |c| c.first_name == first_name}
-    # end
-
-    # def self.find_all_by_first_name(first_name)
-    #   Database.instance.customers.select { |c| c.first_name == first_name}
-    # end
 
   end
 end
