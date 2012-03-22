@@ -15,16 +15,19 @@ module SalesEngine
     end
 
     def revenue(date=nil)
+      revenue = 0
       if date
-        invoices.inject(BigDecimal.new(0)) do |total_revenue, invoice|
+        revenue = invoices.inject(0) do |sum, invoice|
           if invoice.created_at == date
-            total_revenue += invoice.revenue
+            sum += invoice.revenue
           end
+          revenue = BigDecimal.new(revenue)
         end
       else
-        invoices.inject(BigDecimal.new(0)) do |total_revenue, invoice|
-          total_revenue += invoice.revenue
+        revenue = invoices.inject(0) do |sum, invoice|
+          sum += invoice.revenue
         end
+        revenue = BigDecimal.new(revenue)
       end
     end
 

@@ -76,7 +76,8 @@ describe SalesEngine::Merchant do
     end
 
     it "returns a valid number for a given date" do
-      revenue = test_merchant.revenue(Date.today)
+      revenue = test_merchant.revenue
+      puts revenue
       revenue.should be_is_a(BigDecimal)
     end
   end

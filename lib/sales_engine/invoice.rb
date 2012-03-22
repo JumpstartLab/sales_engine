@@ -34,6 +34,20 @@ module SalesEngine
         end
       end
 
+      def revenue
+        revenue = 0
+        if successful?
+          revenue = invoice_items.inject(0) do |sum, invoice_item|
+            sum += (invoice_item.unit_price.to_i * invoice_item.quantity.to_i)
+          end
+        end
+        BigDecimal.new(revenue)
+      end
+
+      def successful?
+        transactions.last.successful?
+      end
+
       def customer
         Customer.find_by_id(self.customer_id)
       end
