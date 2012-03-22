@@ -1,4 +1,4 @@
-require 'database'
+require 'sales_engine/database'
 
 module SalesEngine
   attr_accessor :elements

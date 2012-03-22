@@ -1,40 +1,35 @@
 require 'spec_helper'
-require './lib/item'
-require './lib/database'
-require './lib/merchant'
-require './lib/invoice_item'
 
-
-describe Item do
+describe SalesEngine::Item do
   describe ".random" do
     context "when database has items loaded" do
       before(:each) do
-        @items = 10.times.collect { mock(Item) } 
-        Database.stub(:items).and_return(@items)
+        @items = 10.times.collect { mock(SalesEngine::Item) } 
+        SalesEngine::Database.stub(:items).and_return(@items)
       end
 
       it "returns a random object from items array" do
         Random.stub(:rand).and_return(5)
-        Item.random.should == @items[5]
+        SalesEngine::Item.random.should == @items[5]
       end
 
       it "returns a item" do
-        Item.random.is_a?(mock(Item).class).should == true
+        SalesEngine::Item.random.is_a?(mock(SalesEngine::Item).class).should == true
       end
     end
 
     context "when database has no items" do
       it "returns nil" do
-        Item.random.should == nil
+        SalesEngine::Item.random.should == nil
       end
     end
   end
 
   describe ".find_by" do
-    let(:item) { mock(Item) }
-    let(:item2) { mock(Item) }
-    let(:item3) { mock(Item) }
-    let(:duplicate_item) { mock(Item) }
+    let(:item) { mock(SalesEngine::Item) }
+    let(:item2) { mock(SalesEngine::Item) }
+    let(:item3) { mock(SalesEngine::Item) }
+    let(:duplicate_item) { mock(SalesEngine::Item) }
     let(:items) { [item, item2, item3, duplicate_item] }
 
     before(:each) do
@@ -45,15 +40,15 @@ describe Item do
     end
 
     it "calls find_by attribute" do
-      Database.stub(:items).and_return(items)
-      Item.find_by_id(2).should == item2
+      SalesEngine::Database.stub(:items).and_return(items)
+      SalesEngine::Item.find_by_id(2).should == item2
     end
   end
 
   describe ".find_all_by" do
-    let(:item) { mock(Item) }
-    let(:item2) { mock(Item) }
-    let(:duplicate_item) { mock(Item) }
+    let(:item) { mock(SalesEngine::Item) }
+    let(:item2) { mock(SalesEngine::Item) }
+    let(:duplicate_item) { mock(SalesEngine::Item) }
     let(:items) { [item, item2, duplicate_item] }
 
     before(:each) do
@@ -63,19 +58,19 @@ describe Item do
     end
     
     it "calls find_all_by attribute" do
-      Database.stub(:items).and_return(items)
-      Item.find_all_by_id(1).should == [item, duplicate_item]
+      SalesEngine::Database.stub(:items).and_return(items)
+      SalesEngine::Item.find_all_by_id(1).should == [item, duplicate_item]
     end
   end
 
   describe "method missing" do
     it "invokes the normal no method error" do
-      expect{Item.foo}.should raise_error
+      expect{SalesEngine::Item.foo}.should raise_error
     end
   end
 
   describe "respond to" do
-    let(:item) { Item.new(1, "", "", 0, 0, Date.today, Date.today)}
+    let(:item) { SalesEngine::Item.new(1, "", "", 0, 0, Date.today, Date.today)}
     it "returns true for find_by" do
       item.respond_to?("find_by_id").should == true
     end
@@ -88,29 +83,29 @@ describe Item do
   end
 
   describe ".merchant" do
-    let(:merchant) { mock(Merchant) }
-    let(:merchant2) { mock(Merchant)}
-    let(:item) { Item.new(1, "", "", 0, 1, Date.today, Date.today)}
+    let(:merchant) { mock(SalesEngine::Merchant) }
+    let(:merchant2) { mock(SalesEngine::Merchant)}
+    let(:item) { SalesEngine::Item.new(1, "", "", 0, 1, Date.today, Date.today)}
     it "returns the merchant with the correct id" do
       merchant.stub(:id).and_return(1)
       merchant2.stub(:id).and_return(2)
-      Database.stub(:merchants).and_return([merchant, merchant2])
+      SalesEngine::Database.stub(:merchants).and_return([merchant, merchant2])
       item.merchant.should == merchant
     end
   end
 
   describe ".invoice_items" do
-    let(:item) { Item.new(1, "", "", 0, 1, Date.today, Date.today)}
-    let(:invoice_item) { mock(InvoiceItem) }
-    let(:invoice_item2) { mock(InvoiceItem) }
-    let(:invoice_item3) { mock(InvoiceItem) }
+    let(:item) { SalesEngine::Item.new(1, "", "", 0, 1, Date.today, Date.today)}
+    let(:invoice_item) { mock(SalesEngine::InvoiceItem) }
+    let(:invoice_item2) { mock(SalesEngine::InvoiceItem) }
+    let(:invoice_item3) { mock(SalesEngine::InvoiceItem) }
 
     before(:each) do
       invoice_item.stub(:item_id).and_return(1)
       invoice_item2.stub(:item_id).and_return(2)
       invoice_item3.stub(:item_id).and_return(1)
       invoice_items = [invoice_item, invoice_item2, invoice_item3]
-      Database.stub(:invoice_items).and_return(invoice_items)
+      SalesEngine::Database.stub(:invoice_items).and_return(invoice_items)
     end
 
     context "when one invoice item matches item id" do

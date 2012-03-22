@@ -1,6 +1,4 @@
 require 'spec_helper'
-require "./lib/sales_engine"
-
 
 describe SalesEngine do
   describe ".find_by" do

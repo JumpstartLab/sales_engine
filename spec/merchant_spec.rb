@@ -1,40 +1,35 @@
 require 'spec_helper'
-require './lib/merchant'
-require './lib/invoice'
-require './lib/database'
-require './lib/item'
 
-
-describe Merchant do
+describe SalesEngine::Merchant do
   describe ".random" do
     context "when database has merchants loaded" do
       before(:each) do
-        @merchants = 10.times.collect { mock(Merchant) } 
-        Database.stub(:merchants).and_return(@merchants)
+        @merchants = 10.times.collect { mock(SalesEngine::Merchant) } 
+        SalesEngine::Database.stub(:merchants).and_return(@merchants)
       end
 
       it "returns a random object from merchants array" do
         Random.stub(:rand).and_return(5)
-        Merchant.random.should == @merchants[5]
+        SalesEngine::Merchant.random.should == @merchants[5]
       end
 
       it "returns a merchant" do
-        Merchant.random.is_a?(mock(Merchant).class).should == true
+        SalesEngine::Merchant.random.is_a?(mock(SalesEngine::Merchant).class).should == true
       end
     end
 
     context "when database has no merchants" do
       it "returns nil" do
-        Merchant.random.should == nil
+        SalesEngine::Merchant.random.should == nil
       end
     end
   end
 
   describe ".find_by" do
-    let(:merchant) { mock(Merchant) }
-    let(:merchant2) { mock(Merchant) }
-    let(:merchant3) { mock(Merchant) }
-    let(:duplicate_merchant) { mock(Merchant) }
+    let(:merchant) { mock(SalesEngine::Merchant) }
+    let(:merchant2) { mock(SalesEngine::Merchant) }
+    let(:merchant3) { mock(SalesEngine::Merchant) }
+    let(:duplicate_merchant) { mock(SalesEngine::Merchant) }
     let(:merchants) { [merchant, merchant2, merchant3, duplicate_merchant] }
 
     before(:each) do
@@ -45,15 +40,15 @@ describe Merchant do
     end
 
     it "calls find_by attribute" do
-      Database.stub(:merchants).and_return(merchants)
-      Merchant.find_by_id(2).should == merchant2
+      SalesEngine::Database.stub(:merchants).and_return(merchants)
+      SalesEngine::Merchant.find_by_id(2).should == merchant2
     end
   end
 
   describe ".find_all_by" do
-    let(:merchant) { mock(Merchant) }
-    let(:merchant2) { mock(Merchant) }
-    let(:duplicate_merchant) { mock(Merchant) }
+    let(:merchant) { mock(SalesEngine::Merchant) }
+    let(:merchant2) { mock(SalesEngine::Merchant) }
+    let(:duplicate_merchant) { mock(SalesEngine::Merchant) }
     let(:merchants) { [merchant, merchant2, duplicate_merchant] }
 
     before(:each) do
@@ -63,19 +58,19 @@ describe Merchant do
     end
 
     it "calls find_all_by attribute" do
-      Database.stub(:merchants).and_return(merchants)
-      Merchant.find_all_by_id(1).should == [merchant, duplicate_merchant]
+      SalesEngine::Database.stub(:merchants).and_return(merchants)
+      SalesEngine::Merchant.find_all_by_id(1).should == [merchant, duplicate_merchant]
     end
   end
 
   describe "method missing" do
     it "invokes the normal no method error" do
-      expect{Merchant.foo}.should raise_error
+      expect{SalesEngine::Merchant.foo}.should raise_error
     end
   end
 
   describe "respond to" do
-    let(:merchant) { Merchant.new(1, "Name", Date.today, Date.today)}
+    let(:merchant) { SalesEngine::Merchant.new(1, "Name", Date.today, Date.today)}
     it "returns true for find_by" do
       merchant.respond_to?("find_by_id").should == true
     end
@@ -88,9 +83,9 @@ describe Merchant do
   end
 
   describe "#invoices" do
-    let(:invoice1) { mock(Invoice) }
-    let(:invoice2) { mock(Invoice) }
-    let(:invoice3) { mock(Invoice) }
+    let(:invoice1) { mock(SalesEngine::Invoice) }
+    let(:invoice2) { mock(SalesEngine::Invoice) }
+    let(:invoice3) { mock(SalesEngine::Invoice) }
 
     before(:each) do
       invoice1.stub(:merchant_id).and_return(1)
@@ -98,36 +93,36 @@ describe Merchant do
       invoice3.stub(:merchant_id).and_return(1)
 
       invoices = [invoice1, invoice2, invoice3]
-      Database.stub(:invoices).and_return(invoices)
+      SalesEngine::Database.stub(:invoices).and_return(invoices)
     end
 
 
     context "when merchant has one invoice" do
       it "returns an array containing the single invoice" do
-        merchant = Merchant.new(2, "", "", "")
+        merchant = SalesEngine::Merchant.new(2, "", "", "")
         merchant.invoices.should == [invoice2]
       end
     end
 
     context "when merchant has multiple invoices" do
       it "returns all invoices" do
-        merchant = Merchant.new(1, "", "", "")
+        merchant = SalesEngine::Merchant.new(1, "", "", "")
         merchant.invoices.should == [invoice1, invoice3]
       end
     end
 
     context "when merchant has no invoices" do
       it "returns an empty array" do
-        merchant = Merchant.new(3, "", "", "")
+        merchant = SalesEngine::Merchant.new(3, "", "", "")
         merchant.invoices.should == []
       end
     end
   end
 
   describe "#items" do
-    let(:item1) { mock(Item) }
-    let(:item2) { mock(Item) }
-    let(:item3) { mock(Item) }
+    let(:item1) { mock(SalesEngine::Item) }
+    let(:item2) { mock(SalesEngine::Item) }
+    let(:item3) { mock(SalesEngine::Item) }
 
     before(:each) do
       item1.stub(:merchant_id).and_return(1)
@@ -135,27 +130,27 @@ describe Merchant do
       item3.stub(:merchant_id).and_return(1)
 
       items = [item1, item2, item3]
-      Database.stub(:items).and_return(items)
+      SalesEngine::Database.stub(:items).and_return(items)
     end
 
 
     context "when merchant has one item" do
       it "returns an array containing the single item" do
-        merchant = Merchant.new(2, "", "", "")
+        merchant = SalesEngine::Merchant.new(2, "", "", "")
         merchant.items.should == [item2]
       end
     end
 
     context "when merchant has multiple items" do
       it "returns all items" do
-        merchant = Merchant.new(1, "", "", "")
+        merchant = SalesEngine::Merchant.new(1, "", "", "")
         merchant.items.should == [item1, item3]
       end
     end
 
     context "when merchant has no items" do
       it "returns an empty array" do
-        merchant = Merchant.new(3, "", "", "")
+        merchant = SalesEngine::Merchant.new(3, "", "", "")
         merchant.items.should == []
       end
     end
