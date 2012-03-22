@@ -1,5 +1,9 @@
+require './lib/sales_engine/validation'
+
 module SalesEngine
   module Model
+    include Validation
+
     attr_reader :id, :created_at, :updated_at
     
     def initialize(attributes)
@@ -7,12 +11,7 @@ module SalesEngine
       @created_at = attributes[:created_at] || DateTime.now
       @updated_at = attributes[:updated_at] || @created_at
 
-      error_msg = 'Models must have an integer id'
-      raise ArgumentError, error_msg unless valid_id?(id)
-    end
-
-    def valid_id?(id)
-      true unless id.to_s.empty? || id.to_s.match(/\D+/)
+      validates_numericality_of :id, @id, :integer => true
     end
 
     private

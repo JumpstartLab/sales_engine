@@ -1,18 +1,18 @@
 require './spec/spec_helper'
 
 module SalesEngine
-  class Sample
+  class ModelSample
     include Model
   end
 end
 
 describe SalesEngine::Model do
-  let(:valid_sample) { SalesEngine::Sample.new :id => 1 }
+  let(:valid_sample) { SalesEngine::ModelSample.new :id => 1 }
 
   context "id attribute" do
     it "doesn't create a model with a nil id" do
       expect do
-        SalesEngine::Sample.new(:id => nil) 
+        SalesEngine::ModelSample.new(:id => nil) 
       end.to raise_error(ArgumentError)
     end
 
@@ -21,13 +21,13 @@ describe SalesEngine::Model do
     end
     it "doesn't create a model with a blank id" do
       expect do
-        SalesEngine::Sample.new(:id => "") 
+        SalesEngine::ModelSample.new(:id => "") 
       end.to raise_error(ArgumentError)
     end
 
     it "raises an error unless given an integer id" do
       expect do
-        SalesEngine::Sample.new :id => 1.5 
+        SalesEngine::ModelSample.new :id => 1.5 
       end.to raise_error ArgumentError
     end
   end
@@ -43,7 +43,7 @@ describe SalesEngine::Model do
 
     it "is assigned when passed a DateTime argument" do
       date = DateTime.now
-      valid_sample = SalesEngine::Sample.new(:id => 1, :created_at => date)
+      valid_sample = SalesEngine::ModelSample.new(:id => 1, :created_at => date)
       valid_sample.created_at.should == date
     end
 
@@ -60,7 +60,7 @@ describe SalesEngine::Model do
 
     it "assigns updated_at when passed a DateTime argument" do
       date = DateTime.now
-      valid_sample = SalesEngine::Sample.new(:id => 1, :updated_at => date)
+      valid_sample = SalesEngine::ModelSample.new(:id => 1, :updated_at => date)
       valid_sample.updated_at.should == date
     end
 

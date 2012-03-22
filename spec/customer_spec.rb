@@ -37,18 +37,16 @@ describe SalesEngine::Customer do
     it "isn't blank" do
       valid_customer.last_name.should_not be_empty
     end
+
+    it "can be blank" do
+      SalesEngine::Customer.new :id => 1, :first_name => 'Jackie', :last_name => ''
+    end
   end
 
   context "can't be created if" do
     it "first_name is blank" do
       expect do
         SalesEngine::Customer.new :id => 1, :first_name => '', :last_name => 'Chan'
-      end.to raise_error ArgumentError
-    end
-
-    it "last_name is blank" do
-      expect do
-        SalesEngine::Customer.new :id => 1, :first_name => 'Jackie', :last_name => ''
       end.to raise_error ArgumentError
     end
   end

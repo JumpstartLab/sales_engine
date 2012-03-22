@@ -133,12 +133,33 @@ describe SalesEngine::Item do
           :id => 1, 
           :name => "Item 1", 
           :description => "Description",
-          :unit_price => 12,
+          :unit_price => 12
         )
       end.to raise_error ArgumentError
     end
 
-    it "can't be nil or an exception is raised"
-    it "can't be blank or an exception is raised"
+    it "can't be nil or an ArgumentError is raised" do
+      expect do
+        SalesEngine::Item.new(
+          :id => 1, 
+          :name => "Item 1", 
+          :description => "Description",
+          :unit_price => 12,
+          :merchant => nil
+        )
+      end.to raise_error ArgumentError
+    end
+
+    it "can't be blank or an exception is raised" do
+      expect do
+        SalesEngine::Item.new(
+          :id => 1, 
+          :name => "Item 1", 
+          :description => "Description",
+          :unit_price => 12,
+          :merchant => ''
+        )
+      end.to raise_error ArgumentError
+    end
   end
 end
