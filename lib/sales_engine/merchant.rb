@@ -9,6 +9,18 @@ class Merchant
     
   end
 
+  def random
+    # rand(Database.instance.merchants)
+  end
+
+  def self.find_by_(attribute)
+
+  end
+
+  def self.find_all_by_(attribute)
+    
+  end
+
   # def items
   #   # returns a collection of Item instances associated with that merchant for the products they sell
   # end

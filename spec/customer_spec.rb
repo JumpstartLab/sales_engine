@@ -1,4 +1,4 @@
-require "./lib/customer"
+require "./lib/sales_engine/customer"
 
 describe Customer do 
   describe 'initialize' do

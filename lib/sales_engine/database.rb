@@ -1,11 +1,11 @@
-require "singleton"
+require 'singleton'
 require 'csv'
-require './lib/Customer'
-require './lib/Invoice'
-require './lib/InvoiceItem'
-require './lib/Transaction'
-require './lib/Item'
-require './lib/Merchant'
+require './lib/sales_engine/customer'
+require './lib/sales_engine/invoice'
+require './lib/sales_engine/invoice_item'
+require './lib/sales_engine/transaction'
+require './lib/sales_engine/item'
+require './lib/sales_engine/merchant'
 
 class Database
   include Singleton
@@ -54,4 +54,4 @@ class Database
   end
 end 
 
-Database.instance
+#Database.instance

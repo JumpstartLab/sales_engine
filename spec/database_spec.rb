@@ -1,4 +1,4 @@
-require 'database'
+require './lib/sales_engine/database'
 require './spec/spec_helper'
 
 describe Database do
