@@ -48,33 +48,34 @@ describe SalesEngine::Invoice do
     end
   end
 
-  # describe ".average_revenue" do
-  #   #sum all invoice items and divide by number of invoices
-  #   it "returns the average total for each processed invoice" do
-  #     SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]
-  #     SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]
-  #     SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
-  #     SalesEngine::Invoice.average_revenue.should == 11
-  #     SalesEngine::Invoice.average_revenue.should be_a BigDecimal
-  #   end
+  #TO DOS
+  describe ".average_revenue" do
+    #sum all invoice items and divide by number of invoices
+    it "returns the average total for each processed invoice" do
+      SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]
+      SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]
+      SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
+      SalesEngine::Invoice.average_revenue.should == 11
+      SalesEngine::Invoice.average_revenue.should be_a BigDecimal
+    end
 
-  #   context "when a date is specified" do
-  #     #created date or updated date?
-  #     it "returns the average total for invoices created on that date" do
-  #       SalesEngine::Invoice.average_revenue("2012-02-19").should == 11
-  #     end
+    # context "when a date is specified" do
+    #   #created date or updated date?
+    #   it "returns the average total for invoices created on that date" do
+    #     SalesEngine::Invoice.average_revenue("2012-02-19").should == 11
+    #   end
 
-  #     context "when a date is specified on which no invoices were created" do
-  #       SalesEngine::Invoice.average_revenue("2000-01-01").should == 0
-  #     end
-  #   end
+    #   context "when a date is specified on which no invoices were created" do
+    #     SalesEngine::Invoice.average_revenue("2000-01-01").should == 0
+    #   end
+    # end
 
-  #   context "when no processed invoices" do
-  #     it "returns 0" do
-  #       SalesEngine::Invoice.average_revenue.should == 0
-  #     end
-  #   end
-  # end
+    # context "when no processed invoices" do
+    #   it "returns 0" do
+    #     SalesEngine::Invoice.average_revenue.should == 0
+    #   end
+    # end
+  end
 
 
   # describe ".average_items" do

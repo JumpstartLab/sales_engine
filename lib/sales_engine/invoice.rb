@@ -42,13 +42,20 @@ module SalesEngine
         end
       end
     end
-    
-    def self.pending
+
+    def self.successful_invoices
       success_trans = SalesEngine::Transaction.find_all_by_result("success")
-      success_invs = success_trans.collect do |trans| 
-        find_by_id(trans.invoice_id) 
-      end
-      SalesEngine::Database.instance.invoice_list - success_invs
+      success_trans.collect { |trans| find_by_id(trans.invoice_id) }
     end
+    
+    def self.pending    
+      SalesEngine::Database.instance.invoice_list - successful_invoices
+    end
+
+    def self.average_revenue
+      #invoices = SalesEngine::Database.instance.invoice_list
+      SalesEngine::InvoiceItem.total_revenue / successful_invoices.size
+    end
+
   end
 end
