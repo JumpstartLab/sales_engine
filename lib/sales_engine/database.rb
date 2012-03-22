@@ -4,6 +4,7 @@ require 'sales_engine/merchant'
 require 'sales_engine/invoice'
 require 'sales_engine/customer'
 require 'sales_engine/invoice_item'
+require 'sales_engine/transaction'
 
 class SalesEngine
   class Database
@@ -15,6 +16,7 @@ class SalesEngine
       load_invoices
       load_customers
       load_invoice_items
+      load_transactions
     end
 
     def load(filename)
@@ -85,6 +87,20 @@ class SalesEngine
     def get_invoice_items
       @invoice_items
     end
+
+    def load_transactions
+      @transactions = []
+      data = load("data/transactions.csv")
+      data.each do |line|
+        @transactions << Transaction.new(line)
+      end
+      puts "transactions Loaded"
+    end
+
+    def get_transactions
+      @transactions
+    end
+
 
   end
 end

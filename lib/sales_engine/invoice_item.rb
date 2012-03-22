@@ -38,14 +38,14 @@ class SalesEngine
     end
 
     def item
-        temp_items = SalesEngine::Database.instance.get_items
-        correct_item = nil
-        temp_items.each do |the_item|
-            if the_item.id == @item_id
-                correct_item = the_item
-            end
-        end
-        return correct_item
+      temp_items = SalesEngine::Database.instance.get_items
+      correct_item = nil
+      temp_items.each do |the_item|
+          if the_item.id == @item_id
+              correct_item = the_item
+          end
+      end
+      return correct_item
     end
 
     # def customer
