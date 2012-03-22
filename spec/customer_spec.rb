@@ -6,7 +6,7 @@ describe SalesEngine::Customer do
 		it "stores records from customer.csv" do
 			SalesEngine::Customer.records.map(&:class).uniq.should == [SalesEngine::Customer]
 		end
-		{id: "1", first_name: "Eliezer",
+		{id: 1, first_name: "Eliezer",
 		last_name: "Lemke"}.each do |attribute, value|
 			it "records #{attribute}" do
 			  SalesEngine::Customer.records.first.send(attribute).should == value
@@ -15,7 +15,7 @@ describe SalesEngine::Customer do
 	end
 
 	context "instance methods" do
-		let(:customer) { SalesEngine::Customer.find_by_id('1') }
+		let(:customer) { SalesEngine::Customer.find_by_id(1) }
 		describe "#invoices" do
 			it "returns invoices" do
 				customer.invoices.should_not be_empty

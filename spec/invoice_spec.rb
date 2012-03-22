@@ -7,8 +7,8 @@ describe SalesEngine::Invoice do
 			SalesEngine::Invoice.records.map(&:class).uniq.should == [SalesEngine::Invoice]
 		end
 
-		{id: "1", customer_id: "1",
-		merchant_id: "92", status: "shipped"}.each do |attribute, value|
+		{id: 1, customer_id: 1,
+		merchant_id: 92, status: "shipped"}.each do |attribute, value|
 			it "records #{attribute}" do
 			  SalesEngine::Invoice.records.first.send(attribute).should == value
 		  end
@@ -16,7 +16,7 @@ describe SalesEngine::Invoice do
 	end
 
 	context "instance methods" do
-		let(:invoice) { SalesEngine::Invoice.find_by_id('1') }
+		let(:invoice) { SalesEngine::Invoice.find_by_id(1) }
 		describe "#transactions" do
 			it "returns transactions" do
 				invoice.transactions.should_not be_empty
@@ -45,7 +45,7 @@ describe SalesEngine::Invoice do
 			end
 
 			it "does not return duplicates of the same item" do
-				SalesEngine::Invoice.find_by_id('2').items.size.should == 1
+				SalesEngine::Invoice.find_by_id(2).items.size.should == 1
 			end
 		end
 		describe "#customer" do
@@ -53,7 +53,17 @@ describe SalesEngine::Invoice do
 				invoice.customer.should be_a(SalesEngine::Customer)
 			end
 			it "returns its customer" do
-				invoice.customer.should == SalesEngine::Customer.find_by_id('1')
+				invoice.customer.should == SalesEngine::Customer.find_by_id(1)
+			end
+		end
+
+		describe "#total_paid" do
+			it "returns the total dollar amount paid for the invoice" do
+				invoice.total_paid.should == BigDecimal("13060.97")
+			end
+
+			it "returns 0 if the transaction status is not 'success'" do
+				pending
 			end
 		end
 	end

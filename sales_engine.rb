@@ -19,12 +19,12 @@ module SalesEngine
 		attr_accessor :invoices, :customers, :transactions
 
 		def initialize
-			@merchants = Merchant.get_merchants
-			@items = Item.get_items
-			@invoice_items = InvoiceItem.get_invoice_items
-			@invoices = Invoice.get_invoices
-			@customers = Customer.get_customers
-			@transactions = Transaction.get_transactions
+			@merchants ||= Merchant.get_merchants
+			@items ||= Item.get_items
+			@invoice_items ||= InvoiceItem.get_invoice_items
+			@invoices ||= Invoice.get_invoices
+			@customers ||= Customer.get_customers
+			@transactions ||= Transaction.get_transactions
 		end
 
 	end

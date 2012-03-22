@@ -1,7 +1,7 @@
 module SalesEngine
 	class InvoiceItem
 		extend Searchable
-		attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price
+		attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :line_total
 
 		def self.records
 			Engine.instance.invoice_items
@@ -14,19 +14,20 @@ module SalesEngine
 		end
 
 		def initialize(raw_line)
-			self.id = raw_line[:id]
-			self.item_id = raw_line[:item_id]
-			self.invoice_id = raw_line[:invoice_id]
-			self.quantity = raw_line[:quantity]
+			self.id = raw_line[:id].to_i
+			self.item_id = raw_line[:item_id].to_i
+			self.invoice_id = raw_line[:invoice_id].to_i
+			self.quantity = raw_line[:quantity].to_i
 			self.unit_price = clean_unit_price(raw_line[:unit_price])
+			self.line_total = quantity * unit_price
 		end
 
 		def invoice
-			SalesEngine::Invoice.find_by_id(self.invoice_id)
+			@invoice ||= SalesEngine::Invoice.find_by_id(self.invoice_id)
 		end
 
 		def item
-			SalesEngine::Item.find_by_id(self.item_id)
+			@item ||= SalesEngine::Item.find_by_id(self.item_id)
 		end
 
 		private

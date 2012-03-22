@@ -15,15 +15,15 @@ module SalesEngine
 		end
 
 		def initialize(raw_line)
-			self.id = raw_line[:id]
-			self.invoice_id = raw_line[:invoice_id]
+			self.id = raw_line[:id].to_i
+			self.invoice_id = raw_line[:invoice_id].to_i
 			self.credit_card_number = raw_line[:credit_card_number]
 			self.credit_card_expiration_date = raw_line[:credit_card_expiration_date]
 			self.result = raw_line[:result]
 		end
 
 		def invoice
-			SalesEngine::Invoice.find_by_id(self.invoice_id)
+			@invoice ||= SalesEngine::Invoice.find_by_id(self.invoice_id)
 		end
 	end
 end

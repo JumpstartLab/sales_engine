@@ -16,19 +16,19 @@ CLASSES.each do |klass, attribute|
 			end
 		end
 
-		describe ".find_by_id('7')" do
-			it "returns one instance of #{klass} with ID '7' " do
-				klass.send(:find_by_id, '7').id.should == '7'
+		describe ".find_by_id(7)" do
+			it "returns one instance of #{klass} with ID 7" do
+				klass.send(:find_by_id, 7).id.should == 7
 			end
 		end
 
-		describe ".find_all_by_id('10')" do
-			it "returns all instances of #{klass} with ID '10' " do
-				klass.send(:find_all_by_id, '10').map(&:id).should == ['10']
+		describe ".find_all_by_id(10)" do
+			it "returns all instances of #{klass} with ID 10 " do
+				klass.send(:find_all_by_id, 10).map(&:id).should == [10]
 			end
-			it "doesn't miss any records with id of '10'" do
-				all_tens = klass.send(:find_all_by_id, '10')
-				(klass.all - all_tens).map(&:id).include?("10").should be_false
+			it "doesn't miss any records with id of 10" do
+				all_tens = klass.send(:find_all_by_id, 10)
+				(klass.all - all_tens).map(&:id).include?(10).should be_false
 			end
 		end
 
@@ -39,9 +39,9 @@ CLASSES.each do |klass, attribute|
 		end
 
 		#TODO: Assert error message includes faulty method name
-		describe ".find_by_foo_bar('42')" do
+		describe ".find_by_foo_bar(42)" do
 			it "raises a method missing error" do
-				expect { klass.send(:find_by_foo_bar, '42') }.should raise_error(NoMethodError)
+				expect { klass.send(:find_by_foo_bar, 42) }.should raise_error(NoMethodError)
 			end
 		end
 	end

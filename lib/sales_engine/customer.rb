@@ -16,11 +16,11 @@ module SalesEngine
 		def initialize(raw_line)
 			self.first_name = raw_line[:first_name]
 			self.last_name = raw_line[:last_name]
-			self.id = raw_line[:id]
+			self.id = raw_line[:id].to_i
 		end
 
 		def invoices
-			SalesEngine::Invoice.find_all_by_customer_id(self.id)
+			@invoices ||= SalesEngine::Invoice.find_all_by_customer_id(self.id)
 		end
 	end
 end

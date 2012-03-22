@@ -15,18 +15,18 @@ module SalesEngine
 
 		def initialize(raw_line)
 			self.name = raw_line[:name]
-			self.id = raw_line[:id]
+			self.id = raw_line[:id].to_i
 			self.description = raw_line[:description]
-			self.merchant_id = raw_line[:merchant_id]
+			self.merchant_id = raw_line[:merchant_id].to_i
 			self.unit_price = clean_unit_price(raw_line[:unit_price])
 		end
 
 		def invoice_items
-			SalesEngine::InvoiceItem.find_all_by_item_id(self.id)
+			@invoice_items ||= SalesEngine::InvoiceItem.find_all_by_item_id(self.id)
 		end
 
 		def merchant
-			SalesEngine::Merchant.find_by_id(self.merchant_id)
+			@merchant ||= SalesEngine::Merchant.find_by_id(self.merchant_id)
 		end
 
 		private

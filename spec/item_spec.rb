@@ -6,9 +6,9 @@ describe SalesEngine::Item do
 		it "stores records from Item.csv in @@records" do
 			SalesEngine::Item.records.map(&:class).uniq.should == [SalesEngine::Item]
 		end
-		{id: "1", name: "Item Necessitatibus Facilis",
+		{id: 1, name: "Item Necessitatibus Facilis",
 		unit_price: BigDecimal('161.80'),
-		merchant_id: "1",}.each do |attribute, value|
+		merchant_id: 1,}.each do |attribute, value|
 			it "records #{attribute}" do
 				SalesEngine::Item.records.first.send(attribute).should == value
 			end
@@ -20,7 +20,7 @@ describe SalesEngine::Item do
 	end
 
 	context "instance methods" do
-		let(:item) { SalesEngine::Item.find_by_id('1') }
+		let(:item) { SalesEngine::Item.find_by_id(1) }
 		describe "#invoice_items" do
 			it "returns an array of invoice_items" do
 				item.invoice_items.should_not be_empty
@@ -35,7 +35,7 @@ describe SalesEngine::Item do
 				item.merchant.should be_a(SalesEngine::Merchant)
 			end
 			it "returns its merchant" do
-				item.merchant.should == SalesEngine::Merchant.find_by_id('1')
+				item.merchant.should == SalesEngine::Merchant.find_by_id(1)
 			end
 		end
 	end

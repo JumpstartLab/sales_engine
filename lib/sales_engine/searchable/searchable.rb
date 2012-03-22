@@ -25,7 +25,11 @@ module SalesEngine
 		end
 
 		def find_all_by(attribute, query)
-			all.select { |record| record.send(attribute.to_sym).downcase == query.downcase}
+			if query.is_a? String
+				all.select { |record| record.send(attribute.to_sym).to_s.downcase == query.downcase}
+			else
+				all.select { |record| record.send(attribute.to_sym) == query}
+			end
 		end
 	end
 end
