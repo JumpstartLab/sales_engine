@@ -28,7 +28,11 @@ describe SalesEngine::Merchant do
       tester.is_a?(SalesEngine::Merchant).should == true
     end
   end
+
+  describe "#invoices" do
+    context "returns a collection of items" 
+      #This is where we paused.
+  end
 end
 
 
-# array.all?{|i|i.is_a? Integer}
