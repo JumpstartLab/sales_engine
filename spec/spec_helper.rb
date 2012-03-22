@@ -17,3 +17,4 @@ require 'sales_engine/transaction'
 require 'sales_engine/customer'
 
 require 'date'
+require 'bigdecimal'

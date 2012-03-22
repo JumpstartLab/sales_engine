@@ -24,6 +24,18 @@ module SalesEngine
 
     def self.elements
       Database.merchants
-    end  
+    end
+
+    def invoice_items
+      invoices.collect { |invoice| invoice.invoice_items }.flatten
+    end
+
+    def revenue
+      revenue = 0
+      invoice_items.each do |invoice_item|
+        revenue += invoice_item.unit_price * invoice_item.quantity
+      end
+      revenue
+    end
   end
 end
