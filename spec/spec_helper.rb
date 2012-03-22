@@ -6,5 +6,5 @@ end
 require 'bundler'
 Bundler.require
 
-require './lib/sales_engine'
+require './sales_engine'
 SalesEngine.startup

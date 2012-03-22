@@ -1,4 +1,4 @@
-$LOAD_PATH.unshift("./")
+$LOAD_PATH.unshift("./", './lib/')
 require 'bigdecimal'
 
 require 'sales_engine/searchable/searchable'

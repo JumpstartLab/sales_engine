@@ -32,6 +32,12 @@ CLASSES.each do |klass, attribute|
 			end
 		end
 
+		describe ".find_all_by_id('f')" do
+			it "returns an empty array" do
+				klass.send(:find_all_by_id, 'f').map(&:id).should == []
+			end
+		end
+
 		#TODO: Assert error message includes faulty method name
 		describe ".find_by_foo_bar('42')" do
 			it "raises a method missing error" do
