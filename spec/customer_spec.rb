@@ -253,6 +253,7 @@ describe Customer do
   describe ".find_by_updated_at" do
       context "when customer exist in the datastore" do
       let(:customer_3) { Customer.new({ :id => 3 }) }
+
       before(:each) do
         customer_1.updated_at = "03/01/2012 12:00"
         customer_2.updated_at = "01/11/2012 13:00"
@@ -277,4 +278,27 @@ describe Customer do
     end
   end
 
+  describe "#invoices" do
+    context "when customer exist in the datastore" do
+      let(:invoice_1) { Invoice.new({ :id => 1, :customer_id => customer_1.id}) }
+      let(:invoice_2) { Invoice.new({ :id => 2, :customer_id => customer_1.id }) }
+      let(:invoice_3) { Invoice.new({ :id => 3, :customer_id => customer_2.id }) }
+      let(:customer_3) { Customer.new({ :id => 3 }) }
+
+      before(:each) do
+        se.add_to_list(invoice_1)
+        se.add_to_list(invoice_2)
+        se.add_to_list(invoice_3)
+        se.add_to_list(customer_3)
+      end
+
+      it "returns a collection of Invoice instances associated with this object" do
+        customer_1.invoices.should == [invoice_1, invoice_2]
+      end
+
+      it "returns nothing if the customer has no invoices" do
+        customer_3.invoices.should == []
+      end      
+    end
+  end
 end

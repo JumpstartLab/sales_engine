@@ -13,6 +13,10 @@ class Customer < Record
     Database.instance.get_random_record("customers")
   end
 
+  def invoices
+    Database.instance.find_all_by("invoices", "customer_id", self.id)
+  end
+
   def self.find_by_id(id)
     Database.instance.find_by("customers", "id", id)
   end
