@@ -20,8 +20,8 @@ module SalesEngine
 
     CUSTOMER_ATTS.each do |att|
       define_singleton_method ("find_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.customer_list.detect do
-          |customer| customer.send(att.to_sym).downcase == param.downcase
+        SalesEngine::Database.instance.customer_list.detect do |customer|
+          customer.send(att.to_sym).to_s.downcase == param.to_s.downcase
         end
       end
     end
@@ -29,7 +29,7 @@ module SalesEngine
     CUSTOMER_ATTS.each do |att|
       define_singleton_method ("find_all_by_" + att).to_sym do |param|
         SalesEngine::Database.instance.customer_list.select do |customer| 
-          customer if customer.send(att.to_sym).downcase == param.downcase
+          customer if customer.send(att.to_sym).to_s.downcase == param.to_s.downcase
         end
       end
     end

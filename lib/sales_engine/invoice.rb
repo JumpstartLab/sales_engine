@@ -24,7 +24,7 @@ module SalesEngine
     end
 
     def transactions
-      SalesEngine::Transaction.find_by_invoice_id(self.id)
+      SalesEngine::Transaction.find_all_by_invoice_id(self.id)
     end
 
     INVOICE_ATTS.each do |att|
@@ -38,10 +38,17 @@ module SalesEngine
     INVOICE_ATTS.each do |att|
       define_singleton_method ("find_all_by_" + att).to_sym do |param|
         SalesEngine::Database.instance.invoice_list.select do |invoice|
-          invoice if invoice.send(att.to_sym).downcase == param.downcase
+          invoice if invoice.send(att.to_sym).to_s.downcase == param.to_s.downcase
         end
       end
     end
     
+    def self.pending
+      success_trans = SalesEngine::Transaction.find_all_by_result("success")
+      success_invs = success_trans.collect do |trans| 
+        find_by_id(trans.invoice_id) 
+      end
+      SalesEngine::Database.instance.invoice_list - success_invs
+    end
   end
 end

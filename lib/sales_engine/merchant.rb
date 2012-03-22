@@ -18,13 +18,17 @@ module SalesEngine
 
     MERCHANT_ATTS.each do |att|
       define_singleton_method ("find_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.merchant_list.detect{ |merchant| merchant.send(att.to_sym) == param }
+        SalesEngine::Database.instance.merchant_list.detect do |merchant|
+          merchant.send(att.to_sym).to_s.downcase == param.to_s.downcase
+        end
       end
     end
 
     MERCHANT_ATTS.each do |att|
       define_singleton_method ("find_all_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.merchant_list.select{ |merchant| merchant if merchant.send(att.to_sym) == param }
+        SalesEngine::Database.instance.merchant_list.select do |merchant|
+          merchant if merchant.send(att.to_sym).to_s.downcase == param.to_s.downcase
+        end
       end
     end
   end

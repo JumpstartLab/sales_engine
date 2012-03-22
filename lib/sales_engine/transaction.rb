@@ -22,8 +22,16 @@ module SalesEngine
       SalesEngine::Invoice.find_by_id(self.invoice_id)
     end
 
-    def self.find_by_invoice_id(invoice_id)
-      SalesEngine::Database.instance.transaction_list.select{ |trans| trans if trans.invoice_id == invoice_id }
+    def self.find_all_by_invoice_id(invoice_id)
+      SalesEngine::Database.instance.transaction_list.select do |trans| 
+        trans if trans.invoice_id == invoice_id
+      end
+    end
+
+    def self.find_all_by_result(result)
+      SalesEngine::Database.instance.transaction_list.select do |trans|
+        trans if trans.result == result
+      end
     end
   end
 end

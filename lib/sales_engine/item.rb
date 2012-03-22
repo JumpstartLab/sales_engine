@@ -24,13 +24,17 @@ module SalesEngine
 
     ITEM_ATTS.each do |att|
       define_singleton_method ("find_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.item_list.detect{ |item| item.send(att.to_sym) == param }
+        SalesEngine::Database.instance.item_list.detect do |item|
+          item.send(att.to_sym).to_s.downcase == param.to_s.downcase
+        end
       end
     end
 
     ITEM_ATTS.each do |att|
       define_singleton_method ("find_all_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.item_list.select{ |item| item if item.send(att.to_sym) == param }
+        SalesEngine::Database.instance.item_list.select do |item|
+          item if item.send(att.to_sym).to_s.downcase == param.to_s.downcase
+        end
       end
     end
   end

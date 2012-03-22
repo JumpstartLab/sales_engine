@@ -23,27 +23,27 @@
       <img src="./assets/0.5.3/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2012-03-22T10:18:14-04:00">2012-03-22T10:18:14-04:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2012-03-22T11:30:09-04:00">2012-03-22T11:30:09-04:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
         <div class="file_list_container" id="AllFiles">
   <h2>
     <span class="group_name">All Files</span>
-    (<span class="covered_percent"><span class="green">95.74%</span></span>
+    (<span class="covered_percent"><span class="green">94.57%</span></span>
      covered at
      <span class="covered_strength">
        <span class="green">
-         1404.04
+         1352.75
        </span>
     </span> hits/line)
   </h2>
   <a name="AllFiles"></a>
   <div>
     <b>14</b> files in total.
-    <b>235</b> relevant lines. 
-    <span class="green"><b>225</b> lines covered</span> and
-    <span class="red"><b>10</b> lines missed </span>
+    <b>258</b> relevant lines. 
+    <span class="green"><b>244</b> lines covered</span> and
+    <span class="red"><b>14</b> lines missed </span>
   </div>
   <table class="file_list">
     <thead>
@@ -91,12 +91,12 @@
       
       <tr>
         <td class="strong"><a href="#8a7fe001c07a638eea1310fafc00b8532655ead3" class="src_link" title="lib/sales_engine/invoice.rb">lib/sales_engine/invoice.rb</a></td>
-        <td class="green strong">91.3 %</td>
-        <td>47</td>
-        <td>23</td>
-        <td>21</td>
+        <td class="green strong">92.86 %</td>
+        <td>54</td>
+        <td>28</td>
+        <td>26</td>
         <td>2</td>
-        <td>1303.9</td>
+        <td>1072.4</td>
       </tr>
       
       <tr>
@@ -111,32 +111,32 @@
       
       <tr>
         <td class="strong"><a href="#2b4f3c509c47213fe90dfb2761dc3ba9a9d17ebe" class="src_link" title="lib/sales_engine/item.rb">lib/sales_engine/item.rb</a></td>
-        <td class="yellow strong">88.89 %</td>
-        <td>37</td>
-        <td>18</td>
+        <td class="red strong">80.0 %</td>
+        <td>41</td>
+        <td>20</td>
         <td>16</td>
-        <td>2</td>
-        <td>940.3</td>
+        <td>4</td>
+        <td>846.3</td>
       </tr>
       
       <tr>
         <td class="strong"><a href="#9fdaa4fc05bec5de58575746ef1201c812f0ce9e" class="src_link" title="lib/sales_engine/merchant.rb">lib/sales_engine/merchant.rb</a></td>
-        <td class="yellow strong">86.67 %</td>
-        <td>31</td>
-        <td>15</td>
+        <td class="red strong">76.47 %</td>
+        <td>35</td>
+        <td>17</td>
         <td>13</td>
-        <td>2</td>
-        <td>27.7</td>
+        <td>4</td>
+        <td>24.4</td>
       </tr>
       
       <tr>
         <td class="strong"><a href="#ef36bbe6410862b7142ab0c907dd40c2c939a033" class="src_link" title="lib/sales_engine/transaction.rb">lib/sales_engine/transaction.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>29</td>
-        <td>17</td>
-        <td>17</td>
+        <td>37</td>
+        <td>21</td>
+        <td>21</td>
         <td>0</td>
-        <td>2057.1</td>
+        <td>1667.7</td>
       </tr>
       
       <tr>
@@ -162,11 +162,11 @@
       <tr>
         <td class="strong"><a href="#0a96c768ee08410b66eb32154fb183d8e53678bb" class="src_link" title="spec/invoice_spec.rb">spec/invoice_spec.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>174</td>
-        <td>38</td>
-        <td>38</td>
+        <td>176</td>
+        <td>48</td>
+        <td>48</td>
         <td>0</td>
-        <td>1.1</td>
+        <td>1.3</td>
       </tr>
       
       <tr>
@@ -772,13 +772,13 @@
         <li class="missed" data-hits="0" data-linenumber="23">
           
           
-          <code class="ruby">        SalesEngine::Database.instance.customer_list.detect do</code>
+          <code class="ruby">        SalesEngine::Database.instance.customer_list.detect do |customer|</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="24">
           
           
-          <code class="ruby">          |customer| customer.send(att.to_sym).downcase == param.downcase</code>
+          <code class="ruby">          customer.send(att.to_sym).to_s.downcase == param.to_s.downcase</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="25">
@@ -826,7 +826,7 @@
         <li class="missed" data-hits="0" data-linenumber="32">
           
           
-          <code class="ruby">          customer if customer.send(att.to_sym).downcase == param.downcase</code>
+          <code class="ruby">          customer if customer.send(att.to_sym).to_s.downcase == param.to_s.downcase</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="33">
@@ -974,10 +974,10 @@
         <div class="source_table" id="8a7fe001c07a638eea1310fafc00b8532655ead3">
   <div class="header">
     <h3>lib/sales_engine/invoice.rb</h3>
-    <h4><span class="green">91.3 %</span> covered</h4>
+    <h4><span class="green">92.86 %</span> covered</h4>
     <div>
-      <b>23</b> relevant lines. 
-      <span class="green"><b>21</b> lines covered</span> and
+      <b>28</b> relevant lines. 
+      <span class="green"><b>26</b> lines covered</span> and
       <span class="red"><b>2</b> lines missed.</span>
     </div>
   </div>
@@ -1087,38 +1087,38 @@
           <code class="ruby">    def initialize(attributes)</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="18">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4997" data-linenumber="18">
+          <span class="hits">4997</span>
           
           <code class="ruby">      self.id = attributes[:id]</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="19">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4997" data-linenumber="19">
+          <span class="hits">4997</span>
           
           <code class="ruby">      self.customer_id = attributes[:customer_id]</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="20">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4997" data-linenumber="20">
+          <span class="hits">4997</span>
           
           <code class="ruby">      self.merchant_id = attributes[:merchant_id]</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="21">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4997" data-linenumber="21">
+          <span class="hits">4997</span>
           
           <code class="ruby">      self.status = attributes[:status]</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="22">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4997" data-linenumber="22">
+          <span class="hits">4997</span>
           
           <code class="ruby">      self.created_at = attributes[:created_at]</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="23">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4997" data-linenumber="23">
+          <span class="hits">4997</span>
           
           <code class="ruby">      self.updated_at = attributes[:updated_at]</code>
         </li>
@@ -1144,7 +1144,7 @@
         <li class="covered" data-hits="2" data-linenumber="27">
           <span class="hits">2</span>
           
-          <code class="ruby">      SalesEngine::Transaction.find_by_invoice_id(self.id)</code>
+          <code class="ruby">      SalesEngine::Transaction.find_all_by_invoice_id(self.id)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="28">
@@ -1171,14 +1171,14 @@
           <code class="ruby">      define_singleton_method (&quot;find_by_&quot; + att).to_sym do |param|</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="32">
-          <span class="hits">3</span>
+        <li class="covered" data-hits="5" data-linenumber="32">
+          <span class="hits">5</span>
           
           <code class="ruby">        SalesEngine::Database.instance.invoice_list.detect do |invoice|</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="33">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="8" data-linenumber="33">
+          <span class="hits">8</span>
           
           <code class="ruby">          invoice.send(att.to_sym).to_s.downcase == param.to_s.downcase</code>
         </li>
@@ -1228,7 +1228,7 @@
         <li class="missed" data-hits="0" data-linenumber="41">
           
           
-          <code class="ruby">          invoice if invoice.send(att.to_sym).downcase == param.downcase</code>
+          <code class="ruby">          invoice if invoice.send(att.to_sym).to_s.downcase == param.to_s.downcase</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="42">
@@ -1255,13 +1255,55 @@
           <code class="ruby">    </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="46">
+        <li class="covered" data-hits="1" data-linenumber="46">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    def self.pending</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="47">
+          <span class="hits">2</span>
+          
+          <code class="ruby">      success_trans = SalesEngine::Transaction.find_all_by_result(&quot;success&quot;)</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="48">
+          <span class="hits">2</span>
+          
+          <code class="ruby">      success_invs = success_trans.collect do |trans| </code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="49">
+          <span class="hits">2</span>
+          
+          <code class="ruby">        find_by_id(trans.invoice_id) </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="50">
+          
+          
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="51">
+          <span class="hits">2</span>
+          
+          <code class="ruby">      SalesEngine::Database.instance.invoice_list - success_invs</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="52">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="53">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="47">
+        <li class="never" data-hits="" data-linenumber="54">
           
           
           <code class="ruby">end</code>
@@ -1382,11 +1424,11 @@
         <div class="source_table" id="2b4f3c509c47213fe90dfb2761dc3ba9a9d17ebe">
   <div class="header">
     <h3>lib/sales_engine/item.rb</h3>
-    <h4><span class="yellow">88.89 %</span> covered</h4>
+    <h4><span class="red">80.0 %</span> covered</h4>
     <div>
-      <b>18</b> relevant lines. 
+      <b>20</b> relevant lines. 
       <span class="green"><b>16</b> lines covered</span> and
-      <span class="red"><b>2</b> lines missed.</span>
+      <span class="red"><b>4</b> lines missed.</span>
     </div>
   </div>
   
@@ -1552,64 +1594,88 @@
         <li class="missed" data-hits="0" data-linenumber="27">
           
           
-          <code class="ruby">        SalesEngine::Database.instance.item_list.detect{ |item| item.send(att.to_sym) == param }</code>
+          <code class="ruby">        SalesEngine::Database.instance.item_list.detect do |item|</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="28">
+        <li class="missed" data-hits="0" data-linenumber="28">
           
           
-          <code class="ruby">      end</code>
+          <code class="ruby">          item.send(att.to_sym).to_s.downcase == param.to_s.downcase</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="29">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">        end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="30">
           
           
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="31">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    ITEM_ATTS.each do |att|</code>
-        </li>
-      
-        <li class="covered" data-hits="7" data-linenumber="32">
-          <span class="hits">7</span>
-          
-          <code class="ruby">      define_singleton_method (&quot;find_all_by_&quot; + att).to_sym do |param|</code>
-        </li>
-      
-        <li class="missed" data-hits="0" data-linenumber="33">
-          
-          
-          <code class="ruby">        SalesEngine::Database.instance.item_list.select{ |item| item if item.send(att.to_sym) == param }</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="34">
-          
-          
           <code class="ruby">      end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="35">
+        <li class="never" data-hits="" data-linenumber="31">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="36">
+        <li class="never" data-hits="" data-linenumber="32">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="33">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    ITEM_ATTS.each do |att|</code>
+        </li>
+      
+        <li class="covered" data-hits="7" data-linenumber="34">
+          <span class="hits">7</span>
+          
+          <code class="ruby">      define_singleton_method (&quot;find_all_by_&quot; + att).to_sym do |param|</code>
+        </li>
+      
+        <li class="missed" data-hits="0" data-linenumber="35">
+          
+          
+          <code class="ruby">        SalesEngine::Database.instance.item_list.select do |item|</code>
+        </li>
+      
+        <li class="missed" data-hits="0" data-linenumber="36">
+          
+          
+          <code class="ruby">          item if item.send(att.to_sym).to_s.downcase == param.to_s.downcase</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="37">
+          
+          
+          <code class="ruby">        end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="38">
+          
+          
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="39">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="40">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="37">
+        <li class="never" data-hits="" data-linenumber="41">
           
           
           <code class="ruby">end</code>
@@ -1622,11 +1688,11 @@
         <div class="source_table" id="9fdaa4fc05bec5de58575746ef1201c812f0ce9e">
   <div class="header">
     <h3>lib/sales_engine/merchant.rb</h3>
-    <h4><span class="yellow">86.67 %</span> covered</h4>
+    <h4><span class="red">76.47 %</span> covered</h4>
     <div>
-      <b>15</b> relevant lines. 
+      <b>17</b> relevant lines. 
       <span class="green"><b>13</b> lines covered</span> and
-      <span class="red"><b>2</b> lines missed.</span>
+      <span class="red"><b>4</b> lines missed.</span>
     </div>
   </div>
   
@@ -1756,64 +1822,88 @@
         <li class="missed" data-hits="0" data-linenumber="21">
           
           
-          <code class="ruby">        SalesEngine::Database.instance.merchant_list.detect{ |merchant| merchant.send(att.to_sym) == param }</code>
+          <code class="ruby">        SalesEngine::Database.instance.merchant_list.detect do |merchant|</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="22">
+        <li class="missed" data-hits="0" data-linenumber="22">
           
           
-          <code class="ruby">      end</code>
+          <code class="ruby">          merchant.send(att.to_sym).to_s.downcase == param.to_s.downcase</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="23">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">        end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="24">
           
           
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="25">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    MERCHANT_ATTS.each do |att|</code>
-        </li>
-      
-        <li class="covered" data-hits="4" data-linenumber="26">
-          <span class="hits">4</span>
-          
-          <code class="ruby">      define_singleton_method (&quot;find_all_by_&quot; + att).to_sym do |param|</code>
-        </li>
-      
-        <li class="missed" data-hits="0" data-linenumber="27">
-          
-          
-          <code class="ruby">        SalesEngine::Database.instance.merchant_list.select{ |merchant| merchant if merchant.send(att.to_sym) == param }</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="28">
-          
-          
           <code class="ruby">      end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="29">
+        <li class="never" data-hits="" data-linenumber="25">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="30">
+        <li class="never" data-hits="" data-linenumber="26">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="27">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    MERCHANT_ATTS.each do |att|</code>
+        </li>
+      
+        <li class="covered" data-hits="4" data-linenumber="28">
+          <span class="hits">4</span>
+          
+          <code class="ruby">      define_singleton_method (&quot;find_all_by_&quot; + att).to_sym do |param|</code>
+        </li>
+      
+        <li class="missed" data-hits="0" data-linenumber="29">
+          
+          
+          <code class="ruby">        SalesEngine::Database.instance.merchant_list.select do |merchant|</code>
+        </li>
+      
+        <li class="missed" data-hits="0" data-linenumber="30">
+          
+          
+          <code class="ruby">          merchant if merchant.send(att.to_sym).to_s.downcase == param.to_s.downcase</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="31">
+          
+          
+          <code class="ruby">        end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="32">
+          
+          
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="33">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="34">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="31">
+        <li class="never" data-hits="" data-linenumber="35">
           
           
           <code class="ruby">end</code>
@@ -1828,8 +1918,8 @@
     <h3>lib/sales_engine/transaction.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>17</b> relevant lines. 
-      <span class="green"><b>17</b> lines covered</span> and
+      <b>21</b> relevant lines. 
+      <span class="green"><b>21</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -1903,44 +1993,44 @@
           <code class="ruby">    def initialize(attributes)</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="12">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4999" data-linenumber="12">
+          <span class="hits">4999</span>
           
           <code class="ruby">      self.id = attributes[:id]</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="13">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4999" data-linenumber="13">
+          <span class="hits">4999</span>
           
           <code class="ruby">      self.invoice_id = attributes[:invoice_id]</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="14">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4999" data-linenumber="14">
+          <span class="hits">4999</span>
           
           <code class="ruby">      self.credit_card_number = attributes[:credit_card_number]</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="15">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4999" data-linenumber="15">
+          <span class="hits">4999</span>
           
           <code class="ruby">      self.credit_card_expiration_date = attributes[:credit_card_expiration_date]</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="16">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4999" data-linenumber="16">
+          <span class="hits">4999</span>
           
           <code class="ruby">      self.result = attributes[:result]</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="17">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4999" data-linenumber="17">
+          <span class="hits">4999</span>
           
           <code class="ruby">      self.created_at = attributes[:created_at]</code>
         </li>
       
-        <li class="covered" data-hits="4993" data-linenumber="18">
-          <span class="hits">4993</span>
+        <li class="covered" data-hits="4999" data-linenumber="18">
+          <span class="hits">4999</span>
           
           <code class="ruby">      self.updated_at = attributes[:updated_at]</code>
         </li>
@@ -1984,28 +2074,76 @@
         <li class="covered" data-hits="1" data-linenumber="25">
           <span class="hits">1</span>
           
-          <code class="ruby">    def self.find_by_invoice_id(invoice_id)</code>
+          <code class="ruby">    def self.find_all_by_invoice_id(invoice_id)</code>
         </li>
       
-        <li class="covered" data-hits="8" data-linenumber="26">
-          <span class="hits">8</span>
+        <li class="covered" data-hits="2" data-linenumber="26">
+          <span class="hits">2</span>
           
-          <code class="ruby">      SalesEngine::Database.instance.transaction_list.select{ |trans| trans if trans.invoice_id == invoice_id }</code>
+          <code class="ruby">      SalesEngine::Database.instance.transaction_list.select do |trans| </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="27">
+        <li class="covered" data-hits="6" data-linenumber="27">
+          <span class="hits">6</span>
           
-          
-          <code class="ruby">    end</code>
+          <code class="ruby">        trans if trans.invoice_id == invoice_id</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="28">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">      end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="29">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="30">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="31">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    def self.find_all_by_result(result)</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="32">
+          <span class="hits">2</span>
+          
+          <code class="ruby">      SalesEngine::Database.instance.transaction_list.select do |trans|</code>
+        </li>
+      
+        <li class="covered" data-hits="6" data-linenumber="33">
+          <span class="hits">6</span>
+          
+          <code class="ruby">        trans if trans.result == result</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="34">
+          
+          
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="35">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="36">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="37">
           
           
           <code class="ruby">end</code>
@@ -2164,8 +2302,8 @@
     <h3>spec/invoice_spec.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>38</b> relevant lines. 
-      <span class="green"><b>38</b> lines covered</span> and
+      <b>48</b> relevant lines. 
+      <span class="green"><b>48</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -2197,28 +2335,28 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="5">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="3" data-linenumber="5">
+          <span class="hits">3</span>
           
           <code class="ruby">  let(:tr_one)   { SalesEngine::Transaction.new( :invoice_id =&gt; &quot;1&quot;) }</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="6">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="4" data-linenumber="6">
+          <span class="hits">4</span>
           
-          <code class="ruby">  let(:tr_two)   { SalesEngine::Transaction.new( :invoice_id =&gt; &quot;2&quot;, :status =&gt; &quot;failure&quot;) }</code>
+          <code class="ruby">  let(:tr_two)   { SalesEngine::Transaction.new( :invoice_id =&gt; &quot;2&quot;, :result =&gt; &quot;failure&quot;) }</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="7">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="4" data-linenumber="7">
+          <span class="hits">4</span>
           
-          <code class="ruby">  let(:tr_three) { SalesEngine::Transaction.new( :invoice_id =&gt; &quot;2&quot;, :status =&gt; &quot;success&quot;) }</code>
+          <code class="ruby">  let(:tr_three) { SalesEngine::Transaction.new( :invoice_id =&gt; &quot;2&quot;, :result =&gt; &quot;success&quot;) }</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="8">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="8">
+          <span class="hits">2</span>
           
-          <code class="ruby">  let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id =&gt; &quot;4&quot;, :status =&gt; &quot;failure&quot;)}</code>
+          <code class="ruby">  let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id =&gt; &quot;3&quot;, :result =&gt; &quot;failure&quot;)}</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="9">
@@ -2233,8 +2371,8 @@
           <code class="ruby">  let(:cust_two)    { SalesEngine::Customer.new( :id =&gt; &quot;2&quot;) }</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="11">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="11">
+          <span class="hits">2</span>
           
           <code class="ruby">  let(:inv_one)     { SalesEngine::Invoice.new( :id =&gt; &quot;1&quot;, :customer_id =&gt; &quot;0&quot;,</code>
         </li>
@@ -2245,8 +2383,8 @@
           <code class="ruby">                                   :created_at =&gt; &quot;2012-12-09&quot; ) }</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="13">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="4" data-linenumber="13">
+          <span class="hits">4</span>
           
           <code class="ruby">  let(:inv_two)     { SalesEngine::Invoice.new( :id =&gt; &quot;2&quot;, :customer_id =&gt; &quot;2&quot;,</code>
         </li>
@@ -2257,8 +2395,8 @@
           <code class="ruby">                                   :created_at =&gt; &quot;2012-9-09&quot; ) }</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="15">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="3" data-linenumber="15">
+          <span class="hits">3</span>
           
           <code class="ruby">  let(:inv_three)   { SalesEngine::Invoice.new( :id =&gt; &quot;3&quot;, :customer_id =&gt; &quot;0&quot;,</code>
         </li>
@@ -2377,346 +2515,346 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="35">
+        <li class="covered" data-hits="1" data-linenumber="35">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  # describe &quot;.pending&quot; do</code>
+          <code class="ruby">  describe &quot;.pending&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="36">
+        <li class="covered" data-hits="1" data-linenumber="36">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  #   it &quot;returns an array of invoices with no successful transactions&quot; do</code>
+          <code class="ruby">    it &quot;returns an array of invoices with no successful transactions&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="37">
+        <li class="covered" data-hits="1" data-linenumber="37">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  #     SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]</code>
+          <code class="ruby">      SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="38">
+        <li class="covered" data-hits="1" data-linenumber="38">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  #     SalesEngine::Invoice.pending.should == [ tr_two, tr_four ]</code>
+          <code class="ruby">      SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="39">
+        <li class="covered" data-hits="1" data-linenumber="39">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  #   end</code>
+          <code class="ruby">      SalesEngine::Invoice.pending.should == [ inv_one, inv_three ]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="40">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="41">
           
           
-          <code class="ruby">  #   context &quot;when all transactions are successful&quot; do</code>
+          <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="42">
+        <li class="covered" data-hits="1" data-linenumber="42">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  #     it &quot;returns an empty array&quot; do</code>
+          <code class="ruby">    context &quot;when all invoices have a successful transaction&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="43">
+        <li class="covered" data-hits="1" data-linenumber="43">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  #       SalesEngine::Database.instance.transaction_list [ tr_one, tr_three ]</code>
+          <code class="ruby">      it &quot;returns an empty array&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="44">
+        <li class="covered" data-hits="1" data-linenumber="44">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  #       SalesEngine::Invoice.pending.should == [ ]</code>
+          <code class="ruby">        SalesEngine::Database.instance.transaction_list = [ tr_two, tr_three ]</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="45">
+        <li class="covered" data-hits="1" data-linenumber="45">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  #     end</code>
+          <code class="ruby">        SalesEngine::Database.instance.invoice_list = [ inv_two ]        </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="46">
+        <li class="covered" data-hits="1" data-linenumber="46">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  #   end</code>
+          <code class="ruby">        SalesEngine::Invoice.pending.should == [ ]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="47">
           
           
-          <code class="ruby">  # end</code>
+          <code class="ruby">      end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="48">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="49">
           
           
-          <code class="ruby">  # describe &quot;.average_revenue&quot; do</code>
+          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="50">
           
           
-          <code class="ruby">  #   #sum all invoice items and divide by number of invoices</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="51">
           
           
-          <code class="ruby">  #   it &quot;returns the average total for each processed invoice&quot; do</code>
+          <code class="ruby">  # describe &quot;.average_revenue&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="52">
           
           
-          <code class="ruby">  #     SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]</code>
+          <code class="ruby">  #   #sum all invoice items and divide by number of invoices</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="53">
           
           
-          <code class="ruby">  #     SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]</code>
+          <code class="ruby">  #   it &quot;returns the average total for each processed invoice&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="54">
           
           
-          <code class="ruby">  #     SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]</code>
+          <code class="ruby">  #     SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="55">
           
           
-          <code class="ruby">  #     SalesEngine::Invoice.average_revenue.should == 11</code>
+          <code class="ruby">  #     SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="56">
           
           
-          <code class="ruby">  #     SalesEngine::Invoice.average_revenue.should be_a BigDecimal</code>
+          <code class="ruby">  #     SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="57">
           
           
-          <code class="ruby">  #   end</code>
+          <code class="ruby">  #     SalesEngine::Invoice.average_revenue.should == 11</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="58">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  #     SalesEngine::Invoice.average_revenue.should be_a BigDecimal</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="59">
           
           
-          <code class="ruby">  #   context &quot;when a date is specified&quot; do</code>
+          <code class="ruby">  #   end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="60">
           
           
-          <code class="ruby">  #     #created date or updated date?</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="61">
           
           
-          <code class="ruby">  #     it &quot;returns the average total for invoices created on that date&quot; do</code>
+          <code class="ruby">  #   context &quot;when a date is specified&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="62">
           
           
-          <code class="ruby">  #       SalesEngine::Invoice.average_revenue(&quot;2012-02-19&quot;).should == 11</code>
+          <code class="ruby">  #     #created date or updated date?</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="63">
           
           
-          <code class="ruby">  #     end</code>
+          <code class="ruby">  #     it &quot;returns the average total for invoices created on that date&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="64">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  #       SalesEngine::Invoice.average_revenue(&quot;2012-02-19&quot;).should == 11</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="65">
           
           
-          <code class="ruby">  #     context &quot;when a date is specified on which no invoices were created&quot; do</code>
+          <code class="ruby">  #     end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="66">
           
           
-          <code class="ruby">  #       SalesEngine::Invoice.average_revenue(&quot;2000-01-01&quot;).should == 0</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="67">
           
           
-          <code class="ruby">  #     end</code>
+          <code class="ruby">  #     context &quot;when a date is specified on which no invoices were created&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="68">
           
           
-          <code class="ruby">  #   end</code>
+          <code class="ruby">  #       SalesEngine::Invoice.average_revenue(&quot;2000-01-01&quot;).should == 0</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="69">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  #     end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="70">
           
           
-          <code class="ruby">  #   context &quot;when no processed invoices&quot; do</code>
+          <code class="ruby">  #   end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="71">
           
           
-          <code class="ruby">  #     it &quot;returns 0&quot; do</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="72">
           
           
-          <code class="ruby">  #       SalesEngine::Invoice.average_revenue.should == 0</code>
+          <code class="ruby">  #   context &quot;when no processed invoices&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="73">
           
           
-          <code class="ruby">  #     end</code>
+          <code class="ruby">  #     it &quot;returns 0&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="74">
           
           
-          <code class="ruby">  #   end</code>
+          <code class="ruby">  #       SalesEngine::Invoice.average_revenue.should == 0</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="75">
           
           
-          <code class="ruby">  # end</code>
+          <code class="ruby">  #     end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="76">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  #   end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="77">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  # end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="78">
           
           
-          <code class="ruby">  # describe &quot;.average_items&quot; do</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="79">
           
           
-          <code class="ruby">  #   #average item count for each processed invoice</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="80">
           
           
-          <code class="ruby">  #   context &quot;returns the average items for processed invoices&quot; do</code>
+          <code class="ruby">  # describe &quot;.average_items&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="81">
           
           
-          <code class="ruby">  #     SalesEngine::Invoice.average_items.should == 2</code>
+          <code class="ruby">  #   #average item count for each processed invoice</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="82">
           
           
-          <code class="ruby">  #   end</code>
+          <code class="ruby">  #   context &quot;returns the average items for processed invoices&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="83">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  #     SalesEngine::Invoice.average_items.should == 2</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="84">
           
           
-          <code class="ruby">  #   context &quot;when a date is specified&quot; do</code>
+          <code class="ruby">  #   end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="85">
           
           
-          <code class="ruby">  #     #created date or updated date?</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="86">
           
           
-          <code class="ruby">  #     it &quot;returns the average total for invoices created on that date&quot; do</code>
+          <code class="ruby">  #   context &quot;when a date is specified&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="87">
           
           
-          <code class="ruby">  #       SalesEngine::Invoice.average_items(&quot;2012-02-19&quot;).should == 6</code>
+          <code class="ruby">  #     #created date or updated date?</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="88">
           
           
-          <code class="ruby">  #     end</code>
+          <code class="ruby">  #     it &quot;returns the average total for invoices created on that date&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="89">
           
           
-          <code class="ruby">  #   end</code>
+          <code class="ruby">  #       SalesEngine::Invoice.average_items(&quot;2012-02-19&quot;).should == 6</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="90">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  #     end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="91">
           
           
-          <code class="ruby">  # end</code>
+          <code class="ruby">  #   end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="92">
@@ -2728,490 +2866,502 @@
         <li class="never" data-hits="" data-linenumber="93">
           
           
-          <code class="ruby">  # describe &quot;#invoice_items&quot; do</code>
+          <code class="ruby">  # end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="94">
           
           
-          <code class="ruby">  #   it &quot;returns an array of invoices_items&quot; do</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="95">
           
           
-          <code class="ruby">  #     customer_zero.invoices.should == [invoice_one, invoice_three]</code>
+          <code class="ruby">  # describe &quot;#invoice_items&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="96">
           
           
-          <code class="ruby">  #   end</code>
+          <code class="ruby">  #   it &quot;returns an array of invoices_items&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="97">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  #     customer_zero.invoices.should == [invoice_one, invoice_three]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="98">
           
           
-          <code class="ruby">  #   context &quot;when customer has no invoices&quot; do</code>
+          <code class="ruby">  #   end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="99">
           
           
-          <code class="ruby">  #     it &quot;returns an empty array&quot; do</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="100">
           
           
-          <code class="ruby">  #       customer_one.invoices.should == [ ]</code>
+          <code class="ruby">  #   context &quot;when customer has no invoices&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="101">
           
           
-          <code class="ruby">  #     end</code>
+          <code class="ruby">  #     it &quot;returns an empty array&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="102">
           
           
-          <code class="ruby">  #   end</code>
+          <code class="ruby">  #       customer_one.invoices.should == [ ]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="103">
           
           
-          <code class="ruby">  # end</code>
+          <code class="ruby">  #     end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="104">
           
           
-          <code class="ruby">   # describe &quot;#transactions&quot; do</code>
+          <code class="ruby">  #   end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="105">
           
           
-          <code class="ruby">  #   it &quot;returns an array of invoices&quot; do</code>
+          <code class="ruby">  # end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="106">
           
           
-          <code class="ruby">  #     customer_zero.invoices.should == [invoice_one, invoice_three]</code>
+          <code class="ruby">   # describe &quot;#transactions&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="107">
           
           
-          <code class="ruby">  #   end</code>
+          <code class="ruby">  #   it &quot;returns an array of invoices&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="108">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  #     customer_zero.invoices.should == [invoice_one, invoice_three]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="109">
           
           
-          <code class="ruby">  #   context &quot;when customer has no invoices&quot; do</code>
+          <code class="ruby">  #   end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="110">
           
           
-          <code class="ruby">  #     it &quot;returns an empty array&quot; do</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="111">
           
           
-          <code class="ruby">  #       customer_one.invoices.should == [ ]</code>
+          <code class="ruby">  #   context &quot;when customer has no invoices&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="112">
           
           
-          <code class="ruby">  #     end</code>
+          <code class="ruby">  #     it &quot;returns an empty array&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="113">
           
           
-          <code class="ruby">  #   end</code>
+          <code class="ruby">  #       customer_one.invoices.should == [ ]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="114">
           
           
-          <code class="ruby">  # end</code>
+          <code class="ruby">  #     end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="115">
           
           
-          <code class="ruby">   # describe &quot;#transactions&quot; do</code>
+          <code class="ruby">  #   end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="116">
           
           
-          <code class="ruby">  #   it &quot;returns an array of invoices&quot; do</code>
+          <code class="ruby">  # end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="117">
           
           
-          <code class="ruby">  #     customer_zero.invoices.should == [invoice_one, invoice_three]</code>
+          <code class="ruby">   # describe &quot;#transactions&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="118">
           
           
-          <code class="ruby">  #   end</code>
+          <code class="ruby">  #   it &quot;returns an array of invoices&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="119">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  #     customer_zero.invoices.should == [invoice_one, invoice_three]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="120">
           
           
-          <code class="ruby">  #   context &quot;when customer has no invoices&quot; do</code>
+          <code class="ruby">  #   end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="121">
           
           
-          <code class="ruby">  #     it &quot;returns an empty array&quot; do</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="122">
           
           
-          <code class="ruby">  #       customer_one.invoices.should == [ ]</code>
+          <code class="ruby">  #   context &quot;when customer has no invoices&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="123">
           
           
-          <code class="ruby">  #     end</code>
+          <code class="ruby">  #     it &quot;returns an empty array&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="124">
           
           
-          <code class="ruby">  #   end</code>
+          <code class="ruby">  #       customer_one.invoices.should == [ ]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="125">
           
           
-          <code class="ruby">  # end</code>
+          <code class="ruby">  #     end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="126">
           
           
+          <code class="ruby">  #   end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="127">
+          
+          
+          <code class="ruby">  # end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="128">
+          
+          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="127">
+        <li class="covered" data-hits="1" data-linenumber="129">
           <span class="hits">1</span>
           
           <code class="ruby">  describe &quot;.random&quot; do</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="128">
+        <li class="covered" data-hits="1" data-linenumber="130">
           <span class="hits">1</span>
           
           <code class="ruby">    it &quot;returns a random instance of customer in customer_list&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="129">
+        <li class="never" data-hits="" data-linenumber="131">
           
           
           <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="130">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="131">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    context &quot;returns nil when there are no customers&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="132">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="133">
+        <li class="covered" data-hits="1" data-linenumber="133">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  end</code>
+          <code class="ruby">    context &quot;returns nil when there are no customers&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="134">
           
           
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="135">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="136">
+          
+          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="135">
+        <li class="covered" data-hits="1" data-linenumber="137">
           <span class="hits">1</span>
           
           <code class="ruby">  describe &quot;.find_by_id&quot; do</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="136">
+        <li class="covered" data-hits="1" data-linenumber="138">
           <span class="hits">1</span>
           
           <code class="ruby">    it &quot;returns a single customer whose id matches param&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="137">
+        <li class="never" data-hits="" data-linenumber="139">
           
           
           <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="138">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="139">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    context &quot;returns nil when there are no customers&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="140">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="141">
+        <li class="covered" data-hits="1" data-linenumber="141">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  end</code>
+          <code class="ruby">    context &quot;returns nil when there are no customers&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="142">
           
           
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="143">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="144">
+          
+          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="143">
+        <li class="covered" data-hits="1" data-linenumber="145">
           <span class="hits">1</span>
           
           <code class="ruby">  describe &quot;.find_by_first_name&quot; do</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="144">
+        <li class="covered" data-hits="1" data-linenumber="146">
           <span class="hits">1</span>
           
           <code class="ruby">    it &quot;returns a single customer whose first_name matches param&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="145">
+        <li class="never" data-hits="" data-linenumber="147">
           
           
           <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="146">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="147">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    context &quot;returns nil when there are no customers&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="148">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="149">
+        <li class="covered" data-hits="1" data-linenumber="149">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  end</code>
+          <code class="ruby">    context &quot;returns nil when there are no customers&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="150">
           
           
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="151">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="152">
+          
+          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="151">
+        <li class="covered" data-hits="1" data-linenumber="153">
           <span class="hits">1</span>
           
           <code class="ruby">  describe &quot;.find_by_last_name&quot; do</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="152">
+        <li class="covered" data-hits="1" data-linenumber="154">
           <span class="hits">1</span>
           
           <code class="ruby">    it &quot;returns a single customer whose last_name matches param&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="153">
+        <li class="never" data-hits="" data-linenumber="155">
           
           
           <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="154">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="155">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    context &quot;returns nil when there are no customers&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="156">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="157">
+        <li class="covered" data-hits="1" data-linenumber="157">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  end</code>
+          <code class="ruby">    context &quot;returns nil when there are no customers&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="158">
           
           
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="159">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="160">
+          
+          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="159">
+        <li class="covered" data-hits="1" data-linenumber="161">
           <span class="hits">1</span>
           
           <code class="ruby">  describe &quot;.find_by_created_at&quot; do</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="160">
+        <li class="covered" data-hits="1" data-linenumber="162">
           <span class="hits">1</span>
           
           <code class="ruby">    it &quot;returns a single customer whose created_at matches param&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="161">
+        <li class="never" data-hits="" data-linenumber="163">
           
           
           <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="162">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="163">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    context &quot;returns nil when there are no customers&quot; do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="164">
           
           
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="165">
-          
-          
-          <code class="ruby">  end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="166">
-          
-          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="167">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  describe &quot;.find_by_updated_at&quot; do</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="168">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    it &quot;returns a single customer whose updated_at matches param&quot; do</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="169">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="170">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="171">
+        <li class="covered" data-hits="1" data-linenumber="165">
           <span class="hits">1</span>
           
           <code class="ruby">    context &quot;returns nil when there are no customers&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="172">
+        <li class="never" data-hits="" data-linenumber="166">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="173">
+        <li class="never" data-hits="" data-linenumber="167">
           
           
           <code class="ruby">  end</code>
         </li>
       
+        <li class="never" data-hits="" data-linenumber="168">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="169">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  describe &quot;.find_by_updated_at&quot; do</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="170">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    it &quot;returns a single customer whose updated_at matches param&quot; do</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="171">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="172">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="173">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    context &quot;returns nil when there are no customers&quot; do</code>
+        </li>
+      
         <li class="never" data-hits="" data-linenumber="174">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="175">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="176">
           
           
           <code class="ruby">end</code>

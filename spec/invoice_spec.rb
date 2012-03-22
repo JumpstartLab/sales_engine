@@ -3,9 +3,9 @@ require './spec/spec_helper.rb'
 describe SalesEngine::Invoice do
 
   let(:tr_one)   { SalesEngine::Transaction.new( :invoice_id => "1") }
-  let(:tr_two)   { SalesEngine::Transaction.new( :invoice_id => "2", :status => "failure") }
-  let(:tr_three) { SalesEngine::Transaction.new( :invoice_id => "2", :status => "success") }
-  let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "4", :status => "failure")}
+  let(:tr_two)   { SalesEngine::Transaction.new( :invoice_id => "2", :result => "failure") }
+  let(:tr_three) { SalesEngine::Transaction.new( :invoice_id => "2", :result => "success") }
+  let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "3", :result => "failure")}
   let(:cust_one)    { SalesEngine::Customer.new( :id => "1") }
   let(:cust_two)    { SalesEngine::Customer.new( :id => "2") }
   let(:inv_one)     { SalesEngine::Invoice.new( :id => "1", :customer_id => "0",
@@ -32,19 +32,21 @@ describe SalesEngine::Invoice do
     end
   end
 
-  # describe ".pending" do
-  #   it "returns an array of invoices with no successful transactions" do
-  #     SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
-  #     SalesEngine::Invoice.pending.should == [ tr_two, tr_four ]
-  #   end
+  describe ".pending" do
+    it "returns an array of invoices with no successful transactions" do
+      SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
+      SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]
+      SalesEngine::Invoice.pending.should == [ inv_one, inv_three ]
+    end
 
-  #   context "when all transactions are successful" do
-  #     it "returns an empty array" do
-  #       SalesEngine::Database.instance.transaction_list [ tr_one, tr_three ]
-  #       SalesEngine::Invoice.pending.should == [ ]
-  #     end
-  #   end
-  # end
+    context "when all invoices have a successful transaction" do
+      it "returns an empty array" do
+        SalesEngine::Database.instance.transaction_list = [ tr_two, tr_three ]
+        SalesEngine::Database.instance.invoice_list = [ inv_two ]        
+        SalesEngine::Invoice.pending.should == [ ]
+      end
+    end
+  end
 
   # describe ".average_revenue" do
   #   #sum all invoice items and divide by number of invoices
