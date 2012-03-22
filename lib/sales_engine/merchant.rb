@@ -9,10 +9,8 @@ module SalesEngine
     def initialize(attributes)
       super(attributes)
 
+      validate_name(attributes[:name])
       @name = attributes[:name]
-
-      error_msg = 'Merchants must have a name'
-      raise ArgumentError, error_msg unless valid_name?(name)
     end
 
     def name=(name)
@@ -22,8 +20,13 @@ module SalesEngine
 
     private
 
-    def valid_name?(name)
-      true unless name.to_s.empty?
+    def validate_name(name)
+      unless name.to_s.empty?
+        true
+      else
+        error_msg = 'Merchants must have a name'
+        raise ArgumentError, error_msg
+      end
     end
   end
 end

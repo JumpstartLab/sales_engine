@@ -1,12 +1,15 @@
 require './spec/spec_helper'
 
 describe SalesEngine::Item do
+  let(:merchant) { SalesEngine::Merchant.new(:id => 1, :name => "Test Merchant") }
+
   let(:valid_item) do
     SalesEngine::Item.new(
       :id => 1, 
       :name => "Item 1", 
       :description => "Description",
-      :unit_price => 12
+      :unit_price => 12,
+      :merchant => merchant
     )
   end
 
@@ -61,7 +64,7 @@ describe SalesEngine::Item do
 
     it "can't be blank or an ArgumentError is raised" do
       expect do
-       SalesEngine::Item.new :id => 1, :name => "Item 1", :description => "" 
+        SalesEngine::Item.new :id => 1, :name => "Item 1", :description => "" 
       end.to raise_error ArgumentError
     end
   end
@@ -119,7 +122,23 @@ describe SalesEngine::Item do
     end
   end
 
-  context 'merchant_id' do
-    it 'exists' 
+  context "item's merchant" do
+    it 'exists' do
+      valid_item.merchant.should_not be_nil
+    end
+
+    it 'must be passed in as a parameter on creation' do
+      expect do
+        SalesEngine::Item.new(
+          :id => 1, 
+          :name => "Item 1", 
+          :description => "Description",
+          :unit_price => 12,
+        )
+      end.to raise_error ArgumentError
+    end
+
+    it "can't be nil or an exception is raised"
+    it "can't be blank or an exception is raised"
   end
 end
