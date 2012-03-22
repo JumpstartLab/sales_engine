@@ -2,28 +2,24 @@ require './spec/spec_helper.rb'
 
 describe SalesEngine::Invoice do
 
+  let(:inv_one)   { SalesEngine::Invoice.new( :id => "1", :customer_id => "1",
+                                   :created_at => "2012-2-19" ) }
+  let(:inv_two)   { SalesEngine::Invoice.new( :id => "2", :customer_id => "2",
+                                   :created_at => "2012-9-09" ) }
+  let(:inv_three) { SalesEngine::Invoice.new( :id => "3", :customer_id => "0",
+                                   :created_at => "2012-8-09" ) }
   let(:tr_one)   { SalesEngine::Transaction.new( :invoice_id => "1") }
   let(:tr_two)   { SalesEngine::Transaction.new( :invoice_id => "2", :result => "failure") }
   let(:tr_three) { SalesEngine::Transaction.new( :invoice_id => "2", :result => "success") }
-  let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "3", :result => "failure")}
-  let(:cust_one)    { SalesEngine::Customer.new( :id => "1") }
-  let(:cust_two)    { SalesEngine::Customer.new( :id => "2") }
-  let(:inv_one)     { SalesEngine::Invoice.new( :id => "1", :customer_id => "1",
-                                   :created_at => "2012-2-19" ) }
-  let(:inv_two)     { SalesEngine::Invoice.new( :id => "2", :customer_id => "2",
-                                   :created_at => "2012-9-09" ) }
-  let(:inv_three)   { SalesEngine::Invoice.new( :id => "3", :customer_id => "0",
-                                   :created_at => "2012-8-09" ) }
+  let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "3", :result => "failure") }
   let(:inv_item_one){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3",
-                                       :invoice_id => "1",
-                                       :item_id => "1" ) }
+                                                    :invoice_id => "1",  :item_id => "1" ) }
   let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3",
-                                       :invoice_id => "2",
-                                       :item_id => "2" ) } 
+                                                    :invoice_id => "2", :item_id => "2" ) } 
   let(:inv_item_three){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3") }
-  let(:inv_item_four){ SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3")}
-  let(:item_one){ SalesEngine::Item.new( :id => "1") }
-  let(:item_two){ SalesEngine::Item.new( :id => "2") }
+  let(:inv_item_four) { SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3")}
+  
+
   describe "#transactions" do
     it "returns an array of transactions" do
         SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three ]
@@ -87,9 +83,10 @@ describe SalesEngine::Invoice do
   end
 
   describe "#invoices_items" do
-     it "returns an array of invoice items" do
-        SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]
-        inv_one.invoice_items.should == [ inv_item_one ]
+
+    it "returns an array of invoice items" do
+      SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]
+      inv_one.invoice_items.should == [ inv_item_one ]
     end
 
     context "when an invoice has no invoice items" do
@@ -100,6 +97,9 @@ describe SalesEngine::Invoice do
   end
 
   describe "#customer" do
+    let(:cust_one)    { SalesEngine::Customer.new( :id => "1") }
+    let(:cust_two)    { SalesEngine::Customer.new( :id => "2") }
+
     it "returns an instance of customer" do
       SalesEngine::Database.instance.customer_list = [ cust_one, cust_two ]
       inv_one.customer.should == cust_one
@@ -113,6 +113,9 @@ describe SalesEngine::Invoice do
   end
 
   describe "#items" do
+    let(:item_one){ SalesEngine::Item.new( :id => "1") }
+    let(:item_two){ SalesEngine::Item.new( :id => "2") }
+
     it "returns all items associated with that invoice" do
       SalesEngine::Database.instance.item_list = [ item_one, item_two ]
       SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]
@@ -125,6 +128,7 @@ describe SalesEngine::Invoice do
       end
     end
   end
+
   # describe ".average_items" do
   #   #average item count for each processed invoice
   #   context "returns the average items for processed invoices" do
@@ -137,33 +141,10 @@ describe SalesEngine::Invoice do
   #       SalesEngine::Invoice.average_items("2012-02-19").should == 6
   #     end
   #   end
-
   # end
 
   # describe "#invoice_items" do
   #   it "returns an array of invoices_items" do
-  #     customer_zero.invoices.should == [invoice_one, invoice_three]
-  #   end
-
-  #   context "when customer has no invoices" do
-  #     it "returns an empty array" do
-  #       customer_one.invoices.should == [ ]
-  #     end
-  #   end
-  # end
-   # describe "#transactions" do
-  #   it "returns an array of invoices" do
-  #     customer_zero.invoices.should == [invoice_one, invoice_three]
-  #   end
-
-  #   context "when customer has no invoices" do
-  #     it "returns an empty array" do
-  #       customer_one.invoices.should == [ ]
-  #     end
-  #   end
-  # end
-   # describe "#transactions" do
-  #   it "returns an array of invoices" do
   #     customer_zero.invoices.should == [invoice_one, invoice_three]
   #   end
 
