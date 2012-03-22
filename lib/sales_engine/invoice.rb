@@ -1,5 +1,7 @@
 class SalesEngine
   class Invoice
+
+    attr_accessor :merchant_id, :customer_id
     
     def initialize(attributes)
       # puts attributes.inspect

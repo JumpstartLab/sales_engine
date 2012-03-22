@@ -1,5 +1,7 @@
 class SalesEngine
   class Customer
+    attr_accessor :id
+    
     def initialize(attributes)
         @id = attributes[:id]
         @first_name = attributes[:first_name]
@@ -17,7 +19,15 @@ class SalesEngine
     # # def self.find_all_by_X(match)
     # # end
 
-    # def invoices
-    # end
+    def invoices
+        temp_invoices = SalesEngine::Database.instance.get_invoices
+        correct_invoices = []
+        temp_invoices.each do |invoice|
+            if invoice.customer_id == @id
+                correct_invoices << invoice
+            end
+        end
+        return correct_invoices
+    end
   end
 end

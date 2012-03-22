@@ -30,8 +30,20 @@ describe SalesEngine::Merchant do
   end
 
   describe "#invoices" do
-    context "returns a collection of items" 
-      #This is where we paused.
+    context "returns a collection of invoices" do
+
+      it "contains things which are only invoices" do
+        test_merchant.invoices.all?{|i| i.is_a? SalesEngine::Invoice}.should == true
+      end
+
+      it "contains invoices associated only with this merchant" do
+        test_merchant.invoices.all?{|i|
+          i.merchant_id == test_merchant.id}.should == true
+      end
+
+    end
+
+
   end
 end
 

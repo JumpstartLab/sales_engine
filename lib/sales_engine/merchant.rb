@@ -35,6 +35,14 @@ class SalesEngine
 
     # returns a collection of invoice instances associated with this merchant
     def invoices
+      temp_invoices = SalesEngine::Database.instance.get_invoices
+      correct_invoices = []
+      temp_invoices.each do |invoice|
+        if invoice.merchant_id == @id
+          correct_invoices << invoice
+        end
+      end
+      return correct_invoices
     end
   end
 end
