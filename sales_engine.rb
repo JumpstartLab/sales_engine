@@ -1,6 +1,6 @@
 require 'date'
 
-Dir["./lib/*.rb"].each {|file| require file }
+Dir["./lib/sales_engine/*.rb"].each {|file| require file }
 
 module SalesEngine
 end

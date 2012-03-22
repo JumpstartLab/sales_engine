@@ -1,4 +1,4 @@
-require './lib/model'
+require './lib/sales_engine/model'
 
 module SalesEngine
   class Merchant
