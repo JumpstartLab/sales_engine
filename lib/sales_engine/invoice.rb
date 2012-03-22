@@ -35,6 +35,12 @@ module SalesEngine
       SalesEngine::Customer.find_by_id(self.customer_id)
     end
 
+    def items
+      items = self.invoice_items.collect do |i_i|
+        SalesEngine::Item.find_by_id(i_i.item_id)
+      end
+    end
+
     INVOICE_ATTS.each do |att|
       define_singleton_method ("find_by_" + att).to_sym do |param|
         SalesEngine::Database.instance.invoice_list.detect do |invoice|

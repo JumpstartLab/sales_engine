@@ -15,12 +15,15 @@ describe SalesEngine::Invoice do
   let(:inv_three)   { SalesEngine::Invoice.new( :id => "3", :customer_id => "0",
                                    :created_at => "2012-8-09" ) }
   let(:inv_item_one){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3",
-                                       :invoice_id => "1" ) }
+                                       :invoice_id => "1",
+                                       :item_id => "1" ) }
   let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3",
-                                       :invoice_id => "2")}
+                                       :invoice_id => "2",
+                                       :item_id => "2" ) } 
   let(:inv_item_three){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3") }
   let(:inv_item_four){ SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3")}
-
+  let(:item_one){ SalesEngine::Item.new( :id => "1") }
+  let(:item_two){ SalesEngine::Item.new( :id => "2") }
   describe "#transactions" do
     it "returns an array of transactions" do
         SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three ]
@@ -97,14 +100,28 @@ describe SalesEngine::Invoice do
   end
 
   describe "#customer" do
-     it "returns an instance of customer" do
-        SalesEngine::Database.instance.customer_list = [ cust_one, cust_two ]
-        inv_one.customer.should == cust_one
+    it "returns an instance of customer" do
+      SalesEngine::Database.instance.customer_list = [ cust_one, cust_two ]
+      inv_one.customer.should == cust_one
     end
 
     context "when an invoice has no customer" do
       it "returns nil" do
         inv_three.customer.should be_nil
+      end
+    end
+  end
+
+  describe "#items" do
+    it "returns all items associated with that invoice" do
+      SalesEngine::Database.instance.item_list = [ item_one, item_two ]
+      SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]
+      inv_one.items.should == [ item_one ]
+    end
+
+    context "when an invoice has no items" do
+      it "returns an empty array" do
+        inv_three.items.should == [ ]
       end
     end
   end
