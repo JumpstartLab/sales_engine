@@ -22,6 +22,13 @@ class Invoice < Record
     Database.instance.find_all_by("invoiceitems", "invoice_id", self.id)
   end
 
+  def items
+    items = []
+    invoice_items = Database.instance.find_all_by("invoiceitems", "invoice_id", self.id)
+    items = invoice_items.collect { |invoice_item| 
+      Database.instance.find_by("items", "id", invoice_item.item_id) }
+  end
+
   def self.find_by_id(id)
     Database.instance.find_by("invoices", "id", id)
   end

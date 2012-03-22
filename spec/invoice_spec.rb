@@ -378,5 +378,44 @@ describe Invoice do
         invoice_1.transactions.should == []
       end
     end
+    describe "#items" do
+      context "where there are invoice items & items in the database" do
+        let(:item_1) { Item.new({ :id => 1 }) }
+        let(:item_2) { Item.new({ :id => 2 }) }
+        let(:item_3) { Item.new({ :id => 3 }) }
+        let(:item_4) { Item.new({ :id => 4 }) }        
+        let(:invoice_item_1) { InvoiceItem.new({:id => 1, :invoice_id => invoice_1.id, :item_id => item_1.id}) }
+        let(:invoice_item_2) { InvoiceItem.new({:id => 2, :invoice_id => invoice_2.id, :item_id => item_2.id}) }
+        let(:invoice_item_3) { InvoiceItem.new({:id => 3, :invoice_id => invoice_1.id, :item_id => item_3.id}) }
+        let(:invoice_item_4) { InvoiceItem.new({:id => 4, :invoice_id => invoice_1.id, :item_id => item_4.id}) }
+        let(:invoice_3) { Invoice.new({ :id => 3 }) }
+
+        before(:each) do
+          se.add_to_list(item_1)
+          se.add_to_list(item_2)
+          se.add_to_list(item_3)
+          se.add_to_list(item_4)
+          se.add_to_list(invoice_item_1)
+          se.add_to_list(invoice_item_2)
+          se.add_to_list(invoice_item_3)
+          se.add_to_list(invoice_item_4)
+          se.add_to_list(invoice_3)
+        end
+
+        it "returns a collection of associated Items by way of InvoiceItem objects" do
+          invoice_1.items.should == [item_1, item_3, item_4]
+        end
+
+        it "returns nothing if no invoice_items have a matching invoice id" do
+          invoice_3.items.should == []
+        end
+      end
+
+      context "where there are no invoice items & items in the database" do
+        it "returns nothing" do
+          invoice_1.items.should == []
+        end
+      end
+    end
   end
 end
