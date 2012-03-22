@@ -236,7 +236,7 @@ describe Merchant do
     end
   end
 
-  describe ".find_by_updated_at" do
+  describe ".find_all_by_updated_at" do
       context "when merchants exist in the datastore" do
       let(:merchant_3) { Merchant.new({ :id => 3 }) }
       before(:each) do

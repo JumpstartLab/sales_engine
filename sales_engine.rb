@@ -7,7 +7,9 @@ require './invoice'
 class SalesEngine
   include Singleton
   CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
-  attr_accessor :merchants, :items, :invoices
+  attr_accessor :merchants, :items, :invoices, 
+  # START OF DARRELL'S WORK
+                :transactions
 
   def initialize
     clear_all_data
@@ -17,11 +19,15 @@ class SalesEngine
     self.merchants = []
     self.items = []
     self.invoices = []
+    # START OF DARRELL'S WORK
+    self.transactions = []
   end
 
   def get_random_record(class_name)
     case class_name
     when 'merchant' then self.merchants[rand(self.merchants.count)]
+    # START OF DARRELL'S WORK
+    when 'invoice' then self.invoices[rand(self.invoices.count)] 
     end
   end
 
@@ -91,4 +97,7 @@ class SalesEngine
     end
     invoice_list.sort_by { |invoice| invoice.merchant_id }
   end
+
+  # START OF DARRELL'S WORK
+
 end
