@@ -1,6 +1,7 @@
 #require './merchant'
 #require './invoice_item'
 require './lib/sales_engine/database'
+require './lib/sales_engine/find'
 
 module SalesEngine
   class Item

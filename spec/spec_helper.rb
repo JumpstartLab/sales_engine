@@ -4,11 +4,13 @@ SimpleCov.start do
 end
 
 require 'bundler'
-Bundler.require
+Bundler.require(:default, :test)
 
-require './lib/sales_engine/merchant'
-require './lib/sales_engine/item'
-require './lib/sales_engine/invoice_item'
-require './lib/sales_engine/invoice'
-require './lib/sales_engine/customer'
-require './lib/sales_engine/transaction'
+require 'sales_engine'
+
+# require '../lib/sales_engine/merchant'
+# require '../lib/sales_engine/item'
+# require '../lib/sales_engine/invoice_item'
+# require '../lib/sales_engine/invoice'
+# require '../lib/sales_engine/customer'
+# require '../lib/sales_engine/transaction'
