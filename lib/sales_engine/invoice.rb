@@ -14,6 +14,10 @@ class Invoice < Record
     Database.instance.get_random_record("invoices")
   end
 
+  def transactions
+    Database.instance.find_all_by("transactions", "invoice_id", self.id)
+  end
+
   def self.find_by_id(id)
     Database.instance.find_by("invoices", "id", id)
   end

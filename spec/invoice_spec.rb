@@ -320,4 +320,34 @@ describe Invoice do
       end
     end
   end
+
+  describe "#transactions" do
+    context "where there are transactions in the database" do
+      let(:transaction_1) { Transaction.new({:id => 1, :invoice_id => invoice_1.id }) }
+      let(:transaction_2) { Transaction.new({:id => 2, :invoice_id => invoice_2.id }) }
+      let(:transaction_3) { Transaction.new({:id => 3, :invoice_id => invoice_1.id }) }
+      let(:invoice_3) { Invoice.new({ :id => 3 }) }
+
+      before(:each) do
+        se.add_to_list(transaction_1)
+        se.add_to_list(transaction_2)
+        se.add_to_list(transaction_3)
+        se.add_to_list(invoice_3)
+      end
+
+      it "returns all transactions associated with a given invoice id" do
+        invoice_1.transactions.should == [transaction_1, transaction_3]
+      end
+
+      it "returns nothing if no invoices have the id" do
+        invoice_3.transactions.should == []
+      end
+    end
+
+    context "where there are no transactions in the database" do
+      it "returns nothing if no invoices have the id" do
+        invoice_1.transactions.should == []
+      end
+    end
+  end
 end
