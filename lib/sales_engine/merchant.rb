@@ -14,6 +14,10 @@ module SalesEngine
 
     def initialize(attributes = {})
       define_attributes(attributes)
+      update
+    end
+
+    def update
       calc_invoices
       calc_items
       calc_revenue
@@ -29,14 +33,14 @@ module SalesEngine
     end
 
     def revenue(date=nil)
-      revenue = 0
+      total_revenue = 0
       if date
-        revenue = invoices.inject(0) do |sum, invoice|
+        total_revenue = invoices.inject(0) do |sum, invoice|
           if invoice.created_at == date
             sum += invoice.revenue
           end
         end
-        revenue = BigDecimal.new(revenue)
+        BigDecimal.new(total_revenue)
       else
         @revenue
       end

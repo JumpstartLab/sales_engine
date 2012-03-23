@@ -6,12 +6,16 @@ module SalesEngine
   class Customer
     ATTRIBUTES = [:id, :first_name, :last_name, :created_at, :updated_at]
     attr_reader :invoices, :transactions, :favorite_merchant,
-                :successful_transactions
+    :successful_transactions
     extend SearchMethods
     include AccessorBuilder
 
     def initialize (attributes = {})
       define_attributes(attributes)
+      update
+    end
+
+    def update
       calc_invoices
       calc_transactions
       calc_successful_transactions
@@ -23,10 +27,10 @@ module SalesEngine
     end
 
     def calc_transactions
-      transactions = self.invoices.collect do |invoice|
+      trans_actions = self.invoices.collect do |invoice|
         invoice.transactions
       end
-      @transactions = transactions.flatten
+      @transactions = trans_actions.flatten.uniq
     end
 
     def calc_favorite_merchant
@@ -47,7 +51,7 @@ module SalesEngine
     end
 
     def calc_successful_transactions
-      @successful_transactions = transactions.select do |transaction|
+      @successful_transactions = self.transactions.select do |transaction|
         transaction.successful?
       end
     end

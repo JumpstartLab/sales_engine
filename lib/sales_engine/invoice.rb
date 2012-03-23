@@ -15,6 +15,10 @@ module SalesEngine
 
       def initialize(attributes = {})
         define_attributes(attributes)
+        update
+      end
+
+      def update
         calc_transactions
         calc_customer
         calc_invoice_items
@@ -43,7 +47,7 @@ module SalesEngine
             sum += (invoice_item.unit_price.to_i * invoice_item.quantity.to_i)
           end
         end
-        @revenur = BigDecimal.new(revenue)
+        @revenue = BigDecimal.new(revenue)
       end
 
       def successful?

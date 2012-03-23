@@ -23,6 +23,7 @@ module SalesEngine
       CLASS_FILES.each do |klass, filename|
         file_to_objects(klass, filename)
       end
+      update
     end
     def self.load(filename)
       CSV.open("data/#{filename}", CSV_OPTIONS)
@@ -35,6 +36,10 @@ module SalesEngine
         instance = klass.new(line.to_hash)
         Database.instance.send("#{method_name}") << instance
       end
+    end
+
+    def self.update
+      Database.instance.update
     end
 
   end

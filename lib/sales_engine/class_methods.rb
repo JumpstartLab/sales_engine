@@ -33,7 +33,6 @@ module SalesEngine
             instances_of_class.select do |instance|
               instance.send("#{attribute}") == query
             end
-            []
           end
 
           define_singleton_method("random") do
@@ -92,8 +91,8 @@ module SalesEngine
   end
 
   class Database 
-    ATTRIBUTES = [:customer, :item, :invoice_item,
-      :merchant, :transaction, :invoice]
+    ATTRIBUTES = [:transaction, :customer, :item, :invoice_item,
+      :merchant, :invoice]
       include Singleton
       include AccessorBuilder
 
@@ -102,5 +101,15 @@ module SalesEngine
           send("#{attribute}=", Array.new)
         end
       end
+
+      def update
+        ATTRIBUTES.each do |attribute|
+          attr_array = send("#{attribute}")
+          attr_array.each do |instance|
+            instance.send("update")
+          end
+        end 
+      end
+
     end
   end

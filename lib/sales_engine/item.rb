@@ -12,6 +12,10 @@ module SalesEngine
 
       def initialize(attributes = {})
         define_attributes(attributes)
+        update
+      end
+
+      def update
         calc_invoice_items
         calc_merchant
       end
@@ -24,5 +28,5 @@ module SalesEngine
         @merchant = Merchant.find_by_id(merchant_id)
       end
 
+    end
   end
-end

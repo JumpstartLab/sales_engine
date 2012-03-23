@@ -10,6 +10,11 @@ module SalesEngine
 
     def initialize (attributes = {})
       define_attributes(attributes)
+      update
+    end
+
+    def update
+      calc_invoice
     end
 
     def calc_invoice
