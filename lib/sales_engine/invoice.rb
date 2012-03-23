@@ -8,40 +8,42 @@ module SalesEngine
   class Invoice
     ATTRIBUTES = [:id, :customer_id, :merchant_id, :status, :created_at,
       :updated_at]
+      attr_reader :invoice_items, :transactions, :items, :revenue, :customer
       extend SearchMethods
       include AccessorBuilder
 
 
       def initialize(attributes = {})
         define_attributes(attributes)
+        calc_transactions
+        calc_customer
+        calc_invoice_items
+        calc_items
+        calc_revenue
       end
 
-      def transactions
-        Transaction.find_all_by_invoice_id(self.id)
+      def calc_transactions
+        @transactions = Transaction.find_all_by_invoice_id(self.id)
       end
 
-      def invoice_items
-        InvoiceItem.find_all_by_invoice_id(self.id)
+      def calc_invoice_items
+        @invoice_items = InvoiceItem.find_all_by_invoice_id(self.id)
       end
 
-      def items
-        invoice_items = InvoiceItem.find_all_by_invoice_id(self.id)
-        matches = invoice_items.select do |invoice_item|
-          invoice_item.invoice_id == self.id
-        end
-        matches.collect do |invoice_item|
+      def calc_items
+        @items = invoice_items.collect do |invoice_item|
           invoice_item.item
         end
       end
 
-      def revenue
+      def calc_revenue
         revenue = 0
         if successful?
           revenue = invoice_items.inject(0) do |sum, invoice_item|
             sum += (invoice_item.unit_price.to_i * invoice_item.quantity.to_i)
           end
         end
-        BigDecimal.new(revenue)
+        @revenur = BigDecimal.new(revenue)
       end
 
       def successful?
@@ -50,7 +52,7 @@ module SalesEngine
         end
       end
 
-      def customer
+      def calc_customer
         Customer.find_by_id(self.customer_id)
       end
     end
