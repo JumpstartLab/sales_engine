@@ -1,16 +1,18 @@
-class Transaction
-  attr_accessor :id, :invoice_id, :credit_card_number, :credit_card_expiration_date, :result, :created_at, :updated_at
+module SalesEngine
+  class Transaction
+    attr_accessor :id, :invoice_id, :credit_card_number, :credit_card_expiration_date, :result, :created_at, :updated_at
 
-  # def initialize
+    # def initialize
 
-  # end
+    # end
 
-  # def load(filename)
+    # def load(filename)
 
-  # end
+    # end
 
-  # def invoice
-  #   # returns an instance of Invoice associated with this object
-  # end
+    # def invoice
+    #   # returns an instance of Invoice associated with this object
+    # end
 
+  end
 end

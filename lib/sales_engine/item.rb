@@ -1,20 +1,22 @@
-class Item
-  attr_accessor :id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at
+module SalesEngine
+  class Item
+    attr_accessor :id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at
 
-  # def initialize
+    # def initialize
 
-  # end
+    # end
 
-  # def load(filename)
+    # def load(filename)
 
-  # end
+    # end
 
-  # def invoice_items
-  #   # invoice_items returns an instance of InvoiceItems associated with this object
-  # end
-  
-  # def merchant
-  #   # merchant returns an instance of Merchant associated with this object    
-  # end
+    # def invoice_items
+    #   # invoice_items returns an instance of InvoiceItems associated with this object
+    # end
+    
+    # def merchant
+    #   # merchant returns an instance of Merchant associated with this object    
+    # end
 
+  end
 end

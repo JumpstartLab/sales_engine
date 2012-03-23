@@ -1,6 +1,8 @@
-require './lib/sales_engine/database'
+#$LOAD_PATH.unshift(File.join(File.dirname(__FILE__),'lib')).uniq!
+$LOAD_PATH.unshift("./lib")
+require 'sales_engine/database'
 
-class SalesEngine
+module SalesEngine
 
   def self.startup
     Database.instance

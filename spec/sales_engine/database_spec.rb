@@ -1,9 +1,9 @@
-require './lib/sales_engine/database'
-require './spec/spec_helper'
+#require 'sales_engine/database'
+require 'spec_helper'
 
-describe Database do
+describe SalesEngine::Database do
   describe '#initialize' do
-    let(:database) { Database.instance }
+    let(:database) { SalesEngine::Database.instance }
     context "when loading database" do 
       it "sets customers" do
         database.customers.any?.should be_true

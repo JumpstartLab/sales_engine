@@ -1,7 +1,14 @@
-require './lib/sales_engine'
+require 'sales_engine'
 
-module Searchable
- def find(attribute, input)
-   collection.find{ |c| c.send(attribute) == input }
- end
+module SalesEngine
+  module Searchable
+   def find_by_(attribute, input)
+     collection.find{ |c| c.send(attribute) == input }
+   end
+
+   def find_all_by_(attribute, input)
+     collection.find_all{ |c| c.send(attribute) == input }
+   end
+
+  end
 end
