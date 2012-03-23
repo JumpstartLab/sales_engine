@@ -1,4 +1,4 @@
-require './spec/spec_helper.rb'
+require 'spec_helper.rb'
 
 describe SalesEngine::Merchant do
   let(:tr_one)   { SalesEngine::Transaction.new( :invoice_id => "1") }

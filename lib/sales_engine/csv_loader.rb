@@ -1,14 +1,14 @@
-require 'database'
 require 'csv'
-require 'customer'
-require 'transaction'
-require 'item'
-require 'merchant'
-require 'invoice_item'
-require 'invoice'
+require 'sales_engine/database'
+require 'sales_engine/customer'
+require 'sales_engine/transaction'
+require 'sales_engine/item'
+require 'sales_engine/merchant'
+require 'sales_engine/invoice_item'
+require 'sales_engine/invoice'
 
 module SalesEngine
-  class CSVLoader
+  class CsvLoader
 
     def initialize
       load_transactions

@@ -1,5 +1,5 @@
 require 'csv'
-require 'database'
+require 'sales_engine/database'
 
 module SalesEngine
   class Transaction
