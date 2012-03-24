@@ -1,6 +1,6 @@
 require 'spec_helper.rb'
 
-describe SaleEngine::Item do
+describe SalesEngine::Item do
 
   let(:inv_item_one){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3",
                                                     :invoice_id => "1", :item_id => "1" ) }
