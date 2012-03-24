@@ -19,8 +19,8 @@ module SalesEngine
       self.customer_id = attributes[:customer_id]
       self.merchant_id = attributes[:merchant_id]
       self.status = attributes[:status]
-      self.created_at = DateTime.parse(attributes[:created_at]) if attributes[:created_at]
-      self.updated_at = DateTime.parse(attributes[:updated_at]) if attributes[:updated_at]
+      self.created_at = Time.parse(attributes[:created_at]) if attributes[:created_at]
+      self.updated_at = Time.parse(attributes[:updated_at]) if attributes[:updated_at]
     end
 
     def transactions
@@ -69,8 +69,8 @@ module SalesEngine
     def self.find_all_by_date(date)
       SalesEngine::Database.instance.invoice_list.select do |i|
         dt = i.created_at
-        date = Date.parse(date) if date.kind_of? String
-        i if date == Date.new(dt.year, dt.mon, dt.mday)
+        date = Time.parse(date) if date.kind_of? String
+        i if date == Time.new(dt.year, dt.mon, dt.mday)
       end
     end
 
@@ -88,7 +88,7 @@ module SalesEngine
           #sum all of them
           #divide the sum by all the invoices that happened on date
         total_rev = 0
-        date = Date.parse(date.first)
+        date = Time.parse(date.first)
         inv_on_date = find_all_by_date(date)
         inv_ids_on_date = inv_on_date.collect { |inv| inv.id }
         inv_ids_on_date.each do |inv_id|

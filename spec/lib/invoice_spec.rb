@@ -1,7 +1,6 @@
 require 'spec_helper.rb'
 
 describe SalesEngine::Invoice do
-
   let(:inv_one)   { SalesEngine::Invoice.new( :id => "1", :customer_id => "1",
                                    :created_at => "2012-2-19" ) }
   let(:inv_two)   { SalesEngine::Invoice.new( :id => "2", :customer_id => "2",
@@ -18,7 +17,6 @@ describe SalesEngine::Invoice do
                                                     :invoice_id => "2", :item_id => "2" ) } 
   let(:inv_item_three){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3") }
   let(:inv_item_four) { SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3")}
-  
 
   describe "#transactions" do
     it "returns an array of transactions" do
@@ -128,7 +126,7 @@ describe SalesEngine::Invoice do
       end
     end
   end
-
+end
   # describe ".average_items" do
   #   #average item count for each processed invoice
   #   context "returns the average items for processed invoices" do
@@ -155,51 +153,51 @@ describe SalesEngine::Invoice do
   #   end
   # end
 
-  describe ".random" do
-    it "returns a random instance of customer in customer_list" do
-    end
-
-    context "returns nil when there are no customers" do
-    end
+describe ".random" do
+  it "returns a random instance of customer in customer_list" do
   end
 
-  describe ".find_by_id" do
-    it "returns a single customer whose id matches param" do
-    end
+  context "returns nil when there are no customers" do
+  end
+end
 
-    context "returns nil when there are no customers" do
-    end
+describe ".find_by_id" do
+  it "returns a single customer whose id matches param" do
   end
 
-  describe ".find_by_first_name" do
-    it "returns a single customer whose first_name matches param" do
-    end
+  context "returns nil when there are no customers" do
+  end
+end
 
-    context "returns nil when there are no customers" do
-    end
+describe ".find_by_first_name" do
+  it "returns a single customer whose first_name matches param" do
   end
 
-  describe ".find_by_last_name" do
-    it "returns a single customer whose last_name matches param" do
-    end
+  context "returns nil when there are no customers" do
+  end
+end
 
-    context "returns nil when there are no customers" do
-    end
+describe ".find_by_last_name" do
+  it "returns a single customer whose last_name matches param" do
   end
 
-  describe ".find_by_created_at" do
-    it "returns a single customer whose created_at matches param" do
-    end
+  context "returns nil when there are no customers" do
+  end
+end
 
-    context "returns nil when there are no customers" do
-    end
+describe ".find_by_created_at" do
+  it "returns a single customer whose created_at matches param" do
   end
 
-  describe ".find_by_updated_at" do
-    it "returns a single customer whose updated_at matches param" do
-    end
-
-    context "returns nil when there are no customers" do
-    end
+  context "returns nil when there are no customers" do
   end
+end
+
+describe ".find_by_updated_at" do
+  it "returns a single customer whose updated_at matches param" do
+  end
+
+  context "returns nil when there are no customers" do
+  end
+
 end
