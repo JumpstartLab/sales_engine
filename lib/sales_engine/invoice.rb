@@ -35,22 +35,16 @@ module SalesEngine
     end
 
     def self.random
-      puts "#{Database.instance.invoices.sample.inspect}"
       Database.instance.invoices.sample
     end
 
     def transactions
-      # returns a collection of associated Transaction instances
-      "You called the transactions method."
-      #result = []
       Database.instance.transactions.select do |t|
         t.send(:invoice_id) == self.id
       end
     end
 
     def invoice_items
-      #invoice_items returns a collection of associated InvoiceItem instances
-      "You called the invoice items"
       Database.instance.invoice_items.select do |ii|
         ii.send(:invoice_id) == self.id
       end
@@ -58,13 +52,22 @@ module SalesEngine
 
     def items
       #items returns a collection of associated Items by way of InvoiceItem objects
+      item_ids = self.invoice_items.collect { |i| i.item_id }
+      item_ids.collect do |item_id| 
+        Database.instance.items.select do |i|
+          i.send(:id) == item_id
+        end
+      end
     end
 
     def customer
       #customer returns an instance of Customer associated with this object
+      Database.instance.customers.find do |c|
+        c.send(:id) == self.customer_id
+      end
     end
 
-    def charge 
+    def charge(attributes)
       # invoice.charge(:credit_card_number => "4444333322221111", :credit_card_expiration => "10/13", :result => "success")
       # will call new instance of Transaction
     end

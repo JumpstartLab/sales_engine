@@ -16,8 +16,6 @@ module SalesEngine
       self.updated_at = attributes[:updated_at]
     end
 
-    # Module: extended(base)
-
     class << self
       attributes = [:id, :first_name, :last_name, :created_at, :updated_at]
       attributes.each do |attribute|
@@ -31,15 +29,24 @@ module SalesEngine
     end
 
     def self.random
-      puts "#{Database.instance.customers.sample.inspect}"
+      Database.instance.customers.sample
     end
 
     def invoices
       #invoices returns a collection of Invoice instances associated with this object.
+      Database.instance.invoices.select do |i|
+        i.send(:customer_id) == self.id
+      end
     end
 
     def transactions
       #transactions returns an array of Transaction instances associated with the customer
+      invoice_ids = self.invoices.collect { |i| i.id }
+      invoice_ids.collect do |inv_id|
+        Database.instance.transactions.select do |t|
+          t.send(:invoice_id) == inv_id
+        end
+      end
     end
 
     def favorite_merchant

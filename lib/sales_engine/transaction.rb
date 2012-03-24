@@ -34,8 +34,16 @@ module SalesEngine
       end
     end
 
+    def self.random
+      # just using for testing purposes
+      Database.instance.transactions.sample
+    end
+
     def invoice
       #invoice returns an instance of Invoice associated with this object
+      Database.instance.invoices.find do |i|
+        i.send(:id) == self.invoice_id
+      end
     end
   end
 end

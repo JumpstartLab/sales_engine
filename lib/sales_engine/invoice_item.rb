@@ -31,12 +31,22 @@ module SalesEngine
       end
     end
 
+    def self.random
+      Database.instance.invoice_items.sample
+    end
+
     def invoice
       # returns an instance of Invoice associated with this object
+      Database.instance.invoices.find do |i|
+        i.send(:id) == self.invoice_id
+      end
     end
 
     def item
       #item returns an instance of Item associated with this object
+      Database.instance.items.find do |i|
+        i.send(:id) == self.item_id
+      end
     end
 
   end

@@ -35,12 +35,22 @@ module SalesEngine
       end
     end
 
+    def self.random
+      Database.instance.items.sample
+    end
+
     def invoice_items
       #invoice_items returns an instance of InvoiceItems associated with this object
+      Database.instance.invoice_items.select do |ii|
+        ii.send(:item_id) == self.id
+      end
     end
 
     def merchant
       #merchant returns an instance of Merchant associated with this object
+      Database.instance.merchants.find do |m|
+        m.send(:id) == self.merchant_id
+      end
     end
 
     def self.most_revenue(num_of_items)
