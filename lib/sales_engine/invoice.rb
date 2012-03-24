@@ -38,6 +38,13 @@ module SalesEngine
       Database.instance.invoices.sample
     end
 
+    def transaction_successful?
+      t = Database.instance.transactions.find do |t| 
+        t.send(:invoice_id) == self.id
+      end
+      t.result == "success"
+    end
+
     def transactions
       Database.instance.transactions.select do |t|
         t.send(:invoice_id) == self.id

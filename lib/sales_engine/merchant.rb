@@ -50,6 +50,33 @@ module SalesEngine
       end
     end
 
+    def charged_invoices
+      Database.instance.invoices.select do |i|
+        (i.send(:merchant_id) == self.id) && i.transaction_successful?
+      end
+    end
+
+    def revenue(date=nil)
+      #if date?
+        #revenue(date) returns the total revenue that merchant for a specific date
+      #else
+        # returns the total revenue for that merchant across all transactions
+
+      # find all invoices for a customer
+      # for each invoice, for through each invoice item
+      # for each invoice item, add up unit price
+      # return total price
+      rev = 0
+      inv_item_ids = self.charged_invoices.collect { |i| i.id }
+      inv_item_ids.each do |id|
+        inv_item = Database.instance.invoice_items.find do |i|
+          i.send(:id) == id
+        end
+        rev += (inv_item.unit_price.to_i * inv_item.quantity.to_i)
+      end
+      rev
+    end
+
     def self.most_revenue(num_of_merchants)
       # returns the top x merchant instances ranked by total revenue
 
@@ -61,13 +88,6 @@ module SalesEngine
 
     def self.revenue(date)
       # returns the total revenue for that date across all merchants
-    end
-
-    def revenue(date=nil)
-      #if date?
-        #revenue(date) returns the total revenue that merchant for a specific date
-      #else
-        # returns the total revenue for that merchant across all transactions
     end
 
     def favorite_customer
