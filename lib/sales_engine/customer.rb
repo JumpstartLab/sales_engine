@@ -1,9 +1,10 @@
 require 'csv'
 require 'sales_engine/searchable'
+require 'sales_engine/randomize'
 
 module SalesEngine
   class Customer
-    
+    extend Randomize
     extend Searchable
 
     attr_accessor :id, :first_name, :last_name, :created_at,

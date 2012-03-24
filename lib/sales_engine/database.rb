@@ -10,9 +10,9 @@ require 'sales_engine/merchant'
 module SalesEngine
   class Database
     include Singleton
-    CSV_OPTIONS = {:headers => true, :header_converters => :symbol}  
+    CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
     attr_accessor :invoices, :invoiceitems, :items, :transactions, :merchants, :customers
-    
+
     def initialize
       load_customers
       load_invoices
@@ -22,42 +22,50 @@ module SalesEngine
       load_merchants
     end
 
-    private 
+
+    private
 
     def load_customers(options=CSV_OPTIONS)
       customers = CSV.open("csv_data/customers.csv", options)
       self.customers = customers.collect {|line| Customer.new(line)}
-      puts "Successfully loaded customers"
+      successful_load("customers")
     end
 
     def load_invoices(options=CSV_OPTIONS)
       invoices = CSV.open("csv_data/items.csv", options)
       self.invoices = invoices.collect {|line| Invoice.new(line)}
-      puts "Successfully loaded invoices"
+      successful_load("invoices")
     end
 
     def load_invoiceitems(options=CSV_OPTIONS)
       invoiceitems = CSV.open("csv_data/invoice_items.csv", options)
       self.invoiceitems = invoiceitems.collect {|line| InvoiceItem.new(line)}
-      puts "Successfully loaded invoice items"
+      successful_load("invoice items")
     end
 
     def load_items(options=CSV_OPTIONS)
       items = CSV.open("csv_data/items.csv", options)
       self.items = items.collect {|line| Item.new(line)}
-      puts "Successfully loaded items"
+      successful_load("items")
     end
 
     def load_transactions(options=CSV_OPTIONS)
       transactions = CSV.open("csv_data/transactions.csv", options)
       self.transactions = transactions.collect {|line| Transaction.new(line)}
-      puts "Successfully loaded transcations"
+      successful_load("transactions")
     end
 
     def load_merchants(options=CSV_OPTIONS)
       merchants = CSV.open("csv_data/merchants.csv", options)
       self.merchants = merchants.collect {|line| Merchant.new(line)}
-      puts "Successfully loaded merchants"
+      successful_load("merchants")
+    end
+
+    def successful_load(param)
+      puts "Successfully loaded #{param}"
     end
   end
 end
+
+
+
