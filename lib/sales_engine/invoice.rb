@@ -6,45 +6,37 @@ module SalesEngine
                   :merchant_id,
                   :status,
                   :created_at,
-                  :updated_at
+                  :updated_at,
+                  :date
 
     def initialize(attributes={})
-      self.id = attributes[:id].to_s
-      self.customer_id = attributes[:customer_id].to_s
-      self.merchant_id = attributes[:merchant_id].to_s
+      self.id = attributes[:id].to_i
+      self.customer_id = attributes[:customer_id].to_i
+      self.merchant_id = attributes[:merchant_id].to_i
       self.status = attributes[:status].to_s
       self.created_at = attributes[:created_at].to_s
       self.updated_at = attributes[:updated_at].to_s
+      self.date = attributes[:created_at].to_s[0..9]
     end
 
     def self.invoices
-      invoices = []
-      ObjectSpace.each_object(SalesEngine::Invoice) {|o| invoices<<o}
-      invoices
+      invoices = DataStore.instance.invoices
     end
 
     def transactions_array
-      transactions = []
-      ObjectSpace.each_object(SalesEngine::Transaction) {|o| transactions<<o}
-      transactions
+      transactions = DataStore.instance.transactions
     end
 
     def invoice_items_array
-      invoice_items = []
-      ObjectSpace.each_object(SalesEngine::InvoiceItem) {|o| invoice_items<<o}
-      invoice_items
+      invoice_items = DataStore.instance.invoice_items
     end
 
     def items_array
-      items = []
-      ObjectSpace.each_object(SalesEngine::Item) {|o| items<<o}
-      items
+      items = DataStore.instance.items
     end
 
     def customers_array
-      customers = []
-      ObjectSpace.each_object(SalesEngine::Customer) {|o| customers<<o}
-      customers
+      customers = DataStore.instance.customers
     end
 
 

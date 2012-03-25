@@ -8,7 +8,7 @@ module SalesEngine
                   :updated_at
 
     def initialize(attributes={})
-      self.id = attributes[:id].to_s
+      self.id = attributes[:id].to_i
       self.first_name = attributes[:first_name].to_s
       self.last_name = attributes[:last_name].to_s
       self.created_at = attributes[:created_at].to_s
@@ -17,15 +17,11 @@ module SalesEngine
 
 
     def self.customers
-      customers = []
-      ObjectSpace.each_object(SalesEngine::Customer) {|o| customers<<o}
-      customers
+      customers = DataStore.instance.customers
     end
 
     def invoices_array
-      invoices = []
-      ObjectSpace.each_object(SalesEngine::Invoice) {|o| invoices<<o}
-      invoices
+      invoices = DataStore.instance.invoices
     end
 
     def self.random

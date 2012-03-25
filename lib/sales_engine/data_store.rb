@@ -1,5 +1,8 @@
+require 'singleton'
+
 module SalesEngine
   class DataStore
+    include Singleton
 
     OPTIONS = {:headers => true, :header_converters => :symbol}
     attr_accessor :customers,

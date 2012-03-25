@@ -6,28 +6,31 @@ module SalesEngine
                   :quantity,
                   :unit_price,
                   :created_at,
-                  :updated_at
+                  :updated_at,
+                  :total
 
     def initialize(attributes={})
-      self.id = attributes[:id].to_s
-      self.item_id = attributes[:item_id].to_s
-      self.invoice_id = attributes[:invoice_id].to_s
-      self.quantity = attributes[:quantity].to_s
-      self.unit_price = attributes[:unit_price].to_s
+      self.id = attributes[:id].to_i
+      self.item_id = attributes[:item_id].to_i
+      self.invoice_id = attributes[:invoice_id].to_i
+      self.quantity = attributes[:quantity].to_i
+      self.unit_price = attributes[:unit_price].to_i
       self.created_at = attributes[:created_at].to_s
       self.updated_at = attributes[:updated_at].to_s
+      self.total = attributes[:quantity].to_i * attributes[:unit_price].to_i
+
+    end
+
+    def self.random
+      self.invoice_items.sample
     end
 
     def items_array
-      items = []
-      ObjectSpace.each_object(SalesEngine::Item) {|o| items<<o}
-      items
+      items = DataStore.instance.items
     end
 
     def invoices_array
-      invoices = []
-      ObjectSpace.each_object(SalesEngine::Invoice) {|o| invoices<<o}
-      invoices
+      invoices = DataStore.instance.invoices
     end
 
     def item
@@ -36,9 +39,12 @@ module SalesEngine
     end
 
     def invoice
-      invoice = []
       invoices = invoices_array.select { |inv| inv.id == invoice_id}
-      invoices[0]
+      invoices.first
+    end
+
+    def self.invoice_items
+      invoice_items = DataStore.instance.invoice_items
     end
 
   end

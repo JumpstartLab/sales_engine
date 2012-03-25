@@ -9,8 +9,8 @@ module SalesEngine
                   :updated_at
 
     def initialize(attributes={})
-      self.id = attributes[:id].to_s
-      self.invoice_id = attributes[:invoice_id].to_s
+      self.id = attributes[:id].to_i
+      self.invoice_id = attributes[:invoice_id].to_i
       self.credit_card_number = attributes[:credit_card_number].to_s
       self.credit_card_expiration_date = attributes[:credit_card_expiration_date].to_s
       self.result = attributes[:result].to_s
@@ -19,9 +19,7 @@ module SalesEngine
     end
 
     def invoices_array
-      invoices = []
-      ObjectSpace.each_object(SalesEngine::Invoice) {|o| invoices<<o}
-      invoices
+      invoices = DataStore.instance.invoices
     end
 
     def invoices

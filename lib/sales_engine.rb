@@ -11,6 +11,6 @@ require 'sales_engine/search'
 
 module SalesEngine
   def startup
-    data = DataStore.new
+    DataStore.instance
   end
 end
