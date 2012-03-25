@@ -18,18 +18,6 @@ describe SalesEngine::Merchant do
   let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3",
                                        :invoice_id => "1")}
 
-  # describe "#transactions" do
-  #   it "returns an array of transactions" do
-  #       Database.instance.transaction_list = [ tr_one, tr_two, tr_three ]
-  #       invoice_two.transactions.should == [ tr_two, tr_three ]
-  #   end
-
-  #   context "when an invoice has no transactions" do
-  #     it "returns an empty array" do
-  #       invoice_three.transactions.should == [ ]
-  #     end
-  #   end
-  # end
 
   # describe ".dates_by_revenue" do
   #   #sum all invoice items and divide by number of invoices

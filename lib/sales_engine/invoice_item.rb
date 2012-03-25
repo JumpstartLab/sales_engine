@@ -30,6 +30,12 @@ module SalesEngine
       total_revenue
     end
 
+    def invoice
+      SalesEngine::Invoice.find_by_id(self.invoice_id)
+    end
+
+    
+
     # def self.total_revenue_by_invoice_ids(invoice_ids)
     #   total_revenue = BigDecimal.new("0")
     #   data = invoice_ids.collect { |invoice_id| find_all_by_invoice_id(invoice_id) }
