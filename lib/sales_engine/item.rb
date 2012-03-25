@@ -37,5 +37,9 @@ module SalesEngine
         end
       end
     end
+
+    def invoice_items
+      SalesEngine::InvoiceItem.find_all_by_item_id(self.id)
+    end
   end
 end

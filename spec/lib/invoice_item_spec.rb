@@ -25,17 +25,17 @@ describe SalesEngine::InvoiceItem do
     end
   end
 
-  # describe "#item" do
-  #   it "returns an instance of item associated with the instance" do
-  #     SalesEngine::Database.instance.item_list = [ item_one, item_two ]
-  #     inv_item_one.item.should == item_one
+  describe "#item" do
+    it "returns an instance of item associated with the invoice item" do
+      SalesEngine::Database.instance.item_list = [ item_one, item_two ]
+      inv_item_one.item.should == item_one
+    end
 
-  #     context "when an invoice has an invalid item id" do
-  #       it "returns nil" do
-  #         SalesEngine::Database.instance.item_list = [ item_two ]
-  #         inv_item_one.item.should be_nil
-  #       end
-  #     end
-  #   end
-  # end
+    context "when an invoice has an invalid item id" do
+      it "returns nil" do
+        SalesEngine::Database.instance.item_list = [ item_two ]
+        inv_item_one.item.should be_nil
+      end
+    end
+  end
 end

@@ -34,6 +34,10 @@ module SalesEngine
       SalesEngine::Invoice.find_by_id(self.invoice_id)
     end
 
+    def item
+      SalesEngine::Item.find_by_id(self.item_id)
+    end
+
     
 
     # def self.total_revenue_by_invoice_ids(invoice_ids)
@@ -57,6 +61,12 @@ module SalesEngine
     def self.find_all_by_invoice_id(invoice_id)
       SalesEngine::Database.instance.invoice_item_list.select do |i_i|
         i_i if i_i.invoice_id == invoice_id
+      end
+    end
+
+    def self.find_all_by_item_id(item_id)
+      SalesEngine::Database.instance.invoice_item_list.select do |i_i|
+        i_i if i_i.item_id == item_id
       end
     end
 

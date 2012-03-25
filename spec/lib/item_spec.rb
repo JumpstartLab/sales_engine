@@ -13,19 +13,19 @@ describe SalesEngine::Item do
   let(:merchant_one){ SalesEngine::Merchant.new( :id => "1" )}
   let(:merchant_two){ SalesEngine::Merchant.new( :id => "2" )}
 
-  # describe "#invoice_items" do
-  #   it "returns a collection of invoice_items associated with the instance" do
-  #     SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two, inv_item_three ]
-  #     item_one.invoice_items.should == [ inv_item_one, inv_item_three ]
+  describe "#invoice_items" do
+    it "returns a collection of invoice_items associated with the item instance" do
+      SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two, inv_item_three ]
+      item_one.invoice_items.should == [ inv_item_one, inv_item_three ]
+    end
 
-  #     context "when an invoice has an invalid invoice id" do
-  #       it "returns nil" do
-  #         SalesEngine::Database.instance.invoice_item_list = [ inv_two ]
-  #         item_one.invoice_items.should be_nil
-  #       end
-  #     end
-  #   end
-  # end
+    context "when an invoice has an invalid invoice id" do
+      it "returns empty array" do
+        SalesEngine::Database.instance.invoice_item_list = [ inv_item_two ]
+        item_one.invoice_items.should be_empty
+      end
+    end
+  end
 
   # describe "#merchant" do
   #   it "returns an instance of merchant associated with the instance" do

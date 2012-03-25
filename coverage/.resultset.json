@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/lib/sales_engine.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/lib/sales_engine.rb": [
         1,
         1,
         1,
@@ -15,7 +15,7 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/lib/sales_engine/csv_loader.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/lib/sales_engine/csv_loader.rb": [
         1,
         1,
         1,
@@ -82,7 +82,7 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/lib/sales_engine/database.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/lib/sales_engine/database.rb": [
         1,
         null,
         1,
@@ -99,7 +99,7 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/lib/sales_engine/customer.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/lib/sales_engine/customer.rb": [
         1,
         1,
         1,
@@ -138,7 +138,7 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/lib/sales_engine/transaction.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/lib/sales_engine/transaction.rb": [
         1,
         1,
         null,
@@ -177,7 +177,7 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/lib/sales_engine/item.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/lib/sales_engine/item.rb": [
         1,
         1,
         1,
@@ -190,22 +190,22 @@
         null,
         null,
         null,
-        null,
-        null,
-        1,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
         null,
         null,
         1,
         7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        null,
+        null,
         1,
-        1,
+        7,
+        3,
+        3,
         null,
         null,
         null,
@@ -216,11 +216,15 @@
         0,
         null,
         null,
+        null,
+        null,
+        1,
+        2,
         null,
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/lib/sales_engine/merchant.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/lib/sales_engine/merchant.rb": [
         1,
         1,
         1,
@@ -257,19 +261,19 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/lib/sales_engine/invoice_item.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/lib/sales_engine/invoice_item.rb": [
         1,
         1,
         1,
         null,
         1,
-        12,
-        12,
-        12,
-        12,
-        12,
-        12,
-        12,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
         null,
         null,
         1,
@@ -288,6 +292,10 @@
         1,
         null,
         1,
+        null,
+        null,
+        1,
+        2,
         null,
         null,
         1,
@@ -321,6 +329,12 @@
         null,
         null,
         1,
+        2,
+        4,
+        null,
+        null,
+        null,
+        1,
         0,
         0,
         0,
@@ -330,7 +344,7 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/lib/sales_engine/invoice.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/lib/sales_engine/invoice.rb": [
         1,
         1,
         null,
@@ -437,7 +451,7 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/spec/lib/customer_spec.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/spec/lib/customer_spec.rb": [
         1,
         null,
         1,
@@ -510,19 +524,19 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/spec/lib/invoice_item_spec.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/spec/lib/invoice_item_spec.rb": [
         1,
         null,
         1,
         null,
-        3,
+        5,
         null,
         2,
         null,
         3,
         null,
-        1,
-        1,
+        2,
+        3,
         null,
         1,
         1,
@@ -538,22 +552,22 @@
         null,
         null,
         null,
+        1,
+        1,
+        1,
+        1,
         null,
         null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
+        1,
+        1,
+        1,
+        1,
         null,
         null,
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/spec/lib/invoice_spec.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/spec/lib/invoice_spec.rb": [
         1,
         null,
         1,
@@ -758,32 +772,32 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/spec/lib/item_spec.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/spec/lib/item_spec.rb": [
         1,
         null,
         1,
         null,
+        2,
+        null,
+        3,
+        null,
+        2,
+        null,
+        3,
+        1,
+        1,
         1,
         null,
         1,
-        null,
-        1,
-        null,
-        1,
         1,
         1,
         1,
         null,
         null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
+        1,
+        1,
+        1,
+        1,
         null,
         null,
         null,
@@ -848,7 +862,7 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/spec/lib/merchant_spec.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/spec/lib/merchant_spec.rb": [
         1,
         null,
         1,
@@ -881,7 +895,7 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/spec/lib/transaction_spec.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/spec/lib/transaction_spec.rb": [
         1,
         null,
         1,
@@ -920,7 +934,7 @@
         null,
         null
       ],
-      "/Users/edwardweng/Code/ruby_100/jumpstart_tutorials/sales_engine/spec/sales_engine_spec.rb": [
+      "/Users/eliseworthy/Dropbox/projects/sales_engine/spec/sales_engine_spec.rb": [
         1,
         null,
         null,
@@ -928,6 +942,6 @@
         null
       ]
     },
-    "timestamp": 1332708270
+    "timestamp": 1332708879
   }
 }
