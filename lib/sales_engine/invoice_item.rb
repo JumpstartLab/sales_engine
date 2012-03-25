@@ -13,7 +13,7 @@ module SalesEngine
     end
 
     def self.total_revenue
-      total_revenue = BigDecimal.new("0")
+      total_revenue = BigDecimal.new("0.00")
       data = SalesEngine::Database.instance.invoice_item_list
       data.each do |i_i|
         total_revenue += i_i.quantity * i_i.unit_price
@@ -22,7 +22,7 @@ module SalesEngine
     end
 
     def self.total_revenue_by_att(att, param)
-      total_revenue = BigDecimal.new("0")
+      total_revenue = BigDecimal.new("0.00")
       results = send(("find_all_by_" + att).to_sym, param)
       results.each do |i_i|
         total_revenue += i_i.quantity * i_i.unit_price
