@@ -17,7 +17,7 @@ module SalesEngine
       self.name = attributes[:name]
       self.description = attributes[:description]
       self.unit_price = attributes[:unit_price]
-      self.merchant_id = attributes[:marchant_id]
+      self.merchant_id = attributes[:merchant_id]
       self.created_at = attributes[:created_at]
       self.updated_at = attributes[:updated_at]
     end
@@ -40,6 +40,10 @@ module SalesEngine
 
     def invoice_items
       SalesEngine::InvoiceItem.find_all_by_item_id(self.id)
+    end
+
+    def merchant
+      SalesEngine::Merchant.find_by_id(self.merchant_id)
     end
   end
 end

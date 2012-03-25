@@ -33,5 +33,10 @@ module SalesEngine
         end
       end
     end
+
+    def invoices
+      SalesEngine::Invoice.find_all_by_customer_id(self.id)
+    end
+
   end
 end

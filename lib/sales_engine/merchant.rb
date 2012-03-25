@@ -31,5 +31,14 @@ module SalesEngine
         end
       end
     end
+
+    def items
+      SalesEngine::Item.find_all_by_merchant_id(self.id)
+    end
+
+    def invoices
+      SalesEngine::Invoice.find_all_by_merchant_id(self.id)
+    end
+
   end
 end

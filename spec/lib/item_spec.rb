@@ -27,19 +27,19 @@ describe SalesEngine::Item do
     end
   end
 
-  # describe "#merchant" do
-  #   it "returns an instance of merchant associated with the instance" do
-  #     SalesEngine::Database.instance.merchant_list = [ merchant_one, merchant_two ]
-  #     item_one.merchant.should == merchant_one
+  describe "#merchant" do
+    it "returns an instance of merchant associated with the item" do
+      SalesEngine::Database.instance.merchant_list = [ merchant_one, merchant_two ]
+      item_one.merchant.should == merchant_one
+    end
 
-  #     context "when an invoice has an invalid item id" do
-  #       it "returns nil" do
-  #         SalesEngine::Database.instance.merchant_list = [ merchant_two ]
-  #         item_one.merchant.should be_nil
-  #       end
-  #     end
-  #   end
-  # end
+    context "when an invoice has an invalid item id" do
+      it "returns nil" do
+        SalesEngine::Database.instance.merchant_list = [ merchant_two ]
+        item_one.merchant.should be_nil
+      end
+    end
+  end
 
   # describe ".most_revenue(x)" do
   #   it "returns the top x items ranked by total revenue generated" do
