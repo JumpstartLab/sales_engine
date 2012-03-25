@@ -8,8 +8,8 @@ module SalesEngine
       self.invoice_id = attributes[:invoice_id]
       self.quantity =   BigDecimal.new(attributes[:quantity])
       self.unit_price = BigDecimal.new(attributes[:unit_price])
-      self.created_at = DateTime.parse(attributes[:created_at]) if attributes[:created_at]
-      self.updated_at = DateTime.parse(attributes[:updated_at]) if attributes[:updated_at]
+      self.created_at = Time.parse(attributes[:created_at]) if attributes[:created_at]
+      self.updated_at = Time.parse(attributes[:updated_at]) if attributes[:updated_at]
     end
 
     def self.total_revenue
@@ -55,10 +55,10 @@ module SalesEngine
     end
 
     def self.find_all_by_date(date)
-      date = Date.parse(date) if date.kind_of? String
+      date = Time.parse(date) if date.kind_of? String
       SalesEngine::Database.instance.invoice_item_list.select do |i_i|
         dt = i_i.created_at
-        i_i if date == Date.new(dt.year, dt.mon, dt.mday)
+        i_i if date == Time.new(dt.year, dt.mon, dt.mday)
       end
     end
   end
