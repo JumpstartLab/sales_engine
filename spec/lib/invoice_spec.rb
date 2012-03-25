@@ -31,6 +31,22 @@ describe SalesEngine::Invoice do
     end
   end
 
+  describe "#is_successful?" do
+    context "when invoice has at least one successful transaction" do 
+      it "returns one successful transaction" do
+        SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
+        inv_two.is_successful?.should == tr_three
+      end
+    end
+    
+    context "when invoice has no successful transactions" do 
+      it "returns nil" do
+        SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
+        inv_three.is_successful?.should be_nil
+      end
+    end
+  end
+
   describe ".pending" do
     it "returns an array of invoices with no successful transactions" do
       SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]

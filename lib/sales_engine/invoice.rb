@@ -41,6 +41,15 @@ module SalesEngine
       end
     end
 
+    def is_successful?
+      x = SalesEngine::Transaction.find_all_by_invoice_id(self.id)
+
+      x.detect do |transaction|
+        transaction.is_successful?
+      end
+    end
+
+
     INVOICE_ATTS.each do |att|
       define_singleton_method ("find_by_" + att).to_sym do |param|
         SalesEngine::Database.instance.invoice_list.detect do |invoice|

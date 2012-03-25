@@ -45,5 +45,21 @@ module SalesEngine
     def merchant
       SalesEngine::Merchant.find_by_id(self.merchant_id)
     end
+
+    def self.most_revenue(num)
+
+      i_i_list = SalesEngine::Database.instance.invoice_item_list
+
+      successful_i_i_list = i_i_list.select { |i_i| i_i if i_i.is_successful? }
+
+      item_data = { }
+
+      successful_i_i_list.each do |i_i|
+        item_data[ i_i.item_id.to_sym ] ||= 0
+        item_data[ i_i.item_id.to_sym ] += i_i.quantity * i_i.unit_price
+      end
+
+      item_data.sort_by {|k, v| -v }[0..(num-1)]
+    end
   end
 end

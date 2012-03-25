@@ -38,7 +38,9 @@ module SalesEngine
       SalesEngine::Item.find_by_id(self.item_id)
     end
 
-    
+    def is_successful?
+      self.invoice.is_successful?
+    end
 
     # def self.total_revenue_by_invoice_ids(invoice_ids)
     #   total_revenue = BigDecimal.new("0")
