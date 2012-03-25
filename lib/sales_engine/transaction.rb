@@ -4,17 +4,19 @@ require "date"
 module SalesEngine
   class Transaction
     ATTRIBUTES = [:id, :invoice_id, :credit_card_number, :credit_card_expiration_date, :result, :created_at, :updated_at]
-    attr_reader :invoice
     extend SearchMethods
     include AccessorBuilder
 
     def initialize (attributes = {})
       define_attributes(attributes)
-      update
     end
 
     def update
-      calc_invoice
+      @invoice ||= calc_invoice
+    end
+
+    def invoice
+      @invoice ||= calc_invoice
     end
 
     def calc_invoice

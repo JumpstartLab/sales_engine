@@ -5,21 +5,34 @@ require "date"
 module SalesEngine
   class Customer
     ATTRIBUTES = [:id, :first_name, :last_name, :created_at, :updated_at]
-    attr_reader :invoices, :transactions, :favorite_merchant,
-    :successful_transactions
     extend SearchMethods
     include AccessorBuilder
 
     def initialize (attributes = {})
       define_attributes(attributes)
-      update
     end
 
     def update
-      calc_invoices
-      calc_transactions
-      calc_successful_transactions
-      calc_favorite_merchant
+      @invoices ||= calc_invoices
+      @transactions ||= calc_transactions
+      @successful_transactions ||= calc_successful_transactions
+      @favorite_merchant ||= calc_favorite_merchant
+    end
+
+    def transactions
+      @transactions ||= calc_transactions
+    end
+
+    def invoices
+      @invoices ||= calc_invoices
+    end
+
+    def favorite_merchant
+      @favorite_merchant ||= calc_favorite_merchant
+    end
+
+    def successful_transactions
+      @successful_transactions ||= calc_successful_transactions
     end
 
     def calc_invoices
@@ -45,7 +58,7 @@ module SalesEngine
         end
         if sorted_array.any?
           fav_merchant_id = sorted_array.first[0]
-          @merchant = Merchant.find_by_id(fav_merchant_id)
+          @favorite_merchant = Merchant.find_by_id(fav_merchant_id)
         end
       end
     end

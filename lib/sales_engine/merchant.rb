@@ -10,18 +10,28 @@ module SalesEngine
     extend SearchMethods
     include AccessorBuilder
     attr_writer :revenue
-    attr_reader :items, :items_sold, :invoices
 
     def initialize(attributes = {})
       define_attributes(attributes)
-      update
     end
 
     def update
-      calc_invoices
-      calc_items
-      calc_revenue
-      calc_items_sold
+      @invoices ||= calc_invoices
+      @items ||= calc_items
+      @items_sold ||= calc_items_sold
+      @revenue ||= calc_revenue
+    end
+
+    def items
+      @items ||= calc_items
+    end
+
+    def items_sold
+      @items_sold ||= calc_items_sold
+    end
+
+    def invoices
+      @invoices ||= calc_items_sold
     end
 
     def calc_revenue
@@ -40,9 +50,9 @@ module SalesEngine
             sum += invoice.revenue
           end
         end
-        BigDecimal.new(total_revenue)
+        BigDecimal.new(total_revenue.to_i)
       else
-        @revenue
+        @revenue ||= calc_revenue
       end
     end
 
@@ -53,7 +63,7 @@ module SalesEngine
 
     def calc_items_sold
       items_sold = 0
-      items_sold = @items.inject(0) do |quantity, item|
+      items_sold = items.inject(0) do |quantity, item|
         quantity += item.invoice_items.inject(0) do |q, i|
           q += i.quantity.to_i
         end

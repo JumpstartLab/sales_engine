@@ -87,7 +87,6 @@ module SalesEngine
     def clean_item_id(id)
       clean_id(id)
     end
-
   end
 
   class Database 
@@ -103,13 +102,18 @@ module SalesEngine
       end
 
       def update
+        threads = []
         ATTRIBUTES.each do |attribute|
-          attr_array = send("#{attribute}")
-          attr_array.each do |instance|
-            instance.send("update")
+          threads << Thread.new do
+            attr_array = send("#{attribute}")
+            attr_array.each do |instance|
+              instance.send("update")
+            end
           end
         end 
+        threads.each do |thread|
+          thread.join
+        end
       end
-
     end
   end

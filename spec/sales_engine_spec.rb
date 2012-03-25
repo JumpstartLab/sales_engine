@@ -14,11 +14,15 @@ describe SalesEngine do
     let(:classes) do
       [:customer, :item, :invoice_item, :merchant, :transaction, :invoice]
     end
+    # it "successfully starts up (more of a time test than hoping it works)" do
+    #   SalesEngine.startup
+    # end
     it "creates a key => array pair for each data type" do
       classes.each do |klass|
         SalesEngine::Database.instance.send(klass).count.should_not == 0
       end
     end
+
   end
 end
 

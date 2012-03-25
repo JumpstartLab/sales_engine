@@ -6,18 +6,24 @@ module SalesEngine
   class Item
     ATTRIBUTES = [:id, :name, :description, :unit_price, :merchant_id,
       :created_at, :updated_at]
-      attr_reader :invoice_items, :merchant
       extend SearchMethods
       include AccessorBuilder
 
       def initialize(attributes = {})
         define_attributes(attributes)
-        update
+      end
+
+      def merchant
+        @merchant ||= calc_merchant
+      end
+
+      def invoice_items
+        @invoice_items ||= calc_invoice_items
       end
 
       def update
-        calc_invoice_items
-        calc_merchant
+        @invoice_items ||= calc_invoice_items
+        @merchant ||= calc_merchant
       end
 
       def calc_invoice_items

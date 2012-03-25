@@ -20,9 +20,13 @@ module SalesEngine
     Transaction => "transactions.csv"}
 
     def self.startup
+      threads = []
       CLASS_FILES.each do |klass, filename|
-        file_to_objects(klass, filename)
+        threads << Thread.new do
+          file_to_objects(klass, filename)
+        end
       end
+      threads.each {|thread| thread.join}
       update
     end
     def self.load(filename)

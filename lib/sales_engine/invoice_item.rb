@@ -6,22 +6,28 @@ module SalesEngine
   class InvoiceItem
     ATTRIBUTES = [:id, :invoice_id, :item_id, :quantity, :unit_price,
      :created_at, :updated_at]
-     attr_reader :invoice, :item
      extend SearchMethods
      include AccessorBuilder
 
      def initialize (attributes = {})
       define_attributes(attributes)
-      update
     end
 
     def update
-      calc_invoice
-      calc_item
+      @invoice ||= calc_invoice
+      @item ||= calc_item
+    end
+
+    def invoice
+      @invoice ||= calc_invoice
+    end
+
+    def item
+      @item ||= calc_item
     end
 
     def calc_invoice
-      @item = Invoice.find_by_id(self.invoice_id)
+      @invoice = Invoice.find_by_id(self.invoice_id)
     end
 
     def calc_item
