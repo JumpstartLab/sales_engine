@@ -1,4 +1,4 @@
-# $LOAD_PATH.unshift("./lib")
+$LOAD_PATH.unshift("./lib")
 require 'sales_engine/database'
 
 module SalesEngine
