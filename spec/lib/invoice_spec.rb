@@ -52,7 +52,7 @@ describe SalesEngine::Invoice do
       SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]
       SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]
       SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
-      SalesEngine::Invoice.average_revenue.should == BigDecimal.new("11")
+      SalesEngine::Invoice.average_revenue.should == BigDecimal.new("3")
       SalesEngine::Invoice.average_revenue.should be_a BigDecimal
     end
 
@@ -61,7 +61,7 @@ describe SalesEngine::Invoice do
         SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]
         SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]
         SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
-        SalesEngine::Invoice.average_revenue("2012-02-19").should == 30
+        SalesEngine::Invoice.average_revenue("2012-02-19").should == 0
       end
     end
 

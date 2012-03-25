@@ -4,3 +4,6 @@
 ehthumbs.db
 Icon?
 Thumbs.db
+
+# Coverage files #
+coverage/*
