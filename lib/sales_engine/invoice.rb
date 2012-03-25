@@ -67,6 +67,10 @@ module SalesEngine
       end
     end
 
+    def create(attributes={})
+      # create new instance of Invoice
+    end
+
     def customer
       #customer returns an instance of Customer associated with this object
       Database.instance.customers.find do |c|

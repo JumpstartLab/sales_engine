@@ -31,20 +31,39 @@ describe SalesEngine::Customer do
   end
 
   describe "#invoices" do 
-    it "returns a collection of invoice instances for a specific customer" do 
-      result == Customer.new 
-      result.invoices.class.should == invoice.class 
-    end 
-  end 
+    let (:customer) { SalesEngine::Customer.random }
+    it "responds to the method" do 
+      customer.should respond_to("invoices".to_sym)
+    end
+    it "returns invoices with the same customer id as the example" do 
+      invoices = customer.invoices 
+      invoices.collect do |invoice| 
+        invoice.customer_id.should == customer.id 
+      end
+    end
+  end
 
   describe "#transactions" do 
-    it "returns an array of transaction instances for a specific customer" do
-      result == Customer.new 
-      result.transactions.class.should == transaction.class
+    let (:customer) { SalesEngine::Customer.random }
+    it "responds to the method" do 
+      customer.should respond_to("transactions".to_sym)
     end 
-  end 
+
+    it "returns transactions with the same customer id as the example" do
+      transactions = customer.transactions
+      #invoices = customer.invoices
+      transactions.select do |transaction|
+        transaction.invoice.customer_id.should == customer.id
+      end
+    end 
+  end
 
   describe "#favorite_merchant" do 
+    let (:customer) { SalesEngine::Customer.random }
+    it "responds to the method" do 
+      customer.should respond_to("favorite_merchant".to_sym)
+    end 
+
     it "returns an instance of the merchant at which customer has most transactions" do 
     end
   end

@@ -26,9 +26,7 @@ describe SalesEngine::Merchant do
 
   describe ".random" do
     it "responds to the method call" do
-      SalesEngine::Merchant.should respond_to("random".to_sym)
-      # result = Merchant.random  
-      # result.class.should == Merchant.class 
+      SalesEngine::Merchant.should respond_to("random".to_sym) 
     end
 
     it "returns an instance of Merchant" do
@@ -38,18 +36,32 @@ describe SalesEngine::Merchant do
   end
 
   describe "#items" do
-    it "returns a collection of item instances associated with merchant" do 
-      result = Merchant.new
-      result.items.class.should == item.class 
+    let(:merchant) { SalesEngine::Merchant.random }
+    it "responds to the method" do
+      merchant.should respond_to("items".to_sym)
+    end
+
+    it "returns items with the same merchant id as the example" do
+      items = merchant.items
+      items.collect do |item|
+        item.merchant_id.should == merchant.id
+      end
     end
   end
 
   describe "#invoices" do 
-    it "returns a collection of invoices associated with merchant" do 
-      result = Merchant.new
-      result.invoces.class.should == invoice.class
+    let(:merchant) { SalesEngine::Merchant.random }
+    it "responds to the method" do
+      merchant.should respond_to("invoices".to_sym)
     end
-  end 
+
+    it "returns invoices with the same merchant_id as the example" do
+      invoices = merchant.invoices
+      invoices.collect do |invoice|
+        invoice.merchant_id.should == merchant.id
+      end
+    end
+  end
 
   describe ".most_revenue(num_of_merchants)" do
     it "returns the top num_of_merchants instances ranked by total revenue" do 
@@ -67,23 +79,34 @@ describe SalesEngine::Merchant do
     end
   end
 
-  describe "#revenue" do 
-    it "returns the total revenue for that merchant across all transactions" do
+  describe "#revenue" do
+    let(:merchant) { SalesEngine::Merchant.random }
+
+    it "responds to the method" do
+      merchant.should respond_to("revenue".to_sym)
     end
+
+    it "returns as BigDecimal" do
+      merchant.revenue.class.should == BigDecimal
+    end
+
   end 
 
   describe "#revenue(date=nil)" do
-    it "returns the total revenue for the merchant for a specific date" do
-    end
+    it "returns the total revenue for the merchant for a specific date"
   end
 
   describe "#favorite_customer" do
-    it "returns the Customer who has conducted the most transactions with " do 
+    let(:merchant) { SalesEngine::Merchant.random }
+
+    it "responds to the method" do
+      merchant.should respond_to("favorite_customer".to_sym)
     end
+
+    it "returns the Customer who has conducted the most transactions with "
   end
 
   describe "#customers_with_pending_invoices" do
-    it "returns a collection of Customer instances which have pending(unpaid) invoices" do 
-    end 
+    it "returns a collection of Customer instances which have pending(unpaid) invoices"
   end
  end 
