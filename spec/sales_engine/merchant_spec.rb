@@ -25,9 +25,15 @@ describe SalesEngine::Merchant do
   end
 
   describe ".random" do
-    it "returns a random instance of Merchant" do
-      result = Merchant.random  
-      result.class.should == Merchant.class 
+    it "responds to the method call" do
+      SalesEngine::Merchant.should respond_to("random".to_sym)
+      # result = Merchant.random  
+      # result.class.should == Merchant.class 
+    end
+
+    it "returns an instance of Merchant" do
+      result = SalesEngine::Merchant.random
+      result.class.should == SalesEngine::Merchant
     end
   end
 

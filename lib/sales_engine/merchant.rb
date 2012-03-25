@@ -62,10 +62,6 @@ module SalesEngine
       #else
         # returns the total revenue for that merchant across all transactions
 
-      # find all invoices for a customer
-      # for each invoice, for through each invoice item
-      # for each invoice item, add up unit price
-      # return total price
       rev = 0
       inv_item_ids = self.charged_invoices.collect { |i| i.id }
       inv_item_ids.each do |id|
@@ -74,6 +70,7 @@ module SalesEngine
         end
         rev += (inv_item.unit_price.to_i * inv_item.quantity.to_i)
       end
+      # need to return as BigDecimal
       rev
     end
 
