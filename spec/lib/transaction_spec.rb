@@ -3,8 +3,8 @@ require 'spec_helper.rb'
 describe SalesEngine::Transaction do
 
   let(:transaction_one) { SalesEngine::Transaction.new(:id => "1", :invoice_id => "1") }
-  let(:transaction_two) { SalesEngine::Transaction.new(:id => "2", :invoice_id => "2", :status => "failure") }
-  let(:transaction_three) { SalesEngine::Transaction.new(:id => "3", :invoice_id => "2", :status => "success") }
+  let(:transaction_two) { SalesEngine::Transaction.new(:id => "2", :invoice_id => "2", :result => "failure") }
+  let(:transaction_three) { SalesEngine::Transaction.new(:id => "3", :invoice_id => "2", :result => "success") }
   let(:invoice_one) { SalesEngine::Invoice.new(:id => "1") }
   let(:invoice_two) { SalesEngine::Invoice.new(:id => "2") }
 
