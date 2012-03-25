@@ -6,24 +6,12 @@ module SalesEngine
 
     # end
 
-    def find_by(attribute)
-      
-    end
 
-    def random
-      # rand(Database.instance.merchants)
-    end
 
-    def self.find_by_(attribute)
-
-    end
-
-    def self.find_all_by_(attribute)
-      
-    end
-
-    # def items
-    #   # returns a collection of Item instances associated with that merchant for the products they sell
+    # def items(merchant_id)
+    #   items = SalesEngine::Database.instance.items
+    #   matched_results = items.select {|item| item.}
+    #   returns a collection of Item instances associated with that merchant for the products they sell
     # end
 
     # def invoices
@@ -32,8 +20,8 @@ module SalesEngine
 
     # def most_revenue()
     #   # returns the top x merchant instances ranked by total revenue
-    # end  
-    
+    # end
+
     # def most_items()
     #   # returns the top x merchant instances ranked by total number of items sold
     # end
@@ -51,7 +39,7 @@ module SalesEngine
     # end
 
     # def customers_with_pending_invoices
-    #   # returns a collection of Customer instances which have pending (unpaid) invoices    
+    #   # returns a collection of Customer instances which have pending (unpaid) invoices
     # end
 
   end

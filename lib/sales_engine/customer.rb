@@ -38,9 +38,10 @@ module SalesEngine
       SalesEngine::Database.instance.customers
     end
 
-    # def invoices
-    #   # returns a collection of Invoice instances associated with this object
-    # end
+    def invoices
+      invoices = SalesEngine::Database.instance.invoices
+      results = invoices.select { |invoice| invoice.customer_id == self.id }
+    end
 
   end
 end
