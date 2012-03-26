@@ -5,12 +5,30 @@ describe SalesEngine::Merchant do
   let(:merchant_1) { Fabricate(:merchant) }
   let(:merchant_2) { Fabricate(:merchant) }
   let(:merchant_3) { Fabricate(:merchant) }
+  let(:merchant_4) { Fabricate(:merchant) }
+  let(:merchant_5) { Fabricate(:merchant) }
   let(:item_1) { Fabricate(:item) }
   let(:item_2) { Fabricate(:item) }
   let(:item_3) { Fabricate(:item) }
-  let(:invoice_1) { Fabricate(:invoice) }
-  let(:invoice_2) { Fabricate(:invoice) }
-  let(:invoice_3) { Fabricate(:invoice) }
+  let(:invoice_1) { Fabricate(:invoice, :merchant_id => merchant_1.id) }
+  let(:invoice_2) { Fabricate(:invoice, :merchant_id => merchant_2.id) }
+  let(:invoice_3) { Fabricate(:invoice, :merchant_id => merchant_3.id) }
+  let(:invoice_4) { Fabricate(:invoice, :merchant_id => merchant_4.id) }
+  let(:invoice_5) { Fabricate(:invoice, :merchant_id => merchant_1.id) }
+  let(:invoice_6) { Fabricate(:invoice, :merchant_id => merchant_2.id) }
+  let(:invoice_7) { Fabricate(:invoice, :merchant_id => merchant_1.id) }
+  let(:invoice_item_1) { Fabricate(:invoice_item, :invoice_id => invoice_1.id, :unit_price => 1) }
+  let(:invoice_item_2) { Fabricate(:invoice_item, :invoice_id => invoice_2.id, :unit_price => 1) }
+  let(:invoice_item_3) { Fabricate(:invoice_item, :invoice_id => invoice_3.id, :unit_price => 1) }
+  let(:invoice_item_4) { Fabricate(:invoice_item, :invoice_id => invoice_4.id, :unit_price => 5) }
+  let(:invoice_item_5) { Fabricate(:invoice_item, :invoice_id => invoice_5.id, :unit_price => 1) }
+  let(:invoice_item_6) { Fabricate(:invoice_item, :invoice_id => invoice_6.id, :unit_price => 2) }
+  let(:invoice_item_7) { Fabricate(:invoice_item, :invoice_id => invoice_7.id, :unit_price => 2) }
+  let(:invoice_item_8) { Fabricate(:invoice_item, :invoice_id => invoice_1.id, :unit_price => 3) }
+  let(:invoice_item_9) { Fabricate(:invoice_item, :invoice_id => invoice_2.id, :unit_price => 20) }
+  let(:invoice_item_10) { Fabricate(:invoice_item, :invoice_id => invoice_3.id, :unit_price => 1) }
+  let(:invoice_item_11) { Fabricate(:invoice_item, :invoice_id => invoice_1.id, :unit_price => 4) }
+
 
 
   before(:each) do
@@ -18,12 +36,29 @@ describe SalesEngine::Merchant do
     se.add_to_list(merchant_1)
     se.add_to_list(merchant_2)
     se.add_to_list(merchant_3)
+    se.add_to_list(merchant_4)
+    se.add_to_list(merchant_5)
     se.add_to_list(item_1)
     se.add_to_list(item_2)
     se.add_to_list(item_3)
     se.add_to_list(invoice_1)
     se.add_to_list(invoice_2)
     se.add_to_list(invoice_3)
+    se.add_to_list(invoice_4)
+    se.add_to_list(invoice_5)
+    se.add_to_list(invoice_6)
+    se.add_to_list(invoice_7)
+    se.add_to_list(invoice_item_1)
+    se.add_to_list(invoice_item_2)
+    se.add_to_list(invoice_item_3)
+    se.add_to_list(invoice_item_4)
+    se.add_to_list(invoice_item_5)
+    se.add_to_list(invoice_item_6)
+    se.add_to_list(invoice_item_7)
+    se.add_to_list(invoice_item_8)
+    se.add_to_list(invoice_item_9)
+    se.add_to_list(invoice_item_10)
+    se.add_to_list(invoice_item_11)
   end
 
   describe "#items" do
@@ -41,14 +76,11 @@ describe SalesEngine::Merchant do
 
   describe "#invoices" do
     it "returns invoices associated with the merchant if invoices exist" do
-      invoice_1.merchant_id = merchant_2.id
-      invoice_2.merchant_id = merchant_1.id
-      invoice_3.merchant_id = merchant_1.id
-      merchant_1.invoices.should == [invoice_2, invoice_3]
+      merchant_1.invoices.should == [invoice_1, invoice_5, invoice_7]
     end
 
     it "returns an empty array if no invoices are associated with the merchant" do
-      merchant_1.invoices.should == []
+      merchant_5.invoices.should == []
     end
   end
 
@@ -252,4 +284,35 @@ describe SalesEngine::Merchant do
     end
   end
 
+  describe ".most_revenue" do
+    it "returns the top x merchant instances ranked by total revenue" do
+      SalesEngine::Merchant.most_revenue(3).should == [merchant_2, merchant_1, merchant_4]
+    end
+  end
+
+  describe ".most_items" do
+    it "returns the top x merchant instances ranked by total number of items sold" do
+      SalesEngine::Merchant.most_items(2).should == [merchant_1, merchant_2]
+    end
+  end
+
+  describe ".revenue" do
+    before(:each) do 
+      invoice_1.created_at = "2012-03-14 20:56:56 UTC"
+      invoice_2.created_at = "2012-03-14 07:01:36 UTC"
+      invoice_3.created_at = "2012-03-14 23:56:23 UTC"
+      invoice_4.created_at = "2012-03-14 12:29:01 UTC"
+      invoice_5.created_at = "2012-02-01 00:51:56 UTC"
+      invoice_6.created_at = "2012-03-14 20:00:51 UTC"
+      invoice_7.created_at = "2012-02-01 16:16:41 UTC"    
+    end
+
+    it "returns the total revenue for that date across all merchants" do
+      SalesEngine::Merchant.revenue("2012-03-14").should == 38
+    end
+
+    it "returns 0 if no sales were made for that date" do
+      SalesEngine::Merchant.revenue("2012-01-21").should == 0
+    end
+  end
 end

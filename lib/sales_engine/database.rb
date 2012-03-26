@@ -89,5 +89,13 @@ module SalesEngine
       end
       invoice_list.sort_by { |invoice| invoice.merchant_id }
     end
+
+    def find_all_created_on(class_name, date)
+      start_time = Time.parse("#{date} 00:00:00 UTC")
+      end_time   = Time.parse("#{date} 23:59:59 UTC")
+      self.send(class_name).find_all { |record| 
+        Time.parse(record.created_at) >= start_time && 
+          Time.parse(record.created_at) <= end_time }
+    end
   end
 end

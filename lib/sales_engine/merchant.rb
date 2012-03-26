@@ -9,6 +9,43 @@ module SalesEngine
       self.name = attributes[:name]
     end
 
+    def self.most_revenue(merchant_count)
+      revenue_tracker = []
+      return_merchants = []
+      SalesEngine::Database.instance.merchants.each { |merchant|
+        revenue = 0
+        merchant.invoices.each { |invoice| revenue += invoice.total_revenue }
+        revenue_tracker << { :merchant => merchant, :total_revenue => revenue } }
+      sorted_merchants = revenue_tracker.sort_by { |merchant| merchant[:total_revenue] }
+      SalesEngine::Merchant.pop_merchants(merchant_count, sorted_merchants)
+    end
+
+    def self.most_items(merchant_count)
+      item_tracker = []
+      SalesEngine::Database.instance.merchants.each { |merchant|
+        total_item_count = 0
+        merchant.invoices.each { |invoice| total_item_count += invoice.total_items }
+        item_tracker << { :merchant => merchant, :item_count => total_item_count } }
+      sorted_merchants = item_tracker.sort_by { |merchant| merchant[:item_count] }
+      SalesEngine::Merchant.pop_merchants(merchant_count, sorted_merchants)
+    end
+
+    def self.pop_merchants(pop_count, merchant_list)
+      return_merchants = []
+      pop_count.times do
+        element = merchant_list.pop
+        return_merchants << element[:merchant]
+      end
+      return_merchants
+    end
+
+    def self.revenue(date)
+      revenue = 0
+      SalesEngine::Invoice.find_all_created_on(date).each { |invoice|
+        revenue += invoice.total_revenue }
+        revenue
+    end
+
     def items
       SalesEngine::Database.instance.find_all_items_by_merchant_id(self.id)
     end

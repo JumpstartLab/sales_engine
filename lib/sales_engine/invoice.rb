@@ -11,6 +11,17 @@ module SalesEngine
       self.status = attributes[:status]
     end
 
+    def total_revenue
+      revenue = 0
+      SalesEngine::Database.instance.find_all_by("invoiceitems", "invoice_id", self.id).each { |item|
+          revenue = revenue + item.unit_price }
+      revenue
+    end
+
+    def total_items
+      SalesEngine::Database.instance.find_all_by("invoiceitems", "invoice_id", self.id).count
+    end
+
     def self.random
       SalesEngine::Database.instance.get_random_record("invoices")
     end
@@ -80,6 +91,10 @@ module SalesEngine
 
     def self.find_all_by_updated_at(time)
       SalesEngine::Database.instance.find_all_by("invoices", "updated_at", time)
+    end
+
+    def self.find_all_created_on(date)
+      SalesEngine::Database.instance.find_all_created_on("invoices", date)
     end
   end
 end
