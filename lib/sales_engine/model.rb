@@ -14,6 +14,8 @@ module SalesEngine
       @updated_at = attributes[:updated_at] || @created_at
 
       validates_numericality_of :id, @id, :integer => true
+
+      SalesEngine::Persistence.instance.persist self
     end
 
     private
@@ -28,6 +30,16 @@ module SalesEngine
 
     module ClassMethods
       def find(id)
+        find_by_id(id)
+      end
+
+      def find_by_id(id)
+        models = SalesEngine::Persistence.instance.fetch(self)
+        models.find { |m| m.id == id }
+      end
+
+      def find_all
+        SalesEngine::Persistence.instance.fetch(self)
       end
     end
   end

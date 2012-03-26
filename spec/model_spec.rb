@@ -9,6 +9,15 @@ end
 describe SalesEngine::Model do
   let(:valid_sample) { SalesEngine::ModelSample.new :id => 1 }
 
+  before(:each) do
+    SalesEngine::Persistence.instance.clear
+  end
+
+  it "persists a new model" do
+    valid_sample
+    SalesEngine::Persistence.instance.exists?(valid_sample).should be_true
+  end
+
   context "id attribute" do
     it "doesn't create a model with a nil id" do
       expect do
@@ -69,10 +78,25 @@ describe SalesEngine::Model do
     end
   end
 
-  context "find" do
+  context ".find" do
     it "exists" do
-      pending
       SalesEngine::ModelSample.should respond_to :find
+    end
+
+    it "returns a model with a given id" do
+      valid_sample
+      SalesEngine::ModelSample.find(1).should be valid_sample
+    end
+  end
+
+  context ".find_all" do
+    it "exists" do
+      SalesEngine::ModelSample.should respond_to :find_all
+    end
+
+    it "returns all persisted models of the calling class" do
+      valid_sample
+      SalesEngine::ModelSample.find_all.should include valid_sample
     end
   end
 end
