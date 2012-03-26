@@ -5,6 +5,7 @@ describe SalesEngine::Customer do
            :created_at => "2012-02-26 20:56:56 UTC",
            :updated_at => "2012-02-26 20:56:56 UTC"}
   let(:customer) {SalesEngine::Customer.new(param)}
+  #let(:customer){Fabricate(:customer)}
   describe 'initialize' do
     context "when instantiating a new customer" do
       it 'receives a hash as a param' do
