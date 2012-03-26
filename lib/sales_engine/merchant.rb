@@ -36,14 +36,21 @@ module SalesEngine
     #   # returns a collection of Item instances associated with that merchant for the products they sell
     # end
 
+
+    # def items(merchant_id)
+    #   items = SalesEngine::Database.instance.items
+    #   matched_results = items.select {|item| item.}
+    #   returns a collection of Item instances associated with that merchant for the products they sell
+    # end
+
     # def invoices
     #   # returns a collection of Invoice instances associated with that merchant from their known orders
     # end
 
     # def most_revenue()
     #   # returns the top x merchant instances ranked by total revenue
-    # end  
-    
+    # end
+
     # def most_items()
     #   # returns the top x merchant instances ranked by total number of items sold
     # end
@@ -61,7 +68,7 @@ module SalesEngine
     # end
 
     # def customers_with_pending_invoices
-    #   # returns a collection of Customer instances which have pending (unpaid) invoices    
+    #   # returns a collection of Customer instances which have pending (unpaid) invoices
     # end
 
   end

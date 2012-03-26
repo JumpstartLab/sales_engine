@@ -1,9 +1,10 @@
 require 'csv'
 require 'sales_engine/searchable'
+require 'sales_engine/randomize'
 
 module SalesEngine
   class Customer
-    
+    extend Randomize
     extend Searchable
 
     attr_accessor :id, :first_name, :last_name, :created_at,
@@ -52,9 +53,10 @@ module SalesEngine
       SalesEngine::Database.instance.customers
     end
 
-    # def invoices
-    #   # returns a collection of Invoice instances associated with this object
-    # end
+    def invoices
+      invoices = SalesEngine::Database.instance.invoices
+      results = invoices.select { |invoice| invoice.customer_id == self.id }
+    end
 
   end
 end

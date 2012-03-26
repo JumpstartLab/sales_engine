@@ -1,10 +1,15 @@
 {
   "RSpec": {
     "coverage": {
+<<<<<<< HEAD
       "/Users/travisvalentine/hungry-projects/sales_engine/lib/sales_engine.rb": [
         null,
         1,
         null,
+=======
+      "/Users/michaelverdi/hungry_projects/sales_engine/lib/sales_engine.rb": [
+        1,
+>>>>>>> a4eab41421757e852d3a9ae16adb10fe1524a916
         1,
         null,
         1,
@@ -15,7 +20,7 @@
         null,
         null
       ],
-      "/Users/travisvalentine/hungry-projects/sales_engine/lib/sales_engine/database.rb": [
+      "/Users/michaelverdi/hungry_projects/sales_engine/lib/sales_engine/database.rb": [
         1,
         1,
         1,
@@ -38,6 +43,10 @@
         1,
         1,
         1,
+<<<<<<< HEAD
+=======
+        null,
+>>>>>>> a4eab41421757e852d3a9ae16adb10fe1524a916
         null,
         null,
         1,
@@ -76,28 +85,47 @@
         1,
         101,
         1,
+<<<<<<< HEAD
+=======
+        null,
+        null,
+        1,
+        6,
+        null,
+        null,
+        null,
+>>>>>>> a4eab41421757e852d3a9ae16adb10fe1524a916
         null,
         null,
         null
       ],
-      "/Users/travisvalentine/hungry-projects/sales_engine/lib/sales_engine/customer.rb": [
+      "/Users/michaelverdi/hungry_projects/sales_engine/lib/sales_engine/customer.rb": [
         1,
-        1,
-        null,
         1,
         1,
         null,
         1,
+        1,
+        1,
+        1,
         null,
         1,
         null,
         null,
         1,
+<<<<<<< HEAD
         1001,
         1001,
         1001,
         1001,
         1001,
+=======
+        1007,
+        1007,
+        1007,
+        1007,
+        1007,
+>>>>>>> a4eab41421757e852d3a9ae16adb10fe1524a916
         null,
         null,
         1,
@@ -108,6 +136,7 @@
         null,
         null,
         null,
+<<<<<<< HEAD
         1,
         null,
         5,
@@ -127,18 +156,29 @@
         null,
         null,
         null,
+=======
+>>>>>>> a4eab41421757e852d3a9ae16adb10fe1524a916
         1,
+        null,
+        5,
         0,
         null,
         null,
         null,
         null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        1,
+        2416,
         null,
         null,
         null,
         null
       ],
-      "/Users/travisvalentine/hungry-projects/sales_engine/lib/sales_engine/searchable.rb": [
+      "/Users/michaelverdi/hungry_projects/sales_engine/lib/sales_engine/searchable.rb": [
         1,
         null,
         1,
@@ -154,7 +194,19 @@
         null,
         null
       ],
-      "/Users/travisvalentine/hungry-projects/sales_engine/lib/sales_engine/invoice.rb": [
+      "/Users/michaelverdi/hungry_projects/sales_engine/lib/sales_engine/randomize.rb": [
+        1,
+        null,
+        1,
+        1,
+        1,
+        2,
+        null,
+        null,
+        null,
+        null
+      ],
+      "/Users/michaelverdi/hungry_projects/sales_engine/lib/sales_engine/invoice.rb": [
         1,
         1,
         null,
@@ -194,7 +246,7 @@
         null,
         null
       ],
-      "/Users/travisvalentine/hungry-projects/sales_engine/lib/sales_engine/invoice_item.rb": [
+      "/Users/michaelverdi/hungry_projects/sales_engine/lib/sales_engine/invoice_item.rb": [
         1,
         1,
         1,
@@ -218,7 +270,7 @@
         null,
         null
       ],
-      "/Users/travisvalentine/hungry-projects/sales_engine/lib/sales_engine/transaction.rb": [
+      "/Users/michaelverdi/hungry_projects/sales_engine/lib/sales_engine/transaction.rb": [
         1,
         1,
         1,
@@ -238,7 +290,7 @@
         null,
         null
       ],
-      "/Users/travisvalentine/hungry-projects/sales_engine/lib/sales_engine/item.rb": [
+      "/Users/michaelverdi/hungry_projects/sales_engine/lib/sales_engine/item.rb": [
         1,
         1,
         null,
@@ -293,6 +345,7 @@
         null,
         null
       ],
+<<<<<<< HEAD
       "/Users/travisvalentine/hungry-projects/sales_engine/lib/sales_engine/merchant.rb": [
         1,
         null,
@@ -308,6 +361,11 @@
         101,
         null,
         null,
+=======
+      "/Users/michaelverdi/hungry_projects/sales_engine/lib/sales_engine/merchant.rb": [
+        1,
+        1,
+>>>>>>> a4eab41421757e852d3a9ae16adb10fe1524a916
         1,
         1,
         null,
@@ -316,16 +374,18 @@
         null,
         null,
         null,
-        1,
         null,
         4,
         0,
         null,
         null,
         null,
+<<<<<<< HEAD
         null,
         1,
         0,
+=======
+>>>>>>> a4eab41421757e852d3a9ae16adb10fe1524a916
         null,
         null,
         null,
@@ -364,6 +424,10 @@
         null
       ]
     },
+<<<<<<< HEAD
     "timestamp": 1332732024
+=======
+    "timestamp": 1332730277
+>>>>>>> a4eab41421757e852d3a9ae16adb10fe1524a916
   }
 }
