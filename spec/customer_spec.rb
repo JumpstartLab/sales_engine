@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SalesEngine::Customer do
   describe "#invoices" do
-    let(:customer) { Fabricator(:customer, :id => 1) }
+    let(:customer) { Fabricate(:customer, :id => 1) }
     let(:invoice) { mock(SalesEngine::Invoice) }
     let(:invoice2) { mock(SalesEngine::Invoice) }
     let(:other_invoice) { mock(SalesEngine::Invoice) }
@@ -15,21 +15,21 @@ describe SalesEngine::Customer do
     end
     
     context "when customer has multiple invoices" do
-      let(:customer) { Fabricator(:customer, :id => 1) }
+      let(:customer) { Fabricate(:customer, :id => 1) }
       it "returns an array of invoices with matching invoice_id" do
         customer.invoices.should == [invoice, other_invoice]
       end
     end
 
     context "when customer has one invoice" do
-      let(:customer) { Fabricator(:customer, :id => 2) }
+      let(:customer) { Fabricate(:customer, :id => 2) }
       it "returns an array with one invoice" do
         customer.invoices.should == [invoice2]
       end
     end
 
     context "when customer has no invoices" do
-      let(:customer) { Fabricator(:customer, :id => 3) }
+      let(:customer) { Fabricate(:customer, :id => 3) }
       it "returns an empty array" do
         customer.invoices.should == []
       end
