@@ -9,9 +9,13 @@ module SalesEngine
       results
     end
 
-    def self.save(record_type)
+    def self.save
       save_merchants
       save_customers
+      save_invoices
+      save_invoice_items
+      save_transactions
+      save_items
     end
 
     def self.save_merchants
@@ -26,6 +30,38 @@ module SalesEngine
       file = CSV.open('data/customer_output.csv', "w") do |output|
         output <<  SalesEngine::Customer.csv_headers
         SalesEngine::Customer.all.each do |row|
+          output << row.raw_csv
+        end
+      end
+    end
+    def self.save_invoices
+      file = CSV.open('data/invoice_output.csv', "w") do |output|
+        output <<  SalesEngine::Invoice.csv_headers
+        SalesEngine::Invoice.all.each do |row|
+          output << row.raw_csv
+        end
+      end
+    end
+    def self.save_invoice_items
+      file = CSV.open('data/invoice_item_output.csv', "w") do |output|
+        output <<  SalesEngine::InvoiceItem.csv_headers
+        SalesEngine::InvoiceItem.all.each do |row|
+          output << row.raw_csv
+        end
+      end
+    end
+    def self.save_items
+      file = CSV.open('data/item_output.csv', "w") do |output|
+        output <<  SalesEngine::Item.csv_headers
+        SalesEngine::Item.all.each do |row|
+          output << row.raw_csv
+        end
+      end
+    end
+    def self.save_transactions
+      file = CSV.open('data/transaction_output.csv', "w") do |output|
+        output <<  SalesEngine::Transaction.csv_headers
+        SalesEngine::Transaction.all.each do |row|
           output << row.raw_csv
         end
       end

@@ -6,10 +6,19 @@ describe SalesEngine::Transaction do
     it "stores records from transaction.csv in @@records" do
       SalesEngine::Transaction.records.map(&:class).uniq.should == [SalesEngine::Transaction]
     end
-    {id: 1, invoice_id: 1, credit_card_number: "4068631943231473", credit_card_expiration_date: nil, result: "success"}.each do |attribute, value|
+    {id: 1, invoice_id: 1, credit_card_number: "4068631943231473",
+    credit_card_expiration_date: nil,
+    result: "success"}.each do |attribute, value|
       it "records #{attribute}" do
         SalesEngine::Transaction.records.first.send(attribute).should == value
       end
+    end
+    it "stores the raw CSV for each Transaction" do
+      SalesEngine::Transaction.records.first.raw_csv.should be_an Array
+    end
+
+    it "stores headers on the Transaction class" do
+      SalesEngine::Transaction.csv_headers.should be_an Array
     end
   end
 

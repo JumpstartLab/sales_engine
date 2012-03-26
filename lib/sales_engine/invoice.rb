@@ -2,6 +2,7 @@ module SalesEngine
   class Invoice
     extend Searchable
     attr_accessor :customer_id, :id, :merchant_id, :status, :created_at
+    attr_accessor :raw_csv
 
 
     def self.records
@@ -12,6 +13,14 @@ module SalesEngine
       CSVManager.load('data/invoices.csv').collect do |record|
         Invoice.new(record)
       end
+    end
+
+    def self.csv_headers
+      @csv_headers
+    end
+
+    def self.csv_headers=(value)
+      @csv_headers=(value)
     end
 
     def self.create(invoice_attributes)
@@ -36,6 +45,8 @@ module SalesEngine
       self.merchant_id = raw_line[:merchant_id].to_i
       self.status = raw_line[:status]
       self.created_at = DateTime.parse(raw_line[:created_at])
+      self.raw_csv = raw_line.values
+      Invoice.csv_headers ||= raw_line.keys
     end
 
     def transactions

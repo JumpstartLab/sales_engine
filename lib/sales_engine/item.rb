@@ -2,7 +2,7 @@ module SalesEngine
   class Item
     extend Searchable
     attr_accessor :name, :id, :description, :unit_price
-    attr_accessor :merchant_id, :total_revenue, :items_sold
+    attr_accessor :merchant_id, :total_revenue, :items_sold, :raw_csv
 
     def self.records
       @items ||= get_items
@@ -12,6 +12,14 @@ module SalesEngine
       CSVManager.load('data/items.csv').collect do |record|
         Item.new(record)
       end
+    end
+
+    def self.csv_headers
+      @csv_headers
+    end
+
+    def self.csv_headers=(value)
+      @csv_headers=(value)
     end
 
     def self.most_revenue(num_items)
@@ -30,6 +38,8 @@ module SalesEngine
       self.unit_price = clean_unit_price(raw_line[:unit_price])
       self.total_revenue = 0
       self.items_sold = 0
+      self.raw_csv = raw_line.values
+      Item.csv_headers ||= raw_line.keys
     end
 
     def invoice_items

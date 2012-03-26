@@ -8,12 +8,19 @@ describe SalesEngine::Invoice do
     end
 
     {id: 1, customer_id: 1,
-      merchant_id: 92, status: "shipped"}.each do |attribute, value|
-        it "records #{attribute}" do
-          SalesEngine::Invoice.records.first.send(attribute).should == value
-        end
+    merchant_id: 92, status: "shipped"}.each do |attribute, value|
+      it "records #{attribute}" do
+        SalesEngine::Invoice.records.first.send(attribute).should == value
       end
     end
+    it "stores the raw CSV for each Invoice" do
+      SalesEngine::Invoice.records.first.raw_csv.should be_an Array
+    end
+
+    it "stores headers on the Invoice class" do
+      SalesEngine::Invoice.csv_headers.should be_an Array
+    end
+  end
 
     context "instance methods" do
       let(:invoice) { SalesEngine::Invoice.find_by_id(1) }
