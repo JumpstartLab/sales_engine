@@ -6,4 +6,6 @@ Icon?
 Thumbs.db
 
 # Coverage files #
-*/coverage/*
+coverage/*
+coverage/*/*
+coverage/.resultset.json

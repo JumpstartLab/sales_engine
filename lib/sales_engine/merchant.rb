@@ -40,13 +40,16 @@ module SalesEngine
       SalesEngine::Invoice.find_all_by_merchant_id(self.id)
     end
 
-    def revenue
-      total_revenue = BigDecimal.new("0.00")
-      self.invoices.each do |invoice|
-        total_revenue += invoice.invoice_revenue
-      end
-      total_revenue
+    def invoices_on_date
+      self.invoices.select {|inv| inv if inv.updated_at == date.first}
     end
 
+    def revenue(*date)
+      total_revenue = BigDecimal.new("0.00")
+      date.empty? ? results = invoices : results = invoices_on_date
+
+      results.each { |invoice| total_revenue += invoice.invoice_revenue }
+      total_revenue
+    end
   end
 end

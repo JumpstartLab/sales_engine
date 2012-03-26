@@ -61,6 +61,8 @@ describe SalesEngine::Merchant do
     before(:each) do
       inv_one.stub(:invoice_revenue).and_return(BigDecimal.new("100"))
       inv_two.stub(:invoice_revenue).and_return(BigDecimal.new("100"))
+      inv_one.stub(:created_at).and_return("2/19/2012")
+      inv_two.stub(:created_at).and_return("2/10/2012")
     end
 
     context "when there are invoice_items" do
@@ -75,7 +77,13 @@ describe SalesEngine::Merchant do
         merchant_one.revenue.should == 0
       end
     end
+    context "when a date is specified" do
+      it "returns total revenue for merchant for that specific date" do
+      end
+    end
   end
+
+
 
   # describe ".dates_by_revenue" do
   #   #sum all invoice items and divide by number of invoices
