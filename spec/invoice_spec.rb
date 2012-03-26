@@ -70,13 +70,13 @@ describe SalesEngine::Invoice do
 	end
 
 	context "creating new invoices and related objects" do
+		before(:each) do
+			@beginning_invoice_count = SalesEngine::Invoice.records.size
+			@beginning_transaction_count = SalesEngine::Transaction.records.size
+			@beginning_invoice_items_count = SalesEngine::InvoiceItem.records.size
+			@new_invoice = SalesEngine::Invoice.create(customer_id: SalesEngine::Customer.find_by_id(1), merchant_id: SalesEngine::Merchant.find_by_id(1), status: "shipped", items: [SalesEngine::Item.find_by_id(1), SalesEngine::Item.find_by_id(2), SalesEngine::Item.find_by_id(3)])
+		end
 		describe ".create" do
-			before(:each) do
-				@beginning_invoice_count = SalesEngine::Invoice.records.size
-				@beginning_transaction_count = SalesEngine::Transaction.records.size
-				@beginning_invoice_items_count = SalesEngine::InvoiceItem.records.size
-				SalesEngine::Invoice.create(customer_id: SalesEngine::Customer.find_by_id(1), merchant_id: SalesEngine::Merchant.find_by_id(1), status: "shipped", items: [SalesEngine::Item.find_by_id(1), SalesEngine::Item.find_by_id(2), SalesEngine::Item.find_by_id(3)])
-			end
 			it "creates and stores a new invoice" do
 				ending_count = SalesEngine::Invoice.records.size
 				(ending_count - @beginning_invoice_count).should == 1
@@ -88,19 +88,34 @@ describe SalesEngine::Invoice do
 				SalesEngine::Transaction.records.last.should be_a(SalesEngine::Transaction)
 			end
 			it "creates new invoice items" do
-				pending
-			end
-			after(:each) do
-				SalesEngine::Invoice.records.pop
-				3.times do
-					SalesEngine::InvoiceItem.records.pop
-				end
-				SalesEngine::Transaction.records.pop
-
+				ending_count = SalesEngine::InvoiceItem.records.size
+				(ending_count - @beginning_invoice_items_count).should == 3
+				SalesEngine::InvoiceItem.records.last.should be_a(SalesEngine::InvoiceItem)
 			end
 		end
+		context "charging an invoice" do
+			describe "#charge" do
+				it "changes the invoice's transaction properly" do
+					@new_invoice.charge(:credit_card_number => "4444333322221111", :credit_card_expiration => "10/13", :result => "success")
+					SalesEngine::Transaction.find_by_invoice_id(@new_invoice.id).credit_card_number.should == "4444333322221111"
+					SalesEngine::Transaction.find_by_invoice_id(@new_invoice.id).credit_card_expiration_date.should == "10/13"
+					SalesEngine::Transaction.find_by_invoice_id(@new_invoice.id).result.should == "success"
+				end
+				it "does not add another transaction record" do
+					ending_count = SalesEngine::Transaction.records.size
+					(ending_count - @beginning_transaction_count).should == 1
+				end
+			end
+		end
+		after(:each) do
+			SalesEngine::Invoice.records.pop
+			3.times do
+				SalesEngine::InvoiceItem.records.pop
+			end
+			SalesEngine::Transaction.records.pop
+		end
 	end
-
 end
+
 #id,customer_id,merchant_id,status,created_at,updated_at
 #1,1,92,shipped,2012-02-14 20:56:56 UTC,2012-02-26 20:56:56 UTC

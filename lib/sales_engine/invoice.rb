@@ -62,6 +62,12 @@ module SalesEngine
 		# 	end
 		end
 
+		def charge(params)
+			transactions.first.credit_card_number = params[:credit_card_number]
+			transactions.first.credit_card_expiration_date = params[:credit_card_expiration]
+			transactions.first.result = params[:result]
+		end
+
 		private
 
 		# def successful_transaction
