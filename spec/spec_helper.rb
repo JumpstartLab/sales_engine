@@ -16,5 +16,8 @@ require 'sales_engine/merchant'
 require 'sales_engine/transaction'
 require 'sales_engine/customer'
 
+
 require 'date'
 require 'bigdecimal'
+require 'fabrication'
+require 'faker'

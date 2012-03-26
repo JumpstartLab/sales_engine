@@ -37,5 +37,9 @@ module SalesEngine
       end
       revenue
     end
+
+    def self.most_revenue
+      SalesEngine::Database.merchants.collect{ |merchant| {merchant => merchant.revenue} }
+    end
   end
 end
