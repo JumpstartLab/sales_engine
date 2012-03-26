@@ -54,6 +54,28 @@ describe SalesEngine::Merchant do
     end
   end
 
+  describe "#invoices_on_date(date)" do
+    let(:inv_one)     { mock(SalesEngine::Invoice) }
+    let(:inv_two)     { mock(SalesEngine::Invoice) }
+    let(:inv_three)   { mock(SalesEngine::Invoice) }
+
+    before(:each) do
+      inv_one.stub(:updated_at).and_return(Time.parse("2012-2-19"))
+      inv_two.stub(:updated_at).and_return(Time.parse("2012-2-22"))
+      inv_one.stub(:merchant_id).and_return("1")
+      inv_two.stub(:merchant_id).and_return("1")
+      invoices = [ inv_one, inv_two ]
+
+      SalesEngine::Database.instance.stub(:invoice_list).and_return(invoices)
+    end
+
+    context "given a valid date" do
+      it "returns all transactions on a date" do
+        merchant_one.invoices_on_date("2012-2-19").should == [ inv_one ]
+      end
+    end
+  end
+
   describe "#revenue" do
     let(:inv_one)     { mock(SalesEngine::Invoice) }
     let(:inv_two)     { mock(SalesEngine::Invoice) }
@@ -61,8 +83,6 @@ describe SalesEngine::Merchant do
     before(:each) do
       inv_one.stub(:invoice_revenue).and_return(BigDecimal.new("100"))
       inv_two.stub(:invoice_revenue).and_return(BigDecimal.new("100"))
-      inv_one.stub(:created_at).and_return("2/19/2012")
-      inv_two.stub(:created_at).and_return("2/10/2012")
     end
 
     context "when there are invoice_items" do
@@ -75,10 +95,6 @@ describe SalesEngine::Merchant do
       it "returns 0" do
         merchant_one.stub( {:invoices => []} )
         merchant_one.revenue.should == 0
-      end
-    end
-    context "when a date is specified" do
-      it "returns total revenue for merchant for that specific date" do
       end
     end
   end
