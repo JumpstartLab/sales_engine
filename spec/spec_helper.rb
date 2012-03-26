@@ -8,3 +8,5 @@ Bundler.require
 
 require './sales_engine'
 SalesEngine.startup
+
+require 'date'

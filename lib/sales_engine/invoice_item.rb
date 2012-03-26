@@ -16,6 +16,7 @@ module SalesEngine
 		def self.populate_merchant_revenues
 	    records.each do |record|
 	    	record.merchant.total_revenue += record.quantity * record.unit_price
+	    	record.merchant.items_sold += 1
 	    end
 		end
 

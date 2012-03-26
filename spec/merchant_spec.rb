@@ -41,7 +41,6 @@ describe SalesEngine::Merchant do
 		end
 	end
 
-
 	context "business intelligence methods" do
 		describe ".most_revenue" do
 			it "returns an array of Merchants" do
@@ -52,6 +51,28 @@ describe SalesEngine::Merchant do
 				merch_b = SalesEngine::Merchant.find_by_id(7)
 				merch_c = SalesEngine::Merchant.find_by_id(58)
 				SalesEngine::Merchant.most_revenue(3).should == [ merch_a, merch_b, merch_c ]
+			end
+		end
+		describe ".most_items" do
+			it "returns an array of Merchants" do
+				SalesEngine::Merchant.most_items(1).first.should be_a(SalesEngine::Merchant)
+			end
+			it "returns merchants sorted by descending items sold" do
+				merch_a = SalesEngine::Merchant.find_by_id(6)
+				merch_b = SalesEngine::Merchant.find_by_id(93)
+				merch_c = SalesEngine::Merchant.find_by_id(85)
+				SalesEngine::Merchant.most_items(3).should == [ merch_a, merch_b, merch_c ]
+			end
+		end
+
+		describe "#revenue" do
+			it "returns the total revenue for a merchant" do
+				SalesEngine::Merchant.find_by_id(54).revenue.should == BigDecimal("276580.96")
+			end
+		end
+		describe "#revenue(date)" do
+			it "returns the total revenue for a merchant on a specific date" do
+				SalesEngine::Merchant.find_by_id(54).revenue(DateTime.parse("2012-02-26 20:56:50 UTC")).should == BigDecimal("13121.86")
 			end
 		end
 	end

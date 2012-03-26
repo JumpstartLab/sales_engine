@@ -1,7 +1,7 @@
 module SalesEngine
 	class Invoice
 		extend Searchable
-		attr_accessor :customer_id, :id, :merchant_id, :status
+		attr_accessor :customer_id, :id, :merchant_id, :status, :created_at
 
 		def self.records
 			@invoices ||= get_invoices
@@ -18,6 +18,7 @@ module SalesEngine
 			self.customer_id = raw_line[:customer_id].to_i
 			self.merchant_id = raw_line[:merchant_id].to_i
 			self.status = raw_line[:status]
+			self.created_at = DateTime.parse(raw_line[:created_at])
 		end
 
 		def transactions

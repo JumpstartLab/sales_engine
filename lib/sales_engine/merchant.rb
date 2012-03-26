@@ -1,7 +1,7 @@
 module SalesEngine
 	class Merchant
 		extend SalesEngine::Searchable
-		attr_accessor :name, :id, :total_revenue
+		attr_accessor :name, :id, :total_revenue, :items_sold
 
 		def self.records
 			@merchants ||= get_merchants
@@ -17,10 +17,15 @@ module SalesEngine
 			all.sort_by{|m| m.total_revenue}.first(num_merchants)
 		end
 
+		def self.most_items(num_merchants)
+			all.sort_by{|m| m.items_sold}.first(num_merchants)
+		end
+
 		def initialize(raw_line)
 			self.name = raw_line[:name]
 			self.id = raw_line[:id].to_i
 			self.total_revenue = 0
+			self.items_sold = 0
 		end
 
 		def items
@@ -29,6 +34,16 @@ module SalesEngine
 
 		def invoices
 			@invoices ||= SalesEngine::Invoice.find_all_by_merchant_id(self.id)
+		end
+
+		def revenue(date=nil)
+			if date
+				dated_invoices = invoices.select { |i| i.created_at.strftime("%d%m%y") == date.strftime("%d%m%y") }
+				dated_invoices.map(&:invoice_items).flatten.map(&:line_total).inject(:+)
+			else
+				@total_revenue
+			end
+
 		end
 
 	end
