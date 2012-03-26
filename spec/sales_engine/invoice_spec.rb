@@ -1,4 +1,4 @@
-require './spec/spec_helper'
+require 'spec_helper'
 
 describe SalesEngine::Invoice do
   let(:se) { SalesEngine::Database.instance}
