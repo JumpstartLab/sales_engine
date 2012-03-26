@@ -53,6 +53,7 @@ module Find
   end
 
   def find_merchants(attribute, match)
+    puts "finding #{match} for #{attribute}"
     SalesEngine::Database.instance.merchants.find do |m|
       m.send(attribute.to_sym) == match
     end

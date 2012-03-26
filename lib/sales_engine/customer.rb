@@ -52,6 +52,12 @@ module SalesEngine
     def favorite_merchant
       #favorite_merchant returns an instance of Merchant where the customer has conducted the most transactions
       # will reference invoices > transactions class to determine count
+
+      merch_ids = self.invoices.collect { |i| i.merchant_id }
+      count = Hash.new(0)
+      merch_ids.each { |id| count[id] += 1 }
+      fav_merch_id = count.sort_by{ |id, count| count }.last[0]
+      Merchant.find_by_id(fav_merch_id)
     end
 
   end
