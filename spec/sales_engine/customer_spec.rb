@@ -15,4 +15,17 @@ describe SalesEngine::Customer do
       end
     end
   end
+
+  describe '.collection' do
+    let(:collection) {SalesEngine::Database.instance.customers}
+    it 'creates an array' do
+      collection.should be_a(Array)
+    end
+    it 'contains instances of the customer class' do
+      collection.first.class.should == customer.class
+    end
+    it 'is not nil' do
+      collection.should_not be_nil
+    end
+  end
 end
