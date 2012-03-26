@@ -1,11 +1,11 @@
 require './spec/spec_helper'
 
-describe Transaction do
-  let(:se) { Database.instance}
-  let(:invoice_1) { Invoice.new({ :id => 1 }) }
-  let(:invoice_2) { Invoice.new({ :id => 2 }) }
-  let(:transaction_1) { Transaction.new({:id => 1, :invoice_id => invoice_1.id }) }
-  let(:transaction_2) { Transaction.new({:id => 2, :invoice_id => invoice_2.id }) }
+describe SalesEngine::Transaction do
+  let(:se) { SalesEngine::Database.instance}
+  let(:invoice_1) { SalesEngine::Invoice.new({ :id => 1 }) }
+  let(:invoice_2) { SalesEngine::Invoice.new({ :id => 2 }) }
+  let(:transaction_1) { SalesEngine::Transaction.new({:id => 1, :invoice_id => invoice_1.id }) }
+  let(:transaction_2) { SalesEngine::Transaction.new({:id => 2, :invoice_id => invoice_2.id }) }
 
   before(:each) do
     se.clear_all_data

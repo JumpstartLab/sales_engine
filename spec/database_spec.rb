@@ -1,7 +1,7 @@
 require './spec/spec_helper'
 
-describe Database do
-  let(:se) { Database.instance }
+describe SalesEngine::Database do
+  let(:se) { SalesEngine::Database.instance }
 
   before(:each) do
     se.clear_all_data
@@ -30,7 +30,7 @@ describe Database do
 
   describe "#add_to_list" do
     it "allows you to add a new object to the appropriate master list" do
-      se.add_to_list(Merchant.new)
+      se.add_to_list(SalesEngine::Merchant.new)
       se.merchants.count.should == 1
     end
   end
