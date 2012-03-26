@@ -12,10 +12,14 @@ module SalesEngine
       command = method.to_s.split('_')
       if command[0..1] == ["find", "by"]
         field = command[2..-1].join('_')
-        return find_by(field, *args) if self.records.first.respond_to?(field.to_sym)
+        if self.records.first.respond_to?(field.to_sym)
+          return find_by(field, *args)
+        end
       elsif command[0..2] == ["find", "all", "by"]
         field = command[3..-1].join('_')
-        return find_all_by(field, *args) if self.records.first.respond_to?(field.to_sym)
+        if self.records.first.respond_to?(field.to_sym)
+          return find_all_by(field, *args)
+        end
       end
       super(method, *args, &block)
     end
@@ -31,9 +35,13 @@ module SalesEngine
 
     def find_all_by(attribute, query)
       if query.is_a? String
-        all.select { |record| record.send(attribute.to_sym).to_s.downcase == query.downcase}
+        all.select do |record|
+          record.send(attribute.to_sym).to_s.downcase == query.downcase
+        end
       else
-        all.select { |record| record.send(attribute.to_sym) == query}
+        all.select do |record|
+          record.send(attribute.to_sym) == query
+        end
       end
     end
   end

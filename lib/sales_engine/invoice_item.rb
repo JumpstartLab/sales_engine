@@ -1,7 +1,8 @@
 module SalesEngine
   class InvoiceItem
     extend Searchable
-    attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :line_total, :date
+    attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price
+    attr_accessor :line_total, :date
 
     def self.records
       @invoice_items ||= get_invoice_items

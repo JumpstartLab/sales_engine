@@ -14,13 +14,15 @@ module SalesEngine
     end
 
     def self.create(invoice_attributes)
-      new_invoice = self.new({created_at: DateTime.now.to_s})
+      new_invoice = self.new( { created_at: DateTime.now.to_s } )
       new_invoice.id = records.last.id + 1
       new_invoice.customer_id = invoice_attributes[:customer_id].id
       new_invoice.merchant_id = invoice_attributes[:merchant_id].id
       new_invoice.status = invoice_attributes[:status]
       invoice_attributes[:items].each do |item|
-        SalesEngine::InvoiceItem.create({item_id: item.id, invoice_id: new_invoice.id, created_at: DateTime.now.to_s, quantity: 1, unit_price: item.unit_price.to_s})
+        SalesEngine::InvoiceItem.create( { item_id: item.id,
+        invoice_id: new_invoice.id, created_at: DateTime.now.to_s,
+         uantity: 1, unit_price: item.unit_price.to_s } )
       end
       SalesEngine::Transaction.create({invoice_id: new_invoice.id})
       records << new_invoice
@@ -36,11 +38,11 @@ module SalesEngine
     end
 
     def transactions
-      @transactions ||= SalesEngine::Transaction.find_all_by_invoice_id(self.id)
+      @transactions ||= SalesEngine::Transaction.find_all_by_invoice_id(id)
     end
 
     def invoice_items
-      @invoice_items ||= SalesEngine::InvoiceItem.find_all_by_invoice_id(self.id.to_i)
+      @invoice_items ||= SalesEngine::InvoiceItem.find_all_by_invoice_id(id)
     end
 
     def items
@@ -63,15 +65,16 @@ module SalesEngine
     end
 
     def charge(params)
-      transactions.first.credit_card_number = params[:credit_card_number]
-      transactions.first.credit_card_expiration_date = params[:credit_card_expiration]
-      transactions.first.result = params[:result]
+      t = transactions.first
+      t.credit_card_number = params[:credit_card_number]
+      t.credit_card_expiration_date = params[:credit_card_expiration]
+      t.result = params[:result]
     end
 
     private
 
     # def successful_transaction
-    #   @successful_transaction ||= transactions.map(&:result).include?("success")
+    #   @st ||= transactions.map(&:result).include?("success")
     # end
   end
 end
