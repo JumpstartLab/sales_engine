@@ -2,38 +2,42 @@ require 'spec_helper'
 
 describe SalesEngine::Merchant do
   describe "#invoices" do
-    let(:invoice1) { mock(SalesEngine::Invoice) }
-    let(:invoice2) { mock(SalesEngine::Invoice) }
-    let(:invoice3) { mock(SalesEngine::Invoice) }
+    let(:invoice1) { double("invoice", :merchant_id => 1,
+                                       :created_at => Date.parse("2012-02-26 20:56:56 UTC")) }
+    let(:invoice2) { double("invoice", :merchant_id => 2,
+                                       :created_at => Date.parse("2012-02-28 20:56:56 UTC")) }
+    let(:invoice3) { double("invoice", :merchant_id => 1) }
+    let(:merchant) { Fabricate(:merchant, :id => 2) }
 
-    before(:each) do
-      invoice1.stub(:merchant_id).and_return(1)
-      invoice2.stub(:merchant_id).and_return(2)
-      invoice3.stub(:merchant_id).and_return(1)
-
-      invoices = [invoice1, invoice2, invoice3]
-      SalesEngine::Database.stub(:invoices).and_return(invoices)
-    end
-
-
-    context "when merchant has one invoice" do
-      it "returns an array containing the single invoice" do
-        merchant = Fabricate(:merchant, :id => 2)
-        merchant.invoices.should == [invoice2]
+    context "when date is specified" do
+      it "returns the invoices for that date" do
+        SalesEngine::Database.stub(:invoices).and_return([invoice1, invoice2])
+        merchant.invoices("2012-02-28 20:56:56 UTC").should == [invoice2]
       end
     end
-
-    context "when merchant has multiple invoices" do
-      it "returns all invoices" do
-        merchant = Fabricate(:merchant, :id => 1)
-        merchant.invoices.should == [invoice1, invoice3]
+    context "when date is not specified" do
+      before(:each) do
+        invoices = [invoice1, invoice2, invoice3]
+        SalesEngine::Database.stub(:invoices).and_return(invoices)
       end
-    end
+      context "when merchant has one invoice" do
+        it "returns an array containing the single invoice" do
+          merchant.invoices.should == [invoice2]
+        end
+      end
 
-    context "when merchant has no invoices" do
-      it "returns an empty array" do
-        merchant = Fabricate(:merchant, :id => 3)
-        merchant.invoices.should == []
+      context "when merchant has multiple invoices" do
+        it "returns all invoices" do
+          merchant = Fabricate(:merchant, :id => 1)
+          merchant.invoices.should == [invoice1, invoice3]
+        end
+      end
+
+      context "when merchant has no invoices" do
+        it "returns an empty array" do
+          merchant = Fabricate(:merchant, :id => 3)
+          merchant.invoices.should == []
+        end
       end
     end
   end
@@ -76,32 +80,39 @@ describe SalesEngine::Merchant do
   end
 
   describe "#invoice_items" do
-    let(:invoice_item) { mock(SalesEngine::InvoiceItem)}
-    let(:invoice_item2) { mock(SalesEngine::InvoiceItem)}
-    let(:other_invoice_item) { mock(SalesEngine::InvoiceItem)}
     let(:invoices) { mock(Array) }
-
-    let(:invoice) { mock(SalesEngine::Invoice) }
-    let(:invoice2) { mock(SalesEngine::Invoice) }
+    let(:invoice) { double("invoice", :created_at => DateTime.parse("2012-02-26 20:56:56 UTC")) }
+    let(:invoice2) { double("invoice", :created_at => DateTime.parse("2012-02-28 20:56:56 UTC")) }
+    let(:invoice_item) { double("invoice_item") } 
+    let(:invoice_item2) { double("invoice_item") }
+    let(:other_invoice_item) { double("invoice_item") } 
     let(:merchant) { merchant = Fabricate(:merchant, :id => 3) }
 
     before(:each) do
       invoice.stub(:invoice_items).and_return([invoice_item, other_invoice_item])
       invoice2.stub(:invoice_items).and_return([invoice_item2])
     end
-
-    context "when there are invoices" do
-      it "returns invoice items" do
-        SalesEngine::Database.stub(:invoices).and_return(invoices)      
-        invoices.stub(:select).and_return([invoice, invoice2])
-        merchant = merchant = Fabricate(:merchant, :id => 3)
-        merchant.invoice_items.should == [invoice_item, other_invoice_item, invoice_item2]
+    context "when date is passed" do
+      it "returns the invoice items for that date" do
+        merchant.stub(:invoices).with("2012-02-26 20:56:56 UTC").and_return([invoice])
+        merchant.invoice_items("2012-02-26 20:56:56 UTC").should == [invoice_item, other_invoice_item]
       end
+    end
 
-      context "when there are no invoices" do
-        it "return no invoice items" do
-          SalesEngine::Database.stub(:invoices).and_return([])      
-          merchant.invoice_items.should == []
+    context "when date is not passed" do
+      context "when there are invoices" do
+        it "returns invoice items" do
+          SalesEngine::Database.stub(:invoices).and_return(invoices)      
+          invoices.stub(:select).and_return([invoice, invoice2])
+          merchant = Fabricate(:merchant, :id => 3)
+          merchant.invoice_items.should == [invoice_item, other_invoice_item, invoice_item2]
+        end
+
+        context "when there are no invoices" do
+          it "return no invoice items" do
+            SalesEngine::Database.stub(:invoices).and_return([])      
+            merchant.invoice_items.should == []
+          end
         end
       end
     end
@@ -164,6 +175,39 @@ describe SalesEngine::Merchant do
       it "returns an empty array" do
         SalesEngine::Database.stub(:merchants).and_return([])
         SalesEngine::Merchant.most_revenue(3).should == []
+      end
+    end 
+  end
+
+  describe "#revenue(date)" do
+    let(:invoice) {double("invoice", :id => 1)}
+    let(:invoice2) {double("invoice", :id => 2)}
+    let(:invoice_item) { double("invoice", :unit_price => BigDecimal.new("100"), 
+                                           :quantity => BigDecimal.new("1"),
+                                           :invoice_id => 1)}
+    let(:invoice_item2) { double("invoice", :unit_price => BigDecimal.new("200"), 
+                                            :quantity => BigDecimal.new("2"),
+                                            :invoice_id => 1)}
+    let(:other_invoice_item) { double("invoice", :unit_price => BigDecimal.new("300"), 
+                                                 :quantity => BigDecimal.new("3"),
+                                                 :invoice_id => 2)}
+    let(:merchant) { merchant = Fabricate(:merchant, :id => 3) }
+    let(:date) { "2012-02-26 20:56:56 UTC" }
+    before(:each) do
+      merchant.stub(:invoice_items).and_return([invoice_item, invoice_item2, other_invoice_item])
+      invoice_item.stub(:created_at).and_return
+    end
+
+    context "invoice items exist for the provided date" do
+      it "returns the total revenue for that date" do
+        merchant.stub(:invoice_items).with(date).and_return([invoice_item2, other_invoice_item])
+        merchant.revenue(date).should == BigDecimal.new("1300")
+      end
+    end
+    context "no invoice items exist for the provided date" do
+      it "returns zero" do
+        merchant.stub(:invoice_items).with(date).and_return([])
+        merchant.revenue(date).should == 0
       end
     end
   end

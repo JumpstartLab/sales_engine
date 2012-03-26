@@ -10,12 +10,17 @@ module SalesEngine
     def initialize(id, name, created_at, updated_at)
       @id = id.to_i
       @name = name
-      @created_at = created_at
-      @updated_at = updated_at
+      @created_at = DateTime.parse(created_at)
+      @updated_at = DateTime.parse(updated_at)
     end
 
-    def invoices
-      Database.invoices.select { |invoice| invoice.merchant_id == id }
+    def invoices(date = nil)
+      if date
+        date = Date.parse(date)
+        Database.invoices.select { |invoice| invoice.merchant_id == id && invoice.created_at.to_date == date }
+      else
+        Database.invoices.select { |invoice| invoice.merchant_id == id }
+      end
     end
 
     def items
@@ -26,13 +31,13 @@ module SalesEngine
       Database.merchants
     end
 
-    def invoice_items
-      invoices.collect { |invoice| invoice.invoice_items }.flatten
+    def invoice_items(date = nil)
+      invoices(date).collect { |invoice| invoice.invoice_items }.flatten
     end
 
-    def revenue
+    def revenue(date = nil)
       revenue = 0
-      invoice_items.each do |invoice_item|
+      invoice_items(date).each do |invoice_item|
         revenue += invoice_item.unit_price * invoice_item.quantity
       end
       revenue
