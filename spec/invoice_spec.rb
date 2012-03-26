@@ -14,19 +14,19 @@ describe SalesEngine::Invoice do
     end
     context "the invoice has many associated transactions" do
       it "returns an array of all associated transactions" do
-        invoice = SalesEngine::Invoice.new(1, "", "", "", Date.today, Date.today)
+        invoice = Fabricate(:invoice, :id => 1)
         invoice.transactions.should == [transaction, other_transaction]
       end
     end
     context "the invoice has one associated transaction" do
       it "returns an array containing the associated transaction" do
-        invoice = SalesEngine::Invoice.new(2, "", "", "", Date.today, Date.today)
+        invoice = Fabricate(:invoice, :id => 2)
         invoice.transactions.should == [transaction2]
       end
     end
     context "the invoice has no associated transactions" do
       it "returns an empty array" do
-        invoice = SalesEngine::Invoice.new(3, "", "", "", Date.today, Date.today)
+        invoice = Fabricate(:invoice, :id => 3)
         invoice.transactions.should == []
       end
     end
@@ -45,19 +45,19 @@ describe SalesEngine::Invoice do
     end
     context "the invoice has many associated invoice_items" do
       it "returns an array of all associated invoice_items" do
-        invoice = SalesEngine::Invoice.new(1, "", "", "", Date.today, Date.today)
+        invoice = Fabricate(:invoice, :id => 1)
         invoice.invoice_items.should == [invoice_item, other_invoice_item]
       end
     end
     context "the invoice has one associated invoice_item" do
       it "returns an array containing the associated invoice_item" do
-        invoice = SalesEngine::Invoice.new(2, "", "", "", Date.today, Date.today)
+        invoice = Fabricate(:invoice, :id => 2)
         invoice.invoice_items.should == [invoice_item2]
       end
     end
     context "the invoice has no associated invoice_items" do
       it "returns an empty array" do
-        invoice = SalesEngine::Invoice.new(3, "", "", "", Date.today, Date.today)
+        invoice = Fabricate(:invoice, :id => 3)
         invoice.invoice_items.should == []
       end
     end
@@ -85,26 +85,26 @@ describe SalesEngine::Invoice do
 
     context "the invoice has many associated items" do
       it "returns an array of all associated items" do
-        invoice = SalesEngine::Invoice.new(1, "", "", "", Date.today, Date.today)
+        invoice = Fabricate(:invoice, :id => 1)
         invoice.items.should == [item, other_item]
       end
     end
     context "the invoice has one associated item" do
       it "returns an array containing the associated item" do
-        invoice = SalesEngine::Invoice.new(2, "", "", "", Date.today, Date.today)
+        invoice = Fabricate(:invoice, :id => 2)
         invoice.items.should == [item2]
       end
     end
     context "the invoice has no associated items" do
       it "returns an empty array" do
-        invoice = SalesEngine::Invoice.new(3, "", "", "", Date.today, Date.today)
+        invoice = Fabricate(:invoice, :id => 3)
         invoice.items.should == []
       end
     end
   end
 
   describe "#customer" do
-    let(:invoice) { SalesEngine::Invoice.new(1, 1, "", "", Date.today, Date.today) }
+    let(:invoice) { Fabricate(:invoice, :id => 1, :customer_id => 1) }
     let(:customer) { mock(SalesEngine::Customer) }
     let(:other_customer) { mock(SalesEngine::Customer) }
 
