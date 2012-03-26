@@ -84,7 +84,7 @@ describe SalesEngine::Merchant do
 				SalesEngine::Merchant.find_by_id(1).favorite_customer.should be_a(SalesEngine::Customer)
 			end
 			it "returns the customer with the most transactions with this merchant" do
-				SalesEngine::Merchant.find_by_id(1).favorite_customer.should == SalesEngine::Customer.find_by_id(996)
+				SalesEngine::Merchant.find_by_id(2).favorite_customer.should == SalesEngine::Customer.find_by_id(96)
 			end
 		end
 		#TO DO WRITE #customers_with_pending_invoices spec

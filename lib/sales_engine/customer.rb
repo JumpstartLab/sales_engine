@@ -22,5 +22,14 @@ module SalesEngine
 		def invoices
 			@invoices ||= SalesEngine::Invoice.find_all_by_customer_id(self.id)
 		end
+
+		def transactions
+			invoices.flat_map(&:transactions)
+		end
+
+		#TODO: Manually verify this functions correctly
+		def favorite_merchant
+			SalesEngine::Merchant.find_by_id(invoices.group_by{|i| i.merchant_id}.sort.reverse.first.first)
+		end
 	end
 end

@@ -43,7 +43,7 @@ module SalesEngine
 		def revenue(date = nil)
 			if date
 				dated_invoices = invoices.select { |i| i.created_at.strftime("%d%m%y") == date.strftime("%d%m%y") }
-				dated_invoices.map(&:invoice_items).flatten.map(&:line_total).inject(:+) || 0
+				dated_invoices.flat_map(&:invoice_items).map(&:line_total).inject(:+) || 0
 			else
 				@total_revenue || 0
 			end
@@ -51,7 +51,7 @@ module SalesEngine
 
 		#TODO: Manually verify this functions correctly
 		def favorite_customer
-			SalesEngine::Customer.find_by_id(invoices.group_by{|i| i.customer_id}.sort.reverse.first.first.to_i)
+			SalesEngine::Customer.find_by_id(invoices.group_by{|i| i.customer_id}.sort.reverse.first.first)
 		end
 
 	end
