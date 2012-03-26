@@ -6,4 +6,4 @@ Icon?
 Thumbs.db
 
 # Coverage files #
-coverage/*
+*/coverage/*
