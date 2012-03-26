@@ -39,6 +39,38 @@ describe SalesEngine::Item do
 			end
 		end
 	end
+
+	context "business intelligence methods" do
+		describe ".most_revenue" do
+			it "returns an array of Items" do
+				SalesEngine::Item.most_revenue(1).first.should be_a(SalesEngine::Item)
+			end
+			it "returns items sorted by descending revenue" do
+				item_a = SalesEngine::Item.find_by_id(2382)
+				item_b = SalesEngine::Item.find_by_id(1824)
+				item_c = SalesEngine::Item.find_by_id(401)
+				SalesEngine::Item.most_revenue(3).should == [ item_a, item_b, item_c ]
+			end
+		end
+		describe ".most_items" do
+			it "returns an array of items" do
+				SalesEngine::Item.most_items(1).first.should be_a(SalesEngine::Item)
+			end
+			it "returns items sorted by descending amount sold" do
+				item_a = SalesEngine::Item.find_by_id(2186)
+				item_b = SalesEngine::Item.find_by_id(524)
+				item_c = SalesEngine::Item.find_by_id(1015)
+				SalesEngine::Item.most_items(3).should == [ item_a, item_b, item_c ]
+			end
+		end
+		describe "#best_day" do
+			it "returns the date with the most sales for this item" do
+				pending
+				SalesEngine::Item.find_by_id(1).best_day.should == DateTime.parse("2012-02-26 20:56:50 UTC").strftime("%d%m%y")
+			end
+		end
+
+	end
 end
 
 #id,name,description,unit_price,merchant_id,created_at,updated_at

@@ -69,7 +69,6 @@ describe SalesEngine::Merchant do
 				SalesEngine::Merchant.revenue(DateTime.parse("2012-02-26 20:56:50 UTC")).should == BigDecimal("2175008.70")
 			end
 		end
-
 		describe "#revenue" do
 			it "returns the total revenue for a merchant" do
 				SalesEngine::Merchant.find_by_id(54).revenue.should == BigDecimal("276580.96")
@@ -80,6 +79,15 @@ describe SalesEngine::Merchant do
 				SalesEngine::Merchant.find_by_id(54).revenue(DateTime.parse("2012-02-26 20:56:50 UTC")).should == BigDecimal("13121.86")
 			end
 		end
+		describe "#favorite_customer" do
+			it "returns a customer object" do
+				SalesEngine::Merchant.find_by_id(1).favorite_customer.should be_a(SalesEngine::Customer)
+			end
+			it "returns the customer with the most transactions with this merchant" do
+				SalesEngine::Merchant.find_by_id(1).favorite_customer.should == SalesEngine::Customer.find_by_id(996)
+			end
+		end
+		#TO DO WRITE #customers_with_pending_invoices spec
 	end
 
 end

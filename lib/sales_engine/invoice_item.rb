@@ -13,12 +13,15 @@ module SalesEngine
 			end
 		end
 
-		def self.populate_merchant_revenues
+		def self.populate_revenues
 	    records.each do |record|
-	    	record.merchant.total_revenue += record.quantity * record.unit_price
+	    	record.merchant.total_revenue += record.line_total
 	    	record.merchant.items_sold += 1
+	    	record.item.total_revenue += record.line_total
+	    	record.item.items_sold += 1
 	    end
 		end
+
 
 		def initialize(raw_line)
 			self.id = raw_line[:id].to_i
