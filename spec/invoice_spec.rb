@@ -8,15 +8,15 @@ describe SalesEngine::Invoice do
 		end
 
 		{id: 1, customer_id: 1,
-		merchant_id: 92, status: "shipped"}.each do |attribute, value|
-			it "records #{attribute}" do
-			  SalesEngine::Invoice.records.first.send(attribute).should == value
-		  end
-	  end
-	end
+			merchant_id: 92, status: "shipped"}.each do |attribute, value|
+				it "records #{attribute}" do
+					SalesEngine::Invoice.records.first.send(attribute).should == value
+				end
+			end
+		end
 
-	context "instance methods" do
-		let(:invoice) { SalesEngine::Invoice.find_by_id(1) }
+		context "instance methods" do
+			let(:invoice) { SalesEngine::Invoice.find_by_id(1) }
 		# let(:invoice) { Fabricate(:invoice) }
 		describe "#transactions" do
 			it "returns transactions" do
@@ -68,6 +68,39 @@ describe SalesEngine::Invoice do
 			# end
 		end
 	end
+
+	context "creating new invoices and related objects" do
+		describe ".create" do
+			before(:each) do
+				@beginning_invoice_count = SalesEngine::Invoice.records.size
+				@beginning_transaction_count = SalesEngine::Transaction.records.size
+				@beginning_invoice_items_count = SalesEngine::InvoiceItem.records.size
+				SalesEngine::Invoice.create(customer_id: SalesEngine::Customer.find_by_id(1), merchant_id: SalesEngine::Merchant.find_by_id(1), status: "shipped", items: [SalesEngine::Item.find_by_id(1), SalesEngine::Item.find_by_id(2), SalesEngine::Item.find_by_id(3)])
+			end
+			it "creates and stores a new invoice" do
+				ending_count = SalesEngine::Invoice.records.size
+				(ending_count - @beginning_invoice_count).should == 1
+				SalesEngine::Invoice.records.last.should be_a(SalesEngine::Invoice)
+			end
+			it "creates a new transaction" do
+				ending_count = SalesEngine::Transaction.records.size
+				(ending_count - @beginning_transaction_count).should == 1
+				SalesEngine::Transaction.records.last.should be_a(SalesEngine::Transaction)
+			end
+			it "creates new invoice items" do
+				pending
+			end
+			after(:each) do
+				SalesEngine::Invoice.records.pop
+				3.times do
+					SalesEngine::InvoiceItem.records.pop
+				end
+				SalesEngine::Transaction.records.pop
+
+			end
+		end
+	end
+
 end
 #id,customer_id,merchant_id,status,created_at,updated_at
 #1,1,92,shipped,2012-02-14 20:56:56 UTC,2012-02-26 20:56:56 UTC

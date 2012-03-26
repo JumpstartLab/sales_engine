@@ -14,6 +14,12 @@ module SalesEngine
 			end
 		end
 
+		def self.create(params)
+			t = self.new(params)
+			t.id = records.last.id + 1
+			records << t
+		end
+
 		def initialize(raw_line)
 			self.id = raw_line[:id].to_i
 			self.invoice_id = raw_line[:invoice_id].to_i

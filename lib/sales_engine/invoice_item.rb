@@ -22,6 +22,9 @@ module SalesEngine
 	    end
 		end
 
+		def self.create(params)
+			records << self.new(params)
+		end
 
 		def initialize(raw_line)
 			self.id = raw_line[:id].to_i
