@@ -1,14 +1,22 @@
 module SalesEngine
   class Merchant
     extend SalesEngine::Searchable
-    attr_accessor :name, :id, :total_revenue, :items_sold
+    attr_accessor :name, :id, :total_revenue, :items_sold, :raw_csv
 
     def self.records
       @merchants ||= get_merchants
     end
 
+    def self.csv_headers
+      @csv_headers
+    end
+
+    def self.csv_headers=(value)
+      @csv_headers=(value)
+    end
+
     def self.get_merchants
-      CSVLoader.load('data/merchants.csv').collect do |record|
+      CSVManager.load('data/merchants.csv').collect do |record|
         Merchant.new(record)
       end
     end
@@ -30,6 +38,8 @@ module SalesEngine
       self.id = raw_line[:id].to_i
       self.total_revenue = 0
       self.items_sold = 0
+      self.raw_csv = raw_line.values
+      Merchant.csv_headers ||= raw_line.keys
     end
 
     def items

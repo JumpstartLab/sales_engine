@@ -3,12 +3,13 @@ module SalesEngine
     extend Searchable
     attr_accessor :customer_id, :id, :merchant_id, :status, :created_at
 
+
     def self.records
       @invoices ||= get_invoices
     end
 
     def self.get_invoices
-      CSVLoader.load('data/invoices.csv').collect do |record|
+      CSVManager.load('data/invoices.csv').collect do |record|
         Invoice.new(record)
       end
     end
