@@ -31,6 +31,21 @@ module SalesEngine
           find_all_by_(attribute, input)
         end
       end
+
+      define_method "random" do 
+        random(collection)
+      end
+    end
+
+    def self.random
+      rand(self.customers)
+    end
+
+    def self.invoices
+      Invoice.find_by_customer_id(id)
+      customer = Customer.find_by_id()
+      SalesEngine::Invoice.find_all_by_customer_id(value)
+
     end
 
     def self.collection

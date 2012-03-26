@@ -1,25 +1,35 @@
 module SalesEngine
   class Merchant
+  
+    extend Searchable
+
     attr_accessor :id, :name, :created_at, :updated_at
 
-    # def initialize
-
-    # end
-
-    def find_by(attribute)
-      
+    def initialize(attributes)
+      self.id = attributes[:id]
+      self.name = attributes[:name]
+      self.created_at = attributes[:created_at]
+      self.updated_at = attributes[:updated_at]
     end
 
-    def random
-      # rand(Database.instance.merchants)
+    class << self
+      [:id, :name, :created_at, 
+       :updated_at].each do |attribute|
+        define_method "find_by_#{attribute}" do |input|
+          find_by_(attribute, input)
+        end
+      end
+
+      [:id, :name, :created_at, 
+       :updated_at].each do |attribute|
+        define_method "find_all_by_#{attribute}" do |input|
+          find_all_by_(attribute, input)
+        end
+      end
     end
 
-    def self.find_by_(attribute)
-
-    end
-
-    def self.find_all_by_(attribute)
-      
+    def self.collection
+      SalesEngine::Database.instance.merchants
     end
 
     # def items
