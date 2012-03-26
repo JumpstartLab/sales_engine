@@ -1,19 +1,16 @@
 source :rubygems
 
-group :test do
-	gem 'rspec'
-	gem 'cane'
-	gem 'reek'
-	gem 'simplecov'
+group :test, :development do
+  gem 'rspec'
+  gem 'simplecov'
+	gem 'fabrication'
+	gem 'faker'
 end
 
 group :development do
-	gem 'guard'
-	gem 'guard-rspec'
-	gem 'growl'
-end
-
-group :test, :development do
-	gem 'fabrication'
-	gem 'faker'
+  gem 'reek'
+  gem 'cane'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'growl'
 end
