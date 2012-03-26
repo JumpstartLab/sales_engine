@@ -1,15 +1,16 @@
+require 'sales_engine/model'
+
 class SalesEngine
   class Transaction
-    
+    include Model
+
     attr_accessor :invoice_id
+
     def initialize(attr)
-        @id = attr[:id]
         @invoice_id = attr[:invoice_id]
         @credit_card_number = attr[:credit_card_number]
         @credit_card_expiration_date = attr[:credit_card_expiration_date]
         @result = attr[:result]
-        @created_at = attr[:created_at]
-        @updated_at = attr[:updated_at]
     end
     # def self.random
     # # return a random Merchant

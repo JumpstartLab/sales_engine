@@ -1,14 +1,14 @@
 require 'sales_engine/item'
+require 'sales_engine/model'
 
 class SalesEngine
   class Merchant
+    include Model
     attr_accessor :id
 
     def initialize(attributes)
-      @id = attributes[:id]
+      super(attributes)
       @name = attributes[:name]
-      @created_at = attributes[:created_at]
-      @updated_at = attributes[:updated_at]
     end
 
     def self.random

@@ -1,16 +1,17 @@
+require 'sales_engine/model'
+
 class SalesEngine
   class InvoiceItem
+    include Model
 
     attr_accessor :id, :item_id, :invoice_id
 
     def initialize(attributes)
-        @id = attributes[:id]
+        super
         @item_id = attributes[:item_id]
         @invoice_id = attributes[:invoice_id]
         @quantity = attributes[:quantity]
         @unit_price = attributes[:unit_price]
-        @created_at = attributes[:created_at]
-        @updated_at = attributes[:updated_at]
     end
 
     # def self.random

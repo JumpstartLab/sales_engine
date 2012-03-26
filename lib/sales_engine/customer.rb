@@ -1,13 +1,14 @@
+require 'sales_engine/model'
+
 class SalesEngine
   class Customer
+    include Model
     attr_accessor :id
     
     def initialize(attributes)
-        @id = attributes[:id]
+        super
         @first_name = attributes[:first_name]
         @last_name = attributes[:last_name]
-        @created_at = attributes[:created_at]
-        @updated_at = attributes[:updated_at]
     end
     # def self.random
     # # return a random Merchant
