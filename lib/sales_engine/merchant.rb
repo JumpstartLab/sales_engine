@@ -90,6 +90,14 @@ module SalesEngine
     def favorite_customer
       #favorite_customer returns the Customer who has conducted the most transactions
       # should reference invoices > transactions
+
+      # this just finds the most invoices by a particular customer
+      cust_ids = self.charged_invoices.collect { |i| i.customer_id }
+      count = Hash.new(0)
+      cust_ids.each { |id| count[id] += 1 }
+      fav_cust_id = count.sort_by{ |id, count| count }.last[0]
+      Customer.find_by_id(fav_cust_id)
+
     end
 
     def customers_with_pending_invoices
