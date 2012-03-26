@@ -8,19 +8,19 @@ describe SalesEngine::Invoice do
     end
 
     {id: 1, customer_id: 1,
-    merchant_id: 92, status: "shipped"}.each do |attribute, value|
-      it "records #{attribute}" do
-        SalesEngine::Invoice.records.first.send(attribute).should == value
+      merchant_id: 92, status: "shipped"}.each do |attribute, value|
+        it "records #{attribute}" do
+          SalesEngine::Invoice.records.first.send(attribute).should == value
+        end
+      end
+      it "stores the raw CSV for each Invoice" do
+        SalesEngine::Invoice.records.first.raw_csv.should be_an Array
+      end
+
+      it "stores headers on the Invoice class" do
+        SalesEngine::Invoice.csv_headers.should be_an Array
       end
     end
-    it "stores the raw CSV for each Invoice" do
-      SalesEngine::Invoice.records.first.raw_csv.should be_an Array
-    end
-
-    it "stores headers on the Invoice class" do
-      SalesEngine::Invoice.csv_headers.should be_an Array
-    end
-  end
 
     context "instance methods" do
       let(:invoice) { SalesEngine::Invoice.find_by_id(1) }
@@ -66,14 +66,37 @@ describe SalesEngine::Invoice do
     end
 
     describe "#total_paid" do
-      it "returns the total dollar amount paid for the invoice" do
-        invoice.total_paid.should == BigDecimal("13060.97")
+      context "for successful transactions" do
+        it "returns the total dollar amount paid for the invoice" do
+          invoice.total_paid.should == BigDecimal("13060.97")
+        end
       end
-
-      # it "returns 0 if the transaction status is not 'success'" do
-      #   pending
-      # end
+      context "for unsuccessful transactions" do
+        it "returns 0" do
+          invoice.stub(:successful_transaction => false)
+          invoice.total_paid.should == 0
+        end
+      end
     end
+    describe "#successful_transaction" do
+      context "when the transaction has a status of 'success'" do
+        it "returns true" do
+          good_transaction = double("transaction")
+          good_transaction.stub(:result => "success")
+          invoice.stub(:transactions => [good_transaction])
+          invoice.send(:successful_transaction).should be_true
+        end
+      end
+      context "when the transaction has a status of 'pending'" do
+        it "returns false" do
+          bad_transaction = double("transaction")
+          bad_transaction.stub(:result => "pending")
+          invoice.stub(:transactions => [bad_transaction])
+          invoice.send(:successful_transaction).should be_false
+        end
+      end
+    end
+
   end
 
   context "creating new invoices and related objects" do

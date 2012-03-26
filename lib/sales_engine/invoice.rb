@@ -69,11 +69,11 @@ module SalesEngine
     end
 
     def total_paid
-      # if successful_transaction
+      if successful_transaction
         @total_paid ||= invoice_items.map(&:line_total).inject(:+)
-    #   else
-    #     0
-    #   end
+      else
+        0
+      end
     end
 
     def charge(params)
@@ -85,8 +85,8 @@ module SalesEngine
 
     private
 
-    # def successful_transaction
-    #   @st ||= transactions.map(&:result).include?("success")
-    # end
+    def successful_transaction
+      transactions.map(&:result).include?("success")
+    end
   end
 end
