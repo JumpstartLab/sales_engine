@@ -9,5 +9,4 @@ SimpleCov.start do
 end
 require 'sales_engine'
 extend SalesEngine
-
 SalesEngine.startup

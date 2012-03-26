@@ -1,14 +1,14 @@
 require 'spec_helper.rb'
 
 describe SalesEngine::Invoice do
-  
-    let(:test_customer) {SalesEngine::Customer.random}
-    let(:test_merchant) {SalesEngine::Merchant.random}
-    let(:test_invoice) {SalesEngine::Invoice.random}
-    let(:test_item) {SalesEngine::Item.random}
-    let(:test_transaction) {SalesEngine::Transaction.random}
-    let(:test_invoice_item) {SalesEngine::InvoiceItem.random}
-    
+
+  let(:test_customer) {SalesEngine::Customer.random}
+  let(:test_merchant) {SalesEngine::Merchant.random}
+  let(:test_invoice) {SalesEngine::Invoice.random}
+  let(:test_item) {SalesEngine::Item.random}
+  let(:test_transaction) {SalesEngine::Transaction.random}
+  let(:test_invoice_item) {SalesEngine::InvoiceItem.random}
+
   describe 'find_by_#{attribute}(attribute) methods' do
     SalesEngine::Invoice::ATTRIBUTES.each do |attribute|
       context ".find_by_#{attribute}" do
@@ -66,7 +66,9 @@ describe SalesEngine::Invoice do
         it "returns an array of Item objects" do
           items = test_invoice.items
           items.each do |item|
-            item.should be_is_a(SalesEngine::Item)
+            if item
+              item.should be_is_a(SalesEngine::Item)
+            end
           end
         end
       end
