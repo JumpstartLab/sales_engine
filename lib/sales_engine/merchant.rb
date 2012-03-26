@@ -49,7 +49,6 @@ module SalesEngine
 			end
 		end
 
-		#TODO: Manually verify this functions correctly
 		def favorite_customer
 			SalesEngine::Customer.find_by_id(invoices.group_by{|i| i.customer_id}.sort_by{|i| i.last.size}.reverse.first.first)
 		end

@@ -27,7 +27,6 @@ module SalesEngine
 			invoices.flat_map(&:transactions)
 		end
 
-		#TODO: Manually verify this functions correctly
 		def favorite_merchant
 			SalesEngine::Merchant.find_by_id(invoices.group_by{|i| i.merchant_id}.sort_by{|i| i.last.size}.reverse.first.first)
 		end
