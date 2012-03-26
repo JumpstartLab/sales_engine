@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SalesEngine::Transaction do
   describe "#invoice" do
-    let(:transaction) { SalesEngine::Transaction.new(1, 1, "", "", "", Date.today, Date.today) }
+    let(:transaction) { Fabricate(:transaction, :id => 1) }
     let(:invoice) { mock(SalesEngine::Invoice) }
     let(:other_invoice) { mock(SalesEngine::Invoice) }
 
