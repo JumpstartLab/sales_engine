@@ -13,11 +13,6 @@ module SalesEngine
       define_attributes(attributes)
     end
 
-    def update
-      @invoice ||= calc_invoice
-      @item ||= calc_item
-    end
-
     def invoice
       @invoice ||= calc_invoice
     end

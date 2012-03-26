@@ -16,14 +16,6 @@ module SalesEngine
         define_attributes(attributes)
       end
 
-      def update
-        @transactions ||= calc_transactions
-        @customer ||= calc_customer
-        @invoice_items ||= calc_invoice_items
-        @items ||= calc_items
-        @revenue ||= calc_revenue
-      end
-
       def transactions
         @transactions ||= calc_transactions
       end

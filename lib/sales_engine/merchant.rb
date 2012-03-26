@@ -15,13 +15,6 @@ module SalesEngine
       define_attributes(attributes)
     end
 
-    def update
-      @invoices ||= calc_invoices
-      @items ||= calc_items
-      @items_sold ||= calc_items_sold
-      @revenue ||= calc_revenue
-    end
-
     def items
       @items ||= calc_items
     end
@@ -31,7 +24,7 @@ module SalesEngine
     end
 
     def invoices
-      @invoices ||= calc_items_sold
+      @invoices ||= calc_invoices
     end
 
     def calc_revenue
@@ -44,11 +37,12 @@ module SalesEngine
 
     def revenue(date=nil)
       total_revenue = 0
-      if date
+      if date && invoices.any?
         total_revenue = invoices.inject(0) do |sum, invoice|
           if invoice.created_at == date
             sum += invoice.revenue
           end
+          sum
         end
         BigDecimal.new(total_revenue.to_i)
       else
@@ -58,22 +52,38 @@ module SalesEngine
 
 
     def calc_invoices
-      @invoices = Invoice.find_all_by_merchant_id(self.id)
+      Invoice.find_all_by_merchant_id(self.id)
     end
 
     def calc_items_sold
       items_sold = 0
-      items_sold = items.inject(0) do |quantity, item|
+      items.inject(0) do |quantity, item|
         quantity += item.invoice_items.inject(0) do |q, i|
           q += i.quantity.to_i
         end
       end
-      @items_sold = items_sold
+    end
+ 
+    def calc_items
+      Item.find_all_by_merchant_id(self.id)
     end
 
-    def calc_items
-      @items = Item.find_all_by_merchant_id(self.id)
+    def favorite_customer
+      transaction_count = Hash.new {|hash, key| hash[key] = 0 }
+      highest = 0
+      self.invoices.each do |invoice|
+        if invoice.successful?
+          transaction_count[invoice.customer_id] += 1
+          count = transaction_count[invoice.customer_id]
+          if count > highest
+            highest = count
+            top_customer = invoice.customer
+          end
+        end
+      end
+      top_customer ||= nil
     end
+
 
     def self.most_revenue(number)
       sorted = Database.instance.merchant.sort_by {|merchant| -merchant.revenue}

@@ -12,13 +12,6 @@ module SalesEngine
       define_attributes(attributes)
     end
 
-    def update
-      @invoices ||= calc_invoices
-      @transactions ||= calc_transactions
-      @successful_transactions ||= calc_successful_transactions
-      @favorite_merchant ||= calc_favorite_merchant
-    end
-
     def transactions
       @transactions ||= calc_transactions
     end

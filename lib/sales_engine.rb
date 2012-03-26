@@ -27,7 +27,6 @@ module SalesEngine
         end
       end
       threads.each {|thread| thread.join}
-      update
     end
     def self.load(filename)
       CSV.open("data/#{filename}", CSV_OPTIONS)
