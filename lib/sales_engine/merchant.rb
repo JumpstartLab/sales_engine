@@ -8,7 +8,7 @@ module SalesEngine
 		end
 
 		def self.get_merchants
-		  CSVLoader.load('data/merchants.csv').collect do |record|
+			CSVLoader.load('data/merchants.csv').collect do |record|
 				Merchant.new(record)
 			end
 		end
@@ -19,6 +19,10 @@ module SalesEngine
 
 		def self.most_items(num_merchants)
 			all.sort_by{|m| m.items_sold}.first(num_merchants)
+		end
+
+		def self.revenue(date = nil)
+			all.map{|m| m.revenue(date)}.inject(:+)
 		end
 
 		def initialize(raw_line)
@@ -36,12 +40,12 @@ module SalesEngine
 			@invoices ||= SalesEngine::Invoice.find_all_by_merchant_id(self.id)
 		end
 
-		def revenue(date=nil)
+		def revenue(date = nil)
 			if date
 				dated_invoices = invoices.select { |i| i.created_at.strftime("%d%m%y") == date.strftime("%d%m%y") }
-				dated_invoices.map(&:invoice_items).flatten.map(&:line_total).inject(:+)
+				dated_invoices.map(&:invoice_items).flatten.map(&:line_total).inject(:+) || 0
 			else
-				@total_revenue
+				@total_revenue || 0
 			end
 
 		end

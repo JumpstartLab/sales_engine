@@ -64,6 +64,11 @@ describe SalesEngine::Merchant do
 				SalesEngine::Merchant.most_items(3).should == [ merch_a, merch_b, merch_c ]
 			end
 		end
+		describe ".revenue(date)" do
+			it "returns the total revenue across all merchants for one date" do
+				SalesEngine::Merchant.revenue(DateTime.parse("2012-02-26 20:56:50 UTC")).should == BigDecimal("2175008.70")
+			end
+		end
 
 		describe "#revenue" do
 			it "returns the total revenue for a merchant" do
