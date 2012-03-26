@@ -20,6 +20,8 @@ module SalesEngine
     def validate_attributes
       validates_numericality_of :credit_card_number, @credit_card_number
       validates_presence_of :result, @result
+      validates_presence_of :credit_card_expiration, @credit_card_expiration
+      validates_presence_of :invoice, @invoice
     end
   end
 end

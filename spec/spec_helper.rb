@@ -1,3 +1,5 @@
-require 'simplecov'
+require 'bundler'
+Bundler.require(:test)
+
 SimpleCov.start
-require './sales_engine'
+require './lib/sales_engine'

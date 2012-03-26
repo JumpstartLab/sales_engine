@@ -68,4 +68,11 @@ describe SalesEngine::Model do
       valid_sample.created_at.should == valid_sample.updated_at
     end
   end
+
+  context "find" do
+    it "exists" do
+      pending
+      SalesEngine::ModelSample.should respond_to :find
+    end
+  end
 end

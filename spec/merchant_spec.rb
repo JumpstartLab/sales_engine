@@ -1,7 +1,7 @@
 require './spec/spec_helper'
 
 describe SalesEngine::Merchant do
-  let(:merchant) { SalesEngine::Merchant.new(:id => 1, :name => "Test Merchant") }
+  let(:merchant) { Fabricate(:merchant) }
 
   it 'creates a merchant with valid attributes' do
     merchant.nil?.should be_false

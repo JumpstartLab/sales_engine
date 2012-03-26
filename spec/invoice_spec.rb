@@ -1,24 +1,9 @@
 require './spec/spec_helper'
 
 describe SalesEngine::Invoice do
-  let(:valid_customer) { 
-    SalesEngine::Customer.new(
-      :id => 1,
-      :first_name => 'Jackie',
-      :last_name => 'Chan'
-    )
-  }
-
-  let(:valid_merchant) { SalesEngine::Merchant.new(:id => 1, :name => "Test Merchant") }
-
-  let(:valid_invoice) { 
-    SalesEngine::Invoice.new(
-      :id => 1,
-      :customer => valid_customer,
-      :merchant => valid_merchant,
-      :status => 'shipped'
-    )
-  }
+  let(:valid_invoice) { Fabricate(:invoice) }
+  let(:valid_merchant) { Fabricate(:merchant) }
+  let(:valid_customer) { Fabricate(:customer) }
   
   it "can be created" do
     valid_invoice.should_not be_nil

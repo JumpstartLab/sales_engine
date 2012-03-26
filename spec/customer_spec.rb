@@ -1,13 +1,7 @@
 require './spec/spec_helper'
 
 describe SalesEngine::Customer do
-  let(:valid_customer) { 
-    SalesEngine::Customer.new(
-      :id => 1,
-      :first_name => 'Jackie',
-      :last_name => 'Chan'
-    )
-  }
+  let(:valid_customer) { Fabricate(:customer) }
 
   it "assigns a customer name when given as an attribute" do
     first, last = 'Jackie', 'Chan'

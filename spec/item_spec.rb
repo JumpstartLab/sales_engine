@@ -1,25 +1,15 @@
 require './spec/spec_helper'
 
 describe SalesEngine::Item do
-  let(:merchant) { SalesEngine::Merchant.new(:id => 1, :name => "Test Merchant") }
-
-  let(:valid_item) do
-    SalesEngine::Item.new(
-      :id => 1, 
-      :name => "Item 1", 
-      :description => "Description",
-      :unit_price => 12,
-      :merchant => merchant
-    )
-  end
+  let(:valid_item) { Fabricate(:item) }
 
   context 'name' do
     it 'exists' do
       valid_item.name.should_not be_nil
     end
 
-    it 'is assigned by the name argument' do
-      valid_item.name.should == "Item 1"
+    it 'is a string' do
+      valid_item.name.should be_a String
     end
 
     it "raises ArgumentError if there isn't a name argument" do
@@ -46,8 +36,8 @@ describe SalesEngine::Item do
       valid_item.description.should_not be_nil
     end
 
-    it 'is assigned by the description argument' do
-      valid_item.description.should == "Description"
+    it 'is a string' do
+      valid_item.description.should be_a String
     end
 
     it "raises ArgumentError if there isn't a description argument" do
@@ -74,8 +64,8 @@ describe SalesEngine::Item do
       valid_item.unit_price.should_not be_nil
     end
 
-    it 'is assigned by the unit_price argument' do
-      valid_item.unit_price.should == 12
+    it 'is numeric' do
+      valid_item.unit_price.should be_a Numeric
     end
 
     it "raises ArgumentError if there isn't a unit_price argument" do
