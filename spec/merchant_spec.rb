@@ -135,4 +135,36 @@ describe SalesEngine::Merchant do
       end
     end
   end
+
+  describe ".most_revenue" do
+    let(:merchant) { double("merchant", :revenue => 10) }
+    let(:merchant2) { double("merchant", :revenue => 20) }
+    let(:merchant3) { double("merchant", :revenue => 30) }
+    let(:merchant4) { double("merchant", :revenue => 40) }
+
+    context "when number of merchants is greater than X" do
+      it "returns an array of merchants with the most revenue" do
+        SalesEngine::Database.stub(:merchants).and_return([merchant, merchant2, merchant3, merchant4])
+        SalesEngine::Merchant.most_revenue(2).should == [merchant4, merchant3]
+      end
+    end
+    context "when number of merchants is less than X" do
+      it "returns an array of all merchants" do
+        SalesEngine::Database.stub(:merchants).and_return([merchant, merchant2])
+        SalesEngine::Merchant.most_revenue(3).should == [merchant2, merchant]
+      end
+    end
+    context "when there is only one merchant" do
+      it "returns an array with one merchant" do
+        SalesEngine::Database.stub(:merchants).and_return([merchant])
+        SalesEngine::Merchant.most_revenue(1).should == [merchant]
+      end
+    end
+    context "when there are no merchants" do
+      it "returns an empty array" do
+        SalesEngine::Database.stub(:merchants).and_return([])
+        SalesEngine::Merchant.most_revenue(3).should == []
+      end
+    end
+  end
 end

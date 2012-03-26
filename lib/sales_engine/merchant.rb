@@ -38,8 +38,10 @@ module SalesEngine
       revenue
     end
 
-    def self.most_revenue
-      SalesEngine::Database.merchants.collect{ |merchant| {merchant => merchant.revenue} }
+    def self.most_revenue(total_merchants)
+      merchants = SalesEngine::Database.merchants
+      merchants.sort_by!{ |merchant| merchant.revenue }.reverse!
+      merchants[0,total_merchants]
     end
   end
 end
