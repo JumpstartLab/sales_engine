@@ -1,13 +1,17 @@
+require 'sales_engine/randomize'
+require 'sales_engine/searchable'
+
 module SalesEngine
   class Merchant
-  
+
+    extend Randomize  
     extend Searchable
 
     attr_accessor :id, :name, :created_at, :updated_at
 
     def initialize(attributes)
-      self.id = attributes[:id]
-      self.name = attributes[:name]
+      self.id         = attributes[:id]
+      self.name       = attributes[:name]
       self.created_at = attributes[:created_at]
       self.updated_at = attributes[:updated_at]
     end
@@ -32,20 +36,15 @@ module SalesEngine
       SalesEngine::Database.instance.merchants
     end
 
-    # def items
-    #   # returns a collection of Item instances associated with that merchant for the products they sell
-    # end
+    def items
+      items = SalesEngine::Database.instance.items
+      results = items.select { |item| item.merchant_id == self.id }
+    end
 
-
-    # def items(merchant_id)
-    #   items = SalesEngine::Database.instance.items
-    #   matched_results = items.select {|item| item.}
-    #   returns a collection of Item instances associated with that merchant for the products they sell
-    # end
-
-    # def invoices
-    #   # returns a collection of Invoice instances associated with that merchant from their known orders
-    # end
+    def invoices
+      invoices = SalesEngine::Database.instance.invoices
+      results = invoices.select { |invoice| invoice.merchant_id == self.id }
+    end
 
     # def most_revenue()
     #   # returns the top x merchant instances ranked by total revenue

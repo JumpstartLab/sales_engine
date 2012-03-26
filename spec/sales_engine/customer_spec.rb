@@ -19,8 +19,8 @@ describe SalesEngine::Customer do
     end
   end
 
+  let(:collection) {SalesEngine::Database.instance.customers}
   describe '.collection' do
-    let(:collection) {SalesEngine::Database.instance.customers}
     it 'creates an array' do
       collection.should be_a(Array)
     end
@@ -33,10 +33,17 @@ describe SalesEngine::Customer do
   end
 
   describe '#invoices' do
+    let(:dbinvoices) {SalesEngine::Database.instance.invoices}
     it "returns an array" do
       customer.invoices.should be_a(Array)
     end
-    it 'returns instances of the invoice class'
+    it 'returns instances of the invoice class' do
+      customer = collection[0]
+      result = customer.invoices[0]
+      result.class.should == dbinvoices[0].class
+    end
+    it 'returns an empty array if no results found' do
+      customer.invoices.should == []
+    end
   end
-  it 'returns 0 if no matches are found'
 end

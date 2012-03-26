@@ -1,6 +1,9 @@
+require 'sales_engine/searchable'
+require 'sales_engine/randomize'
+
 module SalesEngine
   class Item
-
+    extend Randomize
     extend Searchable
 
     attr_accessor :id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at
@@ -37,17 +40,16 @@ module SalesEngine
       SalesEngine::Database.instance.items
     end
 
-    # def load(filename)
-
-    # end
-
-    # def invoice_items
-    #   # invoice_items returns an instance of InvoiceItems associated with this object
-    # end
+    def invoice_items
+      items = SalesEngine::Database.instance.invoiceitems
+      results = items.select { |invoiceitem| invoiceitem.item_id == self.id }
+    end
     
-    # def merchant
-    #   # merchant returns an instance of Merchant associated with this object    
-    # end
+    def merchant
+      items = SalesEngine::Database.instance.items
+      results = items.select { |item| item.merchant_id == self.id }
+      results[0]
+    end
 
   end
 end

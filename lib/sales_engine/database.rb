@@ -32,7 +32,7 @@ module SalesEngine
     end
 
     def load_invoices(options=CSV_OPTIONS)
-      invoices = CSV.open("csv_data/items.csv", options)
+      invoices = CSV.open("csv_data/invoices.csv", options)
       self.invoices = invoices.collect {|line| Invoice.new(line)}
       successful_load("invoices")
     end
