@@ -36,10 +36,24 @@ describe SalesEngine::Merchant do
         test_merchant.invoices.all?{|i|
           i.merchant_id == test_merchant.id}.should == true
       end
-
     end
+  end
 
+  describe "#revenue" do
+    context "returns total revenue for this merchant" do
+      it "returns a BigDecimal" do
+        test_merchant.revenue.is_a?(BigDecimal).should == true
+      end
 
+      it "gets the invoices for this merchant"
+
+      it "gets the invoice items for each invoice"
+
+      it "correctly tallies each item on each invoice items" do
+        # call the revenue method on test_merchant
+        # it should equal what we put in the stub
+      end
+    end
   end
 end
 

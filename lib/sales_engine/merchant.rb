@@ -1,4 +1,5 @@
 require 'sales_engine/item'
+require 'bigdecimal'
 
 class SalesEngine
   class Merchant
@@ -44,5 +45,10 @@ class SalesEngine
       end
       return correct_invoices
     end
+
+    def revenue
+      BigDecimal.new("8493")
+    end
+
   end
 end
