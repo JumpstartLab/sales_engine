@@ -29,7 +29,7 @@ module SalesEngine
 
 		#TODO: Manually verify this functions correctly
 		def favorite_merchant
-			SalesEngine::Merchant.find_by_id(invoices.group_by{|i| i.merchant_id}.sort.reverse.first.first)
+			SalesEngine::Merchant.find_by_id(invoices.group_by{|i| i.merchant_id}.sort_by{|i| i.last.size}.reverse.first.first)
 		end
 	end
 end
