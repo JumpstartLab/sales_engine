@@ -124,8 +124,14 @@ describe SalesEngine::Merchant do
 
     context "when there are invoice_items" do
       it "returns total revenue for merchant" do
-        SalesEngine::Merchant.any_instance.stub({:invoice_items => [invoice_item, invoice_item2, other_invoice_item]})
+        merchant.stub({:invoice_items => [invoice_item, invoice_item2, other_invoice_item]})
         merchant.revenue.should == 1400 
+      end
+    end
+    context "when there are no invoice items" do
+      it "returns 0" do
+        merchant.stub({:invoice_items => []})
+        merchant.revenue.should == 0
       end
     end
   end
