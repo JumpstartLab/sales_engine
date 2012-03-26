@@ -13,19 +13,19 @@ require 'date'
 
 module SalesEngine
 
-	def self.startup
-		# Hi, Jeff!
-	end
+  def self.startup
+    # Hi, Jeff!
+  end
 
-	def self.extended(extending_caller)
-		Customer.get_customers
-		Merchant.get_merchants
-		Item.get_items
-		InvoiceItem.get_invoice_items
-		Transaction.get_transactions
-		Invoice.get_invoices
-		InvoiceItem.populate_stats
-	end
+  def self.extended(extending_caller)
+    Customer.get_customers
+    Merchant.get_merchants
+    Item.get_items
+    InvoiceItem.get_invoice_items
+    Transaction.get_transactions
+    Invoice.get_invoices
+    InvoiceItem.populate_stats
+  end
 
 end
 
