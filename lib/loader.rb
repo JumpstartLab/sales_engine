@@ -1,8 +1,14 @@
 require 'csv'
 require 'sqlite3'
-database = SQLite3::Database.new(':memory:')
+
 
 class Loader 
+  attr_accessor :database 
+
+  def initialize(database)
+    self.database = database
+  end 
+
   def load
     load_merchants
     load_items
@@ -138,3 +144,6 @@ class Loader
     end
   end
 end
+
+
+#Loader.new(SQLite3::Database.new(':memory:')).load
