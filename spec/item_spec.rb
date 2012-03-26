@@ -4,7 +4,7 @@ describe SalesEngine::Item do
   describe ".merchant" do
     let(:merchant) { mock(SalesEngine::Merchant) }
     let(:merchant2) { mock(SalesEngine::Merchant)}
-    let(:item) { SalesEngine::Item.new(1, "", "", 0, 1, Date.today, Date.today)}
+    let(:item) { Fabricate(:item, :id => 1) }
     it "returns the merchant with the correct id" do
       merchant.stub(:id).and_return(1)
       merchant2.stub(:id).and_return(2)
@@ -14,7 +14,7 @@ describe SalesEngine::Item do
   end
 
   describe ".invoice_items" do
-    let(:item) { SalesEngine::Item.new(1, "", "", 0, 1, Date.today, Date.today)}
+    let(:item) { Fabricate(:item, :id => 1) }
     let(:invoice_item) { mock(SalesEngine::InvoiceItem) }
     let(:invoice_item2) { mock(SalesEngine::InvoiceItem) }
     let(:invoice_item3) { mock(SalesEngine::InvoiceItem) }
