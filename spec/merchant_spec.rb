@@ -2,28 +2,35 @@ require './spec/spec_helper'
 
 describe SalesEngine::Merchant do
   let(:se) { SalesEngine::Database.instance}
-  let(:merchant_1) { SalesEngine::Merchant.new({ :id => 1 }) }
-  let(:merchant_2) { SalesEngine::Merchant.new({ :id => 2 }) }
+  let(:merchant_1) { Fabricate(:merchant) }
+  let(:merchant_2) { Fabricate(:merchant) }
+  let(:merchant_3) { Fabricate(:merchant) }
+  let(:item_1) { Fabricate(:item) }
+  let(:item_2) { Fabricate(:item) }
+  let(:item_3) { Fabricate(:item) }
+  let(:invoice_1) { Fabricate(:invoice) }
+  let(:invoice_2) { Fabricate(:invoice) }
+  let(:invoice_3) { Fabricate(:invoice) }
+
 
   before(:each) do
     se.clear_all_data
     se.add_to_list(merchant_1)
     se.add_to_list(merchant_2)
+    se.add_to_list(merchant_3)
+    se.add_to_list(item_1)
+    se.add_to_list(item_2)
+    se.add_to_list(item_3)
+    se.add_to_list(invoice_1)
+    se.add_to_list(invoice_2)
+    se.add_to_list(invoice_3)
   end
 
   describe "#items" do
     it "returns items associated with the merchant if items exists" do
-      item_1 = SalesEngine::Item.new({ :id => 1, :merchant_id => nil })
-      item_2 = item_1.clone
-      item_2.id = 2
-      item_3 = item_1.clone
-      item_3.id = 3
-      item_1.merchant_id = 1
-      item_2.merchant_id = 1
-      item_3.merchant_id = 2
-      se.add_to_list(item_1)
-      se.add_to_list(item_2)
-      se.add_to_list(item_3)
+      item_1.merchant_id = merchant_1.id
+      item_2.merchant_id = merchant_1.id
+      item_3.merchant_id = merchant_2.id
       merchant_1.items.should == [item_1, item_2]
     end
 
@@ -34,17 +41,9 @@ describe SalesEngine::Merchant do
 
   describe "#invoices" do
     it "returns invoices associated with the merchant if invoices exist" do
-      invoice_1 = SalesEngine::Invoice.new({ :id => 1, :merchant_id => nil })
-      invoice_2 = invoice_1.clone
-      invoice_2.id = 2    
-      invoice_3 = invoice_1.clone
-      invoice_3.id = 3
-      invoice_1.merchant_id = 2
-      invoice_2.merchant_id = 1
-      invoice_3.merchant_id = 1
-      se.add_to_list(invoice_1)
-      se.add_to_list(invoice_2)
-      se.add_to_list(invoice_3)
+      invoice_1.merchant_id = merchant_2.id
+      invoice_2.merchant_id = merchant_1.id
+      invoice_3.merchant_id = merchant_1.id
       merchant_1.invoices.should == [invoice_2, invoice_3]
     end
 
@@ -54,8 +53,6 @@ describe SalesEngine::Merchant do
   end
 
   describe ".random" do
-    let(:merchant_3) { SalesEngine::Merchant.new({ :id => 3 }) }
-
     context "when merchants exist in the datastore" do
       it "returns a random Merchant record" do
         se.merchants.include?(SalesEngine::Merchant.random).should be_true
@@ -73,7 +70,7 @@ describe SalesEngine::Merchant do
   describe ".find_by_id" do
     context "when merchants exist in the datastore" do
       it "returns the correct merchant record that matches the id" do
-        SalesEngine::Merchant.find_by_id(2).should == merchant_2
+        SalesEngine::Merchant.find_by_id(merchant_2.id).should == merchant_2
       end
 
       it "returns nothing if no merchant records match the id" do
@@ -84,7 +81,7 @@ describe SalesEngine::Merchant do
     context "when there are no merchants in the datastore" do
       it "returns nothing" do
         se.clear_all_data
-        SalesEngine::Merchant.find_by_id(1).should be_nil
+        SalesEngine::Merchant.find_by_id(merchant_1.id).should be_nil
       end
     end
   end
@@ -164,7 +161,7 @@ describe SalesEngine::Merchant do
   describe ".find_all_by_id" do
     context "when merchants exist in the datastore" do
       it "returns the correct merchant records that matches the id" do
-        SalesEngine::Merchant.find_all_by_id(2).should == [merchant_2]
+        SalesEngine::Merchant.find_all_by_id(merchant_2.id).should == [merchant_2]
       end
 
       it "returns nothing if no merchant records match the id" do
@@ -175,20 +172,17 @@ describe SalesEngine::Merchant do
     context "when there are no merchants in the datastore" do
       it "returns nothing" do
         se.clear_all_data
-        SalesEngine::Merchant.find_all_by_id(1).should == []
+        SalesEngine::Merchant.find_all_by_id(merchant_1.id).should == []
       end
     end
   end
 
     describe ".find_all_by_name" do
     context "when merchants exist in the datastore" do
-      let(:merchant_3) { SalesEngine::Merchant.new({ :id => 3 }) }
-
       before(:each) do
         merchant_1.name = "Jane"
         merchant_2.name = "Beth"
         merchant_3.name = "jane"
-        se.add_to_list(merchant_3)
       end
 
       it "returns the correct merchant records that matches the name" do
@@ -210,13 +204,10 @@ describe SalesEngine::Merchant do
 
   describe ".find_all_by_created_at" do
     context "when merchants exist in the datastore" do
-      let(:merchant_3) { SalesEngine::Merchant.new({ :id => 3 }) }
-
       before(:each) do
         merchant_1.created_at = "03/01/2012 12:00"
         merchant_2.created_at = "01/11/2012 13:00"
         merchant_3.created_at = "01/11/2012 13:00"
-        se.add_to_list(merchant_3)
       end
 
       it "returns the correct merchant records that matches the created_at time" do
@@ -238,12 +229,10 @@ describe SalesEngine::Merchant do
 
   describe ".find_all_by_updated_at" do
       context "when merchants exist in the datastore" do
-      let(:merchant_3) { SalesEngine::Merchant.new({ :id => 3 }) }
       before(:each) do
         merchant_1.updated_at = "03/01/2012 12:00"
         merchant_2.updated_at = "01/11/2012 13:00"
         merchant_3.updated_at = "01/11/2012 13:00"
-        se.add_to_list(merchant_3)
       end
 
       it "returns the correct merchant records that matches the updated_at time" do

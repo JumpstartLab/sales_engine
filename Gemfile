@@ -8,9 +8,15 @@
 
 source :rubygems
 
-gem "rspec"
-gem "guard"
-gem "guard-rspec"
-gem "growl"
-gem 'ruby_gntp'
-gem 'simplecov', :require => false, :group => :test
+group :test do
+  gem "rspec"
+  gem "guard"
+  gem "guard-rspec"
+  gem "growl"
+  gem 'ruby_gntp'
+  gem 'simplecov', :require => false, :group => :test
+end
+
+group :test, :development do
+  gem 'fabrication'
+end

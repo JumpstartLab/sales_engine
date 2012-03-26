@@ -2,10 +2,10 @@ require './spec/spec_helper'
 
 describe SalesEngine::Transaction do
   let(:se) { SalesEngine::Database.instance}
-  let(:invoice_1) { SalesEngine::Invoice.new({ :id => 1 }) }
-  let(:invoice_2) { SalesEngine::Invoice.new({ :id => 2 }) }
-  let(:transaction_1) { SalesEngine::Transaction.new({:id => 1, :invoice_id => invoice_1.id }) }
-  let(:transaction_2) { SalesEngine::Transaction.new({:id => 2, :invoice_id => invoice_2.id }) }
+  let(:invoice_1) { Fabricate(:invoice) }
+  let(:invoice_2) { Fabricate(:invoice) }
+  let(:transaction_1) { Fabricate(:transaction, :invoice_id => invoice_1.id) }
+  let(:transaction_2) { Fabricate(:transaction, :invoice_id => invoice_2.id) }
 
   before(:each) do
     se.clear_all_data

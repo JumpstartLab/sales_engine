@@ -3,6 +3,9 @@ SimpleCov.start do
   add_filter "/spec/"
 end
 
+require 'bundler'
+Bundler.require(:default, :test)
+
 require './lib/sales_engine/database'
 require './lib/sales_engine/merchant'
 require './lib/sales_engine/item'
