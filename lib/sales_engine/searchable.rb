@@ -10,9 +10,5 @@ module SalesEngine
      collection.find_all{ |c| c.send(attribute) == input }
    end
 
-   def random
-    rand(collection)
-   end
-
   end
 end

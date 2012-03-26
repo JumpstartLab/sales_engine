@@ -38,17 +38,6 @@ module SalesEngine
       end
     end
 
-    def self.random
-      rand(self.customers)
-    end
-
-    def self.invoices
-      Invoice.find_by_customer_id(id)
-      customer = Customer.find_by_id()
-      SalesEngine::Invoice.find_all_by_customer_id(value)
-
-    end
-
     def self.collection
       SalesEngine::Database.instance.customers
     end
