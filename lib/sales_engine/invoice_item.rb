@@ -21,10 +21,9 @@ module SalesEngine
       total_revenue
     end
 
-    def self.total_revenue_by_att(att, param)
+    def self.total_revenue_by_invoice_id(invoice_id)
       total_revenue = BigDecimal.new("0.00")
-      results = send(("find_all_by_" + att).to_sym, param)
-      results.each do |i_i|
+      find_all_by_invoice_id(invoice_id).each do |i_i|
         total_revenue += i_i.quantity * i_i.unit_price
       end
       total_revenue

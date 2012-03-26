@@ -47,9 +47,7 @@ module SalesEngine
     end
 
     def self.most_revenue(num)
-
       i_i_list = SalesEngine::Database.instance.invoice_item_list
-
       successful_i_i_list = i_i_list.select { |i_i| i_i if i_i.is_successful? }
 
       item_data = { }

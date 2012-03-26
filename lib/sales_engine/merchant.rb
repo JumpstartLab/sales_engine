@@ -40,5 +40,13 @@ module SalesEngine
       SalesEngine::Invoice.find_all_by_merchant_id(self.id)
     end
 
+    def revenue
+      total_revenue = BigDecimal.new("0.00")
+      self.invoices.each do |invoice|
+        total_revenue += invoice.invoice_revenue
+      end
+      total_revenue
+    end
+
   end
 end

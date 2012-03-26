@@ -1,50 +1,78 @@
 require 'spec_helper.rb'
 
 describe SalesEngine::Merchant do
-  let(:tr_one)   { SalesEngine::Transaction.new( :invoice_id => "1") }
-  let(:tr_two)   { SalesEngine::Transaction.new( :invoice_id => "2", :status => "failure") }
-  let(:tr_three) { SalesEngine::Transaction.new( :invoice_id => "2", :status => "success") }
-  let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "4", :status => "failure")}
-  let(:cust_one)    { SalesEngine::Customer.new( :id => "1") }
-  let(:cust_two)    { SalesEngine::Customer.new( :id => "2") }
-  let(:inv_one)     { SalesEngine::Invoice.new( :id => "1", :merchant_id => "0",
-                                   :created_at => "2012-12-09" ) }
-  let(:inv_two)     { SalesEngine::Invoice.new( :id => "2", :merchant_id => "2",
-                                   :created_at => "2012-9-09" ) }
-  let(:inv_three)   { SalesEngine::Invoice.new( :id => "3", :merchant_id => "0",
-                                   :created_at => "2012-8-09" ) }
-  let(:inv_item_one){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3",
-                                       :invoice_id => "1" ) }
-  let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3",
-                                       :invoice_id => "1")}
-  let(:merchant_zero){ SalesEngine::Merchant.new( :id => "0" )}
-  let(:item_one){ SalesEngine::Item.new( :id => "1", :merchant_id => "0" ) }
-  let(:item_two){ SalesEngine::Item.new( :id => "2", :merchant_id => "1" )}
+  let(:merchant_one){ SalesEngine::Merchant.new( :id => "1" )}
+  let(:merchant_three){ SalesEngine::Merchant.new( :id => "3" )}
 
   describe "#invoices" do
+    let(:inv_one)   { mock(SalesEngine::Invoice) }
+    let(:inv_two)   { mock(SalesEngine::Invoice) }
+    let(:inv_three) { mock(SalesEngine::Invoice) }
+
+    before(:each) do
+      inv_one.stub(:merchant_id).and_return("1")
+      inv_two.stub(:merchant_id).and_return("1")
+      inv_three.stub(:merchant_id).and_return("2")
+      invoices = [ inv_one, inv_two, inv_three ]
+
+      SalesEngine::Database.instance.stub(:invoice_list).and_return(invoices)
+    end
+
     it "returns a collection of invoices associated with the merchant" do
-      SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]
-      merchant_zero.invoices.should == [ inv_one, inv_three ]
+      merchant_one.invoices.should == [ inv_one, inv_two ]
     end
 
     context "when a merchant has no invoices" do
       it "returns an empty array" do
-        SalesEngine::Database.instance.invoice_list = [ inv_two ]
-        merchant_zero.invoices.should be_empty
+        merchant_three.invoices.should be_empty
       end
     end
   end
 
   describe "#items" do
+    let(:item_one)   { mock(SalesEngine::Item) }
+    let(:item_two)   { mock(SalesEngine::Item) }
+    let(:item_three) { mock(SalesEngine::Item) }
+
+    before(:each) do
+      item_one.stub(:merchant_id).and_return("1")
+      item_two.stub(:merchant_id).and_return("2")
+      item_three.stub(:merchant_id).and_return("1")
+      items = [ item_one, item_two, item_three ]
+
+      SalesEngine::Database.instance.stub(:item_list).and_return(items)
+    end
+
     it "returns a collection of items associated with the merchant" do
-      SalesEngine::Database.instance.item_list = [ item_one, item_two ]
-      merchant_zero.items.should == [ item_one ]
+      merchant_one.items.should == [ item_one, item_three ]
     end
 
     context "when a merchant has no items" do
       it "returns an empty array" do
-        SalesEngine::Database.instance.item_list = [ item_two ]
-        merchant_zero.items.should be_empty
+        merchant_three.items.should be_empty
+      end
+    end
+  end
+
+  describe "#revenue" do
+    let(:inv_one)     { mock(SalesEngine::Invoice) }
+    let(:inv_two)     { mock(SalesEngine::Invoice) }
+
+    before(:each) do
+      inv_one.stub(:invoice_revenue).and_return(BigDecimal.new("100"))
+      inv_two.stub(:invoice_revenue).and_return(BigDecimal.new("100"))
+    end
+
+    context "when there are invoice_items" do
+      it "returns total revenue for merchant" do
+        merchant_one.stub( {:invoices => [ inv_one, inv_two ]} )
+        merchant_one.revenue.should == 200
+      end
+    end
+    context "when there are no invoice items" do
+      it "returns 0" do
+        merchant_one.stub( {:invoices => []} )
+        merchant_one.revenue.should == 0
       end
     end
   end

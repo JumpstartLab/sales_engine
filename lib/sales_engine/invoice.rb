@@ -31,6 +31,14 @@ module SalesEngine
       SalesEngine::InvoiceItem.find_all_by_invoice_id(self.id)
     end
 
+    def invoice_revenue
+      revenue = BigDecimal.new("0.00")
+      if self.is_successful?
+        SalesEngine::InvoiceItem.total_revenue_by_invoice_id(self.id)
+      end
+      revenue
+    end
+
     def customer
       SalesEngine::Customer.find_by_id(self.customer_id)
     end
@@ -48,7 +56,6 @@ module SalesEngine
         transaction.is_successful?
       end
     end
-
 
     INVOICE_ATTS.each do |att|
       define_singleton_method ("find_by_" + att).to_sym do |param|
@@ -96,12 +103,12 @@ module SalesEngine
           #call Invoice Item's find total_rev_by_att on each invoice id
           #sum all of them
           #divide the sum by all the invoices that happened on date
-        total_rev = 0
+        total_rev = BigDecimal.new("0.00")
         date = Time.parse(date.first)
         inv_on_date = find_all_by_date(date)
         inv_ids_on_date = inv_on_date.collect { |inv| inv.id }
         inv_ids_on_date.each do |inv_id|
-          total_rev += SalesEngine::InvoiceItem.total_revenue_by_att("invoice_id", inv_id)
+          total_rev += SalesEngine::InvoiceItem.total_revenue_by_invoice_id(inv_id)
         end
         
         return 0 if inv_on_date.empty?
