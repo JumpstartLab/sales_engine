@@ -1,17 +1,19 @@
-require './spec/spec_helper.rb'
+require 'spec_helper'
 
-# describe Invoice do
+describe SalesEngine::Invoice do
 
-# 	let(:invoice_test) {Invoice.new}
-# 	before(:each) do
-# 		invoice_test.customer_id = 1
-# 		invoice_test.merchant_id = 2
-# 		invoice_test.status = "Shipped"
-# 		invoice_test.items = ["item1", "item2", "item3"]
-# 		invoice_test.transaction = 3
-# 	end
+	test_attr = {id: "1", customer_id: "1", merchant_id: "92", 
+                status: "shipped", created_at: "2012-02-14 20:56:56 UTC",
+                updated_at: "2012-02-26 20:56:56 UTC"}
+ 
+  let(:test_invoice) {SalesEngine::Invoice.new(test_attr)}
+	
+  describe "#transactions" do
+    context "returns transactions associated with this invoice" do
+      it "returns things which are only transactions" do
+        test_invoice.transactions.all?{|i| i.is_a? SalesEngine::Transaction}.should == true
+      end
+    end
+  end
+end
 
-# 	it "returns all transaction for the invoice" do
-# 		#should be 3
-# 	end
-# end
