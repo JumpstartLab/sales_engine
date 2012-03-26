@@ -40,9 +40,12 @@ module SalesEngine
 		end
 
 		def best_day
-			## DOES NOT WORK YET
-			bd = SalesEngine::Invoice.records.flat_map(&:invoice_items).select{|ii| ii.item_id == self.id}
-			bd.group_by{|ii| ii.invoice.created_at}.sort.reverse.first.first
+			## VERIFY THAT THIS WORKS
+			results = Hash.new(0)
+			invoice_items.each do |item|
+				results[item.date] += item.quantity
+			end
+			results.sort_by { |k, v| v }.last.first.strftime("%d%m%y")
 		end
 
 		private

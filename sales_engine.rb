@@ -24,7 +24,7 @@ module SalesEngine
 		InvoiceItem.get_invoice_items
 		Transaction.get_transactions
 		Invoice.get_invoices
-		InvoiceItem.populate_revenues
+		InvoiceItem.populate_stats
 	end
 
 end

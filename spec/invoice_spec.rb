@@ -17,6 +17,7 @@ describe SalesEngine::Invoice do
 
 	context "instance methods" do
 		let(:invoice) { SalesEngine::Invoice.find_by_id(1) }
+		# let(:invoice) { Fabricate(:invoice) }
 		describe "#transactions" do
 			it "returns transactions" do
 				invoice.transactions.should_not be_empty

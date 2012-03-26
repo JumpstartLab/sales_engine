@@ -50,7 +50,7 @@ module SalesEngine
 		end
 
 		def favorite_customer
-			SalesEngine::Customer.find_by_id(invoices.group_by{|i| i.customer_id}.sort_by{|i| i.last.size}.reverse.first.first)
+			SalesEngine::Customer.find_by_id(invoices.group_by{|i| i.customer_id}.sort_by{|i| i.last.size}.last.first)
 		end
 
 	end

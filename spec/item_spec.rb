@@ -65,8 +65,7 @@ describe SalesEngine::Item do
 		end
 		describe "#best_day" do
 			it "returns the date with the most sales for this item" do
-				# pending
-				SalesEngine::Item.find_by_id(1).best_day.should == DateTime.parse("2012-02-19T20:57:09+00:00").strftime("%d%m%y")
+				SalesEngine::Item.find_by_id(1).best_day.should == "080212"
 			end
 		end
 

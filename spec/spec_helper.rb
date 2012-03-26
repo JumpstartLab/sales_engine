@@ -10,3 +10,5 @@ require './sales_engine'
 SalesEngine.startup
 
 require 'date'
+require 'fabrication'
+require 'faker'

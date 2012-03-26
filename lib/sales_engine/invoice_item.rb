@@ -1,7 +1,7 @@
 module SalesEngine
 	class InvoiceItem
 		extend Searchable
-		attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :line_total
+		attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :line_total, :date
 
 		def self.records
 			@invoice_items ||= get_invoice_items
@@ -13,7 +13,7 @@ module SalesEngine
 			end
 		end
 
-		def self.populate_revenues
+		def self.populate_stats
 	    records.each do |record|
 	    	record.merchant.total_revenue += record.line_total
 	    	record.merchant.items_sold += 1
@@ -42,6 +42,10 @@ module SalesEngine
 
 		def item
 			@item ||= SalesEngine::Item.find_by_id(self.item_id)
+		end
+
+		def date
+			@date ||= SalesEngine::Invoice.find_by_id(invoice_id).created_at
 		end
 
 		private
