@@ -34,6 +34,10 @@ module SalesEngine
       end
     end
 
+    def date
+      self.created_at.split[0]
+    end
+
     def self.random
       Database.instance.invoices.sample
     end
