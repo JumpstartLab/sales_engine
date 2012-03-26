@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SalesEngine::InvoiceItem do
   describe "#item" do
-    let(:invoice_item) { SalesEngine::InvoiceItem.new(1, 1, 1, 1, 0, Date.today, Date.today) }
+    let(:invoice_item) { Fabricate(:invoice_item, :id => 1) }
     let(:item) { mock(SalesEngine::Item) }
     let(:other_item) { mock(SalesEngine::Item) }
 
@@ -18,7 +18,7 @@ describe SalesEngine::InvoiceItem do
   end
 
   describe "#invoice" do
-    let(:invoice_item) { SalesEngine::InvoiceItem.new(1, 1, 1, 1, 0, Date.today, Date.today) }
+    let(:invoice_item) { Fabricate(:invoice_item, :id => 1) }
     let(:invoice) { mock(SalesEngine::Invoice) }
     let(:other_invoice) { mock(SalesEngine::Invoice) }
 
