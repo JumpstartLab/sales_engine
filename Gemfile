@@ -5,5 +5,5 @@ group :test do
   gem "guard"
   gem "guard-rspec"
   gem 'simplecov'
-  gem 'ruby_gntp'
+  gem 'growl'
 end
