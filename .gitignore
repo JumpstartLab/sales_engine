@@ -7,3 +7,5 @@ Thumbs.db
 
 # Coverage files #
 coverage/*
+coverage/*/*
+coverage/.resultset.json
