@@ -53,6 +53,19 @@ module SalesEngine
       end
     end
 
+    def best_day
+      # best_day returns the date with the most sales for the given item
+      rank = Hash.new(0)
+
+
+      self.charged_invoice_items.each do |inv_item|
+        inv = SalesEngine::Invoice.find_by_id(inv_item.invoice_id)
+        rank[inv.date] += inv_item.quantity.to_i
+      end
+      rank = rank.sort_by{ |date, quant| quant }.reverse
+      rank[0]
+    end
+
     def merchant
       #merchant returns an instance of Merchant associated with this object
       Database.instance.merchants.find do |m|
@@ -96,9 +109,5 @@ module SalesEngine
       rank[1..num_of_items]
     end
 
-    def best_day
-      # best_day returns the date with the most sales for the given item
-
-    end
   end
 end
