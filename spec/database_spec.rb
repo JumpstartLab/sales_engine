@@ -119,7 +119,7 @@ describe SalesEngine::Database do
     end
   end
 
-  describe "#create_invoice_item" do
+  describe "#insert_invoice_item" do
     let (:invoice_item_hash) { { :item_id => 1, :invoice_id => 2, 
                   :quantity => 2, :unit_price => 3 } } 
     
@@ -145,6 +145,35 @@ describe SalesEngine::Database do
 
     it "increments invoice_item id" do
       @id.should == 22265
+    end
+  end
+
+  describe "#insert_transaction" do
+    let (:transaction_hash) { { :invoice_id => 1, :credit_card_number => "2222", 
+                  :credit_card_expiration_date => "3333", :result => "result" } } 
+
+    
+    before(:all) do
+      @old_transactions = SalesEngine::Database.instance.transactions
+      @id = SalesEngine::Database.instance.insert_transaction(transaction_hash)
+      @new_transactions = SalesEngine::Database.instance.transactions
+    end
+
+    it "executes insert query" do
+      sql = "insert into transactions values (?, ?, ?, ?, ?, ?, ?)"
+      sqlite_db.should_receive(:execute).with(sql, nil,
+       transaction_hash[:invoice_id], transaction_hash[:credit_card_number],
+       transaction_hash[:credit_card_expiration_date], transaction_hash[:result],
+       DateTime.now.to_s, DateTime.now.to_s)    
+       SalesEngine::Database.instance.insert_transaction(transaction_hash)
+    end
+
+    it "adds a new transaction to the database" do
+      @new_transactions.length.should == @old_transactions.length + 1
+    end
+
+    it "increments transaction id" do
+      @id.should == 4986
     end
   end
 end

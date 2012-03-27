@@ -132,6 +132,14 @@
       return db.last_insert_row_id
      end
 
+     def insert_transaction(hash)
+      db.execute("insert into transactions values (?, ?, ?, ?, ?, ?, ?)",
+                  nil, hash[:invoice_id].to_i, hash[:credit_card_number],
+                  hash[:credit_card_expiration_date], hash[:result], 
+                  DateTime.now.to_s, DateTime.now.to_s)
+      return db.last_insert_row_id
+     end
+
      private_class_method :new
 
      private
