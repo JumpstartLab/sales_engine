@@ -1,36 +1,40 @@
 require 'spec_helper'
 
-describe Item do
+describe SalesEngine::Item do
   context "Searching" do
     describe ".random" do
       it "usually returns different things on subsequent calls" do
-        item_one = Item.random
+        item_one =SalesEngine::Item.random
         10.times do
-          item_two = Item.random
-          break if item_one != item_two
+          item_two = SalesEngine::Item.random
+          break if item_one.id != item_two.id
         end
 
-        item_one.should_not == item_two
+        item_one.id.should_not == item_two.id
       end
     end
 
     describe ".find_by_unit_price" do
-      item = Item.find_by_unit_price 53307
-      item.name.should == "Item Sit Numquam"
+      it "can find one record" do
+        item =SalesEngine::Item.find_by_unit_price 93519
+        item.name.should == "Item Alias Nihil"
+      end
     end
 
     describe ".find_all_by_name" do
-      items = Item.find_all_by_name "Item Voluptatum Odio"
-      items.should have(1).items
+      it "can find multiple records" do
+        items = SalesEngine::Item.find_all_by_name "Item Eos Et"
+        items.should have(3).items
+      end
     end
   end
 
   context "Relationships" do
-    let(:item) { Item.find_by_name "Item Vero Blanditiis" }
+    let(:item) { SalesEngine::Item.find_by_name "Item Saepe Ipsum" }
 
     describe "#invoice_items" do
-      it "has 6 of them" do
-        item.invoice_items.should have(6).items
+      it "has 8 of them" do
+        item.invoice_items.should have(8).items
       end
 
       it "really owns them all" do
@@ -42,7 +46,7 @@ describe Item do
 
     describe "#merchant" do
       it "exists" do
-        item.merchant.name.should == "Trantow-Dooley"
+        item.merchant.name.should == "Kilback Inc"
       end
     end
 
@@ -52,27 +56,27 @@ describe Item do
 
     describe ".most_revenue" do
       it "returns the top n items ranked by most total revenue" do
-        most = Item.most_revenue(5)
+        most = SalesEngine::Item.most_revenue(5)
 
-        most.first.name.should == "Item Consectetur Aut"
-        most.last.name.should  == "Item Amet Molestiae"
+        most.first.name.should == "Item Dicta Autem"
+        most.last.name.should  == "Item Amet Accusamus"
       end
     end
 
     describe ".most_items" do
       it "returns the top n items ranked by most sold" do
-        most = Item.most_items(42)
+        most = SalesEngine::Item.most_items(42)
 
-        most.second.name.should == "Item Veritatis Ut"
-        most.last.name.should   == "Item Similique Ad"
+        most.second.name.should == "Item Dicta Autem"
+        most.last.name.should   == "Item Quidem Dolorum"
       end
     end
 
     describe "#best_day" do
-      let(:item) { Item.find_by_name "Item Vero Blanditiis" }
+      let(:item) { SalesEngine::Item.find_by_name "Item Accusamus Ut" }
 
       it "returns something castable to date" do
-        date = Date.parse "Tue, 20 Mar 2012"
+        date = Date.parse "Tue, 27 Mar 2012"
         item.best_day.to_date.should == date
       end
     end
