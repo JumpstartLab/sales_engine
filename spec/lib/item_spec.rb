@@ -3,11 +3,11 @@ require 'spec_helper.rb'
 describe SalesEngine::Item do
 
   let(:inv_item_one){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3",
-                                                    :invoice_id => "1", :item_id => "1" ) }
+                                                    :invoice_id => "1", :item_id => "1", :created_at => "2012-2-19") }
   let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3",
-                                                    :invoice_id => "2", :item_id => "2" ) } 
+                                                    :invoice_id => "2", :item_id => "2", :created_at => "2012-9-09") } 
   let(:inv_item_three){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "4",
-                                                    :invoice_id => "3", :item_id => "1") }
+                                                    :invoice_id => "3", :item_id => "1", :created_at => "2012-1-01") }
   let(:item_one){ SalesEngine::Item.new( :id => "1", :merchant_id => "1" ) }
   let(:item_two){ SalesEngine::Item.new( :id => "2", :merchant_id => "2" )}
   let(:inv_one)   { SalesEngine::Invoice.new( :id => "1", :customer_id => "1",
@@ -88,7 +88,11 @@ describe SalesEngine::Item do
 
   describe "#best_day" do
     it "returns the day on which we sold the most of that item" do
-
+      SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two, inv_item_three ]
+      SalesEngine::Database.instance.item_list = [ item_two, item_one ]
+      SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]
+      transaction_list
+      item_one.best_day.should == Date.parse("2012-1-01")
     end
   end
 
