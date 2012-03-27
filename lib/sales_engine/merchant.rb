@@ -37,11 +37,11 @@ class SalesEngine
     end
 
     def revenue
-      sum = ''
+      sum = 0
       invoices.each do |invoice|
         sum = sum + invoice.total
       end
-      BigDecimal.new(sum)
+      b = BigDecimal.new(sum).truncate(2)
     end
 
   end
