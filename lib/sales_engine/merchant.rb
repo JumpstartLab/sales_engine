@@ -1,7 +1,7 @@
 # require './item'
-# require './invoice'
+# require './lib/sales_engine/invoice'
 # require 'csv'
-# require './sales_engine'
+ require './lib/sales_engine'
 # require './customer' should only need to reference invoices > transactions
 require './lib/sales_engine/find'
 
@@ -50,29 +50,20 @@ module SalesEngine
       end
     end
 
-    def charged_invoices
+
+
+    def no_charged_invoices
       Database.instance.invoices.select do |i|
         (i.send(:merchant_id) == self.id) && i.transaction_successful?
       end
     end
 
     def revenue(date=nil)
-      #if date?
-        #revenue(date) returns the total revenue that merchant for a specific date
-      #else
-        # returns the total revenue for that merchant across all transactions
-
       rev = 0
-      inv_items = []
-
-      self.charged_invoices.each do |inv|
+      self.charged_invoices(date).each do |inv|
         inv.invoice_items.each do |inv_item|
-          inv_items << inv_item
+          rev += (inv_item.unit_price.to_i * inv_item.quantity.to_i)
         end
-      end
-
-      inv_items.each do |inv_item|
-        rev += (inv_item.unit_price.to_i * inv_item.quantity.to_i)
       end
       rev
     end
@@ -88,13 +79,30 @@ module SalesEngine
 
     end
 
-    def self.items(num_of_merchants)
-      # returns the top x merchant instances ranked by total number of items sold
-    end
-
     def self.revenue(date)
       # returns the total revenue for that date across all merchants
+      rev = 0
+      Database.instance.merchants.each do |merchant|
+        rev += merchant.revenue(date)
+      end
+      rev
+    end
 
+    def charged_invoices(date=nil)
+      if date
+        Database.instance.invoices.select do |i|
+          ((i.send(:merchant_id) == self.id) && i.send(:date) == date) && i.transaction_successful?
+        end
+      else
+        #Invoice.find_all_by_merchant_id(self.id)
+        Database.instance.invoices.select do |i|
+          (i.send(:merchant_id) == self.id) && i.transaction_successful?
+        end
+      end
+    end
+
+    def self.items(num_of_merchants)
+      # returns the top x merchant instances ranked by total number of items sold
     end
 
     def favorite_customer
