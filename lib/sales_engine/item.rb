@@ -47,7 +47,6 @@ module SalesEngine
     end
 
     def self.most_revenue(num)
-
       successful_invoice_items = SalesEngine::InvoiceItem.successful_invoice_items
       item_data = { }
 
@@ -56,7 +55,7 @@ module SalesEngine
         item_data[ invoice_item.item_id.to_sym ] += invoice_item.quantity * invoice_item.unit_price
       end
 
-      item_data = item_data.sort_by {|item_id, revenue| -revenue }
+      item_data = item_data.sort_by { |item_id, revenue| -revenue }
 
       item_data[0..(num-1)].collect do |item_id, revenue|
         SalesEngine::Item.find_by_id(item_id)
@@ -84,18 +83,12 @@ module SalesEngine
       item_data = { }
 
       invoice_items.each do |invoice_item|
-        item_data[ invoice_item.created_at.strftime("%Y/%m/%d") ] ||= 0
-        item_data[ invoice_item.created_at.strftime("%Y/%m/%d") ] += invoice_item.quantity 
+        item_data[ invoice_item.updated_at.strftime("%Y/%m/%d") ] ||= 0
+        item_data[ invoice_item.updated_at.strftime("%Y/%m/%d") ] += invoice_item.quantity 
       end
 
       item_data = item_data.sort_by {|day, quantity| -quantity }
-      puts item_data.inspect
       Date.parse(item_data.first[0])
-
-      #find all invoice items with this item id
-      #sort them by date
-      #add up quantities for each date
-      #return the date that has the highest quantity
     end
   end
 end

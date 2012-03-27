@@ -34,7 +34,7 @@ module SalesEngine
     def invoice_revenue
       revenue = BigDecimal.new("0.00")
       if self.is_successful?
-        SalesEngine::InvoiceItem.total_revenue_by_invoice_id(self.id)
+        revenue = SalesEngine::InvoiceItem.total_revenue_by_invoice_id(self.id)
       end
       revenue
     end
@@ -84,20 +84,20 @@ module SalesEngine
 
     def self.find_all_successful_invoices_by_date(date)
       successful_invoices.select do |i|
-        dt = i.created_at
+        dt = i.updated_at
         date = Time.parse(date) if date.kind_of? String
         i if date == Time.new(dt.year, dt.mon, dt.mday)
       end
     end
 
     #VESTIGIAL METHOD... SHOULD NOT BE USED ANYMORE
-    def self.find_all_by_date(date)
-      SalesEngine::Database.instance.invoice_list.select do |i|
-        dt = i.created_at
-        date = Time.parse(date) if date.kind_of? String
-        i if date == Time.new(dt.year, dt.mon, dt.mday)
-      end
-    end
+    # def self.find_all_by_date(date)
+    #   SalesEngine::Database.instance.invoice_list.select do |i|
+    #     dt = i.updated_at
+    #     date = Time.parse(date) if date.kind_of? String
+    #     i if date == Time.new(dt.year, dt.mon, dt.mday)
+    #   end
+    # end
 
     def self.average_revenue(*date)
       if date.empty?

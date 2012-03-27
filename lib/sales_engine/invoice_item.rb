@@ -7,7 +7,7 @@ module SalesEngine
       self.item_id = attributes[:item_id]
       self.invoice_id = attributes[:invoice_id]
       self.quantity =   attributes[:quantity].to_i
-      self.unit_price = BigDecimal.new(attributes[:unit_price])
+      self.unit_price = BigDecimal.new(attributes[:unit_price]).round(2)
       self.created_at = Time.parse(attributes[:created_at]) if attributes[:created_at]
       self.updated_at = Time.parse(attributes[:updated_at]) if attributes[:updated_at]
     end
@@ -35,6 +35,10 @@ module SalesEngine
 
     def item
       SalesEngine::Item.find_by_id(self.item_id)
+    end
+
+    def merchant_id
+      SalesEngine::Item.find_by_id(self.item_id).merchant_id
     end
 
     def is_successful?
@@ -82,7 +86,7 @@ module SalesEngine
     def self.find_all_by_date(date)
       date = Time.parse(date) if date.kind_of? String
       SalesEngine::Database.instance.invoice_item_list.select do |i_i|
-        dt = i_i.created_at
+        dt = i_i.updated_at
         i_i if date == Time.new(dt.year, dt.mon, dt.mday)
       end
     end

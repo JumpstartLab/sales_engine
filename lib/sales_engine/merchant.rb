@@ -42,15 +42,13 @@ module SalesEngine
 
     def invoices_on_date(date)
       date = Time.parse(date)
-      # debugger
       invoices.select {|inv| inv if inv.updated_at == date}
     end
 
     def revenue(*date)
       total_revenue = BigDecimal.new("0.00")
       date.empty? ? results = invoices : results = invoices_on_date(date.first)
-      # debugger
-      results.each { |invoice| total_revenue += invoice.invoice_revenue }
+      results.each { |i| total_revenue += i.invoice_revenue }
       total_revenue
     end
 
@@ -66,8 +64,8 @@ module SalesEngine
         customer_data[ invoice.customer_id.to_sym ] += 1
       end
 
+      return nil if customer_data.empty?
       customer_data_max = customer_data.max_by{ |k, v| v }
-      return nil if customer_data_max.nil?
       SalesEngine::Customer.find_by_id(customer_data_max.first)   
     end
 
@@ -83,7 +81,7 @@ module SalesEngine
       SalesEngine::Invoice.successful_invoices.each do |i|
         dt = i.updated_at
         if clean_date(date) == Time.new(dt.year, dt.mon, dt.mday)
-          total_revenue += i.invoice_revenue 
+          total_revenue += i.invoice_revenue
         end
       end
       total_revenue
@@ -94,20 +92,43 @@ module SalesEngine
       date
     end
 
-    def self.merchant_data
+    def self.merchant_revenue_data
       data = { }
       SalesEngine::Invoice.successful_invoices.each do |i|
         data[ i.merchant_id.to_sym ] ||= 0
-        data[ i.merchant_id.to_sym ] += i.invoice_revenue 
+        data[ i.merchant_id.to_sym ] += i.invoice_revenue
       end
       data
     end
 
     def self.most_revenue(num)
-      data = merchant_data
+      data = merchant_revenue_data
       return nil if data.empty?
       data = data.sort_by{ |k, v| -v }[0..(num-1)]
-      data.each { |k, v| SalesEngine::Merchant.find_by_id(k.to_s) }
+      data.collect { |merchant_id, revenue| self.find_by_id(merchant_id) }
+    end
+
+    def self.merchant_item_data
+      successful_invoice_items = SalesEngine::InvoiceItem.successful_invoice_items
+      item_data = { }
+
+      successful_invoice_items.each do |invoice_item|
+        item_data[ invoice_item.merchant_id.to_sym ] ||= 0
+        item_data[ invoice_item.merchant_id.to_sym ] += invoice_item.quantity 
+      end
+      item_data
+    end
+
+    def self.most_items(num)
+      puts merchant_item_data
+      item_data = merchant_item_data.sort_by do |merchant_id, quantity| 
+        -quantity
+      end
+
+      puts item_data[0..(num-1)].inspect
+      item_data[0..(num-1)].collect do |merchant_id, quantity|
+        self.find_by_id(merchant_id)
+      end
     end
 
   end
