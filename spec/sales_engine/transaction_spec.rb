@@ -20,6 +20,17 @@ describe SalesEngine::Transaction do
       SalesEngine::Transaction.random.should be_a SalesEngine::Transaction
     end
   end
+
+  describe ".find_by_invoice_id()" do
+    it "returns one transaction" do
+      SalesEngine::Transaction.find_by_invoice_id("2").should be_a SalesEngine::Transaction
+    end
+
+    it "is associated with the id passed in" do
+      result = SalesEngine::Transaction.find_by_invoice_id("2")
+      result.invoice_id.should == "2"
+    end
+  end
 end
 
 

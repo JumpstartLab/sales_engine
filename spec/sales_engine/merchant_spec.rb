@@ -63,14 +63,29 @@ describe SalesEngine::Merchant do
   end
 
   describe "#favorite_customer" do
-    
+
     it "returns a customer" do
       test_merchant.favorite_customer.should be_a (SalesEngine::Customer)
     end
 
-    it "iterates through each customer and checks their totals"
-      # test_merchant.
+    it "returns the customer with the most transactions/invoices" do
+      pending
+      customer_1 = Fabricate(:customer)
+      customer_1_invoices = [ Fabricate(:invoice, :customer => customer_1),
+        Fabricate(:invoice, :customer => customer_1)]
+
+      customer_2 = Fabricate(:customer)
+      customer_2_invoices = [ Fabricate(:invoice, :customer => customer_2),
+        Fabricate(:invoice, :customer => customer_2)]
+
+      customer_3 = Fabricate(:customer)
+      customer_3_invoices = [ Fabricate(:invoice, :customer => customer_3),
+        Fabricate(:invoice, :customer => customer_3)]
+
+      test_merchant.favorite_customer.should == customer_2
+    end
   end
+
 end
 
 

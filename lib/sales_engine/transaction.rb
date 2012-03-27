@@ -28,5 +28,15 @@ class SalesEngine
     def self.random
       SalesEngine::Database.instance.transactions.sample
     end
+
+    def self.all
+      SalesEngine::Database.instance.transactions
+    end
+
+    def self.find_by_invoice_id(param)
+      self.all.find do |transaction|
+        transaction.invoice_id == param
+      end
+    end
   end
 end
