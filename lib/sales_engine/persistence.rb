@@ -5,34 +5,91 @@ module SalesEngine
     include Singleton
 
     def initialize
-      @models = {}
+      @data = {}
+      @indices = {}
     end
 
     def persist(model)
-      name = model.class.to_s
+      name = model.class
 
-      begin
-        if @models[name]
-          @models[name] << model
-        else
-          @models[name] = [model]
-        end
-        true
-      rescue
-        false
+      if @data[name]
+        @data[name] << model
+      else
+        @data[name] = [model]
       end
+      true
     end
 
     def exists?(model)
-      @models.values.flatten.include? model
+      @data.values.flatten.include? model
     end
 
     def fetch(class_name)
-      @models[class_name.to_s] || []
+      @data[class_name] || []
+    end
+
+    def fetch_indices(class_name)
+      @indices[class_name] || {}
     end
 
     def clear
-      @models = {}
+      clear_data
+      clear_indices
+    end
+
+    def clear_indices
+      @indices = {}
+    end
+
+    def clear_data
+      @data = {}
+    end
+
+    def index(attribute)
+      result = {}
+
+      @data.keys.each do |class_name|
+        insert_index(attribute, class_name)
+      end
+    end
+
+    def insert_index(attribute, class_name)
+      result = index_attribute_by_class(attribute, class_name)
+      @indices[class_name] = {} unless @indices[class_name]
+      @indices[class_name][attribute] = result
+    end
+
+    def index_all
+      @data.keys.each do |class_name|
+        datum = @data[class_name]
+
+        datum.each do |data|
+          attributes = data.attributes
+
+          attributes.each do |attribute, value|
+            insert_index(attribute, class_name)
+          end
+        end
+      end
+    end
+
+    def dump_indices
+      @indices
+    end
+
+    private
+
+    def index_attribute_by_class(attribute, class_name)
+      result = {}
+
+      data = @data[class_name]
+
+      data.each do |model|
+        value = model.send(attribute)
+        result[value] = model
+      end
+
+      result
     end
   end
 end

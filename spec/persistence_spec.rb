@@ -3,27 +3,67 @@ require 'spec_helper'
 module SalesEngine
   class PersistenceSample
     include Model
+
+    attr_accessor :name
+
+    def initialize(attributes)
+      super(attributes)
+    end
   end
 end
 
 describe SalesEngine::Persistence do
-  let(:model) { SalesEngine::PersistenceSample.new :id => 1 }
+  let(:model) { SalesEngine::PersistenceSample.new :id => 1, :name => 'Jonan' }
 
   before(:each) do
     SalesEngine::Persistence.instance.clear
   end
 
-  it "indexes by id"
+  context "#index" do
+    it "creates an index for a given attribute" do
+      model
+      attribute = :id
+      SalesEngine::Persistence.instance.index(attribute)
+      indices = SalesEngine::Persistence.instance.dump_indices
+      indices[model.class].keys.should include attribute
+    end
 
-  it "indexes by created_at"
+    it "creates multiple indices for multiple attributes" do
+      model
+      attribute1 = :id
+      attribute2 = :created_at
+      SalesEngine::Persistence.instance.index(attribute1)
+      SalesEngine::Persistence.instance.index(attribute2)
+      indices = SalesEngine::Persistence.instance.dump_indices
+      indices[model.class].keys.should include attribute1
+      indices[model.class].keys.should include attribute2
+    end
 
-  it "indexes by updated_at"
-  
-  it "indexes by class name"
+    it "writes a model to an index for a given attribute" do
+      model
+      attribute = :id
+      SalesEngine::Persistence.instance.index(attribute)
+      indices = SalesEngine::Persistence.instance.dump_indices
+      indices[model.class][attribute][model.id].should be model
+    end
+  end
 
-  it "indexes by class name and created_at"
+  context "#index_all" do
+    it "returns true" do
+      SalesEngine::Persistence.instance.index_all.should be_true
+    end
 
-  it "indexes by class name and updated_at"
+    it "creates an index for each attribute of a persisted model" do
+      model
+      SalesEngine::Persistence.instance.index_all
+      indices = SalesEngine::Persistence.instance.fetch_indices(model.class)
+      attributes = model.attributes
+
+      attributes.each do |attribute, value|
+        indices.keys.should include attribute
+      end
+    end
+  end
 
   context "#persist" do
     it "exists" do
@@ -59,12 +99,47 @@ describe SalesEngine::Persistence do
     end
   end
 
+  context "#fetch_indices" do
+    it "returns a hash" do
+      model
+      SalesEngine::Persistence.instance.index(:id)
+      SalesEngine::Persistence.instance.fetch_indices(model.class).should be_a Hash
+    end
+  end
+
   context "#clear" do
-    it "removes all models" do
-      SalesEngine::Persistence.instance.persist(model)
+    it "removes all models and indices" do
+      model
+      SalesEngine::Persistence.instance.index(:id)
       SalesEngine::Persistence.instance.clear
-      result = SalesEngine::Persistence.instance.fetch(model.class)
-      result.should be_empty
+      data = SalesEngine::Persistence.instance.fetch(model.class)
+      indices = SalesEngine::Persistence.instance.dump_indices
+      data.should be_empty
+      indices.should be_empty
+    end
+  end
+
+  context "#clear_indices" do
+    it "clears the indices leaving data intact" do
+      model
+      SalesEngine::Persistence.instance.index(:id)
+      SalesEngine::Persistence.instance.clear_indices
+      data = SalesEngine::Persistence.instance.fetch(model.class)
+      indices = SalesEngine::Persistence.instance.dump_indices
+      data.should_not be_empty
+      indices.should be_empty
+    end
+  end
+
+  context "#clear_data" do
+    it "clears the indices leaving data intact" do
+      model
+      SalesEngine::Persistence.instance.index(:id)
+      SalesEngine::Persistence.instance.clear_data
+      data = SalesEngine::Persistence.instance.fetch(model.class)
+      indices = SalesEngine::Persistence.instance.dump_indices
+      data.should be_empty
+      indices.should_not be_empty
     end
   end
 end

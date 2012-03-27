@@ -87,6 +87,13 @@ describe SalesEngine::Model do
       valid_sample
       SalesEngine::ModelSample.find(1).should be valid_sample
     end
+
+    it "should use an index if one exists" do
+      valid_sample
+      SalesEngine::Persistence.instance.index(:id)
+      SalesEngine::Persistence.instance.should_receive(:fetch_indices).with(valid_sample.class)
+      valid_sample.class.find(valid_sample.id)
+    end
   end
 
   context ".find_all" do
@@ -97,6 +104,20 @@ describe SalesEngine::Model do
     it "returns all persisted models of the calling class" do
       valid_sample
       SalesEngine::ModelSample.find_all.should include valid_sample
+    end
+  end
+
+  context "#attributes" do
+    it "returns a hash" do
+      valid_sample.attributes.should be_a Hash
+    end
+
+    it "returns a hash including keys for each attribute" do
+      attribute1 = :id
+      attribute2 = :updated_at
+      valid_sample = SalesEngine::ModelSample.new(attribute1 => 7, attribute2 => Date.today)
+      valid_sample.attributes.should include :id
+      valid_sample.attributes.should include :updated_at
     end
   end
 end

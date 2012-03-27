@@ -4,10 +4,11 @@ module SalesEngine
   module Model
     include Validation
 
-    attr_reader :id, :created_at, :updated_at
+    attr_reader :id, :created_at, :updated_at, :attributes
     attr_accessor :models
     
     def initialize(attributes)
+      @attributes = attributes
       @models = {}
       @id = attributes[:id]
       @created_at = attributes[:created_at] || DateTime.now
@@ -34,8 +35,16 @@ module SalesEngine
       end
 
       def find_by_id(id)
-        models = SalesEngine::Persistence.instance.fetch(self)
-        models.find { |m| m.id == id }
+        if indices = SalesEngine::Persistence.instance.fetch_indices(self)
+          model = indices[:id][model.id] if indices[:id]
+        end
+
+        unless model
+          models = SalesEngine::Persistence.instance.fetch(self)
+          model = models.find { |m| m.id == id }
+        end
+
+        model
       end
 
       def find_all
