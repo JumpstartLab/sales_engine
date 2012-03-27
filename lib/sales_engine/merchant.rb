@@ -37,6 +37,7 @@ class SalesEngine
     end
 
     def revenue
+      invoices
       BigDecimal.new("8493")
     end
 

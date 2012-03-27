@@ -45,7 +45,9 @@ describe SalesEngine::Merchant do
         test_merchant.revenue.is_a?(BigDecimal).should == true
       end
 
-      it "gets the invoices for this merchant"
+      it "gets the invoices for this merchant" do
+        test_merchant.should_receive(:invoices)
+      end
 
       it "gets the invoice items for each invoice"
 

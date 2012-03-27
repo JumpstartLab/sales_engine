@@ -12,7 +12,6 @@ class SalesEngine
       @status = attributes[:status]
     end
    
-
     def self.random
       SalesEngine::Database.instance.invoices.sample
     end
