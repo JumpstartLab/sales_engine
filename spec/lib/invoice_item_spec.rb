@@ -64,7 +64,15 @@ describe SalesEngine::InvoiceItem do
     end
   end
 
-  describe "is_successful?" do
+  describe ".total_revenue" do
+    it "returns the total revenue for all invoice items with successful transactions" do
+      transaction_list
+      invoice_list
+      SalesEngine::InvoiceItem.total_revenue.should == 3
+    end
+  end
+
+  describe "#is_successful?" do
 
     before do
       transaction_list
@@ -78,7 +86,7 @@ describe SalesEngine::InvoiceItem do
     end
     
     context "when an invoice item is on an invoice that has no successful transactions" do 
-      it "returns nil" do
+      it "should be false" do
         inv_item_one.is_successful?.should be_false
       end
     end

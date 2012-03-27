@@ -13,10 +13,11 @@ module SalesEngine
     end
 
     def self.total_revenue
+      #this includes only invoice items w/ successful transactions
       total_revenue = BigDecimal.new("0.00")
-      data = SalesEngine::Database.instance.invoice_item_list
-      data.each do |i_i|
-        total_revenue += i_i.quantity * i_i.unit_price
+      data = successful_invoice_items
+      data.each do |invoice_item|
+        total_revenue += invoice_item.quantity * invoice_item.unit_price
       end
       total_revenue
     end
