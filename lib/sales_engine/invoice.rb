@@ -46,11 +46,11 @@ module SalesEngine
 
     def self.average_revenue(date = nil)
       if date
-        date_inv = all.select do |i|
+        di = all.select do |i|
           i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
         end
-        total_rev = date_inv.map(&:total_paid).inject(:+)
-        BigDecimal((total_rev / date_inv.size.to_f).to_s) rescue BigDecimal("0")
+        total_rev = di.map(&:total_paid).inject(:+)
+        BigDecimal((total_rev / di.size.to_f).to_s) rescue BigDecimal("0")
       else
         BigDecimal((all.map(&:total_paid).inject(:+) / all.size).to_s)
       end
@@ -58,11 +58,11 @@ module SalesEngine
 
     def self.average_items(date = nil)
       if date
-        date_inv = all.select do |i|
+        di = all.select do |i|
           i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
         end
-        total_items = date_inv.map(&:num_items).inject(:+)
-        BigDecimal((total_items / date_inv.size.to_f).to_s) rescue BigDecimal("0")
+        total_items = di.map(&:num_items).inject(:+)
+        BigDecimal((total_items / di.size.to_f).to_s) rescue BigDecimal("0")
       else
         BigDecimal((all.map(&:num_items).inject(:+) / all.size).to_s)
       end
