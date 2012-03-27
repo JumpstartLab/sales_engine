@@ -8,6 +8,25 @@ module SalesEngine
       self.last_name = attributes[:last_name]
     end
 
+    def transactions
+      customer_transactions = []
+      self.invoices.each {|invoice|
+        invoice.transactions.each {|transaction| customer_transactions << transaction } }
+      customer_transactions.sort_by {|transaction| transaction.id}
+    end
+
+    def favorite_merchant
+      merchant_invoice_counter = { }
+      self.invoices.each do |invoice|
+        if merchant_invoice_counter[invoice.merchant]
+          merchant_invoice_counter[invoice.merchant] += 1
+        else
+          merchant_invoice_counter[invoice.merchant] = 1
+        end
+      end
+      merchant_invoice_counter.sort_by {|merchant| merchant.last}.last.first
+    end
+
     def self.random
       SalesEngine::Database.instance.get_random_record("customers")
     end

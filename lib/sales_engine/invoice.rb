@@ -51,6 +51,10 @@ module SalesEngine
       SalesEngine::Database.instance.find_by("customers", "id", self.customer_id)
     end
 
+    def merchant
+      SalesEngine::Database.instance.find_by("merchants", "id", self.merchant_id)
+    end
+
     def self.find_by_id(id)
       SalesEngine::Database.instance.find_by("invoices", "id", id)
     end

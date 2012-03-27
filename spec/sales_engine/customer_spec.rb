@@ -5,12 +5,33 @@ describe SalesEngine::Customer do
   let(:customer_1) { Fabricate(:customer) }
   let(:customer_2) { Fabricate(:customer) }
   let(:customer_3) { Fabricate(:customer) }
+  let(:merchant_1) { Fabricate(:merchant) }
+  let(:merchant_2) { Fabricate(:merchant) }
+  let(:merchant_3) { Fabricate(:merchant) }
+  let(:invoice_1) { Fabricate(:invoice, :customer_id => customer_1.id, :merchant_id => merchant_1.id) }
+  let(:invoice_2) { Fabricate(:invoice, :customer_id => customer_1.id, :merchant_id => merchant_1.id) }
+  let(:invoice_3) { Fabricate(:invoice, :customer_id => customer_2.id, :merchant_id => merchant_2.id) }
+  let(:transaction_1) { Fabricate(:transaction, :invoice_id => invoice_1.id) }
+  let(:transaction_2) { Fabricate(:transaction, :invoice_id => invoice_2.id) }
+  let(:transaction_3) { Fabricate(:transaction, :invoice_id => invoice_1.id) }
+  let(:transaction_4) { Fabricate(:transaction, :invoice_id => invoice_3.id) }
+
 
   before(:each) do
     se.clear_all_data
     se.add_to_list(customer_1)
     se.add_to_list(customer_2)
     se.add_to_list(customer_3)
+    se.add_to_list(merchant_1)
+    se.add_to_list(merchant_2)
+    se.add_to_list(merchant_3)    
+    se.add_to_list(invoice_1)
+    se.add_to_list(invoice_2)
+    se.add_to_list(invoice_3)
+    se.add_to_list(transaction_1)
+    se.add_to_list(transaction_2)
+    se.add_to_list(transaction_3)
+    se.add_to_list(transaction_4)
   end
 
   describe ".random" do
@@ -264,16 +285,6 @@ describe SalesEngine::Customer do
 
   describe "#invoices" do
     context "when customer exist in the datastore" do
-      let(:invoice_1) { SalesEngine::Invoice.new({ :id => 1, :customer_id => customer_1.id}) }
-      let(:invoice_2) { SalesEngine::Invoice.new({ :id => 2, :customer_id => customer_1.id }) }
-      let(:invoice_3) { SalesEngine::Invoice.new({ :id => 3, :customer_id => customer_2.id }) }
-
-      before(:each) do
-        se.add_to_list(invoice_1)
-        se.add_to_list(invoice_2)
-        se.add_to_list(invoice_3)
-      end
-
       it "returns a collection of Invoice instances associated with this object" do
         customer_1.invoices.should == [invoice_1, invoice_2]
       end
@@ -281,6 +292,28 @@ describe SalesEngine::Customer do
       it "returns nothing if the customer has no invoices" do
         customer_3.invoices.should == []
       end      
+    end
+  end
+
+  describe "#transactions" do
+    it "returns an array of Transaction instances associated with the customer" do
+      customer_1.transactions.should == [transaction_1, transaction_2, transaction_3]
+    end
+  end
+
+  describe "#favorite_merchant" do
+    let(:invoice_4) { Fabricate(:invoice, :customer_id => customer_3.id, :merchant_id => merchant_1.id) }
+    let(:invoice_5) { Fabricate(:invoice, :customer_id => customer_3.id, :merchant_id => merchant_2.id) }
+    let(:invoice_6) { Fabricate(:invoice, :customer_id => customer_3.id, :merchant_id => merchant_2.id) }
+
+    before(:each) do
+      se.add_to_list(invoice_4)
+      se.add_to_list(invoice_5)
+      se.add_to_list(invoice_6)
+    end
+
+    it "returns an instance of Merchant where the customer has conducted the most transactions" do
+      customer_3.favorite_merchant.should == merchant_2
     end
   end
 end
