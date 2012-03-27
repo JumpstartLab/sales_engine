@@ -95,22 +95,23 @@ describe Merchant do
         end
       end
     end
-  end
 
-  describe "#favorite_customer" do
-    let(:merchant) { Merchant.find_by_name "Nienow-Quigley" }
+    describe "#favorite_customer" do
+      let(:merchant) { Merchant.find_by_name "Nienow-Quigley" }
 
-    it "returns the customer with the most transactions" do
-      customer = merchant.favorite_customer
-      customer.first_name.should == "Bechtelar"
-      customer.last_name.should  == "Yazmin"
+      it "returns the customer with the most transactions" do
+        customer = merchant.favorite_customer
+        customer.first_name.should == "Bechtelar"
+        customer.last_name.should  == "Yazmin"
+      end
+    end
+
+    describe "#customers_with_pending_invoices" do
+      it "returns the total number of customers with pending invoices" do
+        pending "No data with pending invoices yet"
+        merchant.customers_with_pending_invoices.should == 3
+      end
     end
   end
 
-  describe "#customers_with_pending_invoices" do
-    it "returns the total number of customers with pending invoices" do
-      pending "No data with pending invoices yet"
-      merchant.customers_with_pending_invoices.should == 3
-    end
-  end
 end
