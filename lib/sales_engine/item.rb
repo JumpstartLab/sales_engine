@@ -12,15 +12,15 @@ module SalesEngine
                   :total_revenue
 
     def initialize(attributes={})
-      self.id = attributes[:id].to_i
-      self.name = attributes[:name].to_s
-      self.description = attributes[:description].to_s
-      self.unit_price = attributes[:unit_price].to_i
-      self.merchant_id = attributes[:merchant_id].to_i
-      self.created_at = attributes[:created_at].to_s
-      self.updated_at = attributes[:updated_at].to_s
-      self.total_sold = 0
-      self.total_revenue =0
+      self.id            = attributes[:id].to_i
+      self.name          = attributes[:name].to_s
+      self.description   = attributes[:description].to_s
+      self.unit_price    = attributes[:unit_price].to_i
+      self.merchant_id   = attributes[:merchant_id].to_i
+      self.created_at    = attributes[:created_at].to_s
+      self.updated_at    = attributes[:updated_at].to_s
+      self.total_sold    = 0
+      self.total_revenue = 0
     end
 
     def self.items
@@ -105,25 +105,71 @@ module SalesEngine
       merchant[0]
     end
 
-    # def item_revenue
-    #   revenue = 0
-    #   invoice_items.each do |inv_item|
-    #     revenue = revenue + inv_item.total
-    #   end
-    #   revenue
-    # end
+    def item_revenue
+      revenue = 0
+      invoice_items.each do |inv_item|
+        revenue = revenue + inv_item.total
+      end
+      revenue
+    end
 
-    # def self.set_revenue
-    #   self.items.each do |item|
-    #     item.revenue = merchant.item_revenue
-    #   end
-    # end
 
-    # def self.most_revenue(x)
-    #   self.set_revenue
-    #   sorted_items = self.items.sort_by { |item| item.revenue }.reverse
-    #   sorted_item[0..x-1]
-    # end
+    def item_quantity
+      qty = 0
+      invoice_items.each do |inv_item|
+        qty = qty + inv_item.quantity
+      end
+      qty
+    end
+
+    def self.set_revenue
+      self.items.each do |item|
+        item.total_revenue = item.item_revenue
+      end
+    end
+
+    def self.most_revenue(x)
+      self.set_revenue
+      sorted_items = self.items.sort_by { |item| item.total_revenue }.reverse
+      sorted_items[0..x-1]
+    end
+
+    def self.set_quantity
+      self.items.each do |item|
+        item.total_sold = item.item_quantity
+      end
+    end
+
+    def self.most_items(x)
+      self.set_quantity
+      sorted_items = self.items.sort_by { |item| item.total_sold }.reverse
+      sorted_items[0..x-1]
+    end
+
+    def days_array
+      days = []
+      invoice_items.each do|inv_item|
+        days << inv_item.invoice.created_at[0..9]
+      end
+      days
+    end
+
+    def best_day
+      days_hash = {}
+      days_array.each do |day|
+        if days_hash.has_key?(day)
+          days_hash[day] += 1
+        else
+          days_hash[day] = 1
+        end
+      end
+      days_hash.max_by{ |date, count| count}[0]
+    end
+
 
   end
 end
+
+
+
+

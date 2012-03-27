@@ -36,6 +36,14 @@ module SalesEngine
       invoice_items = DataStore.instance.invoice_items
     end
 
+    def customers_array
+      customers= DataStore.instance.customers
+    end
+
+    def transcations_array
+      transactions = DataStore.instance.transactions
+    end
+
     def self.random
         self.merchants.sample
         self.merchants.sample
@@ -130,11 +138,12 @@ module SalesEngine
       revenue
     end
 
+    #not working yet
     def revenue(*date)
       if date.nil?
         merch_revenue
       else
-        merch_revenue_by_date
+        merch_revenue_by_date(date)
       end
     end
 
@@ -155,6 +164,57 @@ module SalesEngine
       sorted_merchants = self.merchants.sort_by { |merchant| merchant.quantity }.reverse
       sorted_merchants[0..x-1]
     end
+
+    def customer_ids
+      merch_customer_ids =[]
+      invoices.each do |invoice|
+        merch_customer_ids << invoice.customer_id
+      end
+      # merch_customer_ids.uniq.each do |id|
+      #   all_customers << Customer.find_by_id(id)
+      # end
+      merch_customer_ids.uniq
+    end
+
+    def all_customers
+      customers_array.select { |customer| customer_ids.include?(customer.id)}
+    end
+
+    def favorite_customer
+      # all_customers.each do |customer|
+      #   customer.set_transactions_count
+      # end
+      sorted_customers = all_customers.sort_by{ |customer| customer.transactions.length}.reverse
+      sorted_customers.first
+    end
+
+    def customers_with_pending_invoices
+      all_customers.select {|customer| customer.any_rejected == "yes"}
+    end
+
+
+
+    # def invoice_ids
+    #   invoice_ids = []
+    #   invoices.each do |inv|
+    #     invoice_ids << inv.id
+    #   end
+    #   invoice_ids
+    # end
+
+    # def transactions
+    #   transcations_array.select {|trans| invoice_ids.include?(trans.invoice_id)}
+    # end
+    # def customer_invoice_ids
+    #   invoices.select {|invoice| customer_ids.include?(invoice.customer_id)}
+    # end
+
+    # def customer_transactions
+    #   transcations_array.select {|trans| customer_invoice_ids.include?(trans.invoice_id)}
+    # end
+
+
+
 
   end
 end

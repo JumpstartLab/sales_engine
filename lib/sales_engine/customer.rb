@@ -24,6 +24,10 @@ module SalesEngine
       invoices = DataStore.instance.invoices
     end
 
+    def transcations_array
+      transactions = DataStore.instance.transactions
+    end
+
     def self.random
         self.customers.sample
     end
@@ -69,8 +73,55 @@ module SalesEngine
     end
 
     def invoices
-      invoices = []
-      invoices = invoices_array.select { |inv| inv.customer_id == id}
+      #@invoices || invoices_array.select { |inv| inv.customer_id == id}
+      invoices_array.select { |inv| inv.customer_id == id}
+    end
+
+    def invoices=(input)
+      @invoices = input
+    end
+
+    def invoice_ids
+      invoice_ids = []
+      invoices.each do |inv|
+        invoice_ids << inv.id
+      end
+      invoice_ids
+    end
+
+    def transactions
+      transcations_array.select {|trans| invoice_ids.include?(trans.invoice_id)}
+    end
+
+    def any_rejected
+      any = ""
+      rejected = transactions.select {|transaction| transaction.result != "success"}
+      if rejected.length >0
+        any = "yes"
+      elsif rejected.length ==0
+        any = "no"
+      end
+    end
+
+    def merchants_array
+      merchants = []
+      invoices.each do |invoice|
+        merchants << invoice.merchant_id
+      end
+      merchants
+    end
+
+    def favorite_merchant
+      merchants_hash = {}
+      merchants_array.each do |merchant|
+        if merchants_hash.has_key?(merchant)
+          merchants_hash[merchant] += 1
+        else
+          merchants_hash[merchant] = 1
+        end
+      end
+      merch_id = merchants_hash.max_by{ |merchant, count| count}[0]
+      Merchant.find_by_id(merch_id)
     end
   end
 end
