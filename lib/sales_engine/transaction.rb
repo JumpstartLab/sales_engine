@@ -4,7 +4,7 @@ class SalesEngine
   class Transaction
     include Model
 
-    attr_accessor :invoice_id
+    attr_accessor :invoice_id, :credit_card_number
 
     def initialize(attr)
       super(attr)
@@ -36,6 +36,12 @@ class SalesEngine
     def self.find_by_invoice_id(param)
       self.all.find do |transaction|
         transaction.invoice_id == param
+      end
+    end
+
+    def self.find_by_credit_card_number(number)
+      self.all.find do |transaction|
+        transaction.credit_card_number == number
       end
     end
   end

@@ -31,6 +31,24 @@ describe SalesEngine::Transaction do
       result.invoice_id.should == "2"
     end
   end
+
+  describe ".find_by_credit_card_number()" do
+    it "returns one transaction" do
+      SalesEngine::Transaction.find_by_credit_card_number("4177816490204479").should be_a SalesEngine::Transaction
+    end
+
+    it "is associated with the credit card number passed in" do
+      result = SalesEngine::Transaction.find_by_credit_card_number("4177816490204479")
+      result.credit_card_number.should == "4177816490204479"
+    end
+  end
+
+  describe ".find_by_credit_card_expiration_date()" do
+    
+    it "returns one transaction" do
+      SalesEngine::Transaction.find_by_credit_card_expiration_date("2012-02-26 20:56:56 UTC").should be_a SalesEngine::Transaction
+    end
+  end
 end
 
 
