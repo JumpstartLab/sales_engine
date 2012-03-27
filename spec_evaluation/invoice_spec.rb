@@ -15,13 +15,17 @@ describe SalesEngine::Invoice do
     end
 
     describe ".find_by_status" do
-      invoice = SalesEngine::Invoice.find_by_status "cool"
-      invoice.should be_nil
+      it "can find a record" do
+        invoice = SalesEngine::Invoice.find_by_status "cool"
+        invoice.should be_nil
+      end
     end
 
     describe ".find_all_by_status" do
-      invoices = SalesEngine::Invoice.find_all_by_status "shipped"
-      invoices.should have(4843).invoices
+      it "can find multiple records" do
+        invoices = SalesEngine::Invoice.find_all_by_status "shipped"
+        invoices.should have(4843).invoices
+      end
     end
   end
 

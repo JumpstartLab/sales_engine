@@ -15,13 +15,17 @@ describe SalesEngine::Item do
     end
 
     describe ".find_by_unit_price" do
-      item =SalesEngine::Item.find_by_unit_price 93519
-      item.name.should == "Item Alias Nihil"
+      it "can find one record" do
+        item =SalesEngine::Item.find_by_unit_price 93519
+        item.name.should == "Item Alias Nihil"
+      end
     end
 
     describe ".find_all_by_name" do
-      items = SalesEngine::Item.find_all_by_name "Item Eos Et"
-      items.should have(3).items
+      it "can find multiple records" do
+        items = SalesEngine::Item.find_all_by_name "Item Eos Et"
+        items.should have(3).items
+      end
     end
   end
 
