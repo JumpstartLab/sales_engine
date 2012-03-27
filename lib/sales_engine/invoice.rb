@@ -1,4 +1,3 @@
-require 'logger'
 module SalesEngine
   class Invoice < Record
     attr_accessor :customer_id, :merchant_id, :status
@@ -26,8 +25,6 @@ module SalesEngine
     end
 
     def self.create(attributes)
-      log = Logger.new("log.txt")
-      log.debug "#{attributes}"
       invoice = SalesEngine::Invoice.new(:id => SalesEngine::Database.instance.invoices.count + 1, :customer_id => attributes[:customer_id].id, 
         :merchant_id => attributes[:merchant_id].id, :status => attributes[:status])
       attributes[:items].each do |item|
@@ -38,6 +35,14 @@ module SalesEngine
       attributes[:transaction].invoice_id = invoice.id
       SalesEngine::Database.instance.add_to_list(invoice)
       invoice
+    end
+
+    def charge(attributes)
+      transaction = SalesEngine::Transaction.new(:id => SalesEngine::Database.instance.transactions.count + 1, 
+        :invoice_id => self.id, :credit_card_number => attributes[:credit_card_number],
+        :credit_card_expiration_date => attributes[:credit_card_expiration_date], :result => attributes[:result])
+      SalesEngine::Database.instance.add_to_list(transaction)
+      transaction
     end
 
     def total_items

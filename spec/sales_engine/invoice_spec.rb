@@ -460,4 +460,16 @@ describe SalesEngine::Invoice do
       invoice.transactions.should == [transaction_4]
     end
   end
+
+  describe "#charge" do
+    let(:invoice_4) { Fabricate(:invoice) } 
+
+    it "creates a transaction based on the attributes passed in" do
+      invoice_4.charge(:credit_card_number => "4444333322221111",
+        :credit_card_expiration_date => "10/13", :result => "success")
+      invoice_4.transactions.last.credit_card_number.should == "4444333322221111"
+      invoice_4.transactions.last.credit_card_expiration_date.should == "10/13"
+      invoice_4.transactions.last.result.should == "success"
+    end
+  end
 end
