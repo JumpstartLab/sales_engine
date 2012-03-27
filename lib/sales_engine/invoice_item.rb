@@ -41,6 +41,14 @@ module SalesEngine
       self.invoice.is_successful?
     end
 
+    def self.successful_invoice_items
+      invoice_item_list = SalesEngine::Database.instance.invoice_item_list
+      
+      successful_list = invoice_item_list.select do |invoice_item| 
+        invoice_item.is_successful? 
+      end
+    end
+
     # def self.total_revenue_by_invoice_ids(invoice_ids)
     #   total_revenue = BigDecimal.new("0")
     #   data = invoice_ids.collect { |invoice_id| find_all_by_invoice_id(invoice_id) }

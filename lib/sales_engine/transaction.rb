@@ -23,11 +23,7 @@ module SalesEngine
     end
 
     def is_successful?
-      if self.result == "success"
-        return true
-      else 
-        return false
-      end
+      self.result == "success"
     end
 
     def self.find_all_by_invoice_id(invoice_id)

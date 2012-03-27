@@ -47,17 +47,23 @@ module SalesEngine
     end
 
     def self.most_revenue(num)
-      i_i_list = SalesEngine::Database.instance.invoice_item_list
-      successful_i_i_list = i_i_list.select { |i_i| i_i if i_i.is_successful? }
 
+      successful_invoice_items = SalesEngine::InvoiceItem.successful_invoice_items
       item_data = { }
 
-      successful_i_i_list.each do |i_i|
-        item_data[ i_i.item_id.to_sym ] ||= 0
-        item_data[ i_i.item_id.to_sym ] += i_i.quantity * i_i.unit_price
+      successful_invoice_items.each do |invoice_item|
+        item_data[ invoice_item.item_id.to_sym ] ||= 0
+        item_data[ invoice_item.item_id.to_sym ] += invoice_item.quantity * invoice_item.unit_price
       end
 
-      item_data.sort_by {|k, v| -v }[0..(num-1)]
+      item_data = item_data.sort_by {|item_id, revenue| -revenue }
+      puts '*' * 80
+      puts item_data.inspect
+
+      item_data[0..(num-1)].collect do |item_id, revenue|
+        SalesEngine::Item.find_by_id(item_id)
+      end
+
     end
   end
 end
