@@ -44,6 +44,22 @@ module SalesEngine
         revenue
     end
 
+    def revenue(date=nil)
+      user_date = date.nil? ? nil : Date.parse(date)
+      revenue = BigDecimal.new("0")
+      self.invoices.each do |invoice|
+        if user_date.nil?
+          revenue += invoice.total_revenue
+        else 
+          invoice_date = Date.parse(Time.parse(invoice.created_at).strftime('%Y/%m/%d'))
+          if invoice_date == user_date
+            revenue += invoice.total_revenue
+          end
+        end
+      end
+      revenue
+    end
+
     def items
       SalesEngine::Database.instance.find_all_items_by_merchant_id(self.id)
     end

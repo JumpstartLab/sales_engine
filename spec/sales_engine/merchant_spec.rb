@@ -329,4 +329,22 @@ describe SalesEngine::Merchant do
       SalesEngine::Merchant.revenue("2012-01-21").should == 0
     end
   end
+
+  describe "#revenue" do
+    it "returns the total revenue for that merchant across all transactions" do
+      merchant_1.revenue.should == 11
+    end
+  end
+
+  describe "#revenue(date)" do
+    before(:each) do 
+      invoice_1.created_at = "2012-02-01 00:51:56 UTC"
+      invoice_5.created_at = "2012-03-14 20:56:56 UTC"
+      invoice_7.created_at = "2012-02-01 16:16:41 UTC"    
+    end
+
+    it "returns the total revenue that merchant for a specific date" do
+      merchant_1.revenue("2012-02-01").should == 10
+    end
+  end
 end
