@@ -2,6 +2,7 @@
 #require './customer'
 #require './invoice_item'
 #require './item'
+require './lib/sales_engine'
 
 module SalesEngine
   class Invoice
@@ -43,10 +44,16 @@ module SalesEngine
     end
 
     def transaction_successful?
-      t = Database.instance.transactions.find do |t| 
-        t.send(:invoice_id) == self.id
+      t = SalesEngine::Transaction.find_by_invoice_id(self.id)
+      if t.result == "success"
+        return true
+      # else
+      #   return false
       end
-      t.result == "success"
+      # Database.instance.transactions.find do |t| 
+      #   t.send(:invoice_id) == self.id
+      # end
+      # t.result == "success"
     end
 
     def transactions

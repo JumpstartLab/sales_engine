@@ -1,6 +1,5 @@
 # require './item'
 # require './lib/sales_engine/invoice'
-# require 'csv'
  require './lib/sales_engine'
 # require './customer' should only need to reference invoices > transactions
 require './lib/sales_engine/find'
@@ -47,14 +46,6 @@ module SalesEngine
       # returns a collection of Invoice instances associated with that merchant from their known orders
       Database.instance.invoices.select do |i|
         i.send(:merchant_id) == self.id
-      end
-    end
-
-
-
-    def no_charged_invoices
-      Database.instance.invoices.select do |i|
-        (i.send(:merchant_id) == self.id) && i.transaction_successful?
       end
     end
 

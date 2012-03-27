@@ -53,12 +53,40 @@ module SalesEngine
       end
     end
 
+    def revenue
+      revenue = 0
+      self.invoice_items.each do |ii|
+        revenue += ( ii.quantity.to_i * ii.unit_price.to_i )
+      end
+      revenue
+    end
+
     def self.most_revenue(num_of_items)
       # .most_revenue(x) returns the top x item instances ranked by total revenue generated
+      rank = Hash.new(0)
+      Database.instance.items.each do |item|
+        rank[item] = item.revenue
+      end
+      rank = rank.sort_by{ |item, revenue| revenue}.reverse
+      rank[1..num_of_items]
+    end
+
+    def quantity_sold
+      quantity = 0
+      self.invoice_items.each do |inv_item|
+        quantity += inv_item.quantity.to_i
+      end
+      quantity
     end
 
     def self.most_items(num_of_items)
       # .most_items(x) returns the top x item instances ranked by total number sold
+      rank = Hash.new(0)
+      Database.instance.items.each do |item|
+        rank[item] = item.quantity_sold
+      end
+      rank = rank.sort_by{ |item, quant| quant }.reverse
+      rank[1..num_of_items]
     end
 
     def best_day
