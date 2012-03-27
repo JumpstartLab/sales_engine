@@ -1,54 +1,46 @@
-require 'spec_helper'
+require './spec/spec_helper'
 
 describe SalesEngine::InvoiceItem do
-  context "Searching" do
-    describe ".random" do
-      it "usually returns different things on subsequent calls" do
-        invoice_item_one = SalesEngine::InvoiceItem.random
-        10.times do
-          invoice_item_two = SalesEngine::InvoiceItem.random
-          break if invoice_item_one.id != invoice_item_two.id
-        end
-
-        invoice_item_one.id.should_not == invoice_item_two.id
+  describe ".get_invoice_items" do
+    before(:all) { SalesEngine::InvoiceItem.get_invoice_items }
+    it "stores records from invoice_item.csv in @@records" do
+      SalesEngine::InvoiceItem.records.map(&:class).uniq.should == [SalesEngine::InvoiceItem]
+    end
+    {id: 1, item_id: 2138, invoice_id: 1, quantity: 1,
+      unit_price: BigDecimal("485.45")}.each do |attribute, value|
+      it "records #{attribute}" do
+        SalesEngine::InvoiceItem.records.first.send(attribute).should == value
       end
     end
-
-    describe ".find_by_item_id" do
-      it "can find a record" do
-        invoice_item = SalesEngine::InvoiceItem.find_by_item_id 123
-        invoice_item.invoice_id.should == 184
-      end
+    it "stores the raw CSV for each InvoiceItem" do
+      SalesEngine::InvoiceItem.records.first.raw_csv.should be_an Array
     end
 
-    describe ".find_all_by_quantity" do
-      it "can find multiple records" do
-        invoice_items = SalesEngine::InvoiceItem.find_all_by_quantity 10
-        invoice_items.should have(2140).invoice_items
-      end
+    it "stores headers on the InvoiceItem class" do
+      SalesEngine::InvoiceItem.csv_headers.should be_an Array
     end
   end
 
-  context "Relationships" do
-    let(:invoice_item) { SalesEngine::InvoiceItem.find_by_id 16934 }
-
-    describe "#item" do
-      it "exists" do
-        invoice_item.item.name.should == "Item Qui Esse"
-      end
-    end
-
+  context "instance methods" do
+    let(:invoice_item) { SalesEngine::InvoiceItem.find_by_id(1) }
     describe "#invoice" do
-      it "exists" do
-        invoice_customer = SalesEngine::Customer.find_by_id invoice_item.customer_id
-        invoice_item.customer.last_name.should == invoice.customer.last_name
+      it "returns an invoice" do
+        invoice_item.invoice.should be_a(SalesEngine::Invoice)
+      end
+      it "returns the invoice associated with this invoice_item" do
+        invoice_item.invoice.should == SalesEngine::Invoice.find_by_id(1)
       end
     end
-
-  end
-
-  context "Business Intelligence" do
-
+    describe "#item" do
+      it "returns an item" do
+        invoice_item.item.should be_a(SalesEngine::Item)
+      end
+      it "returns the item associated with this invoice_item" do
+        invoice_item.item.should == SalesEngine::Item.find_by_id(2138)
+      end
+    end
   end
 end
 
+# id,item_id,invoice_id,quantity,unit_price,created_at,updated_at
+# 1,2138,1,1,48545,2012-02-26 20:56:56 UTC,2012-02-26 20:56:56 UTC

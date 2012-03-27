@@ -3,7 +3,7 @@ lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
 Gem::Specification.new do |s|
-  s.name        = "salesengine-marktablerathal7"
+  s.name        = "sales_engine"
   s.version     = "1.0.0"
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Mark Tabler", "Andrew Thal"]
@@ -16,6 +16,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rspec"
 
-  s.files        = Dir.glob("{spec,data,lib}/**/*")
+  s.files        = Dir.glob("{lib}/**/*")
   s.require_path = 'lib'
 end

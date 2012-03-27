@@ -33,6 +33,16 @@ module SalesEngine
       all.map{|m| m.revenue(date)}.inject(:+)
     end
 
+    def self.dates_by_revenue(count = nil)
+      dates = Hash.new(0)
+      SalesEngine::Invoice.all.each do |invoice|
+        dates[invoice.created_at.strftime("%y/%m/%d")] += invoice.total_paid
+      end
+      dates = dates.sort_by{ |k, v| v }.reverse
+      dates = dates.map(&:first).collect { |d| DateTime.parse(d) }
+      count ? dates.first(count) : dates
+    end
+
     def initialize(raw_line)
       self.name = raw_line[:name]
       self.id = raw_line[:id].to_i
@@ -55,7 +65,7 @@ module SalesEngine
         di = invoices.select do |i|
           i.created_at.strftime("%d%m%y") == date.strftime("%d%m%y")
         end
-        di.flat_map(&:invoice_items).map(&:line_total).inject(:+) || 0
+        di.map(&:total_paid).inject(:+) || 0
       else
         @total_revenue || 0
       end
@@ -67,6 +77,12 @@ module SalesEngine
       SalesEngine::Customer.find_by_id(fc_id)
     end
 
+    def customers_with_pending_invoices
+      invoices.map(&:customer_id).map do |cid|
+        customer = SalesEngine::Customer.find_by_id(cid)
+        customer if customer.has_pending_invoices?
+      end.compact
+    end
   end
 end
 

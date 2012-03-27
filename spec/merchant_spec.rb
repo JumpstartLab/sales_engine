@@ -1,124 +1,129 @@
-require 'spec_helper'
+require './spec/spec_helper'
 
 describe SalesEngine::Merchant do
-  context "Searching" do
-    describe ".random" do
-      it "usually returns different things on subsequent calls" do
-        merchant_one = SalesEngine::Merchant.random
-        10.times do
-          merchant_two = SalesEngine::Merchant.random
-          break if merchant_one.id != merchant_two.id
-        end
+  describe ".get_merchants" do
+    before(:all) { SalesEngine::Merchant.get_merchants }
+    it "stores records from merchants.csv" do
+      SalesEngine::Merchant.records.map(&:class).uniq.should == [SalesEngine::Merchant]
+    end
 
-        merchant_one.id.should_not == merchant_two.id
+    {id: 1, name: "Brekke, Haley and Wolff"}.each do |attribute, value|
+      it "records #{attribute}" do
+        SalesEngine::Merchant.records.first.send(attribute).should == value
       end
     end
 
-    describe ".find_by_name" do
-      it "can find a record" do
-        merchant = SalesEngine::Merchant.find_by_name "Marvin Group"
-        merchant.should_not be_nil
-      end
+    it "stores the raw CSV for each merchant" do
+      SalesEngine::Merchant.records.first.raw_csv.should be_an Array
     end
 
-    describe ".find_by_all_name" do
-      it "can find multiple records" do
-        merchants = SalesEngine::Merchant.find_all_by_name "Williamson Group"
-        merchants.should have(2).merchants
-      end
+    it "stores headers on the Merchant class" do
+      SalesEngine::Merchant.csv_headers.should be_an Array
     end
   end
 
-  context "Relationships" do
-    let(:merchant) { SalesEngine::Merchant.find_by_name "Kirlin, Jakubowski and Smitham" }
-
+  context "instance methods" do
+    let(:merchant) { SalesEngine::Merchant.find_by_id(1) }
     describe "#items" do
-      it "has 33 of them" do
-        merchant.items.should have(33).items
+      it "returns items" do
+        merchant.items.should_not be_empty
+        merchant.items.first.should be_a(SalesEngine::Item)
       end
-
-      it "includes an 'Item Consequatur Odit'" do
-        item = merchant.items.find {|i| i.name == 'Item Consequatur Odit' }
-        item.should_not be_nil
+      it "returns all items with the merchant_id of the instance" do
+        merchant.items.size.should == 21
       end
     end
-
     describe "#invoices" do
-      it "has 52 of them" do
-        merchant.invoices.should have(43).invoices
+      it "returns invoices" do
+        merchant.invoices.should_not be_empty
+        merchant.invoices.first.should be_a(SalesEngine::Invoice)
       end
-
-      it "has a shipped invoice for Block" do
-        invoice = merchant.invoices.find {|i| i.customer.last_name = 'Block' }
-        invoice.status.should == "shipped"
+      it "returns all invoices with the merchant_id of the instance" do
+        merchant.invoices.size.should == 51
+      end
+    end
+    describe "#total_revenue" do
+      it "returns the total revenue for the merchant" do
+        merchant.total_revenue.should == BigDecimal("512254.82")
       end
     end
   end
 
-  context "Business Intelligence" do
-
-    describe ".revenue" do
-      it "returns all revenue for a given date" do
-        date = Date.parse "Tue, 20 Mar 2012"
-
-        SalesEngine::Merchant.revenue(date).to_f.should be_within(0.001).of(263902466.0)
-      end
-    end
-
+  context "business intelligence methods" do
     describe ".most_revenue" do
-      it "returns the top n revenue-earners" do
-        most = SalesEngine::Merchant.most_revenue(3)
-        most.first.name.should == "Dicki-Bednar"
-        most.last.name.should  == "Okuneva, Prohaska and Rolfson"
+      it "returns an array of Merchants" do
+        SalesEngine::Merchant.most_revenue(1).first.should be_a(SalesEngine::Merchant)
+      end
+      it "returns merchants sorted by descending revenue" do
+        merch_a = SalesEngine::Merchant.find_by_id(54)
+        merch_b = SalesEngine::Merchant.find_by_id(7)
+        merch_c = SalesEngine::Merchant.find_by_id(58)
+        SalesEngine::Merchant.most_revenue(3).should == [ merch_a, merch_b, merch_c ]
       end
     end
-
     describe ".most_items" do
-      it "returns the top n item-sellers" do
-        most = SalesEngine::Merchant.most_revenue(4)
-        most.first.name.should == "Kassulke, O'Hara and Quitzon"
-        most.last.name.should  == "Daugherty Group"
+      it "returns an array of Merchants" do
+        SalesEngine::Merchant.most_items(1).first.should be_a(SalesEngine::Merchant)
+      end
+      it "returns merchants sorted by descending items sold" do
+        merch_a = SalesEngine::Merchant.find_by_id(85)
+        merch_b = SalesEngine::Merchant.find_by_id(22)
+        merch_c = SalesEngine::Merchant.find_by_id(58)
+        SalesEngine::Merchant.most_items(3).should == [ merch_a, merch_b, merch_c ]
       end
     end
-
+    describe ".revenue(date)" do
+      it "returns the total revenue across all merchants for one date" do
+        SalesEngine::Merchant.revenue(DateTime.parse("2012-02-26 20:56:50 UTC")).should == BigDecimal("2175008.70")
+      end
+    end
     describe "#revenue" do
-      context "without a date" do
-        let(:merchant) { SalesEngine::Merchant.find_by_name "Dicki-Bednar" }
-
-        it "reports all revenue" do
-          merchant.revenue.to_f.should be_within(0.001).of(118422772.0)
-        end
-      end
-      context "given a date" do
-        let(:merchant) { SalesEngine::Merchant.find_by_name "Nienow-Quigley" }
-
-        it "restricts to that date" do
-          date = Date.parse "Wed, 21 Mar 2012"
-
-          merchant.revenue(date).to_f.should be_within(0.001).of(4521907.0)
-        end
+      it "returns the total revenue for a merchant" do
+        SalesEngine::Merchant.find_by_id(54).revenue.should == BigDecimal("276580.96")
       end
     end
-
+    describe "#revenue(date)" do
+      it "returns the total revenue for a merchant on a specific date" do
+        SalesEngine::Merchant.find_by_id(54).revenue(DateTime.parse("2012-02-26 20:56:50 UTC")).should == BigDecimal("13121.86")
+      end
+    end
     describe "#favorite_customer" do
-      let(:merchant) { SalesEngine::Merchant.find_by_name "Terry-Moore" }
-
-      it "returns the customer with the most transactions" do
-        customer = merchant.favorite_customer
-        customer.first_name.should == "Orion"
-        customer.last_name.should  == "Hills"
+      it "returns a customer object" do
+        SalesEngine::Merchant.find_by_id(1).favorite_customer.should be_a(SalesEngine::Customer)
+      end
+      it "returns the customer with the most transactions with this merchant" do
+        SalesEngine::Merchant.find_by_id(2).favorite_customer.should == SalesEngine::Customer.find_by_id(96)
       end
     end
-
     describe "#customers_with_pending_invoices" do
-      it "returns the total number of customers with pending invoices" do
-        customers = merchant.customers_with_pending_invoices
-        customers.count.should == 6
-        customers.any? do |customer|
-          customer.last_name == "Gaylord"
-        end.should be_true
+      context "when there are no pending invoices" do
+        it "returns the empty array" do
+          SalesEngine::Merchant.all.first.customers_with_pending_invoices.should == []
+        end
+      end
+      context" when there are pending invoices" do
+        it "returns the customers with pending invoices with the merchant" do
+          cust_id = SalesEngine::Merchant.all.first.invoices.first.customer_id
+          SalesEngine::Customer.find_by_id(cust_id).stub(:has_pending_invoices? => true)
+          SalesEngine::Merchant.all.first.customers_with_pending_invoices.should == [SalesEngine::Customer.find_by_id(cust_id)]
+        end
       end
     end
+  end
+
+  context "extensions" do
+    describe ".dates_by_revenue" do
+      it  "returns an array of Dates in descending order of revenue" do
+        SalesEngine::Merchant.dates_by_revenue.size.should == 22
+        SalesEngine::Merchant.dates_by_revenue.first.should == DateTime.parse("Feb 15, 2012")
+      end
+    end
+# .dates_by_revenue(x) returns the top x days of revenue in descending order
+# .revenue(range_of_dates) returns the total revenue for all merchants across several dates
+# #revenue(range_of_dates) returns the total revenue for that merchant across several dates
   end
 
 end
+
+#id,name,created_at,updated_at
+#1,"Brekke, Haley and Wolff",2012-02-26 20:56:50 UTC,2012-02-26 20:56:50 UTC

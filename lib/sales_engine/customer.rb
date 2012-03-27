@@ -63,6 +63,8 @@ module SalesEngine
       invoices.select { |i| i.transactions.map(&:result).include?("pending") }
     end
 
-
+    def has_pending_invoices?
+      pending_invoices.any?
+    end
   end
 end
