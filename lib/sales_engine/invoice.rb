@@ -48,6 +48,10 @@ class SalesEngine
       @customer || SalesEngine::Database.instance.customers.find { |customer| customer.id == customer_id }
     end
 
+    def merchant
+      @merchant || SalesEngine::Database.instance.merchants.find { |merchant| merchant.id == merchant_id }
+    end
+
     def items
       invoice_items.collect do |invoice_item|
         invoice_item.item

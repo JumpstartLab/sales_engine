@@ -12,9 +12,13 @@ class SalesEngine
     end
 
     def invoices
-      SalesEngine::Database.instance.invoices.select do |invoice|
+      @invoices || SalesEngine::Database.instance.invoices.select do |invoice|
         invoice.customer_id == @id
       end
+    end
+
+    def invoices=(input)
+      @invoices = input
     end
 
     def self.random
@@ -29,7 +33,10 @@ class SalesEngine
     end
 
     def favorite_merchant
-      SalesEngine::Database.instance.merchants.sample
+      grouped_by_merchant = invoices.group_by{|invoice| invoice.merchant}
+      sorted_and_grouped_by_merchant = grouped_by_merchant.sort_by{|merchant, invoices| invoices.count }
+      merchant_and_invoices = sorted_and_grouped_by_merchant.last
+      merchant = merchant_and_invoices.first
     end
 
   end
