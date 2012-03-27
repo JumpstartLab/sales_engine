@@ -90,6 +90,7 @@ module SalesEngine
       end
     end
 
+    #VESTIGIAL METHOD... SHOULD NOT BE USED ANYMORE
     def self.find_all_by_date(date)
       SalesEngine::Database.instance.invoice_list.select do |i|
         dt = i.created_at

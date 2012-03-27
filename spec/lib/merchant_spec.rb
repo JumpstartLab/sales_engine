@@ -175,13 +175,104 @@ describe SalesEngine::Merchant do
     end
 
     it "returns all customers with pending invoices" do
-      # SalesEngine::Customer.any_instance.should_receive(:find_by_id).with("1")
+      # SalesEngine::Customer.should_receive(:find_by_id).with("1")
       # SalesEngine::Customer.any_instance.should_receive(:find_by_id)
       # merchant_one.customers_with_pending_invoices
       pending ("How do you mock class methods?")
     end
   end
 
+  describe ".clean_date" do
+    context "when given a string" do
+      it "returns a date" do
+        SalesEngine::Merchant.clean_date("2012-02-19").should == Time.parse("2012-02-19")
+      end
+    end
+
+    context "when given a date" do
+      it "returns a date" do
+        date = Time.parse("2012-02-19")
+        SalesEngine::Merchant.clean_date(date).should == date
+      end
+    end
+  end
+
+  describe ".revenue(date)" do
+    let(:customer_one) { mock(SalesEngine::Customer) }
+    let(:customer_two) { mock(SalesEngine::Customer) }
+    let(:customer_three) { mock(SalesEngine::Customer) }
+    let(:inv_one)     { mock(SalesEngine::Invoice) }
+    let(:inv_two)     { mock(SalesEngine::Invoice) }
+    let(:inv_three)   { mock(SalesEngine::Invoice) }
+
+    before(:each) do
+      inv_one.stub(:invoice_revenue).and_return(100)
+      inv_two.stub(:invoice_revenue).and_return(200)
+      inv_three.stub(:invoice_revenue).and_return(300)
+      inv_one.stub(:updated_at).and_return(Time.parse("2012-02-19"))
+      inv_two.stub(:updated_at).and_return(Time.parse("2012-02-21"))
+      inv_three.stub(:updated_at).and_return(Time.parse("2012-02-19"))
+      invoices = [ inv_one, inv_two, inv_three ]
+      SalesEngine::Invoice.stub(:successful_invoices).and_return(invoices)
+    end
+
+    context "when given a date" do
+      it "returns the total revenue across all merchants for that date" do
+        SalesEngine::Merchant.revenue("2012-02-19").should == 400
+      end
+      context "when no transactions occurred on that date" do
+        it "returns 0" do
+          SalesEngine::Merchant.revenue("2012-02-20").should == 0
+        end
+      end
+    end
+  end
+
+  describe ".merchant_data" do
+    let(:inv_one)     { mock(SalesEngine::Invoice) }
+    let(:inv_two)     { mock(SalesEngine::Invoice) }
+    let(:inv_three)   { mock(SalesEngine::Invoice) }
+
+    before(:each) do
+      inv_one.stub(:invoice_revenue).and_return(100)
+      inv_two.stub(:invoice_revenue).and_return(200)
+      inv_three.stub(:invoice_revenue).and_return(300)
+      inv_one.stub(:merchant_id).and_return("1")
+      inv_two.stub(:merchant_id).and_return("2")
+      inv_three.stub(:merchant_id).and_return("1")
+      invoices = [ inv_one, inv_two, inv_three ]
+      SalesEngine::Invoice.stub(:successful_invoices).and_return(invoices)
+    end
+
+    it "returns a hash with merchant_ids as keys and revenue as values" do
+      revenue_hash = { :"1" => 400, :"2" => 200 }
+      SalesEngine::Merchant.merchant_data.should == revenue_hash
+    end
+
+    context "when no successful transactions" do
+      it "returns nil" do
+        invoices = [ ]
+        SalesEngine::Invoice.stub(:successful_invoices).and_return(invoices)
+        SalesEngine::Merchant.merchant_data.should be_empty       
+      end
+    end
+  end
+
+  describe ".most_revenue(num)" do
+    let(:inv_one)     { mock(SalesEngine::Invoice) }
+    let(:inv_two)     { mock(SalesEngine::Invoice) }
+    let(:inv_three)   { mock(SalesEngine::Invoice) }
+
+    before(:each) do
+      revenue_hash = { :"1" => 400, :"2" => 200, :"3" => 300 }
+      SalesEngine::Invoice.stub(:merchant_data).and_return(revenue_hash)
+    end
+
+    it "returns the top x merchants" do
+      revenue_hash = { :"1" => 400, :"3" => 300, :"2" => 200 }
+      SalesEngine::Merchant.most_revenue(3).should == revenue_hash
+    end    
+  end
 
   # describe ".dates_by_revenue" do
   #   #sum all invoice items and divide by number of invoices

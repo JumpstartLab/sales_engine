@@ -77,5 +77,38 @@ module SalesEngine
         SalesEngine::Customer.find_by_id(inv.customer_id)
       end
     end
+
+    def self.revenue(date)
+      total_revenue = BigDecimal.new("0.00")
+      SalesEngine::Invoice.successful_invoices.each do |i|
+        dt = i.updated_at
+        if clean_date(date) == Time.new(dt.year, dt.mon, dt.mday)
+          total_revenue += i.invoice_revenue 
+        end
+      end
+      total_revenue
+    end
+
+    def self.clean_date(date)
+      date = Time.parse(date) if date.kind_of? String
+      date
+    end
+
+    def self.merchant_data
+      data = { }
+      SalesEngine::Invoice.successful_invoices.each do |i|
+        data[ i.merchant_id.to_sym ] ||= 0
+        data[ i.merchant_id.to_sym ] += i.invoice_revenue 
+      end
+      data
+    end
+
+    def self.most_revenue(num)
+      data = merchant_data
+      return nil if data.empty?
+      data = data.sort_by{ |k, v| -v }[0..(num-1)]
+      data.each { |k, v| SalesEngine::Merchant.find_by_id(k.to_s) }
+    end
+
   end
 end
