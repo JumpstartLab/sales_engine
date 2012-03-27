@@ -46,6 +46,7 @@ describe SalesEngine::Transaction do
   describe ".find_by_credit_card_expiration_date()" do
     
     it "returns one transaction" do
+      pending
       SalesEngine::Transaction.find_by_credit_card_expiration_date("2012-02-26 20:56:56 UTC").should be_a SalesEngine::Transaction
     end
   end

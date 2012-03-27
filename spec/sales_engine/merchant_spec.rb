@@ -69,20 +69,39 @@ describe SalesEngine::Merchant do
     end
 
     it "returns the customer with the most transactions/invoices" do
-      pending
       customer_1 = Fabricate(:customer)
-      customer_1_invoices = [ Fabricate(:invoice, :customer => customer_1),
-        Fabricate(:invoice, :customer => customer_1)]
+      customer_1_invoices = [ Fabricate(:invoice, :customer => customer_1, :merchant => test_merchant),
+        Fabricate(:invoice, :customer => customer_1, :merchant => test_merchant)]
 
       customer_2 = Fabricate(:customer)
-      customer_2_invoices = [ Fabricate(:invoice, :customer => customer_2),
-        Fabricate(:invoice, :customer => customer_2)]
+      customer_2_invoices = [ Fabricate(:invoice, :customer => customer_2, :merchant => test_merchant),
+        Fabricate(:invoice, :customer => customer_2, :merchant => test_merchant),
+        Fabricate(:invoice, :customer => customer_2, :merchant => test_merchant)]
 
       customer_3 = Fabricate(:customer)
-      customer_3_invoices = [ Fabricate(:invoice, :customer => customer_3),
-        Fabricate(:invoice, :customer => customer_3)]
+      customer_3_invoices = [ Fabricate(:invoice, :customer => customer_3, :merchant => test_merchant)]
+
+      test_merchant.invoices = [customer_1_invoices, customer_2_invoices, customer_3_invoices].flatten
 
       test_merchant.favorite_customer.should == customer_2
+    end
+  end
+
+  describe "#customers" do
+    it "returns the set of associated customers" do
+      customer_1 = Fabricate(:customer)
+      customer_1_invoices = [ Fabricate(:invoice, :customer => customer_1, :merchant => test_merchant),
+        Fabricate(:invoice, :customer => customer_1, :merchant => test_merchant)]
+
+      customer_2 = Fabricate(:customer)
+      customer_2_invoices = [ Fabricate(:invoice, :customer => customer_2, :merchant => test_merchant),
+        Fabricate(:invoice, :customer => customer_2, :merchant => test_merchant),
+        Fabricate(:invoice, :customer => customer_2, :merchant => test_merchant)]
+
+      test_merchant.invoices = [customer_1_invoices, customer_2_invoices].flatten
+
+      test_merchant.customers.should include(customer_1)
+      test_merchant.customers.should include(customer_2)
     end
   end
 

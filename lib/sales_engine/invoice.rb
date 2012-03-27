@@ -3,7 +3,7 @@ require 'sales_engine/model'
 class SalesEngine
   class Invoice
     include Model
-    attr_accessor :merchant_id, :customer_id, :id
+    attr_accessor :merchant_id, :customer_id, :customer, :id, :merchant
     
     def initialize(attributes)
       super
@@ -11,6 +11,17 @@ class SalesEngine
       @merchant_id = attributes[:merchant_id]
       @status = attributes[:status]
     end
+
+    def customer=(input)
+      @customer_id = input.id
+      @customer = input
+    end
+
+    def merchant=(input)
+      @merchant_id = input.id
+      @merchant = input
+    end
+
    
     def self.random
       SalesEngine::Database.instance.invoices.sample
@@ -34,9 +45,7 @@ class SalesEngine
     end
 
     def customer
-      SalesEngine::Database.instance.customers.find do |customer|
-        customer.id == @customer_id
-      end
+      @customer || SalesEngine::Database.instance.customers.find { |customer| customer.id == customer_id }
     end
 
     def items

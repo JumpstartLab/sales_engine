@@ -4,6 +4,28 @@ describe SalesEngine::Invoice do
 
   let(:test_invoice){ Fabricate(:invoice) }
 
+  describe "#customer=" do
+    it "sets the customer" do
+      customer = Fabricate(:customer)
+      test_invoice.customer = customer
+      test_invoice.customer.should == customer
+    end
+  end
+
+  describe "#merchant=" do
+    it "sets the merchant" do
+      merchant = Fabricate(:merchant)
+      test_invoice.merchant = merchant
+      test_invoice.merchant.should == merchant
+    end
+
+    it "sets the merchant_id" do
+      merchant = Fabricate(:merchant)
+      test_invoice.merchant = merchant
+      test_invoice.merchant_id.should == merchant.id
+    end
+  end
+
   describe "#transactions" do
     context "returns a collection of associated transactions" do
       it "contains things which are only transactions" do

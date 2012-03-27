@@ -28,8 +28,12 @@ class SalesEngine
       end
     end
 
+    def invoices=(input)
+      @invoices = input
+    end
+
     def invoices
-      SalesEngine::Database.instance.invoices.select do |invoice|
+      @invoices || SalesEngine::Database.instance.invoices.select do |invoice|
         invoice.merchant_id == @id
       end
     end
@@ -42,21 +46,15 @@ class SalesEngine
       b = BigDecimal.new(sum).truncate(2)
     end
 
+    def customers
+      invoices.collect{ |invoice| invoice.customer }
+    end
+
     def favorite_customer
-      this_merchant_customers = invoices.collect do |invoice|
-        invoice.customer
-      end
-
-      most_transactions = 0
-      favorite_customer = nil
-
-      this_merchant_customers.each do |customer|
-        if customer.transactions.count >= most_transactions
-          favorite_customer = customer
-          most_transactions = customer.transactions.count
-        end
-      end
-      return favorite_customer
+      grouped_by_customer = invoices.group_by{|invoice| invoice.customer}
+      sorted_and_grouped_by_customer = grouped_by_customer.sort_by{|customer, invoices| invoices.count }
+      customer_and_invoices = sorted_and_grouped_by_customer.last
+      customer = customer_and_invoices.first
     end
   end
 end
