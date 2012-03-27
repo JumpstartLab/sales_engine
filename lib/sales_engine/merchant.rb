@@ -58,12 +58,10 @@ module SalesEngine
 
     def favorite_customer
       customer_data = { }
-
       successful_invoices.each do |invoice|
         customer_data[ invoice.customer_id.to_sym ] ||= 0
         customer_data[ invoice.customer_id.to_sym ] += 1
       end
-
       return nil if customer_data.empty?
       customer_data_max = customer_data.max_by{ |k, v| v }
       SalesEngine::Customer.find_by_id(customer_data_max.first)   
@@ -120,12 +118,10 @@ module SalesEngine
     end
 
     def self.most_items(num)
-      puts merchant_item_data
       item_data = merchant_item_data.sort_by do |merchant_id, quantity| 
         -quantity
       end
 
-      puts item_data[0..(num-1)].inspect
       item_data[0..(num-1)].collect do |merchant_id, quantity|
         self.find_by_id(merchant_id)
       end

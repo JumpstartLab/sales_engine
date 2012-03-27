@@ -113,7 +113,7 @@ describe SalesEngine::Merchant do
       invoices = [ inv_one, inv_two, inv_three ]
       merchant_one.stub(:invoices).and_return(invoices)
     end
-   
+
     it "returns successful invoices associated with the merchant" do
       merchant_one.successful_invoices.should == [ inv_one, inv_two ]
     end
@@ -167,7 +167,7 @@ describe SalesEngine::Merchant do
 
     before(:each) do
       invoices = [ inv_one, inv_two, inv_three ]
-      inv_one.stub(:customer_id).and_return(  "1")
+      inv_one.stub(:customer_id).and_return("1")
       inv_two.stub(:customer_id).and_return("2")
       inv_three.stub(:customer_id).and_return("1")
       merchant_one.stub(:invoices).and_return(invoices)
@@ -175,10 +175,8 @@ describe SalesEngine::Merchant do
     end
 
     it "returns all customers with pending invoices" do
-      # SalesEngine::Customer.should_receive(:find_by_id).with("1")
-      # SalesEngine::Customer.any_instance.should_receive(:find_by_id)
-      # merchant_one.customers_with_pending_invoices
-      pending ("How do you mock class methods?")
+      SalesEngine::Customer.should_receive(:find_by_id).twice
+      merchant_one.customers_with_pending_invoices.should be_an Array
     end
   end
 
@@ -253,7 +251,7 @@ describe SalesEngine::Merchant do
       it "returns nil" do
         invoices = [ ]
         SalesEngine::Invoice.stub(:successful_invoices).and_return(invoices)
-        SalesEngine::Merchant.merchant_revenue_data.should be_empty       
+        SalesEngine::Merchant.merchant_revenue_data.should be_empty
       end
     end
   end
@@ -284,7 +282,7 @@ describe SalesEngine::Merchant do
   describe ".most_items(num)" do
     before(:each) do
       merchants = [merchant_one, merchant_two, merchant_three ]
-      SalesEngine::Database.instance.stub(:merchant_list).and_return(merchants) 
+      SalesEngine::Database.instance.stub(:merchant_list).and_return(merchants)
     end
 
     it "returns the num merchants who have sold the most" do
@@ -302,14 +300,14 @@ describe SalesEngine::Merchant do
     #     sorted_merchants = [  merchant_three, merchant_one, merchant_two ]
     #     SalesEngine::Merchant.most_items(3).should == sorted_merchants
     #   end
-    # end 
+    # end
   end
 
   describe ".most_revenue(num)" do
 
     before(:each) do
       merchants = [merchant_one, merchant_two, merchant_three ]
-      SalesEngine::Database.instance.stub(:merchant_list).and_return(merchants)   
+      SalesEngine::Database.instance.stub(:merchant_list).and_return(merchants)
     end
 
     it "returns the top x merchants" do
@@ -317,7 +315,7 @@ describe SalesEngine::Merchant do
       revenue_hash = { :"1" => 400, :"2" => 200, :"3" => 300 }
       SalesEngine::Merchant.stub(:merchant_revenue_data).and_return(revenue_hash)
       SalesEngine::Merchant.most_revenue(3).should == sorted_merchants
-    end   
+    end
 
     context "when there is a tie" do
       it "returns num merchants ranked by most rev, then id" do
@@ -326,7 +324,7 @@ describe SalesEngine::Merchant do
         sorted_merchants = [ merchant_two, merchant_one, merchant_three ]
         SalesEngine::Merchant.most_revenue(3).should == sorted_merchants
       end
-    end 
+    end
   end
 
   # describe ".dates_by_revenue" do
