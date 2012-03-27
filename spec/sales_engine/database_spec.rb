@@ -49,14 +49,22 @@ describe SalesEngine::Database do
     end
   end
 
+  describe "#load_data" do
+    it "runs load_data methods for each model in order to load all data" do
+      se.should_receive(:load_merchants_data)
+      se.should_receive(:load_items_data)
+      se.should_receive(:load_invoices_data)
+      se.should_receive(:load_customers_data)
+      se.should_receive(:load_invoice_items_data)
+      se.should_receive(:load_transactions_data)
+      se.load_data
+    end
+  end
+
   describe "#add_to_list" do
     it "allows you to add a new object to the appropriate master list" do
       se.add_to_list(SalesEngine::Merchant.new)
       se.merchants.count.should == 1
     end
-  end
-
-  describe "#export_data" do
-    
   end
 end

@@ -22,6 +22,15 @@ module SalesEngine
       self.send(class_name)[rand(self.send(class_name).count)]
     end
 
+    def load_data
+      load_merchants_data
+      load_items_data
+      load_customers_data
+      load_invoices_data
+      load_invoice_items_data
+      load_transactions_data
+    end
+
     def load_merchants_data(filename)
       @file = CSV.open(filename, CSV_OPTIONS)
       self.merchants = @file.collect {|line| SalesEngine::Merchant.new(line) }
