@@ -39,8 +39,7 @@ module SalesEngine
     end
 
     def invoice
-      invoices = invoices_array.select { |inv| inv.id == invoice_id}
-      invoices.first
+      invoices_array.detect { |inv| inv.id == invoice_id}
     end
 
     def self.invoice_items

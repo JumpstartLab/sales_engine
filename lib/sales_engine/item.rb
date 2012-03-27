@@ -40,7 +40,7 @@ module SalesEngine
     end
 
     def self.find_by_id(match)
-      SalesEngine::Search.find_all_by("id", match, self.items).sample
+      SalesEngine::Search.find_by("id", match, self.items)
     end
 
     def self.find_all_by_id(match)
@@ -48,7 +48,7 @@ module SalesEngine
     end
 
     def self.find_by_name(match)
-      SalesEngine::Search.find_all_by("name", match, self.items).sample
+      SalesEngine::Search.find_by("name", match, self.items)
     end
 
     def self.find_all_by_name(match)
@@ -56,7 +56,7 @@ module SalesEngine
     end
 
     def self.find_by_description(match)
-      SalesEngine::Search.find_all_by("description", match, self.items).sample
+      SalesEngine::Search.find_by("description", match, self.items)
     end
 
     def self.find_all_by_description(match)
@@ -64,7 +64,7 @@ module SalesEngine
     end
 
     def self.find_by_unit_price(match)
-      SalesEngine::Search.find_all_by("unit_price", match, self.items).sample
+      SalesEngine::Search.find_by("unit_price", match, self.items)
     end
 
     def self.find_all_by_unit_price(match)
@@ -72,7 +72,7 @@ module SalesEngine
     end
 
     def self.find_by_merchant_id(match)
-      SalesEngine::Search.find_all_by("merchant_id", match, self.items).sample
+      SalesEngine::Search.find_by("merchant_id", match, self.items)
     end
 
     def self.find_all_by_merchant_id(match)
@@ -80,7 +80,7 @@ module SalesEngine
     end
 
     def self.find_by_updated_at(match)
-      SalesEngine::Search.find_all_by("updated_at", match, self.items).sample
+      SalesEngine::Search.find_by("updated_at", match, self.items)
     end
 
     def self.find_all_by_updated_at(match)
@@ -88,7 +88,7 @@ module SalesEngine
     end
 
     def self.find_by_created_at(match)
-      SalesEngine::Search.find_all_by("created_at", match, self.items).sample
+      SalesEngine::Search.find_by("created_at", match, self.items)
     end
 
     def self.find_all_by_created_at(match)
@@ -96,8 +96,11 @@ module SalesEngine
     end
 
     def invoice_items
-      invoice_items = []
-      invoice_items = invoice_items_array.select { |inv| inv.item_id == id}
+      invoice_items_array.select { |inv| inv.item_id == id}
+    end
+
+    def successful_invoice_items
+      invoice_items.select {|inv_item| inv_item.invoice.successful?}
     end
 
     def merchant
@@ -107,7 +110,7 @@ module SalesEngine
 
     def item_revenue
       revenue = 0
-      invoice_items.each do |inv_item|
+      successful_invoice_items.each do |inv_item|
         revenue = revenue + inv_item.total
       end
       revenue
@@ -116,7 +119,7 @@ module SalesEngine
 
     def item_quantity
       qty = 0
-      invoice_items.each do |inv_item|
+      successful_invoice_items.each do |inv_item|
         qty = qty + inv_item.quantity
       end
       qty
@@ -148,7 +151,7 @@ module SalesEngine
 
     def days_array
       days = []
-      invoice_items.each do|inv_item|
+      successful_invoice_items.each do|inv_item|
         days << inv_item.invoice.created_at[0..9]
       end
       days
@@ -164,6 +167,7 @@ module SalesEngine
         end
       end
       days_hash.max_by{ |date, count| count}[0]
+
     end
 
 

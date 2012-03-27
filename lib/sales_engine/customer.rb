@@ -33,7 +33,7 @@ module SalesEngine
     end
 
     def self.find_by_id(match)
-      SalesEngine::Search.find_all_by("id", match, self.customers).sample
+      SalesEngine::Search.find_by("id", match, self.customers)
     end
 
     def self.find_all_by_id(match)

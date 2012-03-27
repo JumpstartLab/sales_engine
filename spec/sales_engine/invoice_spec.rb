@@ -4,7 +4,7 @@ describe SalesEngine::Invoice do
 
   let(:invoice) do
     i = Fabricate(:invoice)
-    puts i.inspect
+    #puts i.inspect
     i
   end
 
