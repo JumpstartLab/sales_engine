@@ -21,7 +21,7 @@ describe Invoice do
 
     describe ".find_all_by_status" do
       invoices = Invoice.find_all_by_status "shipped"
-      invoices.should have(4873).invoices
+      invoices.should have(4843).invoices
     end
   end
 
@@ -35,30 +35,30 @@ describe Invoice do
     end
 
     describe "#items" do
-      it "has 5 of them" do
-        invoice.items.should have(5).items
+      it "has 3 of them" do
+        invoice.items.should have(3).items
       end
 
-      it "has one for 'Item Id Rerum'" do
-        item = invoice.items.find {|i| i.name == 'Item Id Rerum' }
+      it "has one for 'Item Accusamus Officia'" do
+        item = invoice.items.find {|i| i.name == 'Item Accusamus Officia' }
         item.should_not be_nil
       end
     end
 
     describe "#customer" do
       it "exists" do
-        invoice.customer.first_name.should == "Gleichner"
-        invoice.customer.last_name.should  == "Carleton"
+        invoice.customer.first_name.should == "Eric"
+        invoice.customer.last_name.should  == "Bergnaum"
       end
     end
 
-    describe "#items" do
-      it "has 5 of them" do
-        invoice.invoice_items.should have(5).items
+    describe "#invoice_items" do
+      it "has 3 of them" do
+        invoice.invoice_items.should have(3).items
       end
 
-      it "has one for an item 'Item Id Rerum'" do
-        item = invoice.invoice_items.find {|ii| ii.item.name == 'Item Id Rerum' }
+      it "has one for an item 'Item Accusamus Officia'" do
+        item = invoice.invoice_items.find {|ii| ii.item.name == 'Item Accusamus Officia' }
         item.should_not be_nil
       end
     end
