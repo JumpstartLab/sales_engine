@@ -2,6 +2,7 @@ module SalesEngine
   class Database
     include Singleton
     CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
+    EVAL_DATA_DIR = "./data/evaluation"
     attr_accessor :merchants, :items, :invoices, :transactions, 
                   :customers, :invoiceitems
 
@@ -31,32 +32,32 @@ module SalesEngine
       load_transactions_data
     end
 
-    def load_merchants_data(filename="./data/merchants.csv")
+    def load_merchants_data(filename="#{EVAL_DATA_DIR}/merchants.csv")
       @file = CSV.open(filename, CSV_OPTIONS)
       self.merchants = @file.collect {|line| SalesEngine::Merchant.new(line) }
     end
 
-    def load_items_data(filename)
+    def load_items_data(filename="#{EVAL_DATA_DIR}/items.csv")
       @file = CSV.open(filename, CSV_OPTIONS)
       self.items = @file.collect {|line| SalesEngine::Item.new(line) }
     end
 
-    def load_invoices_data(filename)
+    def load_invoices_data(filename="#{EVAL_DATA_DIR}/invoices.csv")
       @file = CSV.open(filename, CSV_OPTIONS)
       self.invoices = @file.collect {|line| SalesEngine::Invoice.new(line) }
     end
 
-    def load_customers_data(filename)
+    def load_customers_data(filename="#{EVAL_DATA_DIR}/customers.csv")
       @file = CSV.open(filename, CSV_OPTIONS)
       self.customers = @file.collect {|line| SalesEngine::Customer.new(line) }
     end
 
-    def load_invoice_items_data(filename)
+    def load_invoice_items_data(filename="#{EVAL_DATA_DIR}/invoice_items.csv")
       @file = CSV.open(filename, CSV_OPTIONS)
       self.invoiceitems = @file.collect {|line| SalesEngine::InvoiceItem.new(line) }
     end
 
-    def load_transactions_data(filename)
+    def load_transactions_data(filename="#{EVAL_DATA_DIR}/transactions.csv")
       @file = CSV.open(filename, CSV_OPTIONS)
       self.transactions = @file.collect {|line| SalesEngine::Transaction.new(line) }
     end
@@ -69,7 +70,7 @@ module SalesEngine
       self.send(class_name).find { |record| 
         attribute_value = record.send(attribute)
         if attribute_value.is_a?(String)
-          attribute_value.downcase == search_value.downcase
+          attribute_value.downcase == search_value.to_s.downcase
         else
           attribute_value == search_value
         end }
@@ -79,7 +80,7 @@ module SalesEngine
       self.send(class_name).find_all { |record| 
         attribute_value = record.send(attribute)
         if attribute_value.is_a?(String)
-          attribute_value.downcase == search_value.downcase
+          attribute_value.downcase == search_value.to_s.downcase
         else
           attribute_value == search_value
         end }
