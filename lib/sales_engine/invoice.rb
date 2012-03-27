@@ -13,8 +13,16 @@ module SalesEngine
 
     def total_revenue
       revenue = 0
-      SalesEngine::Database.instance.find_all_by("invoiceitems", "invoice_id", self.id).each { |item|
+      all_transactions_failed = true
+      SalesEngine::Database.instance.find_all_by("transactions", "invoice_id", self.id).each { |trans|
+        if !trans.result.downcase.include?("fail")
+          all_transactions_failed = false
+          break
+        end}
+      if !all_transactions_failed
+        SalesEngine::Database.instance.find_all_by("invoiceitems", "invoice_id", self.id).each { |item|
           revenue = revenue + item.unit_price }
+      end
       revenue
     end
 

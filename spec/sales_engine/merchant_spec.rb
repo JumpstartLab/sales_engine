@@ -17,6 +17,13 @@ describe SalesEngine::Merchant do
   let(:invoice_5) { Fabricate(:invoice, :merchant_id => merchant_1.id) }
   let(:invoice_6) { Fabricate(:invoice, :merchant_id => merchant_2.id) }
   let(:invoice_7) { Fabricate(:invoice, :merchant_id => merchant_1.id) }
+  let(:transaction_1) { Fabricate(:transaction, :invoice_id => invoice_1.id, :result => "Success") }
+  let(:transaction_2) { Fabricate(:transaction, :invoice_id => invoice_2.id, :result => "Success") }
+  let(:transaction_3) { Fabricate(:transaction, :invoice_id => invoice_3.id, :result => "Success") }
+  let(:transaction_4) { Fabricate(:transaction, :invoice_id => invoice_4.id, :result => "Success") }
+  let(:transaction_5) { Fabricate(:transaction, :invoice_id => invoice_5.id, :result => "Success") }
+  let(:transaction_6) { Fabricate(:transaction, :invoice_id => invoice_6.id, :result => "Success") }
+  let(:transaction_7) { Fabricate(:transaction, :invoice_id => invoice_7.id, :result => "Success") }
   let(:invoice_item_1) { Fabricate(:invoice_item, :invoice_id => invoice_1.id, :unit_price => 1) }
   let(:invoice_item_2) { Fabricate(:invoice_item, :invoice_id => invoice_2.id, :unit_price => 1) }
   let(:invoice_item_3) { Fabricate(:invoice_item, :invoice_id => invoice_3.id, :unit_price => 1) }
@@ -48,6 +55,13 @@ describe SalesEngine::Merchant do
     se.add_to_list(invoice_5)
     se.add_to_list(invoice_6)
     se.add_to_list(invoice_7)
+    se.add_to_list(transaction_1)
+    se.add_to_list(transaction_2)
+    se.add_to_list(transaction_3)
+    se.add_to_list(transaction_4)
+    se.add_to_list(transaction_5)
+    se.add_to_list(transaction_6)
+    se.add_to_list(transaction_7)
     se.add_to_list(invoice_item_1)
     se.add_to_list(invoice_item_2)
     se.add_to_list(invoice_item_3)

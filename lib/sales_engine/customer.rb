@@ -7,7 +7,7 @@ module SalesEngine
     def initialize(attributes={})
       super
       self.first_name = attributes[:first_name]
-      self.first_name = attributes[:last_name]
+      self.last_name = attributes[:last_name]
     end
 
     def self.random

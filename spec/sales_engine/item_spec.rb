@@ -1,15 +1,26 @@
 require 'spec_helper'
 
 describe SalesEngine::Item do
-  let(:se) { SalesEngine::Database.instance}
+  let(:se) { SalesEngine::Database.instance }
   let(:item_1) { Fabricate(:item) }
   let(:item_2) { Fabricate(:item) }
   let(:item_3) { Fabricate(:item) }
   let(:item_4) { Fabricate(:item) }
-  let(:invoice_item_1) { Fabricate(:invoice_item, :item_id => item_1.id) }
-  let(:invoice_item_2) { Fabricate(:invoice_item, :item_id => item_1.id) }
-  let(:invoice_item_3) { Fabricate(:invoice_item, :item_id => item_2.id) }
-  let(:invoice_item_4) { Fabricate(:invoice_item, :item_id => item_1.id) }
+  let(:item_5) { Fabricate(:item) }
+  let(:item_6) { Fabricate(:item) }
+  let(:item_7) { Fabricate(:item) }
+  let(:item_8) { Fabricate(:item) }
+  let(:invoice_item_1) { Fabricate(:invoice_item, :item_id => item_1.id, :unit_price => 1) }
+  let(:invoice_item_2) { Fabricate(:invoice_item, :item_id => item_2.id, :unit_price => 1) }
+  let(:invoice_item_3) { Fabricate(:invoice_item, :item_id => item_3.id, :unit_price => 1) }
+  let(:invoice_item_4) { Fabricate(:invoice_item, :item_id => item_4.id, :unit_price => 5) }
+  let(:invoice_item_5) { Fabricate(:invoice_item, :item_id => item_5.id, :unit_price => 1) }
+  let(:invoice_item_6) { Fabricate(:invoice_item, :item_id => item_6.id, :unit_price => 2) }
+  let(:invoice_item_7) { Fabricate(:invoice_item, :item_id => item_7.id, :unit_price => 2) }
+  let(:invoice_item_8) { Fabricate(:invoice_item, :item_id => item_1.id, :unit_price => 3) }
+  let(:invoice_item_9) { Fabricate(:invoice_item, :item_id => item_2.id, :unit_price => 20) }
+  let(:invoice_item_10) { Fabricate(:invoice_item, :item_id => item_3.id, :unit_price => 1) }
+  let(:invoice_item_11) { Fabricate(:invoice_item, :item_id => item_1.id, :unit_price => 4) }
   let(:merchant_1) { Fabricate(:merchant) }
   let(:merchant_2) { Fabricate(:merchant) }
 
@@ -19,10 +30,21 @@ describe SalesEngine::Item do
     se.add_to_list(item_2)
     se.add_to_list(item_3)
     se.add_to_list(item_4)
+    se.add_to_list(item_5)
+    se.add_to_list(item_6)
+    se.add_to_list(item_7) 
+    se.add_to_list(item_8)
     se.add_to_list(invoice_item_1)
     se.add_to_list(invoice_item_2)
     se.add_to_list(invoice_item_3)
     se.add_to_list(invoice_item_4)
+    se.add_to_list(invoice_item_5)
+    se.add_to_list(invoice_item_6)
+    se.add_to_list(invoice_item_7)
+    se.add_to_list(invoice_item_8)
+    se.add_to_list(invoice_item_9)
+    se.add_to_list(invoice_item_10)
+    se.add_to_list(invoice_item_11)
     se.add_to_list(merchant_1)
     se.add_to_list(merchant_2)
   end
@@ -380,11 +402,11 @@ describe SalesEngine::Item do
   describe "#invoice_items" do
     context "when invoice items exist in the datastore" do
       it "returns a collection of InvoiceItems associated with this object" do
-        item_1.invoice_items.should == [invoice_item_1, invoice_item_2, invoice_item_4]
+        item_2.invoice_items.should == [invoice_item_2, invoice_item_9]
       end
 
       it "returns nothing if no invoice items are associated with the item id" do
-        item_3.invoice_items.should == []
+        item_8.invoice_items.should == []
       end
     end
   end
@@ -399,6 +421,12 @@ describe SalesEngine::Item do
       it "returns an instance of Merchant associated with this object" do
         item_1.merchant.should == merchant_2
       end
+    end
+  end
+
+  describe ".most_revenue" do
+    it "returns the top x item instances ranked by total revenue" do
+      SalesEngine::Item.most_revenue(3).should == [item_2, item_1, item_4]
     end
   end
 end

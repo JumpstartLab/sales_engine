@@ -12,6 +12,26 @@ module SalesEngine
       self.merchant_id = attributes[:merchant_id]
     end
 
+    def self.most_revenue(item_count)
+      revenue_tracker = []
+      return_items = []
+      SalesEngine::Database.instance.items.each { |item|
+        revenue = 0
+        item.invoice_items.each { |invoice_item| revenue += invoice_item.unit_price }
+        revenue_tracker << { :item => item, :total_revenue => revenue } }
+      sorted_items = revenue_tracker.sort_by { |item| item[:total_revenue] }
+      SalesEngine::Item.pop_items(item_count, sorted_items)
+    end
+
+    def self.pop_items(pop_count, item_list)
+      return_items = []
+      pop_count.times do
+        element = item_list.pop
+        return_items << element[:item]
+      end
+      return_items
+    end
+
    def self.random
       SalesEngine::Database.instance.get_random_record("items")
     end
