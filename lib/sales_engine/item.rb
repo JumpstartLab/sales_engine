@@ -29,5 +29,52 @@ module SalesEngine
     def invoice_items
       SalesEngine::Database.instance.invoice_items.select { |invoice_item| invoice_item.item_id == id}
     end
+
+    def revenue
+      revenue = 0
+      invoice_items.each do |invoice_item|
+        revenue += invoice_item.unit_price * invoice_item.quantity
+      end
+      revenue
+    end
+
+    def quantity
+      quantity = 0
+      invoice_items.each do |invoice_item|
+        quantity += invoice_item.quantity
+      end
+      quantity
+    end
+
+    def quantity_by_day
+      days = {}
+      invoice_items.each do |invoice_item|
+        date = invoice_item.created_at.to_date
+        if days.has_key?(date)
+          days[date] += invoice_item.quantity
+        else
+          days[date] = invoice_item.quantity
+        end
+      end
+      days
+    end
+
+    def best_day
+      unless quantity_by_day.empty?
+        quantity_by_day.sort_by{ |date, quantity| quantity }.last[0]
+      end
+    end
+
+    def self.most_revenue(total_items)
+      items = SalesEngine::Database.items
+      items.sort_by!{ |item| item.revenue }.reverse!
+      items[0,total_items]
+    end
+
+    def self.most_items(total_items)
+      items = SalesEngine::Database.items
+      items.sort_by!{ |item| item.quantity }.reverse!
+      items[0,total_items]
+    end
   end
 end

@@ -122,7 +122,7 @@ describe SalesEngine::Merchant do
     let(:invoice_item) { mock(SalesEngine::InvoiceItem)}
     let(:invoice_item2) { mock(SalesEngine::InvoiceItem)}
     let(:other_invoice_item) { mock(SalesEngine::InvoiceItem)}
-    let(:merchant) { merchant = Fabricate(:merchant, :id => 3) }
+    let(:merchant) { Fabricate(:merchant, :id => 3) }
 
     before(:each) do
       invoice_item.stub(:unit_price).and_return(BigDecimal.new("100"))
