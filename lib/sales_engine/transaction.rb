@@ -13,5 +13,9 @@ module SalesEngine
     def invoice
       SalesEngine::Database.instance.find_by("invoices", "id", self.invoice_id)
     end
+
+    def self.find_by_invoice_id(id)
+      SalesEngine::Database.instance.find_by("transactions", "invoice_id", id)
+    end
   end
 end

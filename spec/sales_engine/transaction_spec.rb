@@ -20,4 +20,10 @@ describe SalesEngine::Transaction do
       transaction_2.invoice.should == invoice_2
     end
   end
+
+  describe ".find_by_invoice_id" do
+    it "returns the transaction associated with the invoice id" do
+      SalesEngine::Transaction.find_by_invoice_id(invoice_2.id).should == transaction_2
+    end
+  end
 end
