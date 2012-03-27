@@ -50,20 +50,12 @@ module SalesEngine
       end
     end
   end
+
   module AccessorBuilder
     def self.included(base)
       base.class_eval do
         self::ATTRIBUTES.each do |attribute|
           attr_accessor attribute
-          # if base == "SalesEngine::Database"
-          #   send("#{attribute}=",Hash.new do |hash,key|
-          #     hash[key] = Hash.new do |hash, key|
-          #       if key.to_s.end_with?("s")
-          #         hash[key] = []
-          #       end
-          #     end 
-          #   end)
-          # end
         end
       end
     end  
@@ -105,58 +97,43 @@ module SalesEngine
 
   class Database 
     ATTRIBUTES = [:transaction, :customer, :item, :invoice_item,
-      :merchant, :invoice]
+      :merchant, :invoice, :all_transactions, :all_customers, :all_items,
+      :all_invoice_items, :all_merchants, :all_invoices]
+    HASHES = [:transaction, :customer, :item, :invoice_item,
+      :merchant, :invoice,]
+    ARRAYS = [:all_transactions, :all_customers, :all_items,
+      :all_invoice_items, :all_merchants, :all_invoices]
       include Singleton
       include AccessorBuilder
 
+    class_eval do 
       def initialize
-        @invoice = Hash.new do |hash,key|
-          hash[key] = Hash.new do |hash, key|
-            if key.to_s.end_with?("s")
-              hash[key] = []
-            end
-          end 
+        HASHES.each do |hash|
+          hash_init = Hash.new do |hash,key|
+            hash[key] = Hash.new do |hash, key|
+              if key.to_s.end_with?("s")
+                hash[key] = []
+              end
+            end 
+          end
+          send("#{hash}=", hash_init)
         end
 
-        @customer ||= Hash.new do |hash,key|
-          hash[key] = Hash.new do |hash, key|
-            if key.to_s.end_with?("s")
-              hash[key] = []
-            end
-          end 
-        end
-
-        @invoice_item = Hash.new do |hash,key|
-          hash[key] = Hash.new do |hash, key|
-            if key.to_s.end_with?("s")
-              hash[key] = []
-            end
-          end 
-        end
-
-        @merchant = Hash.new do |hash,key|
-          hash[key] = Hash.new do |hash, key|
-            if key.to_s.end_with?("s")
-              hash[key] = []
-            end
-          end 
-        end
-
-        @transaction = Hash.new do |hash,key|
-          hash[key] = Hash.new do |hash, key|
-            if key.to_s.end_with?("s")
-              hash[key] = []
-            end
-          end 
-        end
-
-        @item = Hash.new do |hash,key|
-          hash[key] = Hash.new do |hash, key|
-            if key.to_s.end_with?("s")
-              hash[key] = []
-            end
-          end 
+        ARRAYS.each do |array|
+          send("#{array}=", [])
         end
       end
     end
   end
+end
+
+
+      # ATTRIBUTES.each do |attribute|
+      #   define_singleton_method("all_#{attribute}s") do
+      #     self.instance.send("#{attribute}").collect do |i, hash|
+      #       self.instance.send("#{attribute}")[i][:self]
+      #     end
+      #   end
+      # end
+
+

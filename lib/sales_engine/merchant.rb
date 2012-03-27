@@ -14,8 +14,12 @@ module SalesEngine
     def initialize(attributes = {})
       define_attributes(attributes)
       Database.instance.merchant[id.to_i][:self] = self
+      Database.instance.all_merchants[id.to_i - 1] = self
     end
 
+    def all_merchants
+      Database.instance.all_merchants
+    end
 
     def invoices
       @invoices ||= Database.instance.merchant[id.to_i][:invoices]
@@ -29,36 +33,41 @@ module SalesEngine
       @items_sold ||= calc_items_sold
     end
 
-    def calc_revenue
-      revenue = 0
-      invoices.each do |invoice|
-        revenue += invoice.revenue
+    def revenue(date=nil, end_date=date)
+      if date
+        @revenue ||= BigDecimal.new(calc_revenue_by_date(date, end_date))
+      else
+        @revenue ||= BigDecimal.new(calc_revenue)
       end
-      BigDecimal.new(revenue)
     end
 
-    def revenue(date=nil, end_date=date)
-      total_revenue = 0
-      if date
-        total_revenue = invoices.inject(0) do |sum, invoice|
-          if invoice.created_at >= date && invoice.created_at <= end_date
-            sum += invoice.revenue
-          end
-          sum
-        end
-
-      else
-        @revenue ||= calc_revenue
+    def pending_invoices
+      self.invoices.select do |invoice|
+        not invoice.successful?
       end
     end
 
     def customers_with_pending_invoices
-      pending_invoices = self.invoices.select do |invoice|
-        not invoice.successful?
-      end
       pending_invoices.collect do |invoice|
         invoice.customer
       end
+    end
+
+    def calc_revenue
+      revenue = invoices.inject(0) do |sum, invoice|
+        sum += invoice.revenue
+      end
+      BigDecimal.new(revenue)
+    end
+
+    def calc_revenue_by_date (date=nil, end_date=date)
+      revenue = invoices.inject(0) do |sum, invoice|
+        if invoice.created_at >= date && invoice.created_at <= end_date
+          sum += invoice.revenue
+        end
+        sum
+      end
+      BigDecimal.new(revenue)
     end
 
     def calc_items_sold
@@ -88,9 +97,6 @@ module SalesEngine
     end
 
     def self.revenue(date, end_date=date)
-      all_merchants = Database.instance.merchant.collect do |i, hash|
-        Database.instance.merchant[i][:self]
-      end
       total_revenue = 0
       all_merchants.each do |merchant|
         total_revenue += merchant.revenue(date,end_date)
@@ -99,17 +105,12 @@ module SalesEngine
     end
 
     def self.dates_by_revenue(x = -1)
-      all_merchants = Database.instance.merchant.collect do |i, hash|
-        Database.instance.merchant[i][:self]
-      end
-
       accumulator = Hash.new {|hash, key| hash[key] = 0 }
       all_merchants.each do |merchant|
         merchant.invoices.each do |invoice|
           accumulator[invoice.created_at] += invoice.revenue
         end
       end
-
       sorted = accumulator.sort_by do |date, count|
         -count
       end
@@ -120,18 +121,16 @@ module SalesEngine
     end
 
     def self.most_revenue(number)
-      all_merchants = Database.instance.merchant.collect do |i, hash|
-        Database.instance.merchant[i][:self]
+      sorted = Database.instance.all_merchants.sort_by do |merchant| 
+        -merchant.revenue
       end
-      sorted = all_merchants.sort_by {|merchant| -merchant.revenue}
       sorted.slice!(0...number)
     end
 
     def self.most_items(number)
-      all_merchants = Database.instance.merchant.collect do |i, hash|
-        Database.instance.merchant[i][:self]
+      sorted = Database.instance.all_merchants.sort_by do |merchant|
+        -merchant.items_sold
       end
-      sorted = all_merchants.sort_by {|merchant| -merchant.items_sold}
       sorted.slice!(0...number)
     end
   end

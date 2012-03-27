@@ -14,6 +14,7 @@ module SalesEngine
       Database.instance.invoice_item[id.to_i][:self] = self
       Database.instance.invoice[invoice_id.to_i][:invoice_items] << self
       Database.instance.item[item_id.to_i][:invoice_items] << self
+      Database.instance.all_invoice_items[id.to_i - 1] = self
     end
 
     def invoice
@@ -22,6 +23,10 @@ module SalesEngine
 
     def item
       @item ||= Database.instance.item[item_id.to_i][:self]
+    end
+
+    def revenue
+      @revenue ||= BigDecimal.new(self.quantity.to_i * self.unit_price.to_i)
     end
   end
 end

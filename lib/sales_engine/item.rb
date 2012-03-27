@@ -15,6 +15,11 @@ module SalesEngine
         define_attributes(attributes)
         Database.instance.item[id.to_i][:self] = self
         Database.instance.merchant[merchant_id.to_i][:items] << self
+        Database.instance.all_items[id.to_i - 1] = self
+      end
+
+      def all_items
+        Database.instance.all_items
       end
 
       def merchant
@@ -44,42 +49,30 @@ module SalesEngine
         revenue = self.invoice_items.inject(0) do |sum, invoice_item|
           sum += (invoice_item.quantity.to_i * invoice_item.unit_price.to_i)
         end
-        @revenue = BigDecimal.new(revenue)
+        BigDecimal.new(revenue)
       end
 
       def best_day
         date_counts = Hash.new {|hash, key| hash[key] = 0 }
-        highest = 0
         top_day = nil
         self.invoice_items.each do |invoice_item|
           if invoice_item.invoice.successful?
             date_counts[invoice_item.created_at] += 1
-            count = date_counts[invoice_item.created_at]
-            if count > highest
-              highest = count
-              top_day = invoice_item.created_at
-            end
           end
         end
-        top_day
+        top_day = date_counts.max_by{|k, v| v}
+        top_day[0]
       end
 
-
       def self.most_revenue(number)
-        all_items = Database.instance.item.collect do |i, hash|
-          Database.instance.item[i][:self]
-        end
-        sorted_items = all_items.sort_by do |item|
+        sorted_items = Database.instance.all_items.sort_by do |item|
           -item.revenue
         end
         top_items = sorted_items.slice(0...number)
       end
 
       def self.most_items(number)
-        all_items = Database.instance.item.collect do |i, hash|
-          Database.instance.item[i][:self]
-        end
-        sorted_items = all_items.sort_by do |item|
+        sorted_items = Database.instance.all_items.sort_by do |item|
           -item.items_sold
         end
         top_items = sorted_items.slice(0...number)

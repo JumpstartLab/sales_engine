@@ -13,6 +13,11 @@ module SalesEngine
     def initialize (attributes = {})
       define_attributes(attributes)
       Database.instance.customer[id.to_i][:self] = self
+      Database.instance.all_customers[id.to_i - 1] = self
+    end
+
+    def all_customers
+      Database.instance.all_customers
     end
 
     def invoices
@@ -30,15 +35,6 @@ module SalesEngine
       pending = self.invoices.select {|invoice| not invoice.successful?}
     end
 
-    def self.most_items
-      all_customers = Database.instance.customer.collect do |i, hash|
-        Database.instance.customer[i][:self]
-      end
-      sorted = all_customers.sort_by {|customer| -customer.items_purchased}
-      sorted[0..5].each {|customer| puts customer.items_purchased}
-      all_customers.max_by {|customer| customer.items_purchased}
-    end
-
     def items_purchased
       invoices.inject(0) do |sum, invoice|
         sum += invoice.items_sold
@@ -51,20 +47,14 @@ module SalesEngine
       end
     end
 
-    def self.most_revenue
-      all_customers = Database.instance.customer.collect do |i, hash|
-        Database.instance.customer[i][:self]
-      end
-
-      whale = all_customers.max_by {|customer| customer.total_spent}
-    end
-
     def favorite_merchant
       @favorite_merchant ||= calc_favorite_merchant
     end
 
     def successful_transactions
-      @successful_transactions ||= calc_successful_transactions
+      @successful_transactions ||= self.transactions.select do |transaction|
+        transaction.successful?
+      end
     end
 
     def days_since_activity
@@ -96,11 +86,16 @@ module SalesEngine
       end
     end
 
-    def calc_successful_transactions
-      @successful_transactions = self.transactions.select do |transaction|
-        transaction.successful?
+    def self.most_items
+      Database.instance.all_customers.max_by do |customer|
+        customer.items_purchased
       end
     end
 
+    def self.most_revenue
+      Database.instance.all_customers.max_by do |customer|
+        customer.total_spent
+      end
+    end
   end
 end
