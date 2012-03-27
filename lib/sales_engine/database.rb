@@ -88,18 +88,52 @@
       invoice_items
      end
 
+      def invoice_items_by_merchant_for_date(merchant_id, date)
+       invoice_items = []
+       query = "SELECT * FROM invoice_items
+                INNER JOIN invoices
+                ON invoice_items.invoice_id = invoices.id
+                WHERE invoices.merchant_id = 1
+                AND Date(invoices.created_date) = Date('#{date.to_s}')"
+       db.execute(query)  do |row| 
+         invoice_items << create_invoice_item(row)
+       end
+       invoice_items
+      end
+
+      def invoices_by_merchant(merchant_id)
+       invoices = []
+       query = "select * from invoices
+                where merchant_id = #{merchant_id}"
+       db.execute(query)  do |row| 
+         invoices << create_invoice(row)
+       end
+      invoices
+     end
+
+     def invoices_by_merchant_for_date(merchant_id, date)
+       invoices = []
+       query = "SELECT * FROM invoices
+       WHERE merchant_id = 1
+       AND Date(invoices.created_date) = Date('#{date.to_s}')"
+       db.execute(query)  do |row| 
+        invoices << create_invoice(row)
+       end
+       invoices
+     end
+
      def transactions_by_customer(customer_id)
        transactions = []
        query = "SELECT transactions.id as transaction_id, invoice_id,
-                credit_card_number, credit_card_expiration_date, result,
-                transactions.created_at, transactions.updated_at
-                FROM invoices
-                INNER JOIN transactions ON invoices.id = transactions.invoice_id
-                WHERE invoices.customer_id = #{customer_id}"
+       credit_card_number, credit_card_expiration_date, result,
+       transactions.created_at, transactions.updated_at
+       FROM invoices
+       INNER JOIN transactions ON invoices.id = transactions.invoice_id
+       WHERE invoices.customer_id = #{customer_id}"
        db.execute(query) do |row|
          transactions << create_transaction(row)
        end
-      transactions
+       transactions
      end
 
      def popular_customers(merchant_id)
@@ -164,6 +198,17 @@
        created_at = row[5]
        updated_at = row[6]
        InvoiceItem.new(id, item_id, invoice_id, quantity, unit_price, 
+                       created_at, updated_at)
+     end
+
+      def create_invoice(row)
+       id = row[0]
+       customer_id = row[1]
+       merchant_id = row[2]
+       status = row[3]
+       created_at = row[5]
+       updated_at = row[6]
+       Invoice.new(id, customer_id, merchant_id, status, 
                        created_at, updated_at)
      end
 

@@ -46,7 +46,7 @@ describe SalesEngine::Database do
   end
 
   describe "#invoice_items_by_merchant" do
-    context "invoice items for merchant exists" do
+    context "invoice items for merchant exist" do
       it "returns a array of invoice items" do
         rows = SalesEngine::Database.instance.invoice_items_by_merchant(1)
         rows.length.should == 215 
@@ -56,6 +56,54 @@ describe SalesEngine::Database do
     context "invoice items for merchant doesn't exists" do
       it "returns an empty array" do
         rows = SalesEngine::Database.instance.invoice_items_by_merchant(1000)
+        rows.length.should == 0 
+      end
+    end
+  end
+
+  describe "#invoices_by_merchant" do
+    context "invoices for merchant exist" do
+      it "returns a array of invoices" do
+        rows = SalesEngine::Database.instance.invoices_by_merchant(1)
+        rows.length.should == 51 
+      end
+    end
+
+    context "invoices for merchant doesn't exists" do
+      it "returns an empty array" do
+        rows = SalesEngine::Database.instance.invoices_by_merchant(1000)
+        rows.length.should == 0 
+      end
+    end
+  end
+
+  describe "#invoices_by_merchant_for_date" do
+    context "invoices for merchant for that date exist" do
+      it "returns a array of invoices" do
+        rows = SalesEngine::Database.instance.invoices_by_merchant_for_date(1, Date.parse("2012-02-19"))
+        rows.length.should == 4
+      end
+    end
+
+    context "invoices for merchant for that date don't exist" do
+      it "returns an empty array" do
+        rows = SalesEngine::Database.instance.invoices_by_merchant_for_date(1, Date.parse("2013-02-19"))
+        rows.length.should == 0
+      end
+    end
+  end
+
+  describe "#invoice_items_by_merchant_for_date" do
+    context "invoice items for merchant for that date exist" do
+      it "returns a array of invoice items" do
+        rows = SalesEngine::Database.instance.invoice_items_by_merchant_for_date(1, Date.parse("2012-02-19"))
+        rows.length.should == 16 
+      end
+    end
+
+    context "invoice items for merchant for that date don't exist" do
+      it "returns an empty array" do
+        rows = SalesEngine::Database.instance.invoice_items_by_merchant_for_date(1, Date.parse("2013-02-19"))
         rows.length.should == 0 
       end
     end

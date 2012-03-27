@@ -11,31 +11,28 @@ describe SalesEngine::Merchant do
 
     context "when date is specified" do
       it "returns the invoices for that date" do
-        SalesEngine::Database.instance.stub(:invoices).and_return([invoice1, invoice2])
-        merchant.invoices("2012-02-28 20:56:56 UTC").should == [invoice2]
+        SalesEngine::Database.instance.stub(:invoices_by_merchant_for_date).and_return([invoice2])
+        merchant.invoices(Date.parse("2012-02-28 20:56:56 UTC")).should == [invoice2]
       end
     end
     context "when date is not specified" do
-      before(:each) do
-        invoices = [invoice1, invoice2, invoice3]
-        SalesEngine::Database.instance.stub(:invoices).and_return(invoices)
-      end
       context "when merchant has one invoice" do
         it "returns an array containing the single invoice" do
+          SalesEngine::Database.instance.stub(:invoices_by_merchant).and_return([invoice2])
           merchant.invoices.should == [invoice2]
         end
       end
 
       context "when merchant has multiple invoices" do
         it "returns all invoices" do
-          merchant = Fabricate(:merchant, :id => 1)
+          SalesEngine::Database.instance.stub(:invoices_by_merchant).and_return([invoice1, invoice3])
           merchant.invoices.should == [invoice1, invoice3]
         end
       end
 
       context "when merchant has no invoices" do
         it "returns an empty array" do
-          merchant = Fabricate(:merchant, :id => 3)
+          SalesEngine::Database.instance.stub(:invoices_by_merchant).and_return([])
           merchant.invoices.should == []
         end
       end
@@ -94,8 +91,10 @@ describe SalesEngine::Merchant do
     end
     context "when date is passed" do
       it "returns the invoice items for that date" do
-        merchant.stub(:invoices).with("2012-02-26 20:56:56 UTC").and_return([invoice])
-        merchant.invoice_items("2012-02-26 20:56:56 UTC").should == [invoice_item, other_invoice_item]
+        date = Date.parse "26 Feb 2012"
+        merchant.stub(:invoices).with(date).and_return([invoice])
+        SalesEngine::Database.instance.stub(:invoice_items_by_merchant_for_date).and_return([invoice_item, other_invoice_item])
+        merchant.invoice_items(date).should == [invoice_item, other_invoice_item]
       end
     end
 

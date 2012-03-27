@@ -16,10 +16,9 @@ module SalesEngine
 
     def invoices(date = nil)
       if date
-        date = Date.parse(date)
-        SalesEngine::Database.instance.invoices.select { |invoice| invoice.merchant_id == id && invoice.created_at.to_date == date }
+        SalesEngine::Database.instance.invoices_by_merchant_for_date(id, date)
       else
-        SalesEngine::Database.instance.invoices.select { |invoice| invoice.merchant_id == id }
+        SalesEngine::Database.instance.invoices_by_merchant(id)
       end
     end
 
@@ -33,7 +32,7 @@ module SalesEngine
 
     def invoice_items(date = nil)
       if date
-        invoices(date).collect { |invoice| invoice.invoice_items }.flatten
+        SalesEngine::Database.instance.invoice_items_by_merchant_for_date(id, date)
       else 
         SalesEngine::Database.instance.invoice_items_by_merchant(id)
       end
