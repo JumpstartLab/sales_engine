@@ -1,4 +1,4 @@
-require './spec/spec_helper'
+require 'spec_helper'
 
 describe SalesEngine::Transaction do
   let(:valid_transaction) { Fabricate(:transaction) }

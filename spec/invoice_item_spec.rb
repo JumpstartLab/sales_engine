@@ -1,4 +1,4 @@
-require './spec/spec_helper'
+require 'spec_helper'
 
 describe SalesEngine::InvoiceItem do
   let(:valid_invoice_item) { Fabricate(:invoice_item) }

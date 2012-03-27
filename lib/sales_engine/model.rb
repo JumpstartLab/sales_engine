@@ -1,4 +1,4 @@
-require './lib/sales_engine/validation'
+require 'validation'
 
 module SalesEngine
   module Model

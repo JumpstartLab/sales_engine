@@ -1,4 +1,4 @@
-require './lib/sales_engine/model'
+require 'model'
 
 module SalesEngine
   class Item
