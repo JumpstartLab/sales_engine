@@ -17,5 +17,17 @@ module SalesEngine
     def self.find_by_invoice_id(id)
       SalesEngine::Database.instance.find_by("transactions", "invoice_id", id)
     end
+
+    def self.find_by_id(id)
+      SalesEngine::Database.instance.find_by("transactions", "id", id)
+    end
+
+    def self.find_by_credit_card_number(credit_card_number)
+      SalesEngine::Database.instance.find_by("transactions", "credit_card_number", credit_card_number)
+    end
+
+    def self.find_by_credit_card_expiration_date(credit_card_expiration_date)
+      SalesEngine::Database.instance.find_by("transactions", "credit_card_expiration_date", credit_card_expiration_date)
+    end
   end
 end
