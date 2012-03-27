@@ -11,7 +11,8 @@ module SalesEngine
     # id,customer_id,merchant_id,status,created_at,updated_at
     # invoice = Invoice.new(:customer_id => customer, :merchant_id => merchant, :status => "shipped", :items => [item1, item2, item3], :transaction => transaction)
 
-    attr_accessor :id, :customer_id, :merchant_id, :status, :created_at, :updated_at
+    attr_accessor :id, :customer_id, :merchant_id, :status, 
+                  :created_at, :updated_at, :success
 
     def initialize(attributes={})
       self.id           = attributes[:id]
@@ -43,17 +44,22 @@ module SalesEngine
       Database.instance.invoices.sample
     end
 
+    def success
+      if !@success.nil?
+        return @success
+      else 
+        t = SalesEngine::Transaction.find_by_invoice_id(self.id)
+        if t.result == "success"
+          @success = true
+        end
+      end
+    end
+
     def transaction_successful?
       t = SalesEngine::Transaction.find_by_invoice_id(self.id)
       if t.result == "success"
         return true
-      # else
-      #   return false
       end
-      # Database.instance.transactions.find do |t| 
-      #   t.send(:invoice_id) == self.id
-      # end
-      # t.result == "success"
     end
 
     def transactions

@@ -46,6 +46,13 @@ module SalesEngine
       end
     end
 
+    def charged_invoice_items
+      #invoice_items returns an instance of InvoiceItems associated with this object
+      Database.instance.invoice_items.select do |ii|
+        (ii.send(:item_id) == self.id) && ii.inv_success
+      end
+    end
+
     def merchant
       #merchant returns an instance of Merchant associated with this object
       Database.instance.merchants.find do |m|
@@ -55,7 +62,7 @@ module SalesEngine
 
     def revenue
       revenue = 0
-      self.invoice_items.each do |ii|
+      self.charged_invoice_items.each do |ii|
         revenue += ( ii.quantity.to_i * ii.unit_price.to_i )
       end
       revenue
@@ -73,7 +80,7 @@ module SalesEngine
 
     def quantity_sold
       quantity = 0
-      self.invoice_items.each do |inv_item|
+      self.charged_invoice_items.each do |inv_item|
         quantity += inv_item.quantity.to_i
       end
       quantity
@@ -91,6 +98,7 @@ module SalesEngine
 
     def best_day
       # best_day returns the date with the most sales for the given item
+
     end
   end
 end

@@ -6,7 +6,8 @@ module SalesEngine
     extend Find
 
     attr_accessor :id, :item_id, :invoice_id, :quantity, 
-                  :unit_price, :created_at, :updated_at
+                  :unit_price, :created_at, :updated_at, 
+                  :inv_success
 
     def initialize(attributes={})
       self.id         = attributes[:id]
@@ -28,6 +29,13 @@ module SalesEngine
         define_method "find_all_by_#{attribute}" do |input|
           find_all_invoice_items(attribute, input.to_s)
         end
+      end
+    end
+
+    def inv_success
+      i = SalesEngine::Invoice.find_by_id(self.invoice_id)
+      if i.success
+        @inv_success = true
       end
     end
 

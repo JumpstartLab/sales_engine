@@ -82,12 +82,12 @@ module SalesEngine
     def charged_invoices(date=nil)
       if date
         Database.instance.invoices.select do |i|
-          ((i.send(:merchant_id) == self.id) && i.send(:date) == date) && i.transaction_successful?
+          ((i.send(:merchant_id) == self.id) && i.send(:date) == date) && i.success
         end
       else
         #Invoice.find_all_by_merchant_id(self.id)
         Database.instance.invoices.select do |i|
-          (i.send(:merchant_id) == self.id) && i.transaction_successful?
+          (i.send(:merchant_id) == self.id) && i.success
         end
       end
     end
