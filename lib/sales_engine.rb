@@ -1,13 +1,12 @@
-$LOAD_PATH.unshift './data'
-$LOAD_PATH.unshift './lib/sales_engine/'
 require 'csv'
-require 'customer'
-require 'transaction'
-require 'merchant'
-require 'item'
-require 'invoice'
-require 'invoice_item'
-require 'class_methods'
+# require '../data'
+require 'sales_engine/customer'
+require 'sales_engine/transaction'
+require 'sales_engine/merchant'
+require 'sales_engine/item'
+require 'sales_engine/invoice'
+require 'sales_engine/invoice_item'
+require 'sales_engine/class_methods'
 
 module SalesEngine
   CSV_OPTIONS = {:headers => true, :header_converters => :symbol}

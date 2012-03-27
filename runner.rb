@@ -8,21 +8,6 @@ SalesEngine.startup
 
 # ap test
 
-all_customers = SalesEngine::Database.instance.all_customers
-all_items = SalesEngine::Database.instance.all_items
-all_invoice_items = SalesEngine::Database.instance.all_invoice_items
-all_merchants = SalesEngine::Database.instance.all_merchants
-all_transactions = SalesEngine::Database.instance.all_transactions
-all_invoices = SalesEngine::Database.instance.all_invoices
-
-ap all_customers
-# ap all_items.count
-# ap all_invoice_items.count
-# ap all_merchants.count
-# ap all_transactions.count
-# ap all_invoices.count
-
-
 
 ##############################################################################
           # Customer.most_revenue

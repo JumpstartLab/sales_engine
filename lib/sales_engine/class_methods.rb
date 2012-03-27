@@ -7,7 +7,6 @@ class String
   end
 end
 module SalesEngine
-
   module SearchMethods
     def self.extended(base)
       base.class_eval do
@@ -70,7 +69,6 @@ module SalesEngine
     end
 
   end
-
 end
 
 
@@ -83,3 +81,58 @@ end
       # end
 
 
+  class DataCleaner
+    include Singleton
+
+    def clean_id(id)
+      id.only_digits
+    end
+
+    def clean_updated_at(date)
+      Date.parse(date)
+    end
+
+    def clean_created_at(date)
+      Date.parse(date)
+    end
+
+    def clean_merchant_id(id)
+      clean_id(id)
+    end
+
+    def clean_item_id(id)
+      clean_id(id)
+    end
+  end
+
+  class Database 
+    ATTRIBUTES = [:transaction, :customer, :item, :invoice_item,
+      :merchant, :invoice, :all_transactions, :all_customers, :all_items,
+      :all_invoice_items, :all_merchants, :all_invoices]
+    HASHES = [:transaction, :customer, :item, :invoice_item,
+      :merchant, :invoice,]
+    ARRAYS = [:all_transactions, :all_customers, :all_items,
+      :all_invoice_items, :all_merchants, :all_invoices]
+      include Singleton
+      include AccessorBuilder
+
+    class_eval do 
+      def initialize
+        HASHES.each do |hash|
+          hash_init = Hash.new do |hash,key|
+            hash[key] = Hash.new do |hash, key|
+              if key.to_s.end_with?("s")
+                hash[key] = []
+              end
+            end 
+          end
+          send("#{hash}=", hash_init)
+        end
+
+        ARRAYS.each do |array|
+          send("#{array}=", [])
+        end
+      end
+    end
+  end
+end

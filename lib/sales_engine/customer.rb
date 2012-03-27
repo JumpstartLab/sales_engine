@@ -1,13 +1,13 @@
-require 'class_methods'
-require 'merchant'
-require 'invoice'
+# require 'class_methods'
+# require 'merchant'
+# require 'invoice'
 require "date"
-require "awesome_print"
+require "sales_engine/class_methods"
 module SalesEngine
   class Customer
     ATTRIBUTES = [:id, :first_name, :last_name, :created_at, :updated_at]
     attr_accessor :invoices, :transactions
-    extend SearchMethods
+    extend SalesEngine::SearchMethods
     include AccessorBuilder
 
     def initialize (attributes = {})

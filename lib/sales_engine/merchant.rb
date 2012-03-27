@@ -1,8 +1,7 @@
-require 'class_methods'
-require "item.rb"
-require "invoice.rb"
+require 'sales_engine/class_methods'
+require "sales_engine/item"
+require "sales_engine/invoice"
 require "date"
-require "awesome_print"
 require "bigdecimal"
 
 module SalesEngine
