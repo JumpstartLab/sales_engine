@@ -359,4 +359,12 @@ describe SalesEngine::Merchant do
       merchant_1.favorite_customer.should == customer_2
     end
   end
+
+  describe "#customers_with_pending_invoices" do
+    it "returns a collection of Customer instances which have pending (unpaid) invoices" do
+      transaction_1.result = "Pending"
+      transaction_5.result = "Pending"
+      merchant_1.customers_with_pending_invoices.should == [invoice_1, invoice_5]
+    end
+  end
 end

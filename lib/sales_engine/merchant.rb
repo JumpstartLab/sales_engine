@@ -72,6 +72,23 @@ module SalesEngine
       customer_invoice_counter.sort_by {|customer| customer.last}.last.first
     end
 
+    def customers_with_pending_invoices
+      pending_transactions = []
+      self.invoices.each do |invoice|
+        all_pending = true
+        invoice.transactions.each do |transaction|
+          if !transaction.result.downcase.include?("pending")
+            all_pending = false
+            break
+          end
+        end
+        if all_pending
+          pending_transactions << invoice
+        end
+      end
+      pending_transactions
+    end
+
     def items
       SalesEngine::Database.instance.find_all_items_by_merchant_id(self.id)
     end
