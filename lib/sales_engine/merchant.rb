@@ -59,15 +59,13 @@ module SalesEngine
       rev
     end
 
-    def self.most_revenue(num_of_merchants)
+    def self.most_revenue(num_merchants)
       # returns the top x merchant instances ranked by total revenue
       rank = Hash.new
       Database.instance.merchants.each do |merchant|
         rank[merchant] = merchant.revenue
       end
-      rank = rank.sort_by{ |id, rev| rev }.reverse
-      rank[1..num_of_merchants]
-
+      rank.sort_by{ |m, r| -r }[0...num_merchants].collect { |m, r| m }
     end
 
     def self.revenue(date)
@@ -92,8 +90,17 @@ module SalesEngine
       end
     end
 
-    def self.items(num_of_merchants)
+    def self.items(num_merchants)
       # returns the top x merchant instances ranked by total number of items sold
+      rank = Hash.new
+      Database.instance.merchants.each do |merch|
+        quantity = 0
+        merch.items.each do |item|
+          quantity += item.quantity_sold
+        end
+        rank[merch] = quantity
+      end
+      rank.sort_by { |m, q| -q }[0...num_merchants].collect{ |m,q| m }
     end
 
     def favorite_customer

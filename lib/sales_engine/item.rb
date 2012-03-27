@@ -56,14 +56,12 @@ module SalesEngine
     def best_day
       # best_day returns the date with the most sales for the given item
       rank = Hash.new(0)
-
-
       self.charged_invoice_items.each do |inv_item|
         inv = SalesEngine::Invoice.find_by_id(inv_item.invoice_id)
         rank[inv.date] += inv_item.quantity.to_i
       end
-      rank = rank.sort_by{ |date, quant| quant }.reverse
-      rank[0]
+      rank = rank.sort_by{ |d, q| -q }
+      rank[0][0]
     end
 
     def merchant
@@ -81,14 +79,13 @@ module SalesEngine
       revenue
     end
 
-    def self.most_revenue(num_of_items)
+    def self.most_revenue(num_items)
       # .most_revenue(x) returns the top x item instances ranked by total revenue generated
       rank = Hash.new(0)
       Database.instance.items.each do |item|
         rank[item] = item.revenue
       end
-      rank = rank.sort_by{ |item, revenue| revenue}.reverse
-      rank[1..num_of_items]
+      rank.sort_by{ |i, r| -r}[0...num_items].collect { |i, r| i }
     end
 
     def quantity_sold
@@ -99,14 +96,13 @@ module SalesEngine
       quantity
     end
 
-    def self.most_items(num_of_items)
+    def self.most_items(num_items)
       # .most_items(x) returns the top x item instances ranked by total number sold
       rank = Hash.new(0)
       Database.instance.items.each do |item|
         rank[item] = item.quantity_sold
       end
-      rank = rank.sort_by{ |item, quant| quant }.reverse
-      rank[1..num_of_items]
+      rank.sort_by{ |i, q| -q }[0...num_items].collect { |i, q| i }
     end
 
   end
