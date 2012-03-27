@@ -10,13 +10,16 @@ describe SalesEngine::Merchant do
   let(:item_1) { Fabricate(:item) }
   let(:item_2) { Fabricate(:item) }
   let(:item_3) { Fabricate(:item) }
-  let(:invoice_1) { Fabricate(:invoice, :merchant_id => merchant_1.id) }
-  let(:invoice_2) { Fabricate(:invoice, :merchant_id => merchant_2.id) }
-  let(:invoice_3) { Fabricate(:invoice, :merchant_id => merchant_3.id) }
-  let(:invoice_4) { Fabricate(:invoice, :merchant_id => merchant_4.id) }
-  let(:invoice_5) { Fabricate(:invoice, :merchant_id => merchant_1.id) }
-  let(:invoice_6) { Fabricate(:invoice, :merchant_id => merchant_2.id) }
-  let(:invoice_7) { Fabricate(:invoice, :merchant_id => merchant_1.id) }
+  let(:customer_1) { Fabricate(:customer) }
+  let(:customer_2) { Fabricate(:customer) }
+  let(:customer_3) { Fabricate(:customer) }
+  let(:invoice_1) { Fabricate(:invoice, :merchant_id => merchant_1.id, :customer_id => customer_1.id) }
+  let(:invoice_2) { Fabricate(:invoice, :merchant_id => merchant_2.id, :customer_id => customer_1.id) }
+  let(:invoice_3) { Fabricate(:invoice, :merchant_id => merchant_3.id, :customer_id => customer_3.id) }
+  let(:invoice_4) { Fabricate(:invoice, :merchant_id => merchant_4.id, :customer_id => customer_1.id) }
+  let(:invoice_5) { Fabricate(:invoice, :merchant_id => merchant_1.id, :customer_id => customer_2.id) }
+  let(:invoice_6) { Fabricate(:invoice, :merchant_id => merchant_2.id, :customer_id => customer_3.id) }
+  let(:invoice_7) { Fabricate(:invoice, :merchant_id => merchant_1.id, :customer_id => customer_2.id) }
   let(:transaction_1) { Fabricate(:transaction, :invoice_id => invoice_1.id, :result => "Success") }
   let(:transaction_2) { Fabricate(:transaction, :invoice_id => invoice_2.id, :result => "Success") }
   let(:transaction_3) { Fabricate(:transaction, :invoice_id => invoice_3.id, :result => "Success") }
@@ -48,6 +51,9 @@ describe SalesEngine::Merchant do
     se.add_to_list(item_1)
     se.add_to_list(item_2)
     se.add_to_list(item_3)
+    se.add_to_list(customer_1)
+    se.add_to_list(customer_2)
+    se.add_to_list(customer_3)
     se.add_to_list(invoice_1)
     se.add_to_list(invoice_2)
     se.add_to_list(invoice_3)
@@ -345,6 +351,12 @@ describe SalesEngine::Merchant do
 
     it "returns the total revenue that merchant for a specific date" do
       merchant_1.revenue("2012-02-01").should == 10
+    end
+  end
+
+  describe "#favorite_customer" do
+    it "returns the Customer who has conducted the most transactions" do
+      merchant_1.favorite_customer.should == customer_2
     end
   end
 end

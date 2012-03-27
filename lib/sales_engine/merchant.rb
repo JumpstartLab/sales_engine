@@ -60,6 +60,18 @@ module SalesEngine
       revenue
     end
 
+    def favorite_customer
+      customer_invoice_counter = { }
+      self.invoices.each do |invoice|
+        if customer_invoice_counter[invoice.customer]
+          customer_invoice_counter[invoice.customer] += 1
+        else
+          customer_invoice_counter[invoice.customer] = 1
+        end
+      end
+      customer_invoice_counter.sort_by {|customer| customer.last}.last.first
+    end
+
     def items
       SalesEngine::Database.instance.find_all_items_by_merchant_id(self.id)
     end
