@@ -226,7 +226,7 @@ describe SalesEngine::Merchant do
     end
   end
 
-  describe ".merchant_revenue_data" do
+  describe ".merchants_by_revenue" do
     let(:inv_one)     { mock(SalesEngine::Invoice) }
     let(:inv_two)     { mock(SalesEngine::Invoice) }
     let(:inv_three)   { mock(SalesEngine::Invoice) }
@@ -244,20 +244,20 @@ describe SalesEngine::Merchant do
 
     it "returns a hash with merchant_ids as keys and revenue as values" do
       revenue_hash = { :"1" => 400, :"2" => 200 }
-      SalesEngine::Merchant.merchant_revenue_data.should == revenue_hash
+      SalesEngine::Merchant.merchants_by_revenue.should == revenue_hash
     end
 
     context "when no successful transactions" do
       it "returns nil" do
         invoices = [ ]
         SalesEngine::Invoice.stub(:successful_invoices).and_return(invoices)
-        SalesEngine::Merchant.merchant_revenue_data.should be_empty
+        SalesEngine::Merchant.merchants_by_revenue.should be_empty
       end
     end
   end
 
   # Need to create a merchant item data method
-  describe ".merchant_item_data" do
+  describe ".merchants_by_items_sold" do
     let(:inv_item_one)     { mock(SalesEngine::InvoiceItem) }
     let(:inv_item_two)     { mock(SalesEngine::InvoiceItem) }
     let(:inv_item_three)   { mock(SalesEngine::InvoiceItem) }
@@ -274,7 +274,7 @@ describe SalesEngine::Merchant do
     end
 
     it "returns hash with merchant_id as keys and the total qty sold as values" do
-      SalesEngine::Merchant.merchant_item_data.should == { :"1" => 40, :"2" => 20 }
+      SalesEngine::Merchant.merchants_by_items_sold.should == { :"1" => 40, :"2" => 20 }
     end
   end
 
@@ -287,7 +287,7 @@ describe SalesEngine::Merchant do
 
     it "returns the num merchants who have sold the most" do
       item_hash = { :"1" => 10, :"2" => 20, :"3" => 30 }
-      SalesEngine::Merchant.stub(:merchant_item_data).and_return(item_hash)
+      SalesEngine::Merchant.stub(:merchants_by_items_sold).and_return(item_hash)
       sorted_merchants = [ merchant_three, merchant_two ]
       SalesEngine::Merchant.most_items(2).should == sorted_merchants
     end
@@ -296,7 +296,7 @@ describe SalesEngine::Merchant do
     # context "when there is a tie" do
     #   it "returns num merchants ranked by most rev, then id" do
     #     item_hash = { :"1" => 20, :"2" => 20, :"3" => 30 }
-    #     SalesEngine::Merchant.stub(:merchant_item_data).and_return(item_hash)
+    #     SalesEngine::Merchant.stub(:merchants_by_items_sold).and_return(item_hash)
     #     sorted_merchants = [  merchant_three, merchant_one, merchant_two ]
     #     SalesEngine::Merchant.most_items(3).should == sorted_merchants
     #   end
@@ -313,17 +313,41 @@ describe SalesEngine::Merchant do
     it "returns the top x merchants" do
       sorted_merchants = [ merchant_one, merchant_three, merchant_two ]
       revenue_hash = { :"1" => 400, :"2" => 200, :"3" => 300 }
-      SalesEngine::Merchant.stub(:merchant_revenue_data).and_return(revenue_hash)
+      SalesEngine::Merchant.stub(:merchants_by_revenue).and_return(revenue_hash)
       SalesEngine::Merchant.most_revenue(3).should == sorted_merchants
     end
 
     context "when there is a tie" do
       it "returns num merchants ranked by most rev, then id" do
         revenue_hash = { :"1" => 400, :"2" => 600, :"3" => 400 }
-        SalesEngine::Merchant.stub(:merchant_revenue_data).and_return(revenue_hash)
+        SalesEngine::Merchant.stub(:merchants_by_revenue).and_return(revenue_hash)
         sorted_merchants = [ merchant_two, merchant_one, merchant_three ]
         SalesEngine::Merchant.most_revenue(3).should == sorted_merchants
       end
+    end
+  end
+
+  describe ".revenue_on_dates" do
+    let(:inv_one)     { mock(SalesEngine::Invoice) }
+    let(:inv_two)     { mock(SalesEngine::Invoice) }
+    let(:inv_three)   { mock(SalesEngine::Invoice) }
+
+    before(:each) do
+      inv_one.stub(:updated_at).and_return(Time.parse("2012-02-19"))
+      inv_two.stub(:updated_at).and_return(Time.parse("2012-02-20"))
+      inv_three.stub(:updated_at).and_return(Time.parse("2012-02-19"))
+      inv_one.stub(:invoice_revenue).and_return("100")
+      inv_two.stub(:invoice_revenue).and_return("150")
+      inv_three.stub(:invoice_revenue).and_return("100")
+
+      invoices = [ inv_one, inv_two, inv_three ]
+      SalesEngine::Invoice.stub(:successful_invoices).and_return(invoices)
+    end
+
+    it "returns an array of dates sorted by revenue" do
+      pending
+      SalesEngine::Merchant.revenue_on_dates.should == { Time.parse("2012-02-19").to_sym => 200,
+                                                         Time.parse("2012-02-19").to_sym => 200, }
     end
   end
 

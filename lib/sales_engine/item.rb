@@ -1,4 +1,5 @@
 module SalesEngine
+  require 'sales_engine/dynamic_finder'
   class Item
     attr_accessor :id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at
 
@@ -22,21 +23,12 @@ module SalesEngine
       self.updated_at = attributes[:updated_at]
     end
 
-    ITEM_ATTS.each do |att|
-      define_singleton_method ("find_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.item_list.detect do |item|
-          item.send(att.to_sym).to_s.downcase == param.to_s.downcase
-        end
-      end
+    def self.attributes_for_finders
+      ITEM_ATTS
     end
 
-    ITEM_ATTS.each do |att|
-      define_singleton_method ("find_all_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.item_list.select do |item|
-          item if item.send(att.to_sym).to_s.downcase == param.to_s.downcase
-        end
-      end
-    end
+    extend SalesEngine::DynamicFinder
+
 
     def invoice_items
       SalesEngine::InvoiceItem.find_all_by_item_id(self.id)

@@ -11,5 +11,17 @@ module SalesEngine
       self.transaction_list = []
       self.invoice_list = []
     end
+
+    def find(object_type, attribute, param)
+      self.send("#{object_type}_list").detect do |instance|
+        instance.send(attribute.to_sym).to_s.downcase == param.to_s.downcase
+      end
+    end
+
+    def find_all(object_type, attribute, param)
+      self.send("#{object_type}_list").select do |instance|
+        instance.send(attribute.to_sym).to_s.downcase == param.to_s.downcase
+      end
+    end    
   end
 end

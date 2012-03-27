@@ -1,7 +1,5 @@
-require 'csv'
-require 'ruby-debug'
-
 module SalesEngine
+  require 'sales_engine/dynamic_finder'
   class Invoice
     INVOICE_ATTS = [ 
       "id",
@@ -22,6 +20,12 @@ module SalesEngine
       self.created_at = Time.parse(attributes[:created_at]) if attributes[:created_at]
       self.updated_at = Time.parse(attributes[:updated_at]) if attributes[:updated_at]
     end
+
+    def self.attributes_for_finders
+      INVOICE_ATTS
+    end
+
+    extend SalesEngine::DynamicFinder
 
     def transactions
       SalesEngine::Transaction.find_all_by_invoice_id(self.id)
@@ -54,22 +58,6 @@ module SalesEngine
 
       transactions.any? do |transaction|
         transaction.is_successful?
-      end
-    end
-
-    INVOICE_ATTS.each do |att|
-      define_singleton_method ("find_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.invoice_list.detect do |invoice|
-          invoice.send(att.to_sym).to_s.downcase == param.to_s.downcase
-        end
-      end
-    end
-
-    INVOICE_ATTS.each do |att|
-      define_singleton_method ("find_all_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.invoice_list.select do |invoice|
-          invoice if invoice.send(att.to_sym).to_s.downcase == param.to_s.downcase
-        end
       end
     end
 

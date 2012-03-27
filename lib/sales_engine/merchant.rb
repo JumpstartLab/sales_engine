@@ -1,4 +1,5 @@
 module SalesEngine
+  require 'sales_engine/dynamic_finder'
   class Merchant
     attr_accessor :id, :name, :created_at, :updated_at
 
@@ -16,21 +17,11 @@ module SalesEngine
       self.updated_at = attributes[:updated_at]
     end
 
-    MERCHANT_ATTS.each do |att|
-      define_singleton_method ("find_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.merchant_list.detect do |merchant|
-          merchant.send(att.to_sym).to_s.downcase == param.to_s.downcase
-        end
-      end
+    def self.attributes_for_finders
+      MERCHANT_ATTS
     end
 
-    MERCHANT_ATTS.each do |att|
-      define_singleton_method ("find_all_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.merchant_list.select do |merchant|
-          merchant if merchant.send(att.to_sym).to_s.downcase == param.to_s.downcase
-        end
-      end
-    end
+    extend SalesEngine::DynamicFinder
 
     def items
       SalesEngine::Item.find_all_by_merchant_id(self.id)
@@ -90,7 +81,7 @@ module SalesEngine
       date
     end
 
-    def self.merchant_revenue_data
+    def self.merchants_by_revenue
       data = { }
       SalesEngine::Invoice.successful_invoices.each do |i|
         data[ i.merchant_id.to_sym ] ||= 0
@@ -100,13 +91,13 @@ module SalesEngine
     end
 
     def self.most_revenue(num)
-      data = merchant_revenue_data
+      data = merchants_by_revenue
       return nil if data.empty?
       data = data.sort_by{ |k, v| -v }[0..(num-1)]
       data.collect { |merchant_id, revenue| self.find_by_id(merchant_id) }
     end
 
-    def self.merchant_item_data
+    def self.merchants_by_items_sold
       successful_invoice_items = SalesEngine::InvoiceItem.successful_invoice_items
       item_data = { }
 
@@ -117,8 +108,22 @@ module SalesEngine
       item_data
     end
 
+    def self.revenue_on_dates
+      date_data = { }
+      SalesEngine::Invoice.successful_invoices.each do |i|
+        date_data[ i.updated_at.to_sym ] ||= 0
+        date_data[ i.updated_at.to_sym ] += i.invoice_revenue
+      end
+      date_data.sort_by { |date, revenue| -revenue }
+    end
+
+    def self.dates_by_revenue(*num)
+      x = revenue_on_dates.sort_by { |date, revenue| -revenue }
+      num.empty? ? x : x[0..(num.first-1)]
+    end
+
     def self.most_items(num)
-      item_data = merchant_item_data.sort_by do |merchant_id, quantity| 
+      item_data = merchants_by_items_sold.sort_by do |merchant_id, quantity| 
         -quantity
       end
 
