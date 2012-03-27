@@ -16,7 +16,7 @@ describe SalesEngine::InvoiceItem do
 
     describe ".find_by_item_id" do
       invoice_item = SalesEngine::InvoiceItem.find_by_item_id 123
-      invoice_item.invoice_id.should == 26
+      invoice_item.invoice_id.should == 184
     end
 
     describe ".find_all_by_quantity" do
