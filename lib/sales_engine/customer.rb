@@ -32,15 +32,13 @@ module SalesEngine
       invoices.each do |invoice|
         merchant_id = invoice.merchant_id
         if merchant_map.key?(merchant_id)
-          merchant_map[merchant_id] = merchant_map[merchant_id] + 1
+          merchant_map[merchant_id] += 1
         else
           merchant_map[merchant_id] = 1
         end
       end
 
-      if merchant_map.empty?
-        nil
-      else
+      unless merchant_map.empty?
         sorted_map = merchant_map.sort_by { |key, value| value }.reverse
         SalesEngine::Merchant.find_by_id(sorted_map.first[0])
       end
