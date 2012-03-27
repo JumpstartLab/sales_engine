@@ -1,10 +1,16 @@
+$LOAD_PATH.unshift "./lib"
 require 'sales_engine/database'
+require 'sqlite3'
+require 'loader'
 
 module SalesEngine
   attr_accessor :elements
 
-  def self.find_by(elements, attribute, value)
+  def self.startup
+     Loader.new(SQLite3::Database.new(':memory:')).load
+  end
 
+  def self.find_by(elements, attribute, value)
     if elements
       elements.find { |element| element.send(attribute) == value[0] }
     else

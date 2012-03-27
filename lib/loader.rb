@@ -29,7 +29,7 @@ class Loader
       updated_at text);
     }
 
-    file = CSV.open("../data/merchants.csv", {:headers => true, :header_converters => :symbol})
+    file = CSV.open("data/merchants.csv", {:headers => true, :header_converters => :symbol})
     file.each do |line|
       database.execute("insert into merchants values (?, ?, ?, ?)",
                        line[:id].to_i, line[:name], line[:created_at], line[:updated_at])
@@ -49,7 +49,7 @@ class Loader
       foreign key(merchant_id) references merchant(id));
     }
 
-    file = CSV.open("../data/items.csv", {:headers => true, :header_converters => :symbol})
+    file = CSV.open("data/items.csv", {:headers => true, :header_converters => :symbol})
     file.each do |line|
       database.execute("insert into items values (?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:name], line[:description], 
@@ -68,7 +68,7 @@ class Loader
       updated_at text)
     }
 
-    file = CSV.open("../data/customers.csv", {:headers => true, :header_converters => :symbol})
+    file = CSV.open("data/customers.csv", {:headers => true, :header_converters => :symbol})
     file.each do |line|
       database.execute("insert into customers values (?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:first_name], line[:last_name], 
@@ -89,7 +89,7 @@ class Loader
       foreign key(customer_id) references customers(id));
     }
 
-    file = CSV.open("../data/invoices.csv", {:headers => true, :header_converters => :symbol})
+    file = CSV.open("data/invoices.csv", {:headers => true, :header_converters => :symbol})
     file.each do |line|
       database.execute("insert into invoices values (?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:customer_id].to_i, line[:merchant_id].to_i, 
@@ -112,7 +112,7 @@ class Loader
       foreign key(invoice_id) references invoices(id));
     }
 
-    file = CSV.open("../data/invoice_items.csv", {:headers => true, :header_converters => :symbol})
+    file = CSV.open("data/invoice_items.csv", {:headers => true, :header_converters => :symbol})
     file.each do |line|
       database.execute("insert into invoice_items values (?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:item_id].to_i, line[:invoice_id].to_i, 
@@ -135,7 +135,7 @@ class Loader
       foreign key(invoice_id) references invoices(id));
     }
 
-    file = CSV.open("../data/transactions.csv", {:headers => true, :header_converters => :symbol})
+    file = CSV.open("data/transactions.csv", {:headers => true, :header_converters => :symbol})
     file.each do |line|
       database.execute("insert into transactions values (?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:invoice_id].to_i, line[:credit_card_number],
