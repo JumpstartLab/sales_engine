@@ -34,4 +34,10 @@ describe SalesEngine::Customer do
     end
   end
 
+  describe "#favorite_merchant" do
+    it "returns a merchant" do
+      test_customer.favorite_merchant.should be_a SalesEngine::Merchant
+    end
+  end
+
 end

@@ -22,14 +22,12 @@ class SalesEngine
     # def self.find_all_by_X(match)
     # end
 
-    # returns a collection of Item instances associated with that merchant for their products
     def items
       SalesEngine::Database.instance.items.select do |item|
         item.merchant_id == @id
       end
     end
 
-    # returns a collection of invoice instances associated with this merchant
     def invoices
       SalesEngine::Database.instance.invoices.select do |invoice|
         invoice.merchant_id == @id

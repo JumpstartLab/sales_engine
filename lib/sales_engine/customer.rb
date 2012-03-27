@@ -28,5 +28,9 @@ class SalesEngine
       correct_transactions.flatten
     end
 
+    def favorite_merchant
+      SalesEngine::Database.instance.merchants.sample
+    end
+
   end
 end
