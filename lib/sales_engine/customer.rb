@@ -1,5 +1,4 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib')).uniq!
-require "sales_engine"
 require "sales_engine/database"
 
 module SalesEngine
