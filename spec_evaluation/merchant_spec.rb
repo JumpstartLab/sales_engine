@@ -15,13 +15,17 @@ describe SalesEngine::Merchant do
     end
 
     describe ".find_by_name" do
-      merchant = SalesEngine::Merchant.find_by_name "Marvin Group"
-      merchant.should_not be_nil
+      it "can find a record" do
+        merchant = SalesEngine::Merchant.find_by_name "Marvin Group"
+        merchant.should_not be_nil
+      end
     end
 
     describe ".find_by_all_name" do
-      merchants = SalesEngine::Merchant.find_all_by_name "Williamson Group"
-      merchants.should have(2).merchants
+      it "can find multiple records" do
+        merchants = SalesEngine::Merchant.find_all_by_name "Williamson Group"
+        merchants.should have(2).merchants
+      end
     end
   end
 
