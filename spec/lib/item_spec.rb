@@ -6,7 +6,7 @@ describe SalesEngine::Item do
                                                     :invoice_id => "1", :item_id => "1" ) }
   let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3",
                                                     :invoice_id => "2", :item_id => "2" ) } 
-  let(:inv_item_three){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3",
+  let(:inv_item_three){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "4",
                                                     :invoice_id => "3", :item_id => "1") }
   let(:item_one){ SalesEngine::Item.new( :id => "1", :merchant_id => "1" ) }
   let(:item_two){ SalesEngine::Item.new( :id => "2", :merchant_id => "2" )}
@@ -70,12 +70,13 @@ describe SalesEngine::Item do
     end
   end
 
-  # describe ".most_items(x)" do
-  #   it "returns the top x items ranked by total numbers sold" do
-  #     SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two, inv_item_three ]
-  #     SalesEngine::Database.instance.item_list = [ item_two, item_one ]
-  #     Item.most_items(2).should == [ item_one, item_two ]
-  #   end
+  describe ".most_items(x)" do
+    it "returns the top x items ranked by total numbers sold" do
+      SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two, inv_item_three ]
+      SalesEngine::Database.instance.item_list = [ item_two, item_one ]
+      SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]
+      SalesEngine::Item.most_items(2).should == [ item_one, item_two ]
+    end
 
   #   context "when there are no items" do
   #     it "returns nil" do
@@ -90,6 +91,6 @@ describe SalesEngine::Item do
   #       Item.most_items(2).should == nil
   #     end
   #   end
-  # end
+  end
 
 end

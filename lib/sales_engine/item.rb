@@ -57,13 +57,28 @@ module SalesEngine
       end
 
       item_data = item_data.sort_by {|item_id, revenue| -revenue }
-      puts '*' * 80
-      puts item_data.inspect
 
       item_data[0..(num-1)].collect do |item_id, revenue|
         SalesEngine::Item.find_by_id(item_id)
       end
+    end
 
+    def self.most_items(num)
+      successful_invoice_items = SalesEngine::InvoiceItem.successful_invoice_items
+      item_data = { }
+
+      successful_invoice_items.each do |invoice_item|
+        item_data[ invoice_item.item_id.to_sym ] ||= 0
+        item_data[ invoice_item.item_id.to_sym ] += invoice_item.quantity 
+      end
+
+      item_data = item_data.sort_by {|item_id, quantity| -quantity }
+      puts '*' * 80
+      puts item_data.inspect
+
+      item_data[0..(num-1)].collect do |item_id, quantity|
+        SalesEngine::Item.find_by_id(item_id)
+      end
     end
   end
 end

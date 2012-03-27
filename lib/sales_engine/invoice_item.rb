@@ -6,7 +6,7 @@ module SalesEngine
       self.id = attributes[:id]
       self.item_id = attributes[:item_id]
       self.invoice_id = attributes[:invoice_id]
-      self.quantity =   BigDecimal.new(attributes[:quantity])
+      self.quantity =   attributes[:quantity].to_i
       self.unit_price = BigDecimal.new(attributes[:unit_price])
       self.created_at = Time.parse(attributes[:created_at]) if attributes[:created_at]
       self.updated_at = Time.parse(attributes[:updated_at]) if attributes[:updated_at]
