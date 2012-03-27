@@ -28,5 +28,11 @@ describe SalesEngine::InvoiceItem do
       end
     end
   end
+
+  describe ".random" do
+    it "returns on invoice_item" do
+      SalesEngine::InvoiceItem.random.should be_a SalesEngine::InvoiceItem
+    end
+  end
 end
 

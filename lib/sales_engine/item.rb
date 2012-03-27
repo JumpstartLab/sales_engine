@@ -23,18 +23,20 @@ class SalesEngine
     # # def self.find_all_by_X(match)
     # # end
 
-    def invoice_items
-      temp_invoice_items = SalesEngine::Database.instance.invoice_items
-      correct_invoice_items = []
-      temp_invoice_items.each do |invoice_item|
-        if invoice_item.item_id == @id
-          correct_invoice_items << invoice_item
-        end
+    def invoice_items     
+      SalesEngine::Database.instance.invoice_items.select do |ii|
+        ii.item_id == @id
       end
-      return correct_invoice_items
     end
 
-    # def merchant
-    # end
+    def merchant
+      SalesEngine::Database.instance.merchants.find do |merchant|
+        merchant.id == @merchant_id
+      end
+    end
+
+    def self.random
+      SalesEngine::Database.instance.items.sample
+    end
   end
 end

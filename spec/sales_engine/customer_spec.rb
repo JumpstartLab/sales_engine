@@ -17,4 +17,10 @@ describe SalesEngine::Customer do
     end
   end
 
+  describe ".random" do
+    it "returns one customer" do
+      SalesEngine::Customer.random.should be_a SalesEngine::Customer
+    end
+  end
+
 end

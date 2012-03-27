@@ -24,26 +24,16 @@ class SalesEngine
 
     # returns a collection of Item instances associated with that merchant for their products
     def items
-      temp_items = SalesEngine::Database.instance.items
-      correct_items = []
-      temp_items.each do |item|
-        if item.merchant_id == @id
-          correct_items << item
-        end
+      SalesEngine::Database.instance.items.select do |item|
+        item.merchant_id == @id
       end
-      return correct_items
     end
 
     # returns a collection of invoice instances associated with this merchant
     def invoices
-      temp_invoices = SalesEngine::Database.instance.invoices
-      correct_invoices = []
-      temp_invoices.each do |invoice|
-        if invoice.merchant_id == @id
-          correct_invoices << invoice
-        end
+      SalesEngine::Database.instance.invoices.select do |invoice|
+        invoice.merchant_id == @id
       end
-      return correct_invoices
     end
 
     def revenue

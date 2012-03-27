@@ -14,19 +14,15 @@ class SalesEngine
         @unit_price = attributes[:unit_price]
     end
 
-    # def self.random
-    #   # return a random Merchant
-    # end
+    def self.random
+      SalesEngine::Database.instance.invoice_items.sample
+    end
 
     # # def self.find_by_X(match)
     # # end
 
     # # def self.find_all_by_X(match)
     # # end
-
-    # def transactions
-    # end
-
     def invoice
       SalesEngine::Database.instance.invoices.find do |invoice|
         invoice.id == @invoice_id
@@ -38,9 +34,6 @@ class SalesEngine
         item.id == @item_id
       end
     end
-
-    # def customer
-    # end
   end
 end
 

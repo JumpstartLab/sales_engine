@@ -16,5 +16,9 @@ class SalesEngine
         invoice.customer_id == @id
       end
     end
+
+    def self.random
+      SalesEngine::Database.instance.customers.sample
+    end
   end
 end

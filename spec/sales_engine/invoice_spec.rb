@@ -56,20 +56,10 @@ describe SalesEngine::Invoice do
     end
   end
 
-  # describe "#invoice" do
-  #   context "returns an invoice associated with this transaction" do
-  #     it "returns an invoice" do
-  #       test_transaction.invoice.is_a?(SalesEngine::Invoice).should == true
-  #     end
-
-  #     it "returns an invoice associated with this transaction" do
-  #       test_transaction.invoice.id.should == test_transaction.invoice_id
-  #     end
-  #   end
-  # end
-
-
-
-
+  describe ".random" do
+    it "returns one invoice" do
+      SalesEngine::Invoice.random.should be_a SalesEngine::Invoice
+    end
+  end
 end
 

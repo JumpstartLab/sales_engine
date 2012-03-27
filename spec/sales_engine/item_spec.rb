@@ -17,4 +17,22 @@ describe SalesEngine::Item do
       end
     end
   end
+
+  describe "#merchant" do
+    context "returns a merchant" do
+      it "is a merchant" do
+        test_item.merchant.should be_a SalesEngine::Merchant
+      end
+
+      it "is associated with this item" do
+        test_item.merchant.id.should == test_item.merchant_id
+      end
+    end
+  end
+
+  describe ".random" do
+    it "is an item" do
+      SalesEngine::Item.random.should be_an SalesEngine::Item
+    end
+  end
 end

@@ -15,7 +15,11 @@ describe SalesEngine::Transaction do
       end
     end
   end
-
+  describe ".random" do
+    it "returns a transaction" do
+      SalesEngine::Transaction.random.should be_a SalesEngine::Transaction
+    end
+  end
 end
 
 

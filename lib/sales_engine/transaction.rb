@@ -28,5 +28,9 @@ class SalesEngine
       end
     end
 
+    def self.random
+      SalesEngine::Database.instance.transactions.sample
+    end
+
   end
 end
