@@ -77,6 +77,8 @@ describe Invoice do
         invoice = Invoice.create(customer: customer, merchant: merchant, items: items)
         pending "Verify relationships"
 
+        invoice.charge(credit_card_number: '1111222233334444',  credit_card_expiration_date: "10/14", result: "success")
+
       end
     end
 
