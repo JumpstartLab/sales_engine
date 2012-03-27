@@ -14,12 +14,12 @@ describe Invoice do
       end
     end
 
-    describe ".find_by_name" do
-      invoices = Invoice.find_by_status "cool"
-      invoices.should be_nil
+    describe ".find_by_status" do
+      invoice = Invoice.find_by_status "cool"
+      invoice.should be_nil
     end
 
-    describe ".find_by_all_status" do
+    describe ".find_all_by_status" do
       invoices = Invoice.find_all_by_status "shipped"
       invoices.should have(4873).invoices
     end
