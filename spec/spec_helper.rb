@@ -1,14 +1,12 @@
-require 'simplecov'
-SimpleCov.start do
-  add_filter "/spec/"
-end
-
 require 'bundler'
+
 Bundler.require
 
-require './lib/sales_engine'
-SalesEngine.startup
-
+require 'sales_engine'
 require 'date'
-require 'fabrication'
-require 'faker'
+
+RSpec.configure do |config|
+  config.before(:suite) do
+    SalesEngine.startup
+  end
+end
