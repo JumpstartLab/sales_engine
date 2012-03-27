@@ -46,16 +46,21 @@ module SalesEngine
       trans_results
     end
 
-    def favorite_merchant
-      successful_transactions = self.transactions.select do |transaction|
+    def successful_transactions
+      results = self.transactions.select do |transaction|
         transaction if transaction.is_successful?
       end
+      results
+    end
 
-      successful_invoices = successful_transactions.collect do |transaction|
+    def successful_invoices
+      results = successful_transactions.collect do |transaction|
         SalesEngine::Invoice.find_by_id(transaction.invoice_id)
       end
+      results 
+    end
 
-      # debugger
+    def favorite_merchant
       merchant_data = { }
 
       successful_invoices.each do |invoice|
