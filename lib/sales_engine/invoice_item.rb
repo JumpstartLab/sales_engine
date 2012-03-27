@@ -25,9 +25,11 @@ module SalesEngine
     def self.populate_stats
       records.each do |record|
         record.merchant.total_revenue += record.line_total
-        record.merchant.items_sold += 1
+        record.merchant.items_sold += record.quantity
         record.item.total_revenue += record.line_total
-        record.item.items_sold += 1
+        record.item.items_sold += record.quantity
+        record.customer.revenue_bought += record.line_total
+        record.customer.items_bought += record.quantity
       end
     end
 
@@ -48,6 +50,10 @@ module SalesEngine
 
     def merchant
       @merchant ||= SalesEngine::Merchant.find_by_id(invoice.merchant_id)
+    end
+
+    def customer
+      @customer ||= SalesEngine::Customer.find_by_id(invoice.customer_id)
     end
 
     def invoice

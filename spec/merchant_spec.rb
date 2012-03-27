@@ -66,9 +66,9 @@ describe SalesEngine::Merchant do
         SalesEngine::Merchant.most_items(1).first.should be_a(SalesEngine::Merchant)
       end
       it "returns merchants sorted by descending items sold" do
-        merch_a = SalesEngine::Merchant.find_by_id(6)
-        merch_b = SalesEngine::Merchant.find_by_id(93)
-        merch_c = SalesEngine::Merchant.find_by_id(85)
+        merch_a = SalesEngine::Merchant.find_by_id(85)
+        merch_b = SalesEngine::Merchant.find_by_id(22)
+        merch_c = SalesEngine::Merchant.find_by_id(58)
         SalesEngine::Merchant.most_items(3).should == [ merch_a, merch_b, merch_c ]
       end
     end

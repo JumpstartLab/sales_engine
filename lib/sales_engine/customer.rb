@@ -1,7 +1,8 @@
 module SalesEngine
   class Customer
     extend Searchable
-    attr_accessor :first_name, :last_name, :id, :raw_csv
+    attr_accessor :first_name, :last_name, :id, :raw_csv, :items_bought
+    attr_accessor :revenue_bought
 
     def self.records
       @customers ||= get_customers
@@ -21,12 +22,22 @@ module SalesEngine
       end
     end
 
+    def self.most_items
+      all.sort_by{|c| c.items_bought}.last
+    end
+
+    def self.most_revenue
+      all.sort_by{|c| c.revenue_bought}.last
+    end
+
     def initialize(raw_line)
       self.first_name = raw_line[:first_name]
       self.last_name = raw_line[:last_name]
       self.id = raw_line[:id].to_i
       self.raw_csv = raw_line.values
       Customer.csv_headers ||= raw_line.keys
+      self.items_bought = 0
+      self.revenue_bought = 0
     end
 
     def invoices
@@ -51,6 +62,7 @@ module SalesEngine
     def pending_invoices
       invoices.select { |i| i.transactions.map(&:result).include?("pending") }
     end
+
 
   end
 end

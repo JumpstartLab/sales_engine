@@ -65,9 +65,9 @@ describe SalesEngine::Item do
         SalesEngine::Item.most_items(1).first.should be_a(SalesEngine::Item)
       end
       it "returns items sorted by descending amount sold" do
-        item_a = SalesEngine::Item.find_by_id(2186)
-        item_b = SalesEngine::Item.find_by_id(524)
-        item_c = SalesEngine::Item.find_by_id(1015)
+        item_a = SalesEngine::Item.find_by_id(2225)
+        item_b = SalesEngine::Item.find_by_id(2177)
+        item_c = SalesEngine::Item.find_by_id(1337)
         SalesEngine::Item.most_items(3).should == [ item_a, item_b, item_c ]
       end
     end

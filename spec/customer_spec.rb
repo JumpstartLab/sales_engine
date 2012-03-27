@@ -76,6 +76,22 @@ describe SalesEngine::Customer do
         end
       end
     end
+    describe ".most_items" do
+      it "returns a customer" do
+        SalesEngine::Customer.most_items.should be_a SalesEngine::Customer
+      end
+      it "returns the customer who has purchased the most items" do
+        SalesEngine::Customer.most_items.should == SalesEngine::Customer.find_by_id(75)
+      end
+    end
+    describe ".most_revenue" do
+      it "returns a customer" do
+        SalesEngine::Customer.most_revenue.should be_a SalesEngine::Customer
+      end
+      it "returns the customer who has generated the most total revenue" do
+        SalesEngine::Customer.most_revenue.should == SalesEngine::Customer.find_by_id(240)
+      end
+    end
   end
 end
 
