@@ -9,19 +9,16 @@ module SalesEngine
 
     def initialize (attributes = {})
       define_attributes(attributes)
+      Database.instance.transaction[id.to_i][:self] = self
+      Database.instance.invoice[invoice_id.to_i][:transactions] << self
     end
 
     def invoice
-      @invoice ||= calc_invoice
-    end
-
-    def calc_invoice
-      @invoice = Invoice.find_by_id(invoice_id)
+      @invoice ||= Database.instance.invoice[invoice_id.to_i][:self]
     end
 
     def successful?
       self.result == "success"
     end
-
   end
 end

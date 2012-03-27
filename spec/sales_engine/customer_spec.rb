@@ -16,6 +16,7 @@ describe SalesEngine::Customer do
     end
   end
 
+
   describe 'find_by_#{attribute}(attribute) methods' do
     SalesEngine::Customer::ATTRIBUTES.each do |attribute|
       context ".find_by_#{attribute}" do
@@ -23,6 +24,16 @@ describe SalesEngine::Customer do
           SalesEngine::Customer.should be_respond_to("find_by_#{attribute}")
         end
       end
+    end
+
+    it "returns a customer for find by with correct id" do
+      customer = SalesEngine::Customer.find_by_id(test_customer.id.to_i)
+      hash = SalesEngine::Database.instance.customer
+      customer.should === test_customer
+    end
+
+    it "returns an array of customers" do
+      puts SalesEngine::Customer.find_all_by_first_name("John")
     end
   end
 
@@ -65,9 +76,7 @@ describe SalesEngine::Customer do
   context "#favorite_merchant" do
     it "returns a Merchant object" do
       fav_merchant = test_customer.favorite_merchant
-      if fav_merchant
-        fav_merchant.should be_is_a(SalesEngine::Merchant)
-      end
+      fav_merchant.should be_is_a(SalesEngine::Merchant)
     end
   end
 

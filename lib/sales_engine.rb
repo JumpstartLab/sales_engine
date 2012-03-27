@@ -37,12 +37,7 @@ module SalesEngine
       method_name = filename.sub("s.csv","")
       file.each do |line|
         instance = klass.new(line.to_hash)
-        Database.instance.send("#{method_name}") << instance
       end
-    end
-
-    def self.update
-      Database.instance.update
     end
 
   end

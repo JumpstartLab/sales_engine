@@ -11,22 +11,17 @@ module SalesEngine
 
      def initialize (attributes = {})
       define_attributes(attributes)
+      Database.instance.invoice_item[id.to_i][:self] = self
+      Database.instance.invoice[invoice_id.to_i][:invoice_items] << self
+      Database.instance.item[item_id.to_i][:invoice_items] << self
     end
 
     def invoice
-      @invoice ||= calc_invoice
+      @invoice ||= Database.instance.invoice[invoice_id.to_i][:self]
     end
 
     def item
-      @item ||= calc_item
-    end
-
-    def calc_invoice
-      @invoice = Invoice.find_by_id(self.invoice_id)
-    end
-
-    def calc_item
-      @item = Item.find_by_id(self.item_id)
+      @item ||= Database.instance.item[item_id.to_i][:self]
     end
   end
 end

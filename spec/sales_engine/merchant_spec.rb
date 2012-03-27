@@ -107,10 +107,21 @@ describe SalesEngine::Merchant do
     end
   end
 
+  context "#customers_with_pending_invoices" do
+    it "returns an array of customers" do
+      customers = test_merchant.customers_with_pending_invoices
+      customers.should be_is_a(Array)
+      if customers.any?
+        customers.each do |customer|
+          customer.should be_is_a(Customer)
+        end
+      end
+    end 
+  end
+
   context "#favorite customer" do
     it "returns a customer object" do
-      test_merch = SalesEngine::Merchant.find_by_id("2")
-      fav_customer = test_merch.favorite_customer
+      fav_customer = test_merchant.favorite_customer
       if fav_customer
         fav_customer.should be_is_a(SalesEngine::Customer)
       end

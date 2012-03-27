@@ -52,33 +52,31 @@ describe SalesEngine::Invoice do
           transaction.should be_is_a(SalesEngine::Transaction)
         end
       end
+    end
 
-      context "#invoice_items returns a collection of associated InvoiceItem instances" do
-        it "returns an array of InvoiceItem objects" do
-          invoice_items = test_invoice.invoice_items
-          invoice_items.each do |invoice_item|
-            invoice_item.should be_is_a(SalesEngine::InvoiceItem)
-          end
+    context "#invoice_items returns a collection of associated InvoiceItem instances" do
+      it "returns an array of InvoiceItem objects" do
+        invoice_items = test_invoice.invoice_items
+        invoice_items.each do |invoice_item|
+          invoice_item.should be_is_a(SalesEngine::InvoiceItem)
         end
       end
+    end
 
-      context "#items returns a collection of associated Item instances" do
-        it "returns an array of Item objects" do
-          items = test_invoice.items
-          items.each do |item|
-            if item
-              item.should be_is_a(SalesEngine::Item)
-            end
-          end
+    context "#items returns a collection of associated Item instances" do
+      it "returns an array of Item objects" do
+        items = test_invoice.items
+        items.each do |item|
+          item.should be_is_a(SalesEngine::Item)
         end
       end
+    end
 
-      context "#customer returns an instance of Customer associated with this object" do
-        it "returns a Customer" do
-          customer = test_invoice.customer
-          if customer
-            customer.should be_is_a(SalesEngine::Customer)
-          end
+    context "#customer returns an instance of Customer associated with this object" do
+      it "returns a Customer" do
+        customer = test_invoice.customer
+        if customer
+          customer.should be_is_a(SalesEngine::Customer)
         end
       end
     end
