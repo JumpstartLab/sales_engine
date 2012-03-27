@@ -23,4 +23,15 @@ describe SalesEngine::Customer do
     end
   end
 
+  describe "#transactions" do
+    it "returns an array of transactions" do
+      test_customer.transactions.all?{|i| i.is_a? SalesEngine::Transaction}.should == true
+    end
+
+    it "returns transactions associated with this customer" do
+      # Go through every transaction returned
+        # Check if it is associated with the test_customer id 
+    end
+  end
+
 end

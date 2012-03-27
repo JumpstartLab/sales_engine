@@ -20,5 +20,13 @@ class SalesEngine
     def self.random
       SalesEngine::Database.instance.customers.sample
     end
+
+    def transactions
+      correct_transactions = invoices.collect do |invoice|
+        invoice.transactions
+      end
+      correct_transactions.flatten
+    end
+
   end
 end

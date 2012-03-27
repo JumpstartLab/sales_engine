@@ -61,6 +61,16 @@ describe SalesEngine::Merchant do
       end
     end
   end
+
+  describe "#favorite_customer" do
+    
+    it "returns a customer" do
+      test_merchant.favorite_customer.should be_a (SalesEngine::Customer)
+    end
+
+    it "iterates through each customer and checks their totals"
+      # test_merchant.
+  end
 end
 
 

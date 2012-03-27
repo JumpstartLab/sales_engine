@@ -44,5 +44,21 @@ class SalesEngine
       b = BigDecimal.new(sum).truncate(2)
     end
 
+    def favorite_customer
+      this_merchant_customers = invoices.collect do |invoice|
+        invoice.customer
+      end
+
+      most_transactions = 0
+      favorite_customer = nil
+
+      this_merchant_customers.each do |customer|
+        if customer.transactions.count >= most_transactions
+          favorite_customer = customer
+          most_transactions = customer.transactions.count
+        end
+      end
+      return favorite_customer
+    end
   end
 end
