@@ -7,11 +7,11 @@ describe SalesEngine::InvoiceItem do
   let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3",
                                                     :invoice_id => "2", :item_id => "2" ) } 
   let(:inv_one)   { SalesEngine::Invoice.new( :id => "1", :customer_id => "1",
-                                   :created_at => "2012-2-19" ) }
+                                   :updated_at => "2012-2-19" ) }
   let(:inv_two)   { SalesEngine::Invoice.new( :id => "2", :customer_id => "2",
-                                   :created_at => "2012-9-09" ) }
-  let(:item_one){ SalesEngine::Item.new( :id => "1") }
-  let(:item_two){ SalesEngine::Item.new( :id => "2") }
+                                   :updated_at => "2012-9-09" ) }
+  let(:item_one){ SalesEngine::Item.new( :id => "1", :merchant_id => "1") }
+  let(:item_two){ SalesEngine::Item.new( :id => "2", :merchant_id => "2") }
   let(:tr_one)   { SalesEngine::Transaction.new( :invoice_id => "1") }
   let(:tr_two)   { SalesEngine::Transaction.new( :invoice_id => "2", :result => "failure") }
   let(:tr_three) { SalesEngine::Transaction.new( :invoice_id => "2", :result => "success") }
@@ -46,6 +46,14 @@ describe SalesEngine::InvoiceItem do
       end
     end
   end
+
+  describe "#merchant_id" do
+    it "returns the merchant_id associated with the invoice item" do
+      SalesEngine::Database.instance.item_list = [ item_one, item_two ]
+      inv_item_one.merchant_id.should == "1"
+    end
+  end
+
 
   describe ".successful_invoice_items" do
     it "returns an array of the successful invoice items" do

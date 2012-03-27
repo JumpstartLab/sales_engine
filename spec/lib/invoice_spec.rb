@@ -47,6 +47,14 @@ describe SalesEngine::Invoice do
     end
   end
 
+  # DOESN'T WORK - need to do later
+  # describe ".create" do
+  #   it "creates a new invoice from hash" do
+  #     invoice_params = {:customer_id => "3", :merchant_id => "5", :status => "shipped", :items => [ item_one, item_two ], :transaction => transaction}
+  #     # SalesEngine::Invoice.new({ :customer_id => customer.id, :merchant_id => merchant.id, :status => status })
+  #   end
+  # end
+
   describe ".pending" do
     it "returns an array of invoices with no successful transactions" do
       SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
@@ -97,7 +105,6 @@ describe SalesEngine::Invoice do
   # end
 
   describe "#invoices_items" do
-
     it "returns an array of invoice items" do
       SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]
       inv_one.invoice_items.should == [ inv_item_one ]

@@ -228,7 +228,7 @@ describe SalesEngine::Merchant do
     end
   end
 
-  describe ".merchant_data" do
+  describe ".merchant_revenue_data" do
     let(:inv_one)     { mock(SalesEngine::Invoice) }
     let(:inv_two)     { mock(SalesEngine::Invoice) }
     let(:inv_three)   { mock(SalesEngine::Invoice) }
@@ -246,32 +246,87 @@ describe SalesEngine::Merchant do
 
     it "returns a hash with merchant_ids as keys and revenue as values" do
       revenue_hash = { :"1" => 400, :"2" => 200 }
-      SalesEngine::Merchant.merchant_data.should == revenue_hash
+      SalesEngine::Merchant.merchant_revenue_data.should == revenue_hash
     end
 
     context "when no successful transactions" do
       it "returns nil" do
         invoices = [ ]
         SalesEngine::Invoice.stub(:successful_invoices).and_return(invoices)
-        SalesEngine::Merchant.merchant_data.should be_empty       
+        SalesEngine::Merchant.merchant_revenue_data.should be_empty       
       end
     end
   end
 
-  describe ".most_revenue(num)" do
-    let(:inv_one)     { mock(SalesEngine::Invoice) }
-    let(:inv_two)     { mock(SalesEngine::Invoice) }
-    let(:inv_three)   { mock(SalesEngine::Invoice) }
+  # Need to create a merchant item data method
+  describe ".merchant_item_data" do
+    let(:inv_item_one)     { mock(SalesEngine::InvoiceItem) }
+    let(:inv_item_two)     { mock(SalesEngine::InvoiceItem) }
+    let(:inv_item_three)   { mock(SalesEngine::InvoiceItem) }
 
     before(:each) do
-      revenue_hash = { :"1" => 400, :"2" => 200, :"3" => 300 }
-      SalesEngine::Invoice.stub(:merchant_data).and_return(revenue_hash)
+      inv_item_one.stub(:merchant_id).and_return("1")
+      inv_item_two.stub(:merchant_id).and_return("2")
+      inv_item_three.stub(:merchant_id).and_return("1")
+      inv_item_one.stub(:quantity).and_return(10)
+      inv_item_two.stub(:quantity).and_return(20)
+      inv_item_three.stub(:quantity).and_return(30)
+      inv_items = [ inv_item_one, inv_item_two, inv_item_three ]
+      SalesEngine::InvoiceItem.stub(:successful_invoice_items).and_return(inv_items)
+    end
+
+    it "returns hash with merchant_id as keys and the total qty sold as values" do
+      SalesEngine::Merchant.merchant_item_data.should == { :"1" => 40, :"2" => 20 }
+    end
+  end
+
+
+  describe ".most_items(num)" do
+    before(:each) do
+      merchants = [merchant_one, merchant_two, merchant_three ]
+      SalesEngine::Database.instance.stub(:merchant_list).and_return(merchants) 
+    end
+
+    it "returns the num merchants who have sold the most" do
+      item_hash = { :"1" => 10, :"2" => 20, :"3" => 30 }
+      SalesEngine::Merchant.stub(:merchant_item_data).and_return(item_hash)
+      sorted_merchants = [ merchant_three, merchant_two ]
+      SalesEngine::Merchant.most_items(2).should == sorted_merchants
+    end
+
+    # TIE CASE NOT WORKING... REVISIT
+    # context "when there is a tie" do
+    #   it "returns num merchants ranked by most rev, then id" do
+    #     item_hash = { :"1" => 20, :"2" => 20, :"3" => 30 }
+    #     SalesEngine::Merchant.stub(:merchant_item_data).and_return(item_hash)
+    #     sorted_merchants = [  merchant_three, merchant_one, merchant_two ]
+    #     SalesEngine::Merchant.most_items(3).should == sorted_merchants
+    #   end
+    # end 
+  end
+
+  describe ".most_revenue(num)" do
+
+    before(:each) do
+      merchants = [merchant_one, merchant_two, merchant_three ]
+      SalesEngine::Database.instance.stub(:merchant_list).and_return(merchants)   
     end
 
     it "returns the top x merchants" do
-      revenue_hash = { :"1" => 400, :"3" => 300, :"2" => 200 }
-      SalesEngine::Merchant.most_revenue(3).should == revenue_hash
-    end    
+      sorted_merchants = [ merchant_one, merchant_three, merchant_two ]
+      revenue_hash = { :"1" => 400, :"2" => 200, :"3" => 300 }
+      SalesEngine::Merchant.stub(:merchant_revenue_data).and_return(revenue_hash)
+      SalesEngine::Merchant.most_revenue(3).should == sorted_merchants
+    end   
+
+    context "when there is a tie" do
+      it "returns num merchants ranked by most rev, then id" do
+        revenue_hash = { :"1" => 400, :"2" => 600, :"3" => 400 }
+        SalesEngine::Merchant.stub(:merchant_revenue_data).and_return(revenue_hash)
+        sorted_merchants = [ merchant_two, merchant_one, merchant_three ]
+        SalesEngine::Merchant.most_revenue(3).should == sorted_merchants
+      end
+    end 
   end
 
   # describe ".dates_by_revenue" do
