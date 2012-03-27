@@ -17,13 +17,17 @@ describe SalesEngine::Customer do
     end
 
     describe ".find_by_last_name" do
-      customer = SalesEngine::Customer.find_by_last_name "Ullrich"
-      customer.first_name.should == "Ramon"
+      it "finds a record" do
+        customer = SalesEngine::Customer.find_by_last_name "Ullrich"
+        customer.first_name.should == "Ramon"
+      end
     end
 
     describe ".find_all_by_first_name" do
-      customers = SalesEngine::Customer.find_all_by_first_name "Sasha"
-      customers.should have(2).customers
+      it "can find multiple records" do
+        customers = SalesEngine::Customer.find_all_by_first_name "Sasha"
+        customers.should have(2).customers
+      end
     end
   end
 
