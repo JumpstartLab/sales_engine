@@ -46,7 +46,11 @@ class SalesEngine
     end
 
     def total
-      return invoice_items.inject{|sum, ii| sum + ii.total}
+      sum = 0
+      invoice_items.each do |ii|
+        sum += ii.total
+      end
+      sum
     end
   end
 end

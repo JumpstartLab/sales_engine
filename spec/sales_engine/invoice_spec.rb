@@ -75,21 +75,6 @@ describe SalesEngine::Invoice do
       it "returns a number" do
         test_invoice.total.should be_a Fixnum
       end
-
-      # it "adds the total of invoice items" do
-      #   test_ii_1.quantity = "10"
-      #   test_ii_2.quantity = "10"
-      #   test_ii_1.unit_price = "2"
-      #   test_ii_2.unit_price = "2"
-
-
-      #   test_ii_1.invoice_id = "10001"
-      #   test_ii_2.invoice_id = "10001"
-      #   puts "test_ii_2 is #{test_ii_2.inspect}"
-      #   puts "test_ii_2 is #{test_ii_2.total}"
-      #   test_invoice.id = "10001"
-      #   test_invoice.total.should == 20
-      # end
     end
   end
 
