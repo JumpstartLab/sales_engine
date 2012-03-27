@@ -51,7 +51,6 @@ module SalesEngine
     end
 
     def best_day
-      ## VERIFY THAT THIS WORKS
       results = Hash.new(0)
       invoice_items.each do |item|
         results[item.date] += item.quantity

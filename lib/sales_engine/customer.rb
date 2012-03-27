@@ -42,5 +42,15 @@ module SalesEngine
       fm_id = inv.sort_by{|i| i.last.size}.last.first
       SalesEngine::Merchant.find_by_id(fm_id)
     end
+
+    def days_since_activity
+      last_date = invoices.sort_by(&:created_at).last.created_at
+      ((DateTime.now - last_date).to_f + 0.5).round
+    end
+
+    def pending_invoices
+      invoices.select { |i| i.transactions.map(&:result).include?("pending") }
+    end
+
   end
 end
