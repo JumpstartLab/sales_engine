@@ -35,4 +35,34 @@ describe SalesEngine::Customer do
       end
     end
   end
+  
+  describe "#transactions" do
+    let(:customer) { Fabricate(:customer, :id => 1) }
+    let(:transaction) { double("transaction") } 
+    let(:other_transaction) { double("transaction") } 
+
+    context "multiple transactions" do 
+      it "returns an array of transactions" do
+        SalesEngine::Database.instance.stub(:transactions_by_customer).with(1).
+          and_return([transaction, other_transaction])
+        customer.transactions.should == [transaction, other_transaction]
+      end
+    end
+
+    context "one transaction" do
+      it "returns an array of one transaction" do
+        SalesEngine::Database.instance.stub(:transactions_by_customer).with(1).
+          and_return([transaction])
+        customer.transactions.should == [transaction]
+      end
+    end
+
+    context "no transactions" do
+      it "returns an empty array" do
+        SalesEngine::Database.instance.stub(:transactions_by_customer).with(1).
+          and_return([])
+        customer.transactions.should == []
+      end
+    end
+  end
 end

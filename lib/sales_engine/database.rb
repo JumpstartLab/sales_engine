@@ -65,16 +65,7 @@
      def transactions 
        transactions = []
        db.execute("select * from transactions") do |row|
-         id = row[0]
-         invoice_id = row[1]
-         credit_card_number = row[2]
-         credit_card_expiration_date = row[3]
-         result = row[4]
-         created_at = row[5]
-         updated_at = row[6]
-         transactions << Transaction.new(id, invoice_id, credit_card_number, 
-                                         credit_card_expiration_date, result, 
-                                         created_at, updated_at)
+         transactions << create_transaction(row)
        end
        transactions 
      end
@@ -97,6 +88,20 @@
       invoice_items
      end
 
+     def transactions_by_customer(customer_id)
+       transactions = []
+       query = "SELECT transactions.id as transaction_id, invoice_id,
+                credit_card_number, credit_card_expiration_date, result,
+                transactions.created_at, transactions.updated_at FROM invoices
+                INNER JOIN transactions on
+                invoices.id = transactions.invoice_id
+                AND customer_id = #{customer_id}"
+       db.execute(query)  do |row|
+         transactions << create_transaction(row)
+       end
+      transactions
+     end
+
      private_class_method :new
 
      private
@@ -110,6 +115,19 @@
        created_at = row[5]
        updated_at = row[6]
        InvoiceItem.new(id, item_id, invoice_id, quantity, unit_price, 
+                       created_at, updated_at)
+     end
+
+     def create_transaction(row)
+       id = row[0]
+       invoice_id = row[1]
+       credit_card_number = row[2]
+       credit_card_expiration_date = row[3]
+       result = row[4]
+       created_at = row[5]
+       updated_at = row[6]
+       Transaction.new(id, invoice_id, credit_card_number, 
+                       credit_card_expiration_date, result, 
                        created_at, updated_at)
      end
    end

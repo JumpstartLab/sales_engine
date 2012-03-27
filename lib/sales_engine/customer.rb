@@ -22,5 +22,9 @@ module SalesEngine
     def invoices
       SalesEngine::Database.instance.invoices.select { |invoice| invoice.customer_id == id }  
     end
+
+    def transactions
+      SalesEngine::Database.instance.transactions_by_customer(id)
+    end
   end
 end
