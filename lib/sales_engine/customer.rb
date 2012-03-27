@@ -46,18 +46,8 @@ module SalesEngine
       trans_results
     end
 
-    def successful_transactions
-      results = self.transactions.select do |transaction|
-        transaction if transaction.is_successful?
-      end
-      results
-    end
-
     def successful_invoices
-      results = successful_transactions.collect do |transaction|
-        SalesEngine::Invoice.find_by_id(transaction.invoice_id)
-      end
-      results 
+      results = invoices.select { |inv| inv if inv.is_successful? }
     end
 
     def favorite_merchant

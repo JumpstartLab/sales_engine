@@ -53,5 +53,29 @@ module SalesEngine
       results.each { |invoice| total_revenue += invoice.invoice_revenue }
       total_revenue
     end
+
+    def successful_invoices
+      results = invoices.select { |inv| inv if inv.is_successful? }
+    end
+
+    def favorite_customer
+      customer_data = { }
+
+      successful_invoices.each do |invoice|
+        customer_data[ invoice.customer_id.to_sym ] ||= 0
+        customer_data[ invoice.customer_id.to_sym ] += 1
+      end
+
+      customer_data_max = customer_data.max_by{ |k, v| v }
+      return nil if customer_data_max.nil?
+      SalesEngine::Customer.find_by_id(customer_data_max.first)   
+    end
+
+    def customers_with_pending_invoices  
+      pending_invoices = invoices - successful_invoices
+      pending_invoices.collect do |inv|
+        SalesEngine::Customer.find_by_id(inv.customer_id)
+      end
+    end
   end
 end
