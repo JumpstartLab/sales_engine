@@ -82,6 +82,14 @@ module SalesEngine
       SalesEngine::Database.instance.invoice_list - successful_invoices
     end
 
+    def self.find_all_successful_invoices_by_date(date)
+      successful_invoices.select do |i|
+        dt = i.created_at
+        date = Time.parse(date) if date.kind_of? String
+        i if date == Time.new(dt.year, dt.mon, dt.mday)
+      end
+    end
+
     def self.find_all_by_date(date)
       SalesEngine::Database.instance.invoice_list.select do |i|
         dt = i.created_at
@@ -105,7 +113,7 @@ module SalesEngine
           #divide the sum by all the invoices that happened on date
         total_rev = BigDecimal.new("0.00")
         date = Time.parse(date.first)
-        inv_on_date = find_all_by_date(date)
+        inv_on_date = find_all_successful_invoices_by_date(date)
         inv_ids_on_date = inv_on_date.collect { |inv| inv.id }
         inv_ids_on_date.each do |inv_id|
           total_rev += SalesEngine::InvoiceItem.total_revenue_by_invoice_id(inv_id)
