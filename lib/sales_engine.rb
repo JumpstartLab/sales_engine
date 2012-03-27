@@ -39,5 +39,4 @@ module SalesEngine
         instance = klass.new(line.to_hash)
       end
     end
-
   end
