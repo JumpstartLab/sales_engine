@@ -23,7 +23,7 @@ module SalesEngine
 
     class << self
       attributes = [:id, :customer_id, :merchant_id, :status, 
-                    :created_at, :updated_at]
+                    :created_at, :updated_at, :date]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
           find_invoices(attribute, input.to_s)

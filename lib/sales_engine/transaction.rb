@@ -23,7 +23,7 @@ module SalesEngine
     class << self
       attributes = [:id, :invoice_id, :credit_card_number,
                   :credit_card_expiration_date, :result,
-                  :created_at, :updated_at]
+                  :created_at, :updated_at, :date]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
           find_transactions(attribute, input.to_s)

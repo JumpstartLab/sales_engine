@@ -63,14 +63,17 @@ module SalesEngine
         # returns the total revenue for that merchant across all transactions
 
       rev = 0
-      inv_item_ids = self.charged_invoices.collect { |i| i.id }
-      inv_item_ids.each do |id|
-        inv_item = Database.instance.invoice_items.find do |i|
-          i.send(:id) == id
+      inv_items = []
+
+      self.charged_invoices.each do |inv|
+        inv.invoice_items.each do |inv_item|
+          inv_items << inv_item
         end
+      end
+
+      inv_items.each do |inv_item|
         rev += (inv_item.unit_price.to_i * inv_item.quantity.to_i)
       end
-      # need to return as BigDecimal
       rev
     end
 

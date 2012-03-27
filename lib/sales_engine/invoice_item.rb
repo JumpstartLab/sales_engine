@@ -20,7 +20,7 @@ module SalesEngine
 
     class << self
       attributes = [:id, :item_id, :invoice_id, :quantity, 
-                  :unit_price, :created_at, :updated_at]
+                  :unit_price, :created_at, :updated_at, :date]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
           find_invoice_items(attribute, input.to_s)
