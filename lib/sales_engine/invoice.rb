@@ -2,7 +2,7 @@ module SalesEngine
   class Invoice
     extend Searchable
     attr_accessor :customer_id, :id, :merchant_id, :status, :created_at
-    attr_accessor :raw_csv, :num_items
+    attr_accessor :raw_csv
 
 
     def self.records
@@ -56,6 +56,18 @@ module SalesEngine
       end
     end
 
+    def self.average_items(date = nil)
+      if date
+        date_inv = all.select do |i|
+          i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
+        end
+        total_items = date_inv.map(&:num_items).inject(:+)
+        BigDecimal((total_items / date_inv.size.to_f).to_s) rescue BigDecimal("0")
+      else
+        BigDecimal((all.map(&:num_items).inject(:+) / all.size).to_s)
+      end
+    end
+
     def initialize(raw_line)
       self.id = raw_line[:id].to_i
       self.customer_id = raw_line[:customer_id].to_i
@@ -97,6 +109,18 @@ module SalesEngine
 
     def total_paid=(value)
       @total_paid = value
+    end
+
+    def num_items
+      if successful_transaction
+        @num_items
+      else
+        0
+      end
+    end
+
+    def num_items=(value)
+      @num_items = value
     end
 
     def charge(params)
