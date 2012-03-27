@@ -32,7 +32,7 @@ class SalesEngine
       puts "Merchants loaded"
     end
 
-    def get_merchants
+    def merchants
       @merchants
     end
 
@@ -45,7 +45,7 @@ class SalesEngine
       puts "Items Loaded"
     end
  
-    def get_items
+    def items
       @items
     end
 
@@ -58,7 +58,7 @@ class SalesEngine
       puts "Invoices Loaded"
     end
 
-    def get_invoices
+    def invoices
       @invoices
     end
 
@@ -71,7 +71,7 @@ class SalesEngine
       puts "customers loaded"
     end
 
-    def get_customers
+    def customers
       @customers
     end
 
@@ -84,7 +84,7 @@ class SalesEngine
       puts "Invoice Items Loaded"
     end
 
-    def get_invoice_items
+    def invoice_items
       @invoice_items
     end
 
@@ -97,7 +97,7 @@ class SalesEngine
       puts "transactions Loaded"
     end
 
-    def get_transactions
+    def transactions
       @transactions
     end
 

@@ -13,7 +13,7 @@ class SalesEngine
     end
 
     def self.random
-      SalesEngine::Database.instance.get_merchants.sample
+      SalesEngine::Database.instance.merchants.sample
     end
 
     # def self.find_by_X(match)
@@ -24,7 +24,7 @@ class SalesEngine
 
     # returns a collection of Item instances associated with that merchant for their products
     def items
-      temp_items = SalesEngine::Database.instance.get_items
+      temp_items = SalesEngine::Database.instance.items
       correct_items = []
       temp_items.each do |item|
         if item.merchant_id == @id
@@ -36,7 +36,7 @@ class SalesEngine
 
     # returns a collection of invoice instances associated with this merchant
     def invoices
-      temp_invoices = SalesEngine::Database.instance.get_invoices
+      temp_invoices = SalesEngine::Database.instance.invoices
       correct_invoices = []
       temp_invoices.each do |invoice|
         if invoice.merchant_id == @id

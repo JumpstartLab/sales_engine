@@ -24,7 +24,7 @@ class SalesEngine
     # # end
 
     def invoice_items
-      temp_invoice_items = SalesEngine::Database.instance.get_invoice_items
+      temp_invoice_items = SalesEngine::Database.instance.invoice_items
       correct_invoice_items = []
       temp_invoice_items.each do |invoice_item|
         if invoice_item.item_id == @id

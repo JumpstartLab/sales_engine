@@ -28,25 +28,15 @@ class SalesEngine
     # end
 
     def invoice
-      temp_invoices = SalesEngine::Database.instance.get_invoices
-      correct_invoice = nil
-      temp_invoices.each do |the_invoice|
-        if the_invoice.id == @invoice_id
-          correct_invoice = the_invoice
-        end
+      SalesEngine::Database.instance.invoices.find do |invoice|
+        invoice.id == @invoice_id
       end
-      correct_invoice
     end
 
     def item
-      temp_items = SalesEngine::Database.instance.get_items
-      correct_item = nil
-      temp_items.each do |the_item|
-          if the_item.id == @item_id
-              correct_item = the_item
-          end
+      SalesEngine::Database.instance.items.find do |item|
+        item.id == @item_id
       end
-      return correct_item
     end
 
     # def customer

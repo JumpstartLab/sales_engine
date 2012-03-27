@@ -7,10 +7,10 @@ class SalesEngine
     attr_accessor :invoice_id
 
     def initialize(attr)
-        @invoice_id = attr[:invoice_id]
-        @credit_card_number = attr[:credit_card_number]
-        @credit_card_expiration_date = attr[:credit_card_expiration_date]
-        @result = attr[:result]
+      @invoice_id = attr[:invoice_id]
+      @credit_card_number = attr[:credit_card_number]
+      @credit_card_expiration_date = attr[:credit_card_expiration_date]
+      @result = attr[:result]
     end
     # def self.random
     # # return a random Merchant
@@ -23,14 +23,10 @@ class SalesEngine
     # # end
 
     def invoice
-      temp_invoices = SalesEngine::Database.instance.get_invoices
-      correct_invoice = nil
-      temp_invoices.each do |the_invoice|
-        if the_invoice.id == @invoice_id
-          correct_invoice = the_invoice
-        end
+      SalesEngine::Database.instance.invoices.find do |invoice|
+        invoice.id == @invoice_id
       end
-      correct_invoice
     end
+
   end
 end
