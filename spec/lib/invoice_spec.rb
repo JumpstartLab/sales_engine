@@ -47,6 +47,18 @@ describe SalesEngine::Invoice do
     end
   end
 
+  describe "basic finder methods" do
+    SalesEngine::Invoice::INVOICE_ATTS.each do |attribute|
+      it "should respond to #find_by_#{attribute}" do
+        SalesEngine::Invoice.should respond_to("find_by_#{attribute}")
+      end
+
+      it "should respond to #find_all_by_#{attribute}" do
+        SalesEngine::Invoice.should respond_to("find_all_by_#{attribute}")
+      end
+    end
+  end
+
   # DOESN'T WORK - need to do later
   # describe ".create" do
   #   it "creates a new invoice from hash" do
