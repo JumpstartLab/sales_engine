@@ -4,10 +4,12 @@
    let(:sqlite_db) { SQLite3::Database.new('data/integration_test.sqlite')}
 
    before(:each) do
-     #SalesEngine::Database.instance.db = sqlite_db
+     SalesEngine::Database.instance.db = sqlite_db
    end
    describe "Merchant.most_revenue" do
      it "returns Merchants" do
+       #puts SalesEngine::Merchant.find_by_id(1).revenue("2012-02-26 20:56:56 UTC")
+       #SalesEngine::Merchant.most_revenue(10).each { |merchant| puts merchant.name }
      end
 
      it "returns Invoices" do

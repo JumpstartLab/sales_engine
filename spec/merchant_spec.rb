@@ -100,20 +100,10 @@ describe SalesEngine::Merchant do
     end
 
     context "when date is not passed" do
-      context "when there are invoices" do
-        it "returns invoice items" do
-          SalesEngine::Database.instance.stub(:invoices).and_return(invoices)      
-          invoices.stub(:select).and_return([invoice, invoice2])
-          merchant = Fabricate(:merchant, :id => 3)
-          merchant.invoice_items.should == [invoice_item, other_invoice_item, invoice_item2]
-        end
-
-        context "when there are no invoices" do
-          it "return no invoice items" do
-            SalesEngine::Database.instance.stub(:invoices).and_return([])      
-            merchant.invoice_items.should == []
-          end
-        end
+      it "delgates to the Database#invoice_items_by_merchant" do
+          SalesEngine::Database.instance.should_receive(
+            :invoice_items_by_merchant).with(3)
+          merchant.invoice_items
       end
     end
   end

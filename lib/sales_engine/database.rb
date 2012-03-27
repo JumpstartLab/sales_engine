@@ -82,23 +82,38 @@
      def invoice_items 
        invoice_items = []
        db.execute("select * from invoice_items") do |row|
-         id = row[0]
-         item_id = row[1]
-         invoice_id = row[2]
-         quantity = row[3]
-         unit_price = row[4]
-         created_at = row[5]
-         updated_at = row[6]
-         invoice_items << InvoiceItem.new(id, item_id, invoice_id, quantity,
-                                         unit_price, created_at, updated_at)
+         invoice_items << create_invoice_item(row)
        end
        invoice_items 
      end
+      
+     def invoice_items_by_merchant(merchant_id)
+       invoice_items = []
+       query = "select * from invoice_items where invoice_id in (select id from invoices 
+       where merchant_id = #{merchant_id})"
+       db.execute(query)  do |row| 
+         invoice_items << create_invoice_item(row)
+       end
+      invoice_items
+     end
 
      private_class_method :new
+
+     private
+
+     def create_invoice_item(row)
+       id = row[0]
+       item_id = row[1]
+       invoice_id = row[2]
+       quantity = row[3]
+       unit_price = row[4]
+       created_at = row[5]
+       updated_at = row[6]
+       InvoiceItem.new(id, item_id, invoice_id, quantity, unit_price, 
+                       created_at, updated_at)
+     end
    end
  end 
-
 
 #module SalesEngine
   #class Database

@@ -32,7 +32,11 @@ module SalesEngine
     end
 
     def invoice_items(date = nil)
-      invoices(date).collect { |invoice| invoice.invoice_items }.flatten
+      if date
+        invoices(date).collect { |invoice| invoice.invoice_items }.flatten
+      else 
+        SalesEngine::Database.instance.invoice_items_by_merchant(id)
+      end
     end
 
     def revenue(date = nil)
