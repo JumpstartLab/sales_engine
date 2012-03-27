@@ -1,4 +1,4 @@
-require "class_methods"
+require "sales_engine/class_methods"
 class Database 
   ATTRIBUTES = [:transaction, :customer, :item, :invoice_item,
     :merchant, :invoice]

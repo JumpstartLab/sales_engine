@@ -1,6 +1,6 @@
-require 'class_methods'
-require 'item'
-require 'invoice'
+require 'sales_engine/class_methods'
+require 'sales_engine/item'
+require 'sales_engine/invoice'
 require "date"
 module SalesEngine
   class InvoiceItem

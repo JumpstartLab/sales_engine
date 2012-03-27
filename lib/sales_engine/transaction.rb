@@ -1,5 +1,5 @@
-require 'class_methods'
-require 'invoice'
+require 'sales_engine/class_methods'
+require 'sales_engine/invoice'
 require "date"
 module SalesEngine
   class Transaction

@@ -5,7 +5,7 @@ $:.unshift lib unless $:.include?(lib)
 require 'bundler/version'
  
 Gem::Specification.new do |s|
-  s.name        = "salesengine-tyreworace"
+  s.name        = "sales_engine"
   s.version     = 1
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Chris Maddox", "Horace Williams"]
@@ -16,9 +16,9 @@ Gem::Specification.new do |s|
  
   s.required_rubygems_version = ">= 1.3.6"
  
-  s.add_development_dependency "rspec"
+  s.add_development_dependency ["rspec", "awesome_print"]
+
  
-  s.files        = Dir.glob("{bin,lib}/**/*") + %w(LICENSE README.md ROADMAP.md CHANGELOG.md)
-  s.executables  = ['bundle']
+  s.files        = Dir.glob("{lib}/**/*")
   s.require_path = 'lib'
 end

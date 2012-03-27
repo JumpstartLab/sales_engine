@@ -1,7 +1,7 @@
-require 'class_methods'
-require 'transaction'
-require 'item'
-require 'customer'
+require 'sales_engine/class_methods'
+require 'sales_engine/transaction'
+require 'sales_engine/item'
+require 'sales_engine/customer'
 require "date"
 
 module SalesEngine

@@ -7,7 +7,6 @@ class String
   end
 end
 module SalesEngine
-
   module SearchMethods
     def self.extended(base)
       base.class_eval do
@@ -126,14 +125,3 @@ module SalesEngine
     end
   end
 end
-
-
-      # ATTRIBUTES.each do |attribute|
-      #   define_singleton_method("all_#{attribute}s") do
-      #     self.instance.send("#{attribute}").collect do |i, hash|
-      #       self.instance.send("#{attribute}")[i][:self]
-      #     end
-      #   end
-      # end
-
-

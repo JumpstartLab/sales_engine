@@ -1,8 +1,7 @@
-require 'class_methods'
-require 'merchant'
-require 'invoice_item'
+require 'sales_engine/class_methods'
+require 'sales_engine/merchant'
+require 'sales_engine/invoice_item'
 require "date"
-require "awesome_print"
 module SalesEngine
   class Item
     ATTRIBUTES = [:id, :name, :description, :unit_price, :merchant_id,
