@@ -8,19 +8,27 @@ SalesEngine.startup
 
 
 
+##############################################################################
+          # Customer.most_revenue
+##############################################################################
 
-
-# test = SalesEngine::Customer.find_by_id
+# test = SalesEngine::Customer.find_by_id("75")
 # ap test.total_spent
-
 # ap SalesEngine::Customer.most_revenue.total_spent
-# 16634950.0
-# 19064845.0
+# 16634950.0 =>  total spent for customer 75
+# 19064845.0 => total spent by biggest spender
 
+##############################################################################
+          # Customer.most_items
+##############################################################################
 
 # ap SalesEngine::Customer.most_items.items_purchased
-# items_purchased == 354
-# @id=\"75\", @first_name=\"Cole\", @last_name=\"Deshaun\"
+# 354 => most items purchased by a customer
+# id=\"75\", @first_name=\"Cole\", @last_name=\"Deshaun\" <= info for customer
+
+##############################################################################
+          # Customer#pending_invoices
+##############################################################################
 
 # SalesEngine::Invoice.create({:id => "5001", :status => "pending", :customer_id => "25", :merchant_id => "15"})
 
@@ -35,6 +43,9 @@ SalesEngine.startup
 #     >
 # ]
 
+##############################################################################
+          # Customer#days_since_activity
+##############################################################################
 
 # SalesEngine::Transaction.new({:invoice_id => "2", :created_at => "2012-03-15"})
 # ap SalesEngine::Customer.find_by_id("1").days_since_activity
@@ -44,23 +55,35 @@ SalesEngine.startup
 # >
 # 12
 
+##############################################################################
+          # Invoice.average_items(date)
+##############################################################################
 
 # SalesEngine::Invoice.average_items(Date.parse("2012-02-15"))
-# 6315
-# 260
+# 6315 => average items amongst invoices w/ transactions on that day
+# 260 => invoices with transactions on that day
 
+##############################################################################
+          # Invoice.average_revenue(date)
+##############################################################################
 
 # ap SalesEngine::Invoice.average_revenue(Date.parse("2012-02-15"))
 # 311307471 (total revenue for Feb-15)
 # 246 (invoices)
 # 1265477 (average revenue for Feb 15)
 
+##############################################################################
+          # Invoice.average_revenue
+##############################################################################
 
 # ap SalesEngine::Invoice.average_revenue
 # 0.6153883021E10 (total_revenue)
 # 4985 (invoices)
 # 1234480.044332999 (average)
 
+##############################################################################
+          # Merchant#customers_with_pending_invoices
+##############################################################################
 
 # SalesEngine::Invoice.create({:id => "5001", :status => "pending", :customer_id => "25", :merchant_id => "15"})
 # test_merchant = SalesEngine::Merchant.find_by_id("15")
@@ -74,9 +97,14 @@ SalesEngine.startup
 #         attr_accessor :last_name = "Brianne",
 #         attr_accessor :updated_at = #<Date: 2012-02-26 ((2455984j,0s,0n),+0s,2299161j)>
 #     >
+
+##############################################################################
+          # Merchant.revenue(date) && Merchant.revenue(date_range)
+##############################################################################
+
 # # ap SalesEngine::Merchant.revenue(Date.parse("2012-02-15"))
-# 326543512.0
+# 326543512.0 =>revenue for Feb 15
 # # ap SalesEngine::Merchant.revenue(Date.parse("2012-02-16"))
-# 311307471.0
+# 311307471.0 => revenue for Feb 16
 # # ap SalesEngine::Merchant.revenue(Date.parse("2012-02-15"), Date.parse("2012-02-16"))
-# 637850983.0
+# 637850983.0 => revenue for Feb 15 & 16
