@@ -5,6 +5,7 @@ describe SalesEngine::Customer do
   let(:customer_zero) { SalesEngine::Customer.new(:id => "0") }
   let(:customer_one) { SalesEngine::Customer.new(:id => "1") }
   let(:customer_two) { SalesEngine::Customer.new(:id => "2") }
+  let(:customer_three) { SalesEngine::Customer.new(:id => "3") }
 
   let(:invoice_one) { SalesEngine::Invoice.new(:id => "1", :customer_id => "0", :merchant_id => "0") }
   let(:invoice_two) { SalesEngine::Invoice.new(:id => "2", :customer_id => "2", :merchant_id => "0") }
@@ -41,6 +42,58 @@ describe SalesEngine::Customer do
         SalesEngine::Database.instance.invoice_list = [ invoice_one, invoice_two, invoice_three ]
         SalesEngine::Database.instance.transaction_list = [ trans_one, trans_two, trans_three ]
         customer_one.transactions.should be_empty
+      end
+    end
+  end
+
+  describe "#successful_transactions" do
+    let(:trans_one)     { mock(SalesEngine::Transaction) }
+    let(:trans_two)     { mock(SalesEngine::Transaction) }
+    let(:trans_three)   { mock(SalesEngine::Transaction) }
+
+    before(:each) do
+      trans_one.stub(:is_successful?).and_return(true)
+      trans_two.stub(:is_successful?).and_return(true)
+      trans_three.stub(:is_successful?).and_return(false)
+      transactions = [ trans_one, trans_two, trans_three ]
+      customer_one.stub(:transactions).and_return(transactions)
+    end
+   
+    it "returns successful transactions associated with the customer" do
+      customer_one.successful_transactions.should == [ trans_one, trans_two ]
+    end
+
+    context "when no successful transactions" do
+      it "returns an empty array" do
+        customer_three.successful_transactions.should == [ ]
+      end
+    end
+  end
+
+  describe "#successful_invoices" do
+    let(:inv_one)     { mock(SalesEngine::Invoice) }
+    let(:inv_two)     { mock(SalesEngine::Invoice) }
+    let(:inv_three)   { mock(SalesEngine::Invoice) }
+
+    before(:each) do
+      trans_one.stub(:invoice_id).and_return("1")
+      trans_two.stub(:invoice_id).and_return("2")
+      inv_one.stub(:id).and_return("1")
+      inv_two.stub(:id).and_return("2")
+      successful_trans = [ trans_one, trans_two ]
+      customer_one.stub(:successful_transactions).and_return(successful_trans)
+      invoices = [ inv_one, inv_two ]
+      SalesEngine::Database.instance.stub(:invoice_list).and_return(invoices)
+    end
+   
+    it "returns successful invoices associated with the customer" do
+      customer_one.successful_invoices.should == [ inv_one, inv_two ]
+    end
+
+    context "when no successful transactions" do
+      it "returns an empty array" do
+        customer_one.stub(:successful_transactions).and_return([ ])
+        customer_one.successful_invoices.should == [ ]
       end
     end
   end
