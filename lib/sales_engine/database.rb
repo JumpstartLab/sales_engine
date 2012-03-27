@@ -80,8 +80,8 @@
       
      def invoice_items_by_merchant(merchant_id)
        invoice_items = []
-       query = "select * from invoice_items where invoice_id in (select id from invoices 
-       where merchant_id = #{merchant_id})"
+       query = "select * from invoice_items where invoice_id in 
+       (select id from invoices where merchant_id = #{merchant_id})"
        db.execute(query)  do |row| 
          invoice_items << create_invoice_item(row)
        end
@@ -132,12 +132,3 @@
      end
    end
  end 
-
-#module SalesEngine
-  #class Database
-    #class << self
-      #attr_accessor :merchants, :invoices, :items,
-                    #:invoice_items, :transactions, :customers                    
-    #end
-  #end
-#end 

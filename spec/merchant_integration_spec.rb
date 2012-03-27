@@ -9,7 +9,7 @@
    describe "Merchant.most_revenue" do
      it "returns Merchants" do
        #puts SalesEngine::Merchant.find_by_id(1).revenue("2012-02-26 20:56:56 UTC")
-       #SalesEngine::Merchant.most_revenue(10).each { |merchant| puts merchant.name }
+      # SalesEngine::Merchant.most_revenue(10).each { |merchant| puts merchant.name }
      end
 
      it "returns Invoices" do
