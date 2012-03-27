@@ -24,12 +24,16 @@ module SalesEngine
       invoices = DataStore.instance.invoices
     end
 
+    def transcations_array
+      transactions = DataStore.instance.transactions
+    end
+
     def self.random
         self.customers.sample
     end
 
     def self.find_by_id(match)
-      SalesEngine::Search.find_all_by("id", match, self.customers).sample
+      SalesEngine::Search.find_by("id", match, self.customers)
     end
 
     def self.find_all_by_id(match)
@@ -37,7 +41,7 @@ module SalesEngine
     end
 
     def self.find_by_first_name(match)
-      SalesEngine::Search.find_all_by("first_name", match, self.customers).sample
+      SalesEngine::Search.find_by("first_name", match, self.customers)
     end
 
     def self.find_all_by_first_name(match)
@@ -45,7 +49,7 @@ module SalesEngine
     end
 
     def self.find_by_last_name(match)
-      SalesEngine::Search.find_all_by("last_name", match, self.customers).sample
+      SalesEngine::Search.find_by("last_name", match, self.customers)
     end
 
     def self.find_all_by_last_name(match)
@@ -53,7 +57,7 @@ module SalesEngine
     end
 
     def self.find_by_updated_at(match)
-      SalesEngine::Search.find_all_by("updated_at", match, self.customers).sample
+      SalesEngine::Search.find_by("updated_at", match, self.customers)
     end
 
     def self.find_all_by_updated_at(match)
@@ -61,7 +65,7 @@ module SalesEngine
     end
 
     def self.find_by_created_at(match)
-      SalesEngine::Search.find_all_by("created_at", match, self.customers).sample
+      SalesEngine::Search.find_by("created_at", match, self.customers)
     end
 
     def self.find_all_by_created_at(match)
@@ -69,8 +73,45 @@ module SalesEngine
     end
 
     def invoices
-      invoices = []
-      invoices = invoices_array.select { |inv| inv.customer_id == id}
+      #@invoices || invoices_array.select { |inv| inv.customer_id == id}
+      invoices_array.select { |inv| inv.customer_id == id}
+    end
+
+    def invoices=(input)
+      @invoices = input
+    end
+
+    def invoice_ids
+      invoice_ids = []
+      invoices.each do |inv|
+        invoice_ids << inv.id
+      end
+      invoice_ids
+    end
+
+    def transactions
+      transcations_array.select {|trans| invoice_ids.include?(trans.invoice_id)}
+    end
+
+    def merchants_array
+      merchants = []
+      invoices.each do |invoice|
+        merchants << invoice.merchant_id
+      end
+      merchants
+    end
+
+    def favorite_merchant
+      merchants_hash = {}
+      merchants_array.each do |merchant|
+        if merchants_hash.has_key?(merchant)
+          merchants_hash[merchant] += 1
+        else
+          merchants_hash[merchant] = 1
+        end
+      end
+      merch_id = merchants_hash.max_by{ |merchant, count| count}[0]
+      Merchant.find_by_id(merch_id)
     end
   end
 end

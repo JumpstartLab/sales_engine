@@ -18,13 +18,20 @@ module SalesEngine
       self.updated_at = attributes[:updated_at].to_s
     end
 
+    def self.transactions
+      DataStore.instance.transactions
+    end
+
+    def self.random
+        self.transactions.sample
+    end
+
     def invoices_array
       invoices = DataStore.instance.invoices
     end
 
-    def invoices
-      invoices = []
-      invoices = invoices_array.select { |inv| inv.id == invoice_id}
+    def invoice
+      invoices_array.detect { |inv| inv.id == invoice_id}
     end
 
   end

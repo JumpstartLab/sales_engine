@@ -39,14 +39,12 @@ module SalesEngine
       customers = DataStore.instance.customers
     end
 
-
     def self.random
-        self.invoices.sample
-        self.invoices.sample
+      self.invoices.sample
     end
 
     def self.find_by_id(match)
-      SalesEngine::Search.find_all_by("id", match, self.invoices).sample
+      SalesEngine::Search.find_by("id", match, self.invoices)
     end
 
     def self.find_all_by_id(match)
@@ -54,7 +52,7 @@ module SalesEngine
     end
 
     def self.find_by_customer_id(match)
-      SalesEngine::Search.find_all_by("customer_id", match, self.invoices).sample
+      SalesEngine::Search.find_by("customer_id", match, self.invoices)
     end
 
     def self.find_all_by_customer_id(match)
@@ -62,7 +60,7 @@ module SalesEngine
     end
 
     def self.find_by_merchant_id(match)
-      SalesEngine::Search.find_all_by("merchant_id", match, self.invoices).sample
+      SalesEngine::Search.find_by("merchant_id", match, self.invoices)
     end
 
     def self.find_all_by_merchant_id(match)
@@ -70,7 +68,7 @@ module SalesEngine
     end
 
     def self.find_by_status(match)
-      SalesEngine::Search.find_all_by("status", match, self.invoices).sample
+      SalesEngine::Search.find_by("status", match, self.invoices)
     end
 
     def self.find_all_by_status(match)
@@ -78,7 +76,7 @@ module SalesEngine
     end
 
     def self.find_by_updated_at(match)
-      SalesEngine::Search.find_all_by("updated_at", match, self.invoices).sample
+      SalesEngine::Search.find_by("updated_at", match, self.invoices)
     end
 
     def self.find_all_by_updated_at(match)
@@ -86,7 +84,7 @@ module SalesEngine
     end
 
     def self.find_by_created_at(match)
-      SalesEngine::Search.find_all_by("created_at", match, self.invoices).sample
+      SalesEngine::Search.find_by("created_at", match, self.invoices)
     end
 
     def self.find_all_by_created_at(match)
@@ -94,24 +92,41 @@ module SalesEngine
     end
     
     def transactions
-      transactions = []
-      transactions = transactions_array.select { |trans| trans.invoice_id ==  id }
+      transactions_array.select { |trans| trans.invoice_id ==  id }
     end
 
     def invoice_items
-      invoice_items = []
-      invoice_items = invoice_items_array.select { |inv| inv.invoice_id == id}
+      invoice_items_array.select { |inv| inv.invoice_id == id}
     end
 
     def items
-      item_ids =[]
-      items_ids = invoice_items.collect {|inv| inv.item_id}
-      items = []
-      items=items_array.select{|i| items_ids.include?(i.id)}
+      items_ids = invoice_items.collect { |inv| inv.item_id}
+      items_array.select{ |i| items_ids.include?(i.id)}
     end
 
     def customer
-      customer = customers_array.select { |cust| customer_id ==cust.id }
+      customer = customers_array.select { |cust| customer_id == cust.id }
+    end
+
+    def successful?
+      passed_trans = transactions.select { |transaction| transaction.result == "success"}
+      if passed_trans.count >0
+        true
+      elsif passed_trans.count == 0
+        false
+      end
+    end
+
+    def revenue
+      if successful?
+        rev = 0
+        invoice_items.each do |inv_item|
+          rev += inv_item.total
+        end
+      else
+        rev = 0
+      end
+      rev
     end
 
   end
