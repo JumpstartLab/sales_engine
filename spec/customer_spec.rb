@@ -65,4 +65,32 @@ describe SalesEngine::Customer do
       end
     end
   end
+
+  describe "#favorite_merchant" do
+    let(:customer) { Fabricate(:customer, :id => 1) }
+    let(:invoice) { double("invoice", :customer_id => 1, 
+                               :merchant_id => 100) } 
+    let(:invoice2) { double("invoice", :customer_id => 2, 
+                               :merchant_id => 2) } 
+    let(:invoice3) { double("invoice", :customer_id => 1, 
+                               :merchant_id => 20) } 
+    let(:other_invoice) { double("invoice", :customer_id => 1,
+                               :merchant_id => 100) } 
+    let(:merchant) { Fabricate(:merchant, :id => 100) }
+
+    context "when transactions with more than one merchant" do 
+      it "returns merchant with most transactions" do
+        customer.stub(:invoices).and_return([invoice, invoice3, other_invoice])
+        SalesEngine::Merchant.stub(:find_by_id).with(100).and_return(merchant)
+        customer.favorite_merchant.should == merchant
+      end
+    end
+
+    context "when no transactions" do
+      it "returns nil" do
+        customer.stub(:invoices).and_return([])
+        customer.favorite_merchant.should == nil
+      end
+    end
+  end
 end
