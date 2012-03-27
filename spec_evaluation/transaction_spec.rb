@@ -8,10 +8,10 @@ describe SalesEngine::Transaction do
         transaction_one = SalesEngine::Transaction.random
         10.times do
           transaction_two = SalesEngine::Transaction.random
-          break if transaction_one != transaction_two
+          break if transaction_one.id != transaction_two.id
         end
 
-        transaction_one.should_not == transaction_two
+        transaction_one.id.should_not == transaction_two.id
       end
     end
 

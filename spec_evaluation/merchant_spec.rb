@@ -7,10 +7,10 @@ describe SalesEngine::Merchant do
         merchant_one = SalesEngine::Merchant.random
         10.times do
           merchant_two = SalesEngine::Merchant.random
-          break if merchant_one != merchant_two
+          break if merchant_one.id != merchant_two.id
         end
 
-        merchant_one.should_not == merchant_two
+        merchant_one.id.should_not == merchant_two.id
       end
     end
 

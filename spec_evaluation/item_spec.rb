@@ -7,10 +7,10 @@ describe SalesEngine::Item do
         item_one =SalesEngine::Item.random
         10.times do
           item_two = SalesEngine::Item.random
-          break if item_one != item_two
+          break if item_one.id != item_two.id
         end
 
-        item_one.should_not == item_two
+        item_one.id.should_not == item_two.id
       end
     end
 

@@ -7,10 +7,10 @@ describe SalesEngine::InvoiceItem do
         invoice_item_one = SalesEngine::InvoiceItem.random
         10.times do
           invoice_item_two = SalesEngine::InvoiceItem.random
-          break if invoice_item_one != invoice_item_two
+          break if invoice_item_one.id != invoice_item_two.id
         end
 
-        invoice_item_one.should_not == invoice_item_two
+        invoice_item_one.id.should_not == invoice_item_two.id
       end
     end
 

@@ -9,10 +9,10 @@ describe SalesEngine::Customer do
         customer_one = SalesEngine::Customer.random
         10.times do
           customer_two = SalesEngine::Customer.random
-          break if customer_one != customer_two
+          break if customer_one.id != customer_two.id
         end
 
-        customer_one.should_not == customer_two
+        customer_one.id.should_not == customer_two.id
       end
     end
 
