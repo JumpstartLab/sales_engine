@@ -39,6 +39,11 @@ module SalesEngine
       SalesEngine::Database.instance.customers.find { |customer| customer.id == customer_id}
     end
 
+    def charge(input)
+      input[:invoice_id] = id
+      Database.instance.insert_transaction(input)
+    end
+
     def self.create(input)
       invoice_hash = {}
       invoice_hash[:customer_id] = input[:customer].id

@@ -166,8 +166,20 @@ describe SalesEngine::Invoice do
          :status => "status", :items => []}
          database.should_receive(:insert_invoice_item).exactly(0).times
 
-        SalesEngine::Invoice.create(input_hash)
+         SalesEngine::Invoice.create(input_hash)
       end
+    end
+  end
+
+  describe "#charge" do
+    let(:invoice) { Fabricate(:invoice, :id => 1) }
+
+    it "inserts transaction" do
+      input_hash = { }
+      hash = { :invoice_id => 1 }
+      invoice.stub(:id).and_return(1)
+      SalesEngine::Database.instance.should_receive(:insert_transaction).with(hash)
+      invoice.charge(input_hash)
     end
   end
 end
