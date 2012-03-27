@@ -10,16 +10,18 @@ describe SalesEngine::Customer do
   let(:invoice_one) { SalesEngine::Invoice.new(:id => "1", :customer_id => "0", :merchant_id => "0") }
   let(:invoice_two) { SalesEngine::Invoice.new(:id => "2", :customer_id => "2", :merchant_id => "0") }
   let(:invoice_three) { SalesEngine::Invoice.new(:id => "3", :customer_id => "0", :merchant_id => "0") }
+  let(:invoice_list) { SalesEngine::Database.instance.invoice_list = [ invoice_one, invoice_two, invoice_three ] }
 
   let(:trans_one) { SalesEngine::Transaction.new(:id => "1", :invoice_id => "1") }
   let(:trans_two) { SalesEngine::Transaction.new(:id => "2", :invoice_id => "2", :result => "failure") }
   let(:trans_three) { SalesEngine::Transaction.new(:id => "3", :invoice_id => "2", :result => "success") }
+  let(:transaction_list) { SalesEngine::Database.instance.transaction_list = [ trans_one, trans_two, trans_three ]}
 
   let(:merchant_zero){ SalesEngine::Merchant.new( :id => "0" )}
 
   describe "#invoices" do
-    it "returns an array of invoices" do
-      SalesEngine::Database.instance.invoice_list = [ invoice_one, invoice_two, invoice_three ]
+    it "returns that customer's invoices in an array" do
+      invoice_list
       customer_zero.invoices.should == [ invoice_one, invoice_three ]
     end
 
@@ -31,16 +33,17 @@ describe SalesEngine::Customer do
   end
 
   describe "#transactions" do
+    before(:each) do
+      invoice_list
+      transaction_list
+    end
+
     it "returns an array of transactions instances associated with the customer" do
-      SalesEngine::Database.instance.invoice_list = [ invoice_one, invoice_two, invoice_three ]
-      SalesEngine::Database.instance.transaction_list = [ trans_one, trans_two, trans_three ]
       customer_two.transactions.should == [ trans_two, trans_three ]
     end
 
     context "when a customer has no transactions" do
       it "returns an empty array" do
-        SalesEngine::Database.instance.invoice_list = [ invoice_one, invoice_two, invoice_three ]
-        SalesEngine::Database.instance.transaction_list = [ trans_one, trans_two, trans_three ]
         customer_one.transactions.should be_empty
       end
     end
