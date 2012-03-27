@@ -13,6 +13,18 @@ describe SalesEngine::Persistence do
     SalesEngine::Persistence.instance.clear
   end
 
+  it "indexes by id"
+
+  it "indexes by created_at"
+
+  it "indexes by updated_at"
+  
+  it "indexes by class name"
+
+  it "indexes by class name and created_at"
+
+  it "indexes by class name and updated_at"
+
   context "#persist" do
     it "exists" do
       SalesEngine::Persistence.instance.should respond_to :persist
