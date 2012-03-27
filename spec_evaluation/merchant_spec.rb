@@ -34,7 +34,7 @@ describe Merchant do
       end
 
       it "includes an 'Item Optio Libero'" do
-        item = merchant.items.find {|i| i.name = 'Item Optio Libero' }
+        item = merchant.items.find {|i| i.name == 'Item Optio Libero' }
         item.should_not be_nil
       end
     end
