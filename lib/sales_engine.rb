@@ -21,4 +21,4 @@ module SalesEngine
   end
 end
 
-SalesEngine.startup
+# SalesEngine.startup
