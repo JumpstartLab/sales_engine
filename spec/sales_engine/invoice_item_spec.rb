@@ -33,10 +33,20 @@ describe SalesEngine::InvoiceItem do
     end
   end
   describe '.invoice' do
-    pending
+    it 'returns an invoice' do
+      collection[0].invoice.class.should == SalesEngine::Invoice
+    end
+    it 'matches invoice id with instantiated invoice item\'s invoice_id' do
+      collection[0].invoice.id.to_i.should == invoice_item.invoice_id
+    end
   end
   describe '.item' do
-    pending
+    it 'returns an item' do
+      collection[0].item.class.should == SalesEngine::Item
+    end
+    it 'matches item id with instantiated invoice item\'s item_id' do
+      collection[0].item.id.should == collection[0].item_id
+    end
   end
 
 end

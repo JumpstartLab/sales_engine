@@ -24,7 +24,12 @@ describe SalesEngine::Transaction do
   end
 
   describe '.invoice' do
-    pending
+    it 'returns an invoice' do
+      transaction.invoice.class.should == SalesEngine::Invoice
+    end
+    it 'matches an invoice to the instansiated
+        transaction\'s invoice_id'  do
+      transaction.invoice.id.should == transaction.invoice_id
+    end
   end
-
 end

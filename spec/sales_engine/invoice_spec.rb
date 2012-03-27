@@ -7,7 +7,7 @@ describe SalesEngine::Invoice do
            :updated_at => "2012-02-26 20:56:56 UTC"}
   let(:invoice) {SalesEngine::Invoice.new(param)}
   #let(:invoice) { Fabricate(:invoice) }
-  describe 'initialize' do
+  describe '.initialize' do
     context "when instantiating a new invoice" do
       it 'receives a hash as a param' do
         param.should be_a(Hash)
@@ -34,16 +34,52 @@ describe SalesEngine::Invoice do
   end
 
   describe '.transactions' do
-    pending
+    let(:dbtransactions) {SalesEngine::Database.instance.transactions}
+    it "returns an array" do
+      invoice.transactions.should be_a(Array)
+    end
+    it 'returns instances of the transaction class' do
+      invoice = collection[0]
+      result = invoice.transactions[0]
+      result.class.should == dbtransactions[0].class
+    end
+    it 'returns an empty array if no results found' do
+      invoice.transactions.should == []
+    end
   end
   describe '.invoice_items' do
-    pending
+    let(:dbinvoiceitems) {SalesEngine::Database.instance.invoiceitems}
+    it "returns an array" do
+      invoice.invoice_items.should be_a(Array)
+    end
+    it 'returns instances of the invoiceitem class' do
+      invoice = collection[0]
+      result = invoice.invoice_items[0]
+      result.class.should == dbinvoiceitems[0].class
+    end
+    it 'returns an empty array if no results found' do
+      invoice.transactions.should == []
+    end
   end
   describe '.items' do
-    pending
+    it 'returns an array of items' do
+      pending
+    end
+    it 'matches invoiceitems to invoices by id' do
+      pending
+    end
+    it 'matches invoiceitems to items by id' do
+      pending
+    end
   end
   describe '.customer' do
-    pending
+    let(:dbcustomers) {SalesEngine::Database.instance.customers}
+    it "returns a Customer" do
+      collection[0].customer.class.should == SalesEngine::Customer
+    end
+    it 'matches customer id with instantiated invoice\'s customer_id' do
+      collection[0].customer.id.to_i.should == invoice.customer_id
+    end
   end
 
 

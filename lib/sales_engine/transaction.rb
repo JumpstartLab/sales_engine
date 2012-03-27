@@ -17,7 +17,8 @@ module SalesEngine
     end
 
     def invoice
-      SalesEngine::Invoice.find_all_by_id(self.invoice_id)
+      matched_invoices = SalesEngine::Invoice.find_all_by_id(self.invoice_id)
+      matched_invoices[0]
       # transactions = SalesEngine::Database.instance.transactions
       # matched_transactions = transactions.select { |transaction| transaction.id == self.id }
       # transaction_ids = matched_transactions.map { |transaction| transaction.invoice_id }
