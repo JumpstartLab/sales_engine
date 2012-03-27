@@ -63,8 +63,9 @@ module SalesEngine
       invoices.reject { |i| i.transactions.map(&:result).include?("success") }
     end
 
-    def has_pending_invoices?
-      pending_invoices.any?
+    def has_pending_invoices?(mi)
+      pending_invoices.select{ |i| i.merchant_id == mi }.any?
+
     end
   end
 end
