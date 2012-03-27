@@ -31,8 +31,8 @@ module SalesEngine
       new_invoice.status = invoice_attributes[:status]
       invoice_attributes[:items].each do |item|
         SalesEngine::InvoiceItem.create( { item_id: item.id,
-        invoice_id: new_invoice.id, created_at: DateTime.now.to_s,
-         uantity: 1, unit_price: item.unit_price.to_s } )
+          invoice_id: new_invoice.id, created_at: DateTime.now.to_s,
+          uantity: 1, unit_price: item.unit_price.to_s } )
       end
       SalesEngine::Transaction.create({invoice_id: new_invoice.id})
       records << new_invoice
@@ -44,8 +44,16 @@ module SalesEngine
       ids.uniq.collect { |id| Invoice.find_by_id(id) }
     end
 
-    def self.average_revenue
-      BigDecimal((all.map(&:total_paid).inject(:+) / all.size).to_s)
+    def self.average_revenue(date = nil)
+      if date
+        date_inv = all.select do |i|
+          i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
+        end
+        total_rev = date_inv.map(&:total_paid).inject(:+)
+        BigDecimal((total_rev / date_inv.size.to_f).to_s) rescue BigDecimal("0")
+      else
+        BigDecimal((all.map(&:total_paid).inject(:+) / all.size).to_s)
+      end
     end
 
     def initialize(raw_line)

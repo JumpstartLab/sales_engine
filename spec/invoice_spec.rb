@@ -162,26 +162,49 @@ describe SalesEngine::Invoice do
       after(:all) { SalesEngine::Transaction.records.pop }
     end
     describe ".average_revenue" do
-      it "returns a 0 big decimal when no processed invoices" do
-        mock_invoice = {}
-        3.times do | i |
-          mock_invoice[i] = double("invoice")
-          mock_invoice[i].stub(:total_paid => 0)
+      context "when date is not passed" do
+        it "returns a 0 big decimal when no processed invoices" do
+          mock_invoice = {}
+          3.times do | i |
+            mock_invoice[i] = double("invoice")
+            mock_invoice[i].stub(:total_paid => 0)
+          end
+          SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
+          SalesEngine::Invoice.average_revenue.should == BigDecimal("0")
         end
-        SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
-        SalesEngine::Invoice.average_revenue.should == BigDecimal("0")
-      end
-      it "returns the average of the total for each invoice as a bigdecimal" do
-        mock_invoice = {}
-        3.times do | i |
-          mock_invoice[i] = double("invoice")
-          mock_invoice[i].stub(:successful_transaction => true, :total_paid => (i * 3))
+        it "returns the average of the total for each invoice" do
+          mock_invoice = {}
+          3.times do | i |
+            mock_invoice[i] = double("invoice")
+            mock_invoice[i].stub(:successful_transaction => true, :total_paid => (i * 3))
+          end
+          SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
+          SalesEngine::Invoice.average_revenue.should == BigDecimal("3")
         end
-        SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
-        SalesEngine::Invoice.average_revenue.should == BigDecimal("3")
       end
-
+      context "when date is not nil" do
+        it "returns a 0 BigDecimal when that date has no processed invoices" do
+          mock_invoice = {}
+          3.times do | i |
+            mock_invoice[i] = double("invoice")
+            mock_invoice[i].stub(:total_paid => 0, :created_at => DateTime.now)
+          end
+          SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
+          SalesEngine::Invoice.average_revenue(DateTime.now).should == BigDecimal("0")
+        end
+        it "returns the average of the invoice revenues for that date" do
+          mock_invoice = {}
+          3.times do | i |
+            mock_invoice[i] = double("invoice")
+            mock_invoice[i].stub(:successful_transaction => true, :total_paid => (i * 3), :created_at => DateTime.now)
+          end
+          mock_invoice[0].stub(:created_at => DateTime.parse("Jan 1, 2012"))
+          SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
+          SalesEngine::Invoice.average_revenue(DateTime.now).should == BigDecimal("4.5")
+        end
+      end
     end
+
   end
 end
 
