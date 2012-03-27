@@ -4,8 +4,8 @@ module SalesEngine
 
     def initialize(attributes = {})
       self.id = attributes[:id]
-      self.created_at = attributes[:created_at]
-      self.updated_at = attributes[:updated_at]
+      self.created_at = attributes[:created_at] || Time.now.to_s
+      self.updated_at = attributes[:updated_at] || Time.now.to_s
     end
   end
 end

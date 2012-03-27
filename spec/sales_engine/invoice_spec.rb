@@ -17,9 +17,11 @@ describe SalesEngine::Invoice do
   let(:customer_2) { Fabricate(:customer) }
   let(:merchant_1) { Fabricate(:merchant) }
   let(:merchant_2) { Fabricate(:merchant) }
+  let(:merchant_3) { Fabricate(:merchant) }
   let(:transaction_1) { Fabricate(:transaction, :invoice_id => invoice_1.id) }
   let(:transaction_2) { Fabricate(:transaction, :invoice_id => invoice_2.id) }
   let(:transaction_3) { Fabricate(:transaction, :invoice_id => invoice_1.id) }
+  let(:transaction_4) { Fabricate(:transaction) }
 
   before(:each) do
     se.clear_all_data
@@ -38,9 +40,11 @@ describe SalesEngine::Invoice do
     se.add_to_list(customer_2)
     se.add_to_list(merchant_1)
     se.add_to_list(merchant_2)
+    se.add_to_list(merchant_3)
     se.add_to_list(transaction_1)
     se.add_to_list(transaction_2)
     se.add_to_list(transaction_3)
+    se.add_to_list(transaction_4)
   end
 
   describe "#total_revenue" do
@@ -442,6 +446,18 @@ describe SalesEngine::Invoice do
           invoice_1.customer.should == customer_2
         end
       end
+    end
+  end
+
+  describe ".create" do
+    it "create new invoices" do
+      invoice = SalesEngine::Invoice.create(:customer_id => customer_2, :merchant_id => merchant_3, 
+        :status => "shipped", :items => [item_1, item_2, item_3], :transaction => transaction_4)
+      invoice.customer.should == customer_2
+      invoice.merchant.should == merchant_3
+      invoice.status.should == "shipped"
+      invoice.items.should == [item_1, item_2, item_3]
+      invoice.transactions.should == [transaction_4]
     end
   end
 end
