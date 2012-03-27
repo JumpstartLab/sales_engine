@@ -31,7 +31,7 @@ module SalesEngine
       load_transactions_data
     end
 
-    def load_merchants_data(filename)
+    def load_merchants_data(filename="./data/merchants.csv")
       @file = CSV.open(filename, CSV_OPTIONS)
       self.merchants = @file.collect {|line| SalesEngine::Merchant.new(line) }
     end

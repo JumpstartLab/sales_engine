@@ -15,5 +15,10 @@ require './lib/sales_engine/invoice_item'
 
 module SalesEngine
   def self.startup
+    se = SalesEngine::Database.instance
+    se.load_merchants_data
+    puts se.merchants.count
   end
 end
+
+SalesEngine.startup
