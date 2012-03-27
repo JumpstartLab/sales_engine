@@ -38,5 +38,27 @@ module SalesEngine
     def customer
       SalesEngine::Database.instance.customers.find { |customer| customer.id == customer_id}
     end
+
+    def self.create(input)
+      invoice_hash = {}
+      invoice_hash[:customer_id] = input[:customer].id
+      invoice_hash[:merchant_id] = input[:merchant].id
+      invoice_hash[:status] = input[:status]
+      invoice_id = Database.instance.insert_invoice(invoice_hash)
+
+      create_invoice_items(input[:items], invoice_id)
+    end
+
+    def self.create_invoice_items(items, invoice_id)
+      items_hash = {}
+      items.each do |item|
+        items_hash[item.id] = [items.count(item), item.unit_price]
+      end
+
+      items_hash.each do |item_id, values|
+        Database.instance.insert_invoice_item({:item_id => item_id , :invoice_id => invoice_id,
+                                              :quantity => values[0], :unit_price => values[1] })
+      end
+    end
   end
 end

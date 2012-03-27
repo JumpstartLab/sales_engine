@@ -119,4 +119,45 @@ describe SalesEngine::Invoice do
       invoice.customer.should == customer
     end
   end
+
+  describe "#create" do
+    let (:customer) { double("customer", :id => 1)}
+    let (:merchant) { double("merchant", :id => 100)}
+    let (:item) { double("item", :id => 200, :unit_price => 1000)}
+    let (:item2) { double("item", :id => 201, :unit_price => 2000)}
+    let (:database) { double("database")}
+
+    before(:each) do
+      SalesEngine::Database.stub(:instance).and_return(database)
+    end
+
+    context "when more than 1 invoice item" do
+      it "inserts an invoice item for each unique item" do
+        items = [item, item2, item]
+        hash = { :customer_id => 1, :merchant_id => 100, :status => "status"}
+        database.should_receive(:insert_invoice).with(hash).and_return(1)
+        database.should_receive(:insert_invoice_item).with({
+          :item_id => 200, :invoice_id => 1, :quantity => 2, :unit_price => 1000
+          })
+        database.should_receive(:insert_invoice_item).with({
+          :item_id => 201, :invoice_id => 1, :quantity => 1, :unit_price => 2000
+          })
+
+        input_hash = { :customer => customer, :merchant => merchant, 
+         :status => "status", :items => items}
+        SalesEngine::Invoice.create(input_hash)
+      end
+    end
+
+    context "when no invoice items" do
+      it "doesn't insert invoice items" do
+        database.should_receive(:insert_invoice).and_return(1)
+        input_hash = { :customer => customer, :merchant => merchant, 
+         :status => "status", :items => []}
+         database.should_receive(:insert_invoice_item).exactly(0).times
+
+        SalesEngine::Invoice.create(input_hash)
+      end
+    end
+  end
 end
