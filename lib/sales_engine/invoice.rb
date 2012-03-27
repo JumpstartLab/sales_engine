@@ -10,7 +10,7 @@ module SalesEngine
     end
 
     def total_revenue
-      revenue = 0
+      revenue = BigDecimal.new("0")
       all_transactions_failed = true
       SalesEngine::Database.instance.find_all_by("transactions", "invoice_id", self.id).each { |trans|
         if !trans.result.downcase.include?("fail")
@@ -19,7 +19,7 @@ module SalesEngine
         end}
       if !all_transactions_failed
         SalesEngine::Database.instance.find_all_by("invoiceitems", "invoice_id", self.id).each { |item|
-          revenue = revenue + item.unit_price }
+          revenue = revenue + (item.unit_price * item.quantity) }
       end
       revenue
     end

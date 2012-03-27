@@ -64,6 +64,15 @@ describe SalesEngine::Invoice do
         invoice_1.total_revenue.should == 0
       end
     end
+
+    context "invoice item has a quantity greater than 1" do
+      it "returns the total revenue for an invoice" do
+        invoice_item_2.unit_price = 4
+        invoice_item_2.quantity   = 3
+        invoice_2.total_revenue.should == 12
+      end
+    end
+
   end
 
   describe ".random" do

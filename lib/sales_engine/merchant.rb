@@ -11,7 +11,7 @@ module SalesEngine
       revenue_tracker = []
       return_merchants = []
       SalesEngine::Database.instance.merchants.each { |merchant|
-        revenue = 0
+        revenue = BigDecimal.new("0")
         merchant.invoices.each { |invoice| revenue += invoice.total_revenue }
         revenue_tracker << { :merchant => merchant, :total_revenue => revenue } }
       sorted_merchants = revenue_tracker.sort_by { |merchant| merchant[:total_revenue] }
@@ -38,7 +38,7 @@ module SalesEngine
     end
 
     def self.revenue(date)
-      revenue = 0
+      revenue = BigDecimal.new("0")
       SalesEngine::Invoice.find_all_created_on(date).each { |invoice|
         revenue += invoice.total_revenue }
         revenue

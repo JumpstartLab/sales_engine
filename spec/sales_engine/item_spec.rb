@@ -429,4 +429,22 @@ describe SalesEngine::Item do
       SalesEngine::Item.most_revenue(3).should == [item_2, item_1, item_4]
     end
   end
+
+  describe ".most_items" do
+    it "returns the top x item instances ranked by total number sold" do
+      SalesEngine::Item.most_items(2) == [item_1, item_2]
+    end
+  end
+
+  describe "#best_day" do
+    before(:each) do
+      invoice_item_1.created_at = "2012-03-14 20:56:56 UTC"
+      invoice_item_8.created_at = "2012-03-14 20:00:51 UTC"
+      invoice_item_11.created_at = "2012-02-01 16:16:41 UTC"  
+    end
+
+    it "returns the date with the most sales for the given item" do
+      item_1.best_day.should == Date.parse("2012-03-14")
+    end
+  end
 end
