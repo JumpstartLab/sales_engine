@@ -102,11 +102,12 @@ describe SalesEngine::Database do
     end
 
     it "database execute insert query" do
-      sql = "insert into invoices values (?, ?, ?, ?, ?, ?)"
+      clean_date = SalesEngine::Database.get_dates[1]
+      sql = "insert into invoices values (?, ?, ?, ?, ?, ?, ?, ?)"
       sqlite_db.should_receive(:execute).with(sql, nil,
                                invoice_hash[:customer_id], invoice_hash[:merchant_id],
                                invoice_hash[:status], DateTime.now.to_s,
-                               DateTime.now.to_s)
+                               DateTime.now.to_s, clean_date, clean_date)
       SalesEngine::Database.instance.insert_invoice(invoice_hash)
     end
 
@@ -130,11 +131,12 @@ describe SalesEngine::Database do
     end
 
     it "executes insert query" do
-      sql = "insert into invoice_items values (?, ?, ?, ?, ?, ?, ?)"
+      clean_date = SalesEngine::Database.get_dates[1]
+      sql = "insert into invoice_items values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
       sqlite_db.should_receive(:execute).with(sql, nil,
        invoice_item_hash[:item_id], invoice_item_hash[:invoice_id],
        invoice_item_hash[:quantity], invoice_item_hash[:unit_price], 
-       DateTime.now.to_s,DateTime.now.to_s)    
+       DateTime.now.to_s,DateTime.now.to_s, clean_date, clean_date)    
       SalesEngine::Database.instance.insert_invoice_item(invoice_item_hash)
     end
 
@@ -160,11 +162,12 @@ describe SalesEngine::Database do
     end
 
     it "executes insert query" do
-      sql = "insert into transactions values (?, ?, ?, ?, ?, ?, ?)"
+      clean_date = SalesEngine::Database.get_dates[1]
+      sql = "insert into transactions values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
       sqlite_db.should_receive(:execute).with(sql, nil,
        transaction_hash[:invoice_id], transaction_hash[:credit_card_number],
        transaction_hash[:credit_card_expiration_date], transaction_hash[:result],
-       DateTime.now.to_s, DateTime.now.to_s)    
+       DateTime.now.to_s, DateTime.now.to_s, clean_date, clean_date)    
        SalesEngine::Database.instance.insert_transaction(transaction_hash)
     end
 

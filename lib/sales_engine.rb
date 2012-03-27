@@ -7,7 +7,8 @@ module SalesEngine
   attr_accessor :elements
 
   def self.startup
-     Loader.new(SQLite3::Database.new(':memory:')).load
+     #Loader.new(SQLite3::Database.new(':memory:')).load
+     Loader.new(SQLite3::Database.new("/Users/danielkaufman/Desktop/test.sqlite")).load
   end
 
   def self.find_by(elements, attribute, value)

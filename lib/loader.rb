@@ -26,13 +26,16 @@ class Loader
       id integer primary key, 
       name text,
       created_at text, 
-      updated_at text);
+      updated_at text,
+      created_date text,
+      updated_date text);
     }
 
     file = CSV.open("data/merchants.csv", {:headers => true, :header_converters => :symbol})
     file.each do |line|
-      database.execute("insert into merchants values (?, ?, ?, ?)",
-                       line[:id].to_i, line[:name], line[:created_at], line[:updated_at])
+      database.execute("insert into merchants values (?, ?, ?, ?, ?, ?)",
+                       line[:id].to_i, line[:name], line[:created_at], line[:updated_at],
+                       line[:created_at][0, 19], line[:updated_at][0, 19])
     end
   end
 
@@ -46,15 +49,18 @@ class Loader
       merchant_id integer,
       created_at text, 
       updated_at text,
+      created_date text,
+      updated_date text,
       foreign key(merchant_id) references merchant(id));
     }
 
     file = CSV.open("data/items.csv", {:headers => true, :header_converters => :symbol})
     file.each do |line|
-      database.execute("insert into items values (?, ?, ?, ?, ?, ?, ?)",
+      database.execute("insert into items values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:name], line[:description], 
                        line[:unit_price].to_i, line[:merchant_id].to_i,
-                       line[:created_at], line[:updated_at])
+                       line[:created_at], line[:updated_at],
+                       line[:created_at][0, 19], line[:updated_at][0, 19])
     end
   end
 
@@ -65,14 +71,17 @@ class Loader
       first_name text,
       last_name text,
       created_at text, 
-      updated_at text)
+      updated_at text,
+      created_date text,
+      updated_date text)
     }
 
     file = CSV.open("data/customers.csv", {:headers => true, :header_converters => :symbol})
     file.each do |line|
-      database.execute("insert into customers values (?, ?, ?, ?, ?)",
+      database.execute("insert into customers values (?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:first_name], line[:last_name], 
-                       line[:created_at], line[:updated_at])
+                       line[:created_at], line[:updated_at],
+                       line[:created_at][0, 19], line[:updated_at][0, 19])
     end
   end
 
@@ -85,15 +94,18 @@ class Loader
       status text,
       created_at text, 
       updated_at text,
+      created_date text,
+      updated_date text,
       foreign key(merchant_id) references merchants(id));
       foreign key(customer_id) references customers(id));
     }
 
     file = CSV.open("data/invoices.csv", {:headers => true, :header_converters => :symbol})
     file.each do |line|
-      database.execute("insert into invoices values (?, ?, ?, ?, ?, ?)",
+      database.execute("insert into invoices values (?, ?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:customer_id].to_i, line[:merchant_id].to_i, 
-                       line[:status], line[:created_at], line[:updated_at])
+                       line[:status], line[:created_at], line[:updated_at],
+                       line[:created_at][0, 19], line[:updated_at][0, 19])
     end
   end
 
@@ -108,16 +120,19 @@ class Loader
       unit_price integer,
       created_at text, 
       updated_at text,
+      created_date text,
+      updated_date text,
       foreign key(item_id) references items(id));
       foreign key(invoice_id) references invoices(id));
     }
 
     file = CSV.open("data/invoice_items.csv", {:headers => true, :header_converters => :symbol})
     file.each do |line|
-      database.execute("insert into invoice_items values (?, ?, ?, ?, ?, ?, ?)",
+      database.execute("insert into invoice_items values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:item_id].to_i, line[:invoice_id].to_i, 
                        line[:quantity].to_i, line[:unit_price].to_i, 
-                       line[:created_at], line[:updated_at])
+                       line[:created_at], line[:updated_at],
+                       line[:created_at][0, 19], line[:updated_at][0, 19])
     end
   end
 
@@ -132,15 +147,18 @@ class Loader
       result text,
       created_at text, 
       updated_at text,
+      created_date text,
+      updated_date text,
       foreign key(invoice_id) references invoices(id));
     }
 
     file = CSV.open("data/transactions.csv", {:headers => true, :header_converters => :symbol})
     file.each do |line|
-      database.execute("insert into transactions values (?, ?, ?, ?, ?, ?, ?)",
+      database.execute("insert into transactions values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:invoice_id].to_i, line[:credit_card_number],
                        line[:credit_card_expiration_date], line[:result],
-                       line[:created_at], line[:updated_at])
+                       line[:created_at], line[:updated_at],
+                       line[:created_at][0, 19], line[:updated_at][0, 19])
     end
   end
 end

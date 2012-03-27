@@ -117,28 +117,39 @@
      end
 
      def insert_invoice(hash)
-      db.execute("insert into invoices values (?, ?, ?, ?, ?, ?)",
+      raw_date, clean_date = Database.get_dates
+      db.execute("insert into invoices values (?, ?, ?, ?, ?, ?, ?, ?)",
                   nil, hash[:customer_id].to_i, hash[:merchant_id].to_i,
-                  hash[:status], DateTime.now.to_s,
-                  DateTime.now.to_s)
+                  hash[:status], raw_date.to_s, raw_date.to_s,
+                  clean_date, clean_date)
       return db.last_insert_row_id
      end
 
      def insert_invoice_item(hash)
-      db.execute("insert into invoice_items values (?, ?, ?, ?, ?, ?, ?)",
+      raw_date, clean_date = Database.get_dates
+      db.execute("insert into invoice_items values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                   nil, hash[:item_id].to_i, hash[:invoice_id].to_i,
-                  hash[:quantity], hash[:unit_price], DateTime.now.to_s,
-                  DateTime.now.to_s)
+                  hash[:quantity], hash[:unit_price],
+                  raw_date.to_s, raw_date.to_s,
+                  clean_date, clean_date)
       return db.last_insert_row_id
      end
 
      def insert_transaction(hash)
-      db.execute("insert into transactions values (?, ?, ?, ?, ?, ?, ?)",
+      raw_date, clean_date = Database.get_dates
+      db.execute("insert into transactions values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                   nil, hash[:invoice_id].to_i, hash[:credit_card_number],
-                  hash[:credit_card_expiration_date], hash[:result], 
-                  DateTime.now.to_s, DateTime.now.to_s)
+                  hash[:credit_card_expiration_date], hash[:result],
+                  raw_date.to_s, raw_date.to_s,
+                  clean_date, clean_date)
       return db.last_insert_row_id
      end
+
+    def self.get_dates
+      raw_date = DateTime.now
+      clean_date = raw_date.strftime("%Y-%m-%d %H:%M:%S")
+      return raw_date, clean_date
+    end
 
      private_class_method :new
 
