@@ -92,14 +92,28 @@
        transactions = []
        query = "SELECT transactions.id as transaction_id, invoice_id,
                 credit_card_number, credit_card_expiration_date, result,
-                transactions.created_at, transactions.updated_at FROM invoices
-                INNER JOIN transactions on
-                invoices.id = transactions.invoice_id
-                AND customer_id = #{customer_id}"
-       db.execute(query)  do |row|
+                transactions.created_at, transactions.updated_at
+                FROM invoices
+                INNER JOIN transactions ON invoices.id = transactions.invoice_id
+                WHERE invoices.customer_id = #{customer_id}"
+       db.execute(query) do |row|
          transactions << create_transaction(row)
        end
       transactions
+     end
+
+     def popular_customers(merchant_id)
+      customers = {}
+      query = "SELECT invoices.customer_id, COUNT(transactions.id)
+              FROM merchants
+              INNER JOIN invoices ON merchants.id = invoices.merchant_id
+              INNER JOIN transactions ON invoices.id = transactions.invoice_id
+              WHERE merchant_id = 1
+              GROUP BY invoices.customer_id"
+       db.execute(query) do |row|
+         customers[row[0]] = row[1]
+       end
+      customers
      end
 
      private_class_method :new

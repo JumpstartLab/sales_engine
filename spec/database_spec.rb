@@ -74,4 +74,18 @@ describe SalesEngine::Database do
       end
     end
   end
+
+  describe "#popular_customers" do
+    let(:rows) { SalesEngine::Database.instance.popular_customers(1) }
+
+    context "merchant has transactions" do
+      it "returns a hash with customer_ids => transaction count" do
+        rows.length.should == 49
+      end
+
+      it "returns customer 959 with 2 transactions" do
+        rows[959].should == 2
+      end
+    end
+  end
 end
