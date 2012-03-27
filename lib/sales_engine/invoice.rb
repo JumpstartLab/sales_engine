@@ -26,8 +26,8 @@ module SalesEngine
     def self.create(invoice_attributes)
       new_invoice = self.new( { created_at: DateTime.now.to_s } )
       new_invoice.id = records.last.id + 1
-      new_invoice.customer_id = invoice_attributes[:customer_id].id
-      new_invoice.merchant_id = invoice_attributes[:merchant_id].id
+      new_invoice.customer_id = invoice_attributes[:customer].id
+      new_invoice.merchant_id = invoice_attributes[:merchant].id
       new_invoice.status = invoice_attributes[:status]
       invoice_attributes[:items].each do |item|
         SalesEngine::InvoiceItem.create( { item_id: item.id,

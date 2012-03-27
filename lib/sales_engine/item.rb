@@ -55,7 +55,7 @@ module SalesEngine
       invoice_items.each do |item|
         results[item.date] += item.quantity
       end
-      results.sort_by { |k, v| v }.last.first.strftime("%d%m%y")
+      results.sort_by { |k, v| v }.last.first
     end
 
     private

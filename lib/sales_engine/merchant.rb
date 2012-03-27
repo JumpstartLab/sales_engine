@@ -78,10 +78,12 @@ module SalesEngine
     end
 
     def customers_with_pending_invoices
-      invoices.map(&:customer_id).map do |cid|
+      results = []
+      invoices.map(&:customer_id).uniq.each do |cid|
         customer = SalesEngine::Customer.find_by_id(cid)
-        customer if customer.has_pending_invoices?
-      end.compact
+        results << customer if customer.has_pending_invoices?
+      end
+      results
     end
   end
 end
