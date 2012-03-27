@@ -8,3 +8,4 @@ gem 'simplecov', :require => false, :group => :test
 gem 'cane'
 gem 'rspec-prof'
 gem 'ruby-prof'
+gem 'fabrication'

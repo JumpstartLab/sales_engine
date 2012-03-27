@@ -15,7 +15,7 @@ describe SalesEngine::Item do
   let(:inv_two)   { SalesEngine::Invoice.new( :id => "2", :customer_id => "2",
                                    :created_at => "2012-9-09" ) }
   let(:inv_three)   { SalesEngine::Invoice.new( :id => "3", :customer_id => "2",
-                                   :created_at => "2012-9-09" ) }
+                                   :created_at => "2012-1-01" ) }
   let(:merchant_one){ SalesEngine::Merchant.new( :id => "1" )}
   let(:merchant_two){ SalesEngine::Merchant.new( :id => "2" )}
   let(:tr_one)   { SalesEngine::Transaction.new( :invoice_id => "1") }
@@ -78,19 +78,18 @@ describe SalesEngine::Item do
       SalesEngine::Item.most_items(2).should == [ item_one, item_two ]
     end
 
-  #   context "when there are no items" do
-  #     it "returns nil" do
-  #       SalesEngine::Database.instance.item_list = [ ]
-  #       Item.most_items(2).should == nil
-  #     end
-  #   end
+    context "when there are no invoice_items" do
+      it "returns nil" do
+        SalesEngine::Database.instance.invoice_item_list = [ ]
+        SalesEngine::Item.most_items(2).should be_empty
+      end
+    end
+  end
 
-  #   context "when there are no invoice_items" do
-  #     it "returns nil" do
-  #       SalesEngine::Database.instance.invoice_item_list = [ ]
-  #       Item.most_items(2).should == nil
-  #     end
-  #   end
+  describe "#best_day" do
+    it "returns the day on which we sold the most of that item" do
+
+    end
   end
 
 end
