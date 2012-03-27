@@ -9,7 +9,7 @@ describe SalesEngine::Transaction do
     before(:each) do
       invoice.stub(:id).and_return(1)
       other_invoice.stub(:id).and_return(2)
-      SalesEngine::Database.stub(:invoices).and_return([invoice, other_invoice])
+      SalesEngine::Database.instance.stub(:invoices).and_return([invoice, other_invoice])
     end
     
     it "returns the invoice with matching invoice_id" do

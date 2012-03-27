@@ -13,18 +13,12 @@ describe "Models" do
       context "when database has #{method} loaded" do
         before(:each) do
           @elements = 10.times.collect { mock(model) } 
-          SalesEngine::Database.stub(method).and_return(@elements)
+          SalesEngine::Database.instance.stub(method).and_return(@elements)
         end
 
         it "returns a random object from #{method} array" do
           Random.stub(:rand).and_return(5)
           model.random.should == @elements[5]
-        end
-      end
-
-      context "when database has no #{method}" do
-        it "returns nil" do
-          model.random.should == nil
         end
       end
     end
@@ -44,7 +38,7 @@ describe "Models" do
       end
 
       it "calls find_by attribute" do
-        SalesEngine::Database.stub(method).and_return(elements)
+        SalesEngine::Database.instance.stub(method).and_return(elements)
         model.find_by_id(2).should == element2
       end
     end
@@ -62,7 +56,7 @@ describe "Models" do
       end
 
       it "calls find_all_by attribute" do
-        SalesEngine::Database.stub(method).and_return(elements)
+        SalesEngine::Database.instance.stub(method).and_return(elements)
         model.find_all_by_id(1).should == [element, duplicate_element]
       end
     end

@@ -4,7 +4,7 @@
    let(:sqlite_db) { SQLite3::Database.new('data/integration_test.sqlite')}
 
    before(:each) do
-     SalesEngine::Database.instance.db = sqlite_db
+     #SalesEngine::Database.instance.db = sqlite_db
    end
    describe "Merchant.most_revenue" do
      it "returns Merchants" do

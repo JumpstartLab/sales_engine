@@ -19,15 +19,15 @@ module SalesEngine
     end               
 
     def self.elements
-      Database.invoice_items
+      SalesEngine::Database.instance.invoice_items
     end
 
     def item 
-      Database.items.find { |item| item.id == item_id }  
+      SalesEngine::Database.instance.items.find { |item| item.id == item_id }  
     end
 
     def invoice
-      Database.invoices.find { |invoice| invoice.id == invoice_id }  
+      SalesEngine::Database.instance.invoices.find { |invoice| invoice.id == invoice_id }  
     end
   end
 end

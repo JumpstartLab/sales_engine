@@ -15,27 +15,28 @@ module SalesEngine
       @created_at = created_at
       @updated_at = updated_at
     end
+
     def self.elements
-      Database.invoices
+      SalesEngine::Database.instance.invoices
     end
 
     def transactions
-      Database.transactions.select { |transaction| transaction.invoice_id == id }
+      SalesEngine::Database.instance.transactions.select { |transaction| transaction.invoice_id == id }
     end
 
     def invoice_items
-      Database.invoice_items.select { |invoice_item| invoice_item.invoice_id == id }
+      SalesEngine::Database.instance.invoice_items.select { |invoice_item| invoice_item.invoice_id == id }
     end
 
     def items
-      invoice_items = Database.invoice_items.select do |invoice_item|
+      invoice_items = SalesEngine::Database.instance.invoice_items.select do |invoice_item|
         invoice_item.invoice_id == id
       end
       invoice_items.collect { |invoice_item| invoice_item.item }
     end
 
     def customer
-      Database.customers.find { |customer| customer.id == customer_id}
+      SalesEngine::Database.instance.customers.find { |customer| customer.id == customer_id}
     end
   end
 end

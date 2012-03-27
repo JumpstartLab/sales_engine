@@ -16,11 +16,11 @@ module SalesEngine
     end     
 
     def self.elements
-      Database.customers
+      SalesEngine::Database.instance.customers
     end
 
     def invoices
-      Database.invoices.select { |invoice| invoice.customer_id == id }  
+      SalesEngine::Database.instance.invoices.select { |invoice| invoice.customer_id == id }  
     end
   end
 end

@@ -11,14 +11,14 @@ describe SalesEngine::Merchant do
 
     context "when date is specified" do
       it "returns the invoices for that date" do
-        SalesEngine::Database.stub(:invoices).and_return([invoice1, invoice2])
+        SalesEngine::Database.instance.stub(:invoices).and_return([invoice1, invoice2])
         merchant.invoices("2012-02-28 20:56:56 UTC").should == [invoice2]
       end
     end
     context "when date is not specified" do
       before(:each) do
         invoices = [invoice1, invoice2, invoice3]
-        SalesEngine::Database.stub(:invoices).and_return(invoices)
+        SalesEngine::Database.instance.stub(:invoices).and_return(invoices)
       end
       context "when merchant has one invoice" do
         it "returns an array containing the single invoice" do
@@ -53,7 +53,7 @@ describe SalesEngine::Merchant do
       item3.stub(:merchant_id).and_return(1)
 
       items = [item1, item2, item3]
-      SalesEngine::Database.stub(:items).and_return(items)
+      SalesEngine::Database.instance.stub(:items).and_return(items)
     end
 
 
@@ -102,7 +102,7 @@ describe SalesEngine::Merchant do
     context "when date is not passed" do
       context "when there are invoices" do
         it "returns invoice items" do
-          SalesEngine::Database.stub(:invoices).and_return(invoices)      
+          SalesEngine::Database.instance.stub(:invoices).and_return(invoices)      
           invoices.stub(:select).and_return([invoice, invoice2])
           merchant = Fabricate(:merchant, :id => 3)
           merchant.invoice_items.should == [invoice_item, other_invoice_item, invoice_item2]
@@ -110,7 +110,7 @@ describe SalesEngine::Merchant do
 
         context "when there are no invoices" do
           it "return no invoice items" do
-            SalesEngine::Database.stub(:invoices).and_return([])      
+            SalesEngine::Database.instance.stub(:invoices).and_return([])      
             merchant.invoice_items.should == []
           end
         end
@@ -155,25 +155,25 @@ describe SalesEngine::Merchant do
 
     context "when number of merchants is greater than X" do
       it "returns an array of merchants with the most revenue" do
-        SalesEngine::Database.stub(:merchants).and_return([merchant, merchant2, merchant3, merchant4])
+        SalesEngine::Database.instance.stub(:merchants).and_return([merchant, merchant2, merchant3, merchant4])
         SalesEngine::Merchant.most_revenue(2).should == [merchant4, merchant3]
       end
     end
     context "when number of merchants is less than X" do
       it "returns an array of all merchants" do
-        SalesEngine::Database.stub(:merchants).and_return([merchant, merchant2])
+        SalesEngine::Database.instance.stub(:merchants).and_return([merchant, merchant2])
         SalesEngine::Merchant.most_revenue(3).should == [merchant2, merchant]
       end
     end
     context "when there is only one merchant" do
       it "returns an array with one merchant" do
-        SalesEngine::Database.stub(:merchants).and_return([merchant])
+        SalesEngine::Database.instance.stub(:merchants).and_return([merchant])
         SalesEngine::Merchant.most_revenue(1).should == [merchant]
       end
     end
     context "when there are no merchants" do
       it "returns an empty array" do
-        SalesEngine::Database.stub(:merchants).and_return([])
+        SalesEngine::Database.instance.stub(:merchants).and_return([])
         SalesEngine::Merchant.most_revenue(3).should == []
       end
     end 

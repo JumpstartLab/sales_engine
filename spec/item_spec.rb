@@ -8,7 +8,7 @@ describe SalesEngine::Item do
     it "returns the merchant with the correct id" do
       merchant.stub(:id).and_return(1)
       merchant2.stub(:id).and_return(2)
-      SalesEngine::Database.stub(:merchants).and_return([merchant, merchant2])
+      SalesEngine::Database.instance.stub(:merchants).and_return([merchant, merchant2])
       item.merchant.should == merchant
     end
   end
@@ -24,7 +24,7 @@ describe SalesEngine::Item do
       invoice_item2.stub(:item_id).and_return(2)
       invoice_item3.stub(:item_id).and_return(1)
       invoice_items = [invoice_item, invoice_item2, invoice_item3]
-      SalesEngine::Database.stub(:invoice_items).and_return(invoice_items)
+      SalesEngine::Database.instance.stub(:invoice_items).and_return(invoice_items)
     end
 
     context "when one invoice item matches item id" do

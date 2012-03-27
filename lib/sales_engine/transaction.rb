@@ -21,11 +21,11 @@ module SalesEngine
     end     
 
     def self.elements
-      Database.transactions
+      SalesEngine::Database.instance.transactions
     end
 
     def invoice
-      Database.invoices.find { |invoice| invoice.id == invoice_id }  
+      SalesEngine::Database.instance.invoices.find { |invoice| invoice.id == invoice_id }  
     end
   end
 end

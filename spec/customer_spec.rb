@@ -11,7 +11,7 @@ describe SalesEngine::Customer do
       invoice.stub(:customer_id).and_return(1)
       invoice2.stub(:customer_id).and_return(2)
       other_invoice.stub(:customer_id).and_return(1)
-      SalesEngine::Database.stub(:invoices).and_return([invoice, invoice2 , other_invoice])
+      SalesEngine::Database.instance.stub(:invoices).and_return([invoice, invoice2 , other_invoice])
     end
     
     context "when customer has multiple invoices" do

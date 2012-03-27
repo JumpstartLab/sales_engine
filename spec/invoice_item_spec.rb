@@ -9,7 +9,7 @@ describe SalesEngine::InvoiceItem do
     before(:each) do
       item.stub(:id).and_return(1)
       other_item.stub(:id).and_return(2)
-      SalesEngine::Database.stub(:items).and_return([item, other_item])
+      SalesEngine::Database.instance.stub(:items).and_return([item, other_item])
     end
     
     it "returns the item with matching item_id" do
@@ -25,7 +25,7 @@ describe SalesEngine::InvoiceItem do
     before(:each) do
       invoice.stub(:id).and_return(1)
       other_invoice.stub(:id).and_return(2)
-      SalesEngine::Database.stub(:invoices).and_return([invoice, other_invoice])
+      SalesEngine::Database.instance.stub(:invoices).and_return([invoice, other_invoice])
     end
     
     it "returns the invoice with matching invoice_id" do

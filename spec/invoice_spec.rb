@@ -10,7 +10,7 @@ describe SalesEngine::Invoice do
       transaction.stub(:invoice_id).and_return(1)
       transaction2.stub(:invoice_id).and_return(2)
       other_transaction.stub(:invoice_id).and_return(1)
-      SalesEngine::Database.stub(:transactions).and_return([transaction, transaction2, other_transaction])
+      SalesEngine::Database.instance.stub(:transactions).and_return([transaction, transaction2, other_transaction])
     end
     context "the invoice has many associated transactions" do
       it "returns an array of all associated transactions" do
@@ -41,7 +41,7 @@ describe SalesEngine::Invoice do
       invoice_item.stub(:invoice_id).and_return(1)
       invoice_item2.stub(:invoice_id).and_return(2)
       other_invoice_item.stub(:invoice_id).and_return(1)
-      SalesEngine::Database.stub(:invoice_items).and_return([invoice_item, invoice_item2, other_invoice_item])
+      SalesEngine::Database.instance.stub(:invoice_items).and_return([invoice_item, invoice_item2, other_invoice_item])
     end
     context "the invoice has many associated invoice_items" do
       it "returns an array of all associated invoice_items" do
@@ -80,7 +80,8 @@ describe SalesEngine::Invoice do
       invoice_item2.stub(:item).and_return(item2)
       other_invoice_item.stub(:item).and_return(other_item)
 
-      SalesEngine::Database.stub(:invoice_items).and_return([invoice_item, invoice_item2, other_invoice_item])
+      SalesEngine::Database.instance.stub(:invoice_items).and_return(
+        [invoice_item, invoice_item2, other_invoice_item])
     end
 
     context "the invoice has many associated items" do
@@ -111,7 +112,7 @@ describe SalesEngine::Invoice do
     before(:each) do
       customer.stub(:id).and_return(1)
       other_customer.stub(:id).and_return(2)
-      SalesEngine::Database.stub(:customers).and_return([customer, other_customer])
+      SalesEngine::Database.instance.stub(:customers).and_return([customer, other_customer])
     end
     
     it "returns the customer with matching customer_id" do
