@@ -5,7 +5,7 @@ $:.unshift lib unless $:.include?(lib)
 require 'bundler/version'
  
 Gem::Specification.new do |s|
-  s.name        = "salesengine-conanrdarrellrivera"
+  s.name        = "sales_engine"
   s.version     = "1.0.0"
   s.authors     = ["Conan Rimmer", "Darrell Rivera"]
   s.email       = ["conan.rimmer@livingsocial.com", "darrell.rivera@livingsocial.com"]
