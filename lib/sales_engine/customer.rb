@@ -41,7 +41,7 @@ module SalesEngine
     end
 
     def self.find_by_first_name(match)
-      SalesEngine::Search.find_all_by("first_name", match, self.customers).sample
+      SalesEngine::Search.find_by("first_name", match, self.customers)
     end
 
     def self.find_all_by_first_name(match)
@@ -49,7 +49,7 @@ module SalesEngine
     end
 
     def self.find_by_last_name(match)
-      SalesEngine::Search.find_all_by("last_name", match, self.customers).sample
+      SalesEngine::Search.find_by("last_name", match, self.customers)
     end
 
     def self.find_all_by_last_name(match)
@@ -57,7 +57,7 @@ module SalesEngine
     end
 
     def self.find_by_updated_at(match)
-      SalesEngine::Search.find_all_by("updated_at", match, self.customers).sample
+      SalesEngine::Search.find_by("updated_at", match, self.customers)
     end
 
     def self.find_all_by_updated_at(match)
@@ -65,7 +65,7 @@ module SalesEngine
     end
 
     def self.find_by_created_at(match)
-      SalesEngine::Search.find_all_by("created_at", match, self.customers).sample
+      SalesEngine::Search.find_by("created_at", match, self.customers)
     end
 
     def self.find_all_by_created_at(match)

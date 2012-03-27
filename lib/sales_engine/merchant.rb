@@ -123,7 +123,8 @@ module SalesEngine
       successful_invoice_items.each do |inv_item|
         revenue = revenue + inv_item.total
       end
-      revenue
+      revenue = (revenue/100.0).to_s
+      revenue = BigDecimal.new(revenue)
     end
 
     def merch_revenue_by_date(date)
@@ -133,7 +134,11 @@ module SalesEngine
           revenue = revenue + inv_item.total
         end
       end
-      revenue
+      revenue = (revenue/100.0).to_s
+      revenue = BigDecimal.new(revenue)
+      # puts revenue.ceil(2)
+      # puts revenue
+      # puts revenue.to_digits
     end
 
     def revenue(*date)
@@ -205,7 +210,9 @@ module SalesEngine
           end
         end
       end
-      date_revs[date]
+      revenue = date_revs[date]
+      revenue = (revenue/100.0).to_s
+      revenue = BigDecimal.new(revenue)
     end
 
   end
