@@ -30,6 +30,8 @@ module SalesEngine
         record.item.items_sold += record.quantity
         record.customer.revenue_bought += record.line_total
         record.customer.items_bought += record.quantity
+        record.invoice.total_paid += record.line_total
+        record.invoice.num_items += record.quantity
       end
     end
 

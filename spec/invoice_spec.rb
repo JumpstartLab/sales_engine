@@ -145,6 +145,44 @@ describe SalesEngine::Invoice do
       SalesEngine::Transaction.records.pop
     end
   end
+  context "extensions" do
+    describe ".pending" do
+      it "returns an empty array when all transactions are a success" do
+        SalesEngine::Invoice.pending.should == []
+      end
+      it "returns Invoices without a successful transaction" do
+        invoice =  SalesEngine::Invoice.find_by_id(1)
+        bad_transaction = double("transaction")
+        bad_transaction.stub(:result => "pending")
+        bad_transaction.stub(:invoice_id => 1)
+        invoice.stub(:transactions => [bad_transaction])
+        SalesEngine::Transaction.records << bad_transaction
+        SalesEngine::Invoice.pending.should == [invoice]
+      end
+      after(:all) { SalesEngine::Transaction.records.pop }
+    end
+    describe ".average_revenue" do
+      it "returns a 0 big decimal when no processed invoices" do
+        mock_invoice = {}
+        3.times do | i |
+          mock_invoice[i] = double("invoice")
+          mock_invoice[i].stub(:total_paid => 0)
+        end
+        SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
+        SalesEngine::Invoice.average_revenue.should == BigDecimal("0")
+      end
+      it "returns the average of the total for each invoice as a bigdecimal" do
+        mock_invoice = {}
+        3.times do | i |
+          mock_invoice[i] = double("invoice")
+          mock_invoice[i].stub(:successful_transaction => true, :total_paid => (i * 3))
+        end
+        SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
+        SalesEngine::Invoice.average_revenue.should == BigDecimal("3")
+      end
+
+    end
+  end
 end
 
 #id,customer_id,merchant_id,status,created_at,updated_at

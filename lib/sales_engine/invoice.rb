@@ -2,7 +2,7 @@ module SalesEngine
   class Invoice
     extend Searchable
     attr_accessor :customer_id, :id, :merchant_id, :status, :created_at
-    attr_accessor :raw_csv
+    attr_accessor :raw_csv, :num_items
 
 
     def self.records
@@ -39,6 +39,15 @@ module SalesEngine
       new_invoice
     end
 
+    def self.pending
+      ids = Transaction.all.select{|t| t.result != "success"}.map(&:invoice_id)
+      ids.uniq.collect { |id| Invoice.find_by_id(id) }
+    end
+
+    def self.average_revenue
+      BigDecimal((all.map(&:total_paid).inject(:+) / all.size).to_s)
+    end
+
     def initialize(raw_line)
       self.id = raw_line[:id].to_i
       self.customer_id = raw_line[:customer_id].to_i
@@ -47,6 +56,8 @@ module SalesEngine
       self.created_at = DateTime.parse(raw_line[:created_at])
       self.raw_csv = raw_line.values
       Invoice.csv_headers ||= raw_line.keys
+      self.total_paid = 0
+      self.num_items = 0
     end
 
     def transactions
@@ -70,10 +81,14 @@ module SalesEngine
 
     def total_paid
       if successful_transaction
-        @total_paid ||= invoice_items.map(&:line_total).inject(:+)
+        @total_paid
       else
         0
       end
+    end
+
+    def total_paid=(value)
+      @total_paid = value
     end
 
     def charge(params)
@@ -82,8 +97,6 @@ module SalesEngine
       t.credit_card_expiration_date = params[:credit_card_expiration]
       t.result = params[:result]
     end
-
-    private
 
     def successful_transaction
       transactions.map(&:result).include?("success")
