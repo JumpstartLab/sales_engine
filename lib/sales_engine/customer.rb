@@ -60,7 +60,7 @@ module SalesEngine
     end
 
     def pending_invoices
-      invoices.select { |i| ! i.transactions.map(&:result).include?("success") }
+      invoices.reject { |i| i.transactions.map(&:result).include?("success") }
     end
 
     def has_pending_invoices?
