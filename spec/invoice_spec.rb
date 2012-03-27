@@ -126,9 +126,19 @@ describe SalesEngine::Invoice do
     let (:item) { double("item", :id => 200, :unit_price => 1000)}
     let (:item2) { double("item", :id => 201, :unit_price => 2000)}
     let (:database) { double("database")}
+    let (:invoice) {double("invoice") }
 
     before(:each) do
       SalesEngine::Database.stub(:instance).and_return(database)
+      SalesEngine::Invoice.stub(:find_by_id).with(1).and_return(invoice)
+    end
+
+    it "returns the invoice created" do
+        input_hash = { :customer => customer, :merchant => merchant, 
+         :status => "status", :items => []}
+         database.stub(:insert_invoice).and_return(1)
+         SalesEngine::Invoice.stub(:create_invoice_items)
+         SalesEngine::Invoice.create(input_hash).should == invoice
     end
 
     context "when more than 1 invoice item" do

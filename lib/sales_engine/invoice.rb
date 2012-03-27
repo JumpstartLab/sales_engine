@@ -47,6 +47,7 @@ module SalesEngine
       invoice_id = Database.instance.insert_invoice(invoice_hash)
 
       create_invoice_items(input[:items], invoice_id)
+      Invoice.find_by_id(invoice_id)
     end
 
     def self.create_invoice_items(items, invoice_id)
