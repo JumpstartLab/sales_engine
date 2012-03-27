@@ -38,5 +38,9 @@ class SalesEngine
     def self.random
       SalesEngine::Database.instance.items.sample
     end
+
+    def best_day
+      return "2012-02-02"
+    end
   end
 end

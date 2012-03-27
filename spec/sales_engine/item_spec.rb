@@ -35,4 +35,14 @@ describe SalesEngine::Item do
       SalesEngine::Item.random.should be_an SalesEngine::Item
     end
   end
+
+  describe "#best_day" do
+    it "returns a string of a date" do
+      test_item.best_day.should =~ /[0-9][0-9][0-9][0-9][-][0-1][0-9]-[0-3][0-9]/
+    end
+
+    it "the date has the most sales for this item" do
+      pending
+    end
+  end
 end
