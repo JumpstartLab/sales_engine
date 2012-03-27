@@ -13,15 +13,17 @@ describe SalesEngine::Invoice do
   let(:tr_one)   { SalesEngine::Transaction.new( :invoice_id => "1") }
   let(:tr_two)   { SalesEngine::Transaction.new( :invoice_id => "2", :result => "failure") }
   let(:tr_three) { SalesEngine::Transaction.new( :invoice_id => "2", :result => "success") }
-  let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "3", :result => "failure") }
-  let(:transaction_list) { SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three ] }
+  let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "4", :result => "failure") }
+  let(:transaction_list) { SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ] }
 
   let(:inv_item_one){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3",
                                                     :invoice_id => "1",  :item_id => "1" ) }
   let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3",
                                                     :invoice_id => "2", :item_id => "2" ) } 
-  let(:inv_item_three){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3") }
-  let(:inv_item_four) { SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3")}
+  let(:inv_item_three){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3",
+                                                      :invoice_id => "1", :item_id => "2") }
+  let(:inv_item_four) { SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3",
+                                                     :invoice_id => "1", :item_id => "2")}
   let(:invoice_item_list) {SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two, inv_item_three, inv_item_four]}
 
   describe "#transactions" do
@@ -88,7 +90,7 @@ describe SalesEngine::Invoice do
 
     before(:each) do
       invoice_item_list
-      successful_invoice_list
+      invoice_list
       transaction_list
     end
 
@@ -127,7 +129,7 @@ describe SalesEngine::Invoice do
     end
 
     it "returns an array of invoice items" do
-      inv_one.invoice_items.should == [ inv_item_one ]
+      inv_one.invoice_items.should include inv_item_one 
     end
 
     context "when an invoice has no invoice items" do
@@ -164,11 +166,12 @@ describe SalesEngine::Invoice do
 
     before(:each) do
       item_list
+      invoice_list
       invoice_item_list
     end
 
     it "returns all items associated with that invoice" do
-      inv_one.items.should == [ item_one ]
+      inv_one.items.should include item_one 
     end
 
     context "when an invoice has no items" do
