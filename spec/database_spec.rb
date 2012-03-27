@@ -1,9 +1,11 @@
 require 'spec_helper'
 
 describe SalesEngine::Database do
-  let(:sqlite_db) { SQLite3::Database.new('data/integration_test.sqlite')}
+#  let(:sqlite_db) { SQLite3::Database.new('data/integration_test.sqlite')}
+   let(:sqlite_db) { SQLite3::Database.new(':memory:')}
 
   before(:all) do
+    Loader.new(sqlite_db).load
     SalesEngine::Database.instance.db = sqlite_db
   end
 
@@ -86,6 +88,34 @@ describe SalesEngine::Database do
       it "returns customer 959 with 2 transactions" do
         rows[959].should == 2
       end
+    end
+  end
+
+  describe "#create_invoice" do
+    let (:hash) { { :customer_id => 1, :merchant_id => 2, 
+                  :status => "shipped" } } 
+    
+    before(:all) do
+      @old_invoices = SalesEngine::Database.instance.invoices
+      SalesEngine::Database.instance.create_invoice(hash)
+      @new_invoices = SalesEngine::Database.instance.invoices
+    end
+
+    it "database execute insert query" do
+      sql = "insert into invoices values (?, ?, ?, ?, ?, ?)"
+      sqlite_db.should_receive(:execute).with(sql, nil,
+                               hash[:customer_id], hash[:merchant_id],
+                               hash[:status], DateTime.now.to_s,
+                               DateTime.now.to_s)
+      SalesEngine::Database.instance.create_invoice(hash)
+    end
+
+    it "adds a new invoice to the database" do
+      @new_invoices.length.should == @old_invoices.length + 1
+    end
+
+    it "increments invoice id" do
+      @new_invoices.last.id.should == @old_invoices.last.id + 1
     end
   end
 end
