@@ -37,6 +37,21 @@ module SalesEngine
       self.invoices = @file.collect {|line| SalesEngine::Invoice.new(line) }
     end
 
+    def load_customers_data(filename)
+      @file = CSV.open(filename, CSV_OPTIONS)
+      self.customers = @file.collect {|line| SalesEngine::Customer.new(line) }
+    end
+
+    def load_invoice_items_data(filename)
+      @file = CSV.open(filename, CSV_OPTIONS)
+      self.invoiceitems = @file.collect {|line| SalesEngine::InvoiceItem.new(line) }
+    end
+
+    def load_transactions_data(filename)
+      @file = CSV.open(filename, CSV_OPTIONS)
+      self.transactions = @file.collect {|line| SalesEngine::Transaction.new(line) }
+    end
+
     def add_to_list(thing)
       self.send(thing.class.to_s.split("::").last.downcase+"s") << thing
     end
