@@ -116,11 +116,20 @@
       customers
      end
 
-     def create_invoice(hash)
+     def insert_invoice(hash)
       db.execute("insert into invoices values (?, ?, ?, ?, ?, ?)",
                   nil, hash[:customer_id].to_i, hash[:merchant_id].to_i,
                   hash[:status], DateTime.now.to_s,
                   DateTime.now.to_s)
+      return db.last_insert_row_id
+     end
+
+     def insert_invoice_item(hash)
+      db.execute("insert into invoice_items values (?, ?, ?, ?, ?, ?, ?)",
+                  nil, hash[:item_id].to_i, hash[:invoice_id].to_i,
+                  hash[:quantity], hash[:unit_price], DateTime.now.to_s,
+                  DateTime.now.to_s)
+      return db.last_insert_row_id
      end
 
      private_class_method :new

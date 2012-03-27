@@ -91,23 +91,23 @@ describe SalesEngine::Database do
     end
   end
 
-  describe "#create_invoice" do
-    let (:hash) { { :customer_id => 1, :merchant_id => 2, 
+  describe "#insert_invoice" do
+    let (:invoice_hash) { { :customer_id => 1, :merchant_id => 2, 
                   :status => "shipped" } } 
     
     before(:all) do
       @old_invoices = SalesEngine::Database.instance.invoices
-      SalesEngine::Database.instance.create_invoice(hash)
+      @id = SalesEngine::Database.instance.insert_invoice(invoice_hash)
       @new_invoices = SalesEngine::Database.instance.invoices
     end
 
     it "database execute insert query" do
       sql = "insert into invoices values (?, ?, ?, ?, ?, ?)"
       sqlite_db.should_receive(:execute).with(sql, nil,
-                               hash[:customer_id], hash[:merchant_id],
-                               hash[:status], DateTime.now.to_s,
+                               invoice_hash[:customer_id], invoice_hash[:merchant_id],
+                               invoice_hash[:status], DateTime.now.to_s,
                                DateTime.now.to_s)
-      SalesEngine::Database.instance.create_invoice(hash)
+      SalesEngine::Database.instance.insert_invoice(invoice_hash)
     end
 
     it "adds a new invoice to the database" do
@@ -115,7 +115,36 @@ describe SalesEngine::Database do
     end
 
     it "increments invoice id" do
-      @new_invoices.last.id.should == @old_invoices.last.id + 1
+      @id.should == 4986
+    end
+  end
+
+  describe "#create_invoice_item" do
+    let (:invoice_item_hash) { { :item_id => 1, :invoice_id => 2, 
+                  :quantity => 2, :unit_price => 3 } } 
+    
+    before(:all) do
+      @old_invoice_items = SalesEngine::Database.instance.invoice_items
+      @id = SalesEngine::Database.instance.insert_invoice_item(invoice_item_hash)
+      @new_invoice_items = SalesEngine::Database.instance.invoice_items
+    end
+
+    it "executes insert query" do
+      sql = "insert into invoice_items values (?, ?, ?, ?, ?, ?, ?)"
+      sqlite_db.should_receive(:execute).with(sql, nil,
+       invoice_item_hash[:item_id], invoice_item_hash[:invoice_id],
+       invoice_item_hash[:quantity], invoice_item_hash[:unit_price], 
+       DateTime.now.to_s,DateTime.now.to_s)    
+      SalesEngine::Database.instance.insert_invoice_item(invoice_item_hash)
+    end
+
+
+    it "adds a new invoice item to the database" do
+      @new_invoice_items.length.should == @old_invoice_items.length + 1
+    end
+
+    it "increments invoice_item id" do
+      @id.should == 22265
     end
   end
 end
