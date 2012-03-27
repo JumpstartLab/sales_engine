@@ -2,7 +2,7 @@ module SalesEngine
   class Database
     include Singleton
     CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
-    EVAL_DATA_DIR = "./data/evaluation"
+    EVAL_DATA_DIR = "./data"
     attr_accessor :merchants, :items, :invoices, :transactions, 
                   :customers, :invoiceitems
 
