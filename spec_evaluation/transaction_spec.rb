@@ -1,37 +1,37 @@
 require 'spec_helper'
 
-describe Transaction do
+describe SalesEngine::Transaction do
 
   context "Searching" do
     describe ".random" do
       it "usually returns different things on subsequent calls" do
-        transaction_one = Transaction.random
+        transaction_one = SalesEngine::Transaction.random
         10.times do
-          transaction_two = Transaction.random
-          break if transaction_one != transaction_two
+          transaction_two = SalesEngine::Transaction.random
+          break if transaction_one.id != transaction_two.id
         end
 
-        transaction_one.should_not == transaction_two
+        transaction_one.id.should_not == transaction_two.id
       end
     end
 
     describe ".find_by_credit_card_number" do
-      transaction = Transaction.find_by_credit_card_number "4901931478327757"
-      transaction.id.should == 2106
+      transaction = SalesEngine::Transaction.find_by_credit_card_number "4634664005836219"
+      transaction.id.should == 5536
     end
 
     describe ".find_all_by_result" do
-      transactions = Transaction.find_all_by_result "success"
-      transactions.should have(4871).transactions
+      transactions = SalesEngine::Transaction.find_all_by_result "success"
+      transactions.should have(4648).transactions
     end
   end
 
   context "Relationships" do
-    let(:transaction) { Transaction.find_by_id 1138 }
+    let(:transaction) { SalesEngine::Transaction.find_by_id 1138 }
 
     describe "#invoice" do
       it "exists" do
-        invoice_customer = Customer.find_by_id 234
+        invoice_customer = SalesEngine::Customer.find_by_id 192
         transaction.invoice.customer.first_name.should == invoice_customer.first_name
       end
     end

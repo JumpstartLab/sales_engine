@@ -2,6 +2,7 @@ require 'bundler'
 
 Bundler.require
 
+require 'sales_engine'
 require 'date'
 
 # require './sales_engine'
