@@ -9,7 +9,6 @@ describe SalesEngine::Item do
            :created_at => "2012-02-26 20:56:50 UTC", 
            :updated_at => "2012-02-26 20:56:50 UTC"}
   let(:item) {SalesEngine::Item.new(param)}
-  #let(:item) { Fabricate(:item) }
   describe '#initialize' do
     context "when instantiating a new item" do
       it 'receives a hash as a param' do
@@ -31,8 +30,8 @@ describe SalesEngine::Item do
     it 'contains instances of the item class' do
       collection.first.class.should == item.class
     end
-    it 'is not nil' do
-      collection.should_not be_nil
+    it 'is not empty' do
+      collection.should_not be_empty
     end
   end
 
@@ -43,8 +42,8 @@ describe SalesEngine::Item do
       item.invoice_items.should be_a(Array)
     end
     it 'returns an instance of item' do
-      results = items[0].invoice_items
-      results[0].class.should == invoiceitem[0].class
+      array_of_invoiceitems = items[0].invoice_items 
+      array_of_invoiceitems[0].class.should == invoiceitem[0].class
     end
     it 'returns an empty array when no match' do
       item.invoice_items.should == []

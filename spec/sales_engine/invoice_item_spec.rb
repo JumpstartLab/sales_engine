@@ -6,7 +6,6 @@ describe SalesEngine::InvoiceItem do
            :created_at => "2012-02-26 20:56:56 UTC", 
            :updated_at => "2012-02-26 20:56:56 UTC"}
   let(:invoice_item) {SalesEngine::InvoiceItem.new(param)}
-  #let(:invoice_item) { Fabricate(:invoice_item) }
   describe '.initialize' do
     context "when instantiating a new invoice item" do
       it 'receives a hash as a param' do
@@ -20,32 +19,32 @@ describe SalesEngine::InvoiceItem do
     end
   end
 
-  let(:collection) {SalesEngine::Database.instance.invoiceitems}
+  let(:invoiceitems) {SalesEngine::Database.instance.invoiceitems}
   describe '.collection' do
     it 'creates an array' do
-      collection.should be_a(Array)
+      invoiceitems.should be_a(Array)
     end
     it 'contains instances of the invoice item class' do
-      collection.first.class.should == invoice_item.class
+      invoiceitems.first.class.should == invoice_item.class
     end
-    it 'is not nil' do
-      collection.should_not be_nil
+    it 'is not empty' do
+      invoiceitems.should_not be_empty
     end
   end
-  describe '.invoice' do
+  describe '#invoice' do
     it 'returns an invoice' do
-      collection[0].invoice.class.should == SalesEngine::Invoice
+      invoiceitems[0].invoice.class.should == SalesEngine::Invoice
     end
     it 'matches invoice id with instantiated invoice item\'s invoice_id' do
-      collection[0].invoice.id.to_i.should == invoice_item.invoice_id
+      invoiceitems[0].invoice.id.to_i.should == invoice_item.invoice_id
     end
   end
-  describe '.item' do
+  describe '#item' do
     it 'returns an item' do
-      collection[0].item.class.should == SalesEngine::Item
+      invoiceitems[0].item.class.should == SalesEngine::Item
     end
     it 'matches item id with instantiated invoice item\'s item_id' do
-      collection[0].item.id.should == collection[0].item_id
+      invoiceitems[0].item.id.should == invoiceitems[0].item_id
     end
   end
 

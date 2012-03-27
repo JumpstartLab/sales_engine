@@ -27,8 +27,8 @@ describe SalesEngine::Customer do
     it 'contains instances of the customer class' do
       collection.first.class.should == customer.class
     end
-    it 'is not nil' do
-      collection.should_not be_nil
+    it 'is not empty' do
+      collection.should_not be_empty
     end
   end
 

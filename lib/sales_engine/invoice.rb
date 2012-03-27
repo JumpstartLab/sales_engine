@@ -51,7 +51,7 @@ module SalesEngine
       invoiceitems = SalesEngine::Database.instance.invoiceitems
       matched_invoiceitems = invoiceitems.select { |invoiceitem| invoiceitem.invoice_id == self.id }
       item_ids = matched_invoiceitems.map { |invoiceitem| invoiceitem.item_id }
-      item_ids.map { |item_id| SalesEngine::Item.find_by_id(item_id) }
+      matched_items = item_ids.map { |item_id| SalesEngine::Item.find_by_id(item_id) }
     end
 
     def customer
