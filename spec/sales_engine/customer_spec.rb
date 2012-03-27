@@ -1,11 +1,15 @@
 require 'spec_helper'
 
 describe SalesEngine::Customer do
-  a = SalesEngine::Customer.new({:id=>"3"})
-  b = SalesEngine::Customer.new({})
-  c = SalesEngine::Customer.new({})
-  d = SalesEngine::Customer.new({})
-  e = SalesEngine::Customer.new({})
+  a = SalesEngine::Customer.new({:id=>3})
+
+  let(:customer) do
+    c = Fabricate(:customer)
+    puts c.inspect
+    c
+  end
+
+  let(:customer_with_invoices){ Fabricate(:customer_with_invoices) }
 
 
   describe ".random" do
@@ -30,24 +34,36 @@ describe SalesEngine::Customer do
   describe ".find_by_id" do
 
     it "returns a customer" do
-      SalesEngine::Customer.find_by_id("3").class.should == SalesEngine::Customer
+      SalesEngine::Customer.find_by_id(3).class.should == SalesEngine::Customer
     end
 
     it "returns the correct customer id" do
-      SalesEngine::Customer.find_by_id("3").id.should == "3"
-    end
-
-    it "returns the correct customer" do
-      #a = Customer.new({:id=>"3"})
-      SalesEngine::Customer.find_by_id("3").id.should == a.id
+      random_id = rand(100)
+      SalesEngine::Customer.find_by_id(random_id).id.should == random_id
     end
   end
 
   describe ".find_all_by_id" do
 
     it "returns a array" do
-      SalesEngine::Customer.find_all_by_id("3").class.should == Array
+      SalesEngine::Customer.find_all_by_id(3).class.should == Array
     end
   end
 
+  describe "#invoices" do
+
+    # it "returns an array" do
+    #   puts customer.invoices.inspect
+    #   customer.invoices.class.should == Array
+    # end
+
+    it "returns a collection of invoices" do
+      customer_with_invoices.invoices.should be_a(Enumerable)
+    end
+
+    # it "returns invoice objects" do
+    #   customer.invoices[0].class.should == SalesEngine::Invoice
+    # end
+
+  end
 end
