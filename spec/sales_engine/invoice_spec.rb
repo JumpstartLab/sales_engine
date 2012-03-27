@@ -19,4 +19,32 @@ describe SalesEngine::Invoice do
       end
     end
   end
+
+  let(:collection) {SalesEngine::Database.instance.invoices}
+  describe '.collection' do
+    it 'creates an array' do
+      collection.should be_a(Array)
+    end
+    it 'contains instances of the invoice class' do
+      collection.first.class.should == invoice.class
+    end
+    it 'is not nil' do
+      collection.should_not be_nil
+    end
+  end
+
+  describe '.transactions' do
+    pending
+  end
+  describe '.invoice_items' do
+    pending
+  end
+  describe '.items' do
+    pending
+  end
+  describe '.customer' do
+    pending
+  end
+
+
 end

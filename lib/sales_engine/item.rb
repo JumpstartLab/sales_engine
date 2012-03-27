@@ -41,14 +41,14 @@ module SalesEngine
     end
 
     def invoice_items
-      items = SalesEngine::Database.instance.invoiceitems
-      results = items.select { |invoiceitem| invoiceitem.item_id == self.id }
+      invoiceitems = SalesEngine::Database.instance.invoiceitems
+      matched_invoiceitems = invoiceitems.select { |invoiceitem| invoiceitem.item_id == self.id }
     end
     
     def merchant
-      items = SalesEngine::Database.instance.items
-      results = items.select { |item| item.merchant_id == self.id }
-      results[0]
+      merchants = SalesEngine::Database.instance.merchants
+      matched_merchants = merchants.select { |merchant| merchant.id == self.merchant_id }
+      matched_merchants[0]
     end
 
   end

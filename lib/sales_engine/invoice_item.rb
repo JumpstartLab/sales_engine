@@ -17,20 +17,19 @@ module SalesEngine
     end
 
     def invoice
-      #SalesEngine::Invoice.find_by_id(self.id)
-
-      invoiceitems = SalesEngine::Database.instance.invoiceitems
-      matched_invoiceitems = invoiceitems.select { |invoiceitem| invoiceitem.id == self.id }
-      invoiceitem_ids = matched_invoiceitems.map { |invoiceitem| invoiceitem.invoice_id }
-      invoiceitem_ids.map { |invoiceitem_id| SalesEngine::Invoice.find_by_id(invoiceitem_id) }
+      SalesEngine::Invoice.find_all_by_id(self.invoice_id)
+      # invoiceitems = SalesEngine::Database.instance.invoiceitems
+      # matched_invoiceitems = invoiceitems.select { |invoiceitem| invoiceitem.id == self.id }
+      # invoiceitem_ids = matched_invoiceitems.map { |invoiceitem| invoiceitem.invoice_id }
+      # invoiceitem_ids.map { |invoiceitem_id| SalesEngine::Invoice.find_by_id(invoiceitem_id) }
     end
 
     def item
-      #SalesEngine::Item.find_by_id(self.item_id)
-      invoiceitems = SalesEngine::Database.instance.invoiceitems
-      matched_invoiceitems = invoiceitems.select { |invoiceitem| invoiceitem.id == self.id }
-      invoiceitem_ids = matched_invoiceitems.map { |invoiceitem| invoiceitem.item_id }
-      invoiceitem_ids.map { |invoiceitem_id| SalesEngine::Item.find_by_id(invoiceitem_id) }
+      SalesEngine::Item.find_all_by_id(self.item_id)
+      # invoiceitems = SalesEngine::Database.instance.invoiceitems
+      # matched_invoiceitems = invoiceitems.select { |invoiceitem| invoiceitem.id == self.id }
+      # invoiceitem_ids = matched_invoiceitems.map { |invoiceitem| invoiceitem.item_id }
+      # invoiceitem_ids.map { |invoiceitem_id| SalesEngine::Item.find_by_id(invoiceitem_id) }
     end
 
   end
