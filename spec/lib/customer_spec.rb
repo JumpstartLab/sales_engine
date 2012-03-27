@@ -32,6 +32,18 @@ describe SalesEngine::Customer do
     end
   end
 
+  describe "basic finder methods" do
+    SalesEngine::Customer::CUSTOMER_ATTS.each do |attribute|
+      it "should respond to #find_by_#{attribute}" do
+        SalesEngine::Customer.should respond_to("find_by_#{attribute}")
+      end
+
+      it "should respond to #find_all_by_#{attribute}" do
+        SalesEngine::Customer.should respond_to("find_all_by_#{attribute}")
+      end
+    end
+  end
+
   describe "#transactions" do
     before(:each) do
       invoice_list

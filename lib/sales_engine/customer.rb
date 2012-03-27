@@ -1,4 +1,5 @@
 module SalesEngine
+  require 'sales_engine/dynamic_finder'
   class Customer
     attr_accessor :id, :first_name, :last_name, :created_at, :updated_at
 
@@ -18,21 +19,11 @@ module SalesEngine
       self.updated_at = attributes[:updated_at]
     end
 
-    CUSTOMER_ATTS.each do |att|
-      define_singleton_method ("find_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.customer_list.detect do |customer|
-          customer.send(att.to_sym).to_s.downcase == param.to_s.downcase
-        end
-      end
+    def self.attributes_for_finders
+      CUSTOMER_ATTS
     end
 
-    CUSTOMER_ATTS.each do |att|
-      define_singleton_method ("find_all_by_" + att).to_sym do |param|
-        SalesEngine::Database.instance.customer_list.select do |customer| 
-          customer if customer.send(att.to_sym).to_s.downcase == param.to_s.downcase
-        end
-      end
-    end
+    extend SalesEngine::DynamicFinder
 
     def invoices
       SalesEngine::Invoice.find_all_by_customer_id(self.id)
