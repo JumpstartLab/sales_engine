@@ -43,6 +43,29 @@ describe SalesEngine::Invoice do
     se.add_to_list(transaction_3)
   end
 
+  describe "#total_revenue" do
+    context "no transactions failed" do
+      it "returns the total revenue for an invoice" do
+        invoice_1.total_revenue.should == 3
+      end
+    end
+
+    context "one transaction failed but another was successful" do
+      it "returns the total revenue for an invoice" do
+        transaction_1.result = "Failed"
+        invoice_1.total_revenue.should == 3
+      end
+    end
+
+    context "one transaction failed but another was successful" do
+      it "returns the total revenue for an invoice" do
+        transaction_1.result = "Failed"
+        transaction_3.result = "Failed"
+        invoice_1.total_revenue.should == 0
+      end
+    end
+  end
+
   describe ".random" do
     context "when invoice exist in the datastore" do
       it "returns a random invoice record" do

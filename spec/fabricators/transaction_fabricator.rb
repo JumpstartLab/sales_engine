@@ -1,3 +1,4 @@
 Fabricator(:transaction, :class_name => "SalesEngine::Transaction") do
-  id { sequence }
+  id      { sequence }
+  result  "Success"
 end
