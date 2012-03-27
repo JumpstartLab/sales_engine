@@ -26,7 +26,7 @@ describe SalesEngine::Invoice do
 
       it "contains invoice items associated with only this item" do
         test_invoice.invoice_items.all? {|i|
-          i.item_id == test_invoice.id}.should == true
+          i.invoice_id == test_invoice.id}.should == true
       end
     end
   end
@@ -61,5 +61,37 @@ describe SalesEngine::Invoice do
       SalesEngine::Invoice.random.should be_a SalesEngine::Invoice
     end
   end
+
+  describe "#total" do
+    let(:test_ii_1) {Fabricate(:invoice_item)}
+    let(:test_ii_2) {Fabricate(:invoice_item)}
+
+    context "for selected invoice" do
+      it "gets invoice_items" do
+        test_invoice.should_receive(:invoice_items).and_return([test_ii_1])
+        test_invoice.total
+      end
+
+      it "returns a number" do
+        test_invoice.total.should be_a Fixnum
+      end
+
+      # it "adds the total of invoice items" do
+      #   test_ii_1.quantity = "10"
+      #   test_ii_2.quantity = "10"
+      #   test_ii_1.unit_price = "2"
+      #   test_ii_2.unit_price = "2"
+
+
+      #   test_ii_1.invoice_id = "10001"
+      #   test_ii_2.invoice_id = "10001"
+      #   puts "test_ii_2 is #{test_ii_2.inspect}"
+      #   puts "test_ii_2 is #{test_ii_2.total}"
+      #   test_invoice.id = "10001"
+      #   test_invoice.total.should == 20
+      # end
+    end
+  end
+
 end
 

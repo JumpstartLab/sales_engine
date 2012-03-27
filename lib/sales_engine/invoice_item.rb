@@ -5,7 +5,7 @@ class SalesEngine
   class InvoiceItem
     include Model
 
-    attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price
+    attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :total
 
     def initialize(attributes)
         super
@@ -37,9 +37,8 @@ class SalesEngine
     end
 
     def total
-      BigDecimal.new(@quantity) * BigDecimal.new(@unit_price)
+      @quantity.to_i * @unit_price.to_i
     end
-
   end
 end
 

@@ -29,7 +29,7 @@ class SalesEngine
 
     def invoice_items
       SalesEngine::Database.instance.invoice_items.select do |invoice_item|
-        invoice_item.item_id == @id
+        invoice_item.invoice_id == @id
       end
     end
 
@@ -43,6 +43,10 @@ class SalesEngine
       invoice_items.collect do |invoice_item|
         invoice_item.item
       end
+    end
+
+    def total
+      return invoice_items.inject{|sum, ii| sum + ii.total}
     end
   end
 end

@@ -39,15 +39,14 @@ describe SalesEngine::InvoiceItem do
   describe "#invoice_item_total" do
     context "returns quantity * unit price for this invoice_item" do
 
-      it "returns a BigDecimal" do
-        test_invoice_item.total.should be_a BigDecimal
+      it "returns an integer" do
+        test_invoice_item.total.should be_a Integer
       end
 
       it "multiplies quantity * unit price correctly" do
-        test_invoice_item.quantity = BigDecimal.new("4")
-        test_invoice_item.unit_price = BigDecimal.new("1000")
-
-        test_invoice_item.total.should == BigDecimal("4000")
+        test_invoice_item.quantity = "4"
+        test_invoice_item.unit_price = "1000"
+        test_invoice_item.total.should == 4000
       end
     end
   end
