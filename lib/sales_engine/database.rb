@@ -1,12 +1,3 @@
-require 'csv'
-require 'singleton'
-require './lib/sales_engine/merchant'
-require './lib/sales_engine/item'
-require './lib/sales_engine/invoice'
-require './lib/sales_engine/customer'
-require './lib/sales_engine/transaction'
-require './lib/sales_engine/invoice_item'
-
 module SalesEngine
   class Database
     include Singleton

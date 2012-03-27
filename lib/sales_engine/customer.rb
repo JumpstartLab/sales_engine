@@ -1,5 +1,3 @@
-require './lib/sales_engine/record'
-
 module SalesEngine
   class Customer < Record
     attr_accessor :first_name, :last_name

@@ -1,5 +1,3 @@
-require './lib/sales_engine/record'
-
 module SalesEngine
   class Merchant < Record
     attr_accessor :name

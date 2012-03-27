@@ -1,5 +1,3 @@
-require './lib/sales_engine/record'
-
 module SalesEngine
   class Transaction < Record
     attr_accessor :invoice_id, :credit_card_number, :credit_card_expiration_date, :result

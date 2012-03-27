@@ -1,5 +1,3 @@
-require './lib/sales_engine/record'
-
 module SalesEngine
   class InvoiceItem < Record
     attr_accessor :item_id, :invoice_id, :quantity, :unit_price

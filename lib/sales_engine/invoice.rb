@@ -1,5 +1,3 @@
-require './lib/sales_engine/record'
-
 module SalesEngine
   class Invoice < Record
     attr_accessor :customer_id, :merchant_id, :status
