@@ -73,6 +73,10 @@ module SalesEngine
       end
     end
 
+    def dump_data
+      @data
+    end
+
     def dump_indices
       @indices
     end
