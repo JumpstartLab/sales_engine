@@ -2,6 +2,7 @@ require 'bundler'
 
 Bundler.require
 
+require 'sales_engine'
 require 'date'
 
 RSpec.configure do |config|
