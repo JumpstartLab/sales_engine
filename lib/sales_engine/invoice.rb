@@ -50,9 +50,9 @@ module SalesEngine
     end
 
     def is_successful?
-      x = SalesEngine::Transaction.find_all_by_invoice_id(self.id)
+      transactions = SalesEngine::Transaction.find_all_by_invoice_id(self.id)
 
-      x.detect do |transaction|
+      transactions.any? do |transaction|
         transaction.is_successful?
       end
     end

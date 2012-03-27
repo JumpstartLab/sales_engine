@@ -6,7 +6,7 @@ module SalesEngine
       self.id = attributes[:id]
       self.item_id = attributes[:item_id]
       self.invoice_id = attributes[:invoice_id]
-      self.quantity =   BigDecimal.new(attributes[:quantity])
+      self.quantity =   attributes[:quantity].to_i
       self.unit_price = BigDecimal.new(attributes[:unit_price])
       self.created_at = Time.parse(attributes[:created_at]) if attributes[:created_at]
       self.updated_at = Time.parse(attributes[:updated_at]) if attributes[:updated_at]
@@ -39,6 +39,14 @@ module SalesEngine
 
     def is_successful?
       self.invoice.is_successful?
+    end
+
+    def self.successful_invoice_items
+      invoice_item_list = SalesEngine::Database.instance.invoice_item_list
+      
+      successful_list = invoice_item_list.select do |invoice_item| 
+        invoice_item.is_successful? 
+      end
     end
 
     # def self.total_revenue_by_invoice_ids(invoice_ids)

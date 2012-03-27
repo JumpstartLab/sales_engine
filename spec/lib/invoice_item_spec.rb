@@ -16,6 +16,8 @@ describe SalesEngine::InvoiceItem do
   let(:tr_two)   { SalesEngine::Transaction.new( :invoice_id => "2", :result => "failure") }
   let(:tr_three) { SalesEngine::Transaction.new( :invoice_id => "2", :result => "success") }
   let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "3", :result => "failure") }
+  let(:transaction_list) {SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]}
+  let(:invoice_list) {SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two ]}
 
   describe "#invoice" do
     it "returns an instance of invoice associated with the instance" do
@@ -45,21 +47,33 @@ describe SalesEngine::InvoiceItem do
     end
   end
 
-  # describe "is_successful?" do
-  #   context "when an invoice item is on an invoice with at least one successful transaction" do 
-  #     it "returns one successful transaction" do
-  #       SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
-  #       SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two ]
-  #       inv_item_two.is_successful?.should == tr_three
-  #     end
-  #   end
+  describe ".successful_invoice_items" do
+    it "returns an array of the successful invoice items" do
+      transaction_list
+      invoice_list
+      SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]
+      SalesEngine::InvoiceItem.successful_invoice_items.should == [ inv_item_two ]
+    end
+  end
+
+  describe "is_successful?" do
+
+    before do
+      transaction_list
+      invoice_list
+    end
+
+    context "when an invoice item is on an invoice with at least one successful transaction" do 
+      it "returns one successful transaction" do
+        inv_item_two.is_successful?.should be_true
+      end
+    end
     
-  #   context "when an invoice item is on an invoice that has no successful transactions" do 
-  #     it "returns nil" do
-  #       SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
-  #       SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two ]
-  #       inv_item_one.is_successful?.should be_nil
-  #     end
-  #  end
-  # end
+    context "when an invoice item is on an invoice that has no successful transactions" do 
+      it "returns nil" do
+        inv_item_one.is_successful?.should be_false
+      end
+    end
+  end
+
 end

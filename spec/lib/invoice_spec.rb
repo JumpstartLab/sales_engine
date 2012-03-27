@@ -33,16 +33,16 @@ describe SalesEngine::Invoice do
 
   describe "#is_successful?" do
     context "when invoice has at least one successful transaction" do 
-      it "returns one successful transaction" do
+      it "returns true" do
         SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
-        inv_two.is_successful?.should == tr_three
+        inv_two.is_successful?.should be_true
       end
     end
     
     context "when invoice has no successful transactions" do 
       it "returns nil" do
         SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
-        inv_three.is_successful?.should be_nil
+        inv_three.is_successful?.should be_false
       end
     end
   end
