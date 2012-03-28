@@ -87,7 +87,7 @@ module SalesEngine
       item_data = { }
 
       invoice_items.each do |invoice_item|
-        date_str = invoice_item.updated_at.strftime("%Y/%m/%d")
+        date_str = invoice_item.invoice.updated_at.strftime("%Y/%m/%d")
         item_data[ date_str ] ||= 0
         item_data[ date_str ] += invoice_item.quantity
       end
@@ -98,7 +98,6 @@ module SalesEngine
       sorted_results = item_quantity_by_day.sort_by do |day, quantity|
         -quantity
       end
-      puts sorted_results.inspect
       Date.parse(sorted_results.first[0])
     end
   end
