@@ -123,8 +123,9 @@ module SalesEngine
     def self.merchants_by_revenue
       data = { }
       SalesEngine::Invoice.successful_invoices.each do |i|
-        data[ i.merchant_id.to_sym ] ||= 0
-        data[ i.merchant_id.to_sym ] += i.invoice_revenue
+        merchant_id = i.merchant_id.to_sym
+        data[ merchant_id ] ||= 0
+        data[ merchant_id ] += i.invoice_revenue
       end
       data
     end
@@ -132,7 +133,7 @@ module SalesEngine
     def self.most_revenue(num)
       data = merchants_by_revenue
       return nil if data.empty?
-      data = data.sort_by{ |k, v| -v }[0..(num-1)]
+      data = data.sort_by{ |merchant_id, revenue| -revenue }[0..(num-1)]
       data.collect { |merchant_id, revenue| self.find_by_id(merchant_id) }
     end
 

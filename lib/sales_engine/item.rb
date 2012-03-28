@@ -66,8 +66,9 @@ module SalesEngine
       item_data = { }
 
       paid_invoice_items.each do |invoice_item|
-        item_data[ invoice_item.item_id.to_sym ] ||= 0
-        item_data[ invoice_item.item_id.to_sym ] += invoice_item.quantity
+        invoice_item_id = invoice_item.item_id.to_sym
+        item_data[ invoice_item_id ] ||= 0
+        item_data[ invoice_item_id ] += invoice_item.quantity
       end
       item_data
     end
@@ -94,7 +95,7 @@ module SalesEngine
     end
 
     def best_day
-      sorted_results = item_quantity_by_day.sort_by do |day, quantity| 
+      sorted_results = item_quantity_by_day.sort_by do |day, quantity|
         -quantity
       end
       Date.parse(sorted_results.first[0])
