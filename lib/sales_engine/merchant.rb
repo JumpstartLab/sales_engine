@@ -33,12 +33,24 @@ module SalesEngine
 
     def invoices_on_date(date)
       date = Time.parse(date)
-      invoices.select {|inv| inv if inv.updated_at == date}
+      invoices.select {|inv| inv.updated_at == date}
+    end
+
+    def invoices_on_range(range)
+      invoices.select do |inv|
+        # DOES NOT HANDLE EDGE CASE WELL... e.g. RANGE DATE IS SAME AS UPDATED DATE
+        inv.updated_at <= range.last && inv.updated_at >= range.first
+      end
     end
 
     def revenue(*date)
+      if date.first.is_a?(Range)
+        results = invoices_on_range(date)
+      elsif date.first
+        results = invoices_on_date(date.first)
+      else results = invoices
+      end
       total_revenue = BigDecimal.new("0.00")
-      date.empty? ? results = invoices : results = invoices_on_date(date.first)
       results.each { |i| total_revenue += i.invoice_revenue }
       total_revenue
     end
@@ -58,19 +70,42 @@ module SalesEngine
       SalesEngine::Customer.find_by_id(customer_data_max.first)   
     end
 
+    def pending_invoices
+      invoices - successful_invoices
+    end
+
     def customers_with_pending_invoices  
-      pending_invoices = invoices - successful_invoices
       pending_invoices.collect do |inv|
         SalesEngine::Customer.find_by_id(inv.customer_id)
       end
     end
 
     def self.revenue(date)
+      if date.is_a?(Range)
+        total_revenue_on_range(date)
+      else
+        total_revenue_on_date(date)
+      end
+    end
+
+    def self.total_revenue_on_date(date)
       total_revenue = BigDecimal.new("0.00")
       SalesEngine::Invoice.successful_invoices.each do |i|
         dt = i.updated_at
         if clean_date(date) == Time.new(dt.year, dt.mon, dt.mday)
           total_revenue += i.invoice_revenue
+        end
+      end
+      total_revenue
+    end
+
+    def self.total_revenue_on_range(range)
+      total_revenue = BigDecimal.new("0.00")
+      SalesEngine::Invoice.successful_invoices.each do |i|
+        dt = i.updated_at
+        updated_at = Date.new(dt.year, dt.mon, dt.mday)
+        if range.first <= updated_at && range.last >= updated_at
+            total_revenue += i.invoice_revenue
         end
       end
       total_revenue
@@ -111,15 +146,16 @@ module SalesEngine
     def self.revenue_on_dates
       date_data = { }
       SalesEngine::Invoice.successful_invoices.each do |i|
-        date_data[ i.updated_at.to_sym ] ||= 0
-        date_data[ i.updated_at.to_sym ] += i.invoice_revenue
+        date_data[ i.updated_at.strftime("%Y/%m/%d") ] ||= 0
+        date_data[ i.updated_at.strftime("%Y/%m/%d") ] += i.invoice_revenue.to_i
       end
-      date_data.sort_by { |date, revenue| -revenue }
+      date_data
     end
 
     def self.dates_by_revenue(*num)
-      x = revenue_on_dates.sort_by { |date, revenue| -revenue }
-      num.empty? ? x : x[0..(num.first-1)]
+      date_data = revenue_on_dates.sort_by { |date, rev| -rev }
+      date_data = date_data[ 0..(num.first-1) ] unless num.empty?
+      date_data.collect { |date, rev| Date.parse(date) }
     end
 
     def self.most_items(num)

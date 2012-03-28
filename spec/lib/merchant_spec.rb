@@ -1,14 +1,16 @@
 require 'spec_helper.rb'
+require 'date'
 
 describe SalesEngine::Merchant do
   let(:merchant_one){ SalesEngine::Merchant.new( :id => "1" )}
   let(:merchant_two){ SalesEngine::Merchant.new( :id => "2" )}
   let(:merchant_three){ SalesEngine::Merchant.new( :id => "3" )}
+  let(:inv_one)     { mock(SalesEngine::Invoice) }
+  let(:inv_two)     { mock(SalesEngine::Invoice) }
+  let(:inv_three)   { mock(SalesEngine::Invoice) }
 
   describe "#invoices" do
-    let(:inv_one)   { mock(SalesEngine::Invoice) }
-    let(:inv_two)   { mock(SalesEngine::Invoice) }
-    let(:inv_three) { mock(SalesEngine::Invoice) }
+    let(:inv_one){ SalesEngine::Invoice.new(:id => "1") }
 
     before(:each) do
       inv_one.stub(:merchant_id).and_return("1")
@@ -56,10 +58,6 @@ describe SalesEngine::Merchant do
   end
 
   describe "#invoices_on_date(date)" do
-    let(:inv_one)     { mock(SalesEngine::Invoice) }
-    let(:inv_two)     { mock(SalesEngine::Invoice) }
-    let(:inv_three)   { mock(SalesEngine::Invoice) }
-
     before(:each) do
       inv_one.stub(:updated_at).and_return(Time.parse("2012-2-19"))
       inv_two.stub(:updated_at).and_return(Time.parse("2012-2-22"))
@@ -77,10 +75,29 @@ describe SalesEngine::Merchant do
     end
   end
 
-  describe "#revenue" do
-    let(:inv_one)     { mock(SalesEngine::Invoice) }
-    let(:inv_two)     { mock(SalesEngine::Invoice) }
+  describe "#invoices_on_range(range)" do
+    before(:each) do
+      inv_one.stub(:updated_at).and_return(Time.parse("2012-2-19"))
+      inv_two.stub(:updated_at).and_return(Time.parse("2012-2-22"))
+      inv_three.stub(:updated_at).and_return(Time.parse("2012-2-24"))
+      inv_one.stub(:merchant_id).and_return("1")
+      inv_two.stub(:merchant_id).and_return("1")
+      inv_three.stub(:merchant_id).and_return("1")
+      invoices = [ inv_one, inv_two, inv_three ]
 
+      SalesEngine::Database.instance.stub(:invoice_list).and_return(invoices)
+    end
+
+    context "given a valid date" do
+      it "returns all transactions on a date" do
+        date_range = Date.parse("2012-02-01")..Date.parse("2012-02-23")
+        #does not handle edge case well.. FIX?
+        merchant_one.invoices_on_range(date_range).should == [ inv_one, inv_two ]
+      end
+    end
+  end
+
+  describe "#revenue" do
     before(:each) do
       inv_one.stub(:invoice_revenue).and_return(BigDecimal.new("100"))
       inv_two.stub(:invoice_revenue).and_return(BigDecimal.new("100"))
@@ -101,10 +118,6 @@ describe SalesEngine::Merchant do
   end
 
   describe "#successful_invoices" do
-    let(:inv_one)     { mock(SalesEngine::Invoice) }
-    let(:inv_two)     { mock(SalesEngine::Invoice) }
-    let(:inv_three)   { mock(SalesEngine::Invoice) }
-
     before(:each) do
       inv_one.stub(:is_successful?).and_return(true)
       inv_two.stub(:is_successful?).and_return(true)
@@ -129,9 +142,6 @@ describe SalesEngine::Merchant do
 
   #WHAT IF THERE IS A TIE?
   describe "#favorite_customer" do
-    let(:inv_one)     { mock(SalesEngine::Invoice) }
-    let(:inv_two)     { mock(SalesEngine::Invoice) }
-    let(:inv_three)   { mock(SalesEngine::Invoice) }
     let(:customer_one){ mock(SalesEngine::Customer) }
 
     before(:each) do
@@ -158,26 +168,29 @@ describe SalesEngine::Merchant do
   end
 
   describe "#customers_with_pending_invoices" do
-    let(:customer_one) { mock(SalesEngine::Customer) }
-    let(:customer_two) { mock(SalesEngine::Customer) }
-    let(:customer_three) { mock(SalesEngine::Customer) }
-    let(:inv_one)     { mock(SalesEngine::Invoice) }
-    let(:inv_two)     { mock(SalesEngine::Invoice) }
-    let(:inv_three)   { mock(SalesEngine::Invoice) }
+    let(:inv_one)        { mock(SalesEngine::Invoice).tap do |o| 
+                             o.stub(:customer_id).and_return("1") 
+                           end }
+    let(:inv_two)        { mock(SalesEngine::Invoice).tap do |o| 
+                             o.stub(:customer_id).and_return("2") 
+                           end }
+    let(:inv_three)      { mock(SalesEngine::Invoice).tap do |o| 
+                             o.stub(:customer_id).and_return("1") 
+                           end }   
+    let(:invoices)       { [ inv_one, inv_two, inv_three ] }
+    let(:successful_invoices) { [ inv_one ] }
 
     before(:each) do
-      invoices = [ inv_one, inv_two, inv_three ]
-      inv_one.stub(:customer_id).and_return("1")
-      inv_two.stub(:customer_id).and_return("2")
-      inv_three.stub(:customer_id).and_return("1")
-      merchant_one.stub(:invoices).and_return(invoices)
-      merchant_one.stub(:successful_invoices).and_return([ inv_one ])
+      merchant_one.stub(:invoices).and_return( invoices )
+      merchant_one.stub(:successful_invoices).and_return( successful_invoices )
     end
 
     it "returns all customers with pending invoices" do
       SalesEngine::Customer.should_receive(:find_by_id).twice
       merchant_one.customers_with_pending_invoices.should be_an Array
     end
+
+    #it...
   end
 
   describe ".clean_date" do
@@ -196,13 +209,22 @@ describe SalesEngine::Merchant do
   end
 
   describe ".revenue(date)" do
-    let(:customer_one) { mock(SalesEngine::Customer) }
-    let(:customer_two) { mock(SalesEngine::Customer) }
-    let(:customer_three) { mock(SalesEngine::Customer) }
-    let(:inv_one)     { mock(SalesEngine::Invoice) }
-    let(:inv_two)     { mock(SalesEngine::Invoice) }
-    let(:inv_three)   { mock(SalesEngine::Invoice) }
+    context "when date is single date" do
+      it "calls total_revenue_on_date" do
+        SalesEngine::Merchant.should_receive(:total_revenue_on_date).once
+        SalesEngine::Merchant.revenue("2012-02-19")
+      end
+    end
+    context "when date is a range" do
+      it "calls total_revenue_on_range" do
+        date_range = Date.parse("2012-02-01")..Date.parse("2012-02-20")
+        SalesEngine::Merchant.should_receive(:total_revenue_on_range).once
+        SalesEngine::Merchant.revenue(date_range)
+      end
+    end
+  end
 
+  describe ".total_revenue_on_date(date)" do
     before(:each) do
       inv_one.stub(:invoice_revenue).and_return(100)
       inv_two.stub(:invoice_revenue).and_return(200)
@@ -216,21 +238,43 @@ describe SalesEngine::Merchant do
 
     context "when given a date" do
       it "returns the total revenue across all merchants for that date" do
-        SalesEngine::Merchant.revenue("2012-02-19").should == 400
+        SalesEngine::Merchant.total_revenue_on_date("2012-02-19").should == 400
       end
       context "when no transactions occurred on that date" do
         it "returns 0" do
-          SalesEngine::Merchant.revenue("2012-02-20").should == 0
+          SalesEngine::Merchant.total_revenue_on_date("2012-02-20").should == 0
+        end
+      end
+    end
+  end
+
+  describe ".total_revenue_on_range(range)" do
+    before(:each) do
+      inv_one.stub(:invoice_revenue).and_return(100)
+      inv_two.stub(:invoice_revenue).and_return(200)
+      inv_three.stub(:invoice_revenue).and_return(300)
+      inv_one.stub(:updated_at).and_return(Time.parse("2012-02-19"))
+      inv_two.stub(:updated_at).and_return(Time.parse("2012-02-21"))
+      inv_three.stub(:updated_at).and_return(Time.parse("2012-02-19"))
+      invoices = [ inv_one, inv_two, inv_three ]
+      SalesEngine::Invoice.stub(:successful_invoices).and_return(invoices)
+    end
+
+    context "when given a date" do
+      it "returns the total revenue across all merchants for that date" do
+        date_range = Date.parse("2012-02-01")..Date.parse("2012-02-20")
+        SalesEngine::Merchant.total_revenue_on_range(date_range).should == 400
+      end
+      context "when no transactions occurred on that date" do
+        it "returns 0" do
+          date_range = Date.parse("2012-02-22")..Date.parse("2012-03-01")
+          SalesEngine::Merchant.total_revenue_on_range(date_range).should == 0
         end
       end
     end
   end
 
   describe ".merchants_by_revenue" do
-    let(:inv_one)     { mock(SalesEngine::Invoice) }
-    let(:inv_two)     { mock(SalesEngine::Invoice) }
-    let(:inv_three)   { mock(SalesEngine::Invoice) }
-
     before(:each) do
       inv_one.stub(:invoice_revenue).and_return(100)
       inv_two.stub(:invoice_revenue).and_return(200)
@@ -258,9 +302,9 @@ describe SalesEngine::Merchant do
 
   # Need to create a merchant item data method
   describe ".merchants_by_items_sold" do
-    let(:inv_item_one)     { mock(SalesEngine::InvoiceItem) }
-    let(:inv_item_two)     { mock(SalesEngine::InvoiceItem) }
-    let(:inv_item_three)   { mock(SalesEngine::InvoiceItem) }
+    let(:inv_item_one) { mock(SalesEngine::InvoiceItem) }
+    let(:inv_item_two) { mock(SalesEngine::InvoiceItem) }
+    let(:inv_item_three) { mock(SalesEngine::InvoiceItem) }
 
     before(:each) do
       inv_item_one.stub(:merchant_id).and_return("1")
@@ -328,10 +372,6 @@ describe SalesEngine::Merchant do
   end
 
   describe ".revenue_on_dates" do
-    let(:inv_one)     { mock(SalesEngine::Invoice) }
-    let(:inv_two)     { mock(SalesEngine::Invoice) }
-    let(:inv_three)   { mock(SalesEngine::Invoice) }
-
     before(:each) do
       inv_one.stub(:updated_at).and_return(Time.parse("2012-02-19"))
       inv_two.stub(:updated_at).and_return(Time.parse("2012-02-20"))
@@ -344,20 +384,32 @@ describe SalesEngine::Merchant do
       SalesEngine::Invoice.stub(:successful_invoices).and_return(invoices)
     end
 
-    it "returns an array of dates sorted by revenue" do
-      pending
-      SalesEngine::Merchant.revenue_on_dates.should == { Time.parse("2012-02-19").to_sym => 200,
-                                                         Time.parse("2012-02-19").to_sym => 200, }
+    it "returns a hash with dates as keys and revenue as values" do
+      result = { Time.parse("2012/02/19").strftime("%Y/%m/%d") => 200 ,
+                 Time.parse("2012/02/20").strftime("%Y/%m/%d") => 150 }
+      SalesEngine::Merchant.revenue_on_dates.should == result
     end
   end
 
-  # describe ".dates_by_revenue" do
-  #   #sum all invoice items and divide by number of invoices
-  #   it "returns an array of date objs in descending order of revenue" do
-  #     Database.instance.invoice_item_list = [ inv_item_one, inv_item_two ]
-  #     Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]
-  #     Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]
-  #     Invoice.dates_by_revenue.should == [  ]
-  #   end
-  # end
+  describe ".dates_by_revenue(num)" do
+    before(:each) do
+      result = { Time.parse("2012/02/19").strftime("%Y/%m/%d") => 200 ,
+                 Time.parse("2012/02/20").strftime("%Y/%m/%d") => 150 }
+      SalesEngine::Merchant.stub(:revenue_on_dates).and_return(result)
+    end
+
+    it "returns an array of dates sorted by revenue" do
+      result = [ Date.parse("2012/02/19"),
+                 Date.parse("2012/02/20") ]
+      SalesEngine::Merchant.dates_by_revenue.should == result
+    end
+
+    context "if given a num" do
+      it "returns the first num dates" do
+        result = [ Date.parse("2012/02/19"),
+                   Date.parse("2012/02/20") ]
+        SalesEngine::Merchant.dates_by_revenue(1).should == [ result.first ]
+      end
+    end
+  end
 end
