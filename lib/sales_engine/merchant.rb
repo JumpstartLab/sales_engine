@@ -26,7 +26,7 @@ module SalesEngine
     end
 
     def total_items_sold
-      invoices.collect { |invoice| invoice.total_items }.sum
+      paid_invoices.collect { |invoice| invoice.total_items }.sum
     end
 
     def revenue(date=nil)
