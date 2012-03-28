@@ -11,13 +11,13 @@ class SalesEngine
     end
 
     include Model
-    attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :total
+    attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :total, :updated_at
 
     def initialize(attributes)
         super
         @item_id = attributes[:item_id]
         @invoice_id = attributes[:invoice_id]
-        @quantity = attributes[:quantity]
+        @quantity = attributes[:quantity].to_i
         @unit_price = attributes[:unit_price]
     end
 

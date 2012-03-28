@@ -1,4 +1,5 @@
 require 'sales_engine/model'
+require 'date'
 
 class SalesEngine
   class Item
@@ -21,16 +22,36 @@ class SalesEngine
     include Model
 
     def invoice_items     
-      SalesEngine::InvoiceItem.find_all_by_item_id(@id)
+      @invoice_items || SalesEngine::InvoiceItem.find_all_by_item_id(@id)
+    end
+
+    def invoice_items=(input)
+      @invoice_items = input
     end
 
     def merchant
       SalesEngine::Merchant.find_by_id(@merchant_id)
     end
 
+    # returns the date with the most sales for 
+    # the given item using the invoice date
     def best_day
-      puts "TODO #{self.class}"
-      return "2012-02-02"
+      sorted_days = item_quantity_per_day.sort_by{|date, count| -count}
+      sorted_days.first.first
+    end
+
+    def item_quantity_per_day
+      item_quantities = {}
+      invoice_items.each do |ii|
+        date = ii.updated_at.strftime("%Y-%m-%d")
+        item_quantities[date] ||= 0
+        item_quantities[date] += ii.quantity
+      end
+      item_quantities
+    end
+
+    def self.most_revenue(x)
+      ranked_items = SalesEngine::Database.instance.all("items").pop(x)
     end
   end
 end

@@ -112,6 +112,10 @@ class SalesEngine
         i.send(attr) == param
       end
     end
+
+    def all(class_name)
+      SalesEngine::Database.instance.send(class_name)
+    end
   end
 end
 
