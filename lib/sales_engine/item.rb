@@ -98,6 +98,7 @@ module SalesEngine
       sorted_results = item_quantity_by_day.sort_by do |day, quantity|
         -quantity
       end
+      puts sorted_results.inspect
       Date.parse(sorted_results.first[0])
     end
   end
