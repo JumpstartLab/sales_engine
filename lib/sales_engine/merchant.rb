@@ -41,20 +41,6 @@ module SalesEngine
       SalesEngine::Invoice.find_all_by_merchant_id(self.id)
     end
 
-    # def revenue(date=nil)
-    #   rev = 0
-    #   self.charged_invoices(date).each do |inv|
-    #     inv.invoice_items.each do |inv_item|
-    #       rev += (inv_item.unit_price.to_i * inv_item.quantity.to_i)
-    #     end
-    #   end
-    #   rev
-    # end
-
-    # def revenue(date=nil)
-    #   self.charged_invoices(date).map { |i| i.revenue }.inject(:+)
-    # end
-
     def revenue(date=nil)
       #rev = BigDecimal.new("")
       rev = 0
@@ -118,11 +104,19 @@ module SalesEngine
       cust_ids.each { |id| count[id] += 1 }
       fav_cust_id = count.sort_by{ |id, count| count }.last[0]
       Customer.find_by_id(fav_cust_id)
+    end
 
+    def pending_invoices
+      self.invoices.select do |inv|
+        !inv.success
+      end
     end
 
     def customers_with_pending_invoices
       #customers_with_pending_invoices returns a collection of Customer instances which have pending (unpaid) invoices
+      self.pending_invoices.collect do |inv|
+        Customer.find_by_id(inv.customer_id)
+      end
     end
 
   end
