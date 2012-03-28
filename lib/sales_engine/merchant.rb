@@ -3,6 +3,7 @@ require "sales_engine"
 require "sales_engine/invoice"
 require "sales_engine/merchant_record"
 require "sales_engine/invoice_item"
+require "bigdecimal"
 
 module SalesEngine
   class Merchant
@@ -50,7 +51,7 @@ module SalesEngine
       paid_invoice_items(date).each do |invoice_item|
         revenue += invoice_item.unit_price * invoice_item.quantity
       end
-      revenue
+      BigDecimal.new(revenue.to_s)
     end
 
     def self.most_revenue(total_merchants)
