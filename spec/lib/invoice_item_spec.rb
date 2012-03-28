@@ -23,7 +23,7 @@ describe SalesEngine::InvoiceItem do
                                                  :result => "success") }
   let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "3", 
                                                  :result => "failure") }
-  let (:transactions )   { [ tr_one, tr_two, tr_three, tr_four ] }
+  let(:transactions )   { [ tr_one, tr_two, tr_three, tr_four ] }
   let(:transaction_list) { SalesEngine::Database.instance.transaction_list = transactions }
   let(:invoice_list) { SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two ]}
 
