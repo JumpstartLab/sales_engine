@@ -27,7 +27,7 @@ module SalesEngine
     end
 
     def invoice_items
-      SalesEngine::Database.instance.invoice_items.select { |invoice_item| invoice_item.item_id == id}
+      InvoiceItem.invoice_items.select { |invoice_item| invoice_item.item_id == id}
     end
 
     def revenue

@@ -25,11 +25,11 @@ module SalesEngine
     end
 
     def invoice_items
-      SalesEngine::Database.instance.invoice_items.select { |invoice_item| invoice_item.invoice_id == id }
+      InvoiceItem.invoice_items.select { |invoice_item| invoice_item.invoice_id == id }
     end
 
     def items
-      invoice_items = SalesEngine::Database.instance.invoice_items.select do |invoice_item|
+      invoice_items = InvoiceItem.invoice_items.select do |invoice_item|
         invoice_item.invoice_id == id
       end
       invoice_items.collect { |invoice_item| invoice_item.item }
@@ -62,7 +62,7 @@ module SalesEngine
       end
 
       items_hash.each do |item_id, values|
-        Database.instance.insert_invoice_item({:item_id => item_id , :invoice_id => invoice_id,
+        InvoiceItem.insert({:item_id => item_id , :invoice_id => invoice_id,
                                               :quantity => values[0], :unit_price => values[1] })
       end
     end

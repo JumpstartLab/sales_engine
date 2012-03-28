@@ -44,7 +44,6 @@ module SalesEngine
 
     def revenue(date = nil)
       revenue = 0
-      puts paid_invoice_items.length
       paid_invoice_items(date).each do |invoice_item|
         revenue += invoice_item.unit_price * invoice_item.quantity
       end

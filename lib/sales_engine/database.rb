@@ -83,7 +83,7 @@
      def invoices_by_merchant_for_date(merchant_id, date)
        invoices = []
        query = "SELECT * FROM invoices
-       WHERE merchant_id = 1
+       WHERE merchant_id = #{merchant_id}
        AND Date(invoices.created_date) = Date('#{date.to_s}')"
        db.execute(query)  do |row| 
         invoices << create_invoice(row)
@@ -122,7 +122,7 @@
               FROM merchants
               INNER JOIN invoices ON merchants.id = invoices.merchant_id
               INNER JOIN transactions ON invoices.id = transactions.invoice_id
-              WHERE merchant_id = 1
+              WHERE merchant_id = #{merchant_id}
               GROUP BY invoices.customer_id"
        db.execute(query) do |row|
          customers[row[0]] = row[1]
