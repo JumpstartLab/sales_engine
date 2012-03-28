@@ -54,12 +54,14 @@ module SalesEngine
 
     def load_invoice_items_data(filename="#{EVAL_DATA_DIR}/invoice_items.csv")
       @file = CSV.open(filename, CSV_OPTIONS)
-      self.invoiceitems = @file.collect {|line| SalesEngine::InvoiceItem.new(line) }
+      self.invoiceitems = @file.collect {|line|
+        SalesEngine::InvoiceItem.new(line) }
     end
 
     def load_transactions_data(filename="#{EVAL_DATA_DIR}/transactions.csv")
       @file = CSV.open(filename, CSV_OPTIONS)
-      self.transactions = @file.collect {|line| SalesEngine::Transaction.new(line) }
+      self.transactions = @file.collect {|line|
+        SalesEngine::Transaction.new(line) }
     end
 
     def add_to_list(thing)

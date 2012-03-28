@@ -10,134 +10,135 @@ module SalesEngine
     end
 
     def paid?
-      result = transactions.any? { |transaction| transaction.successful? }
-      LOG.debug "invoice id #{self.id}\tpaid? = #{result}"
-      result
-    end
-
-    def pending?
-      # transactions.any? { |transaction| transaction.pending? }
-      transactions.empty?
+      transactions.any? { |transaction| transaction.successful? }
     end
 
     def total_revenue
       revenue = BigDecimal.new("0")
       all_transactions_failed = true
-      SalesEngine::Database.instance.find_all_by("transactions", "invoice_id", self.id).each { |trans|
+      DATABASE.find_all_by("transactions", "invoice_id", id).each { |trans|
         if !trans.result.downcase.include?("fail")
           all_transactions_failed = false
           break
         end}
       if !all_transactions_failed
-        SalesEngine::Database.instance.find_all_by("invoiceitems", "invoice_id", self.id).each { |item|
+        DATABASE.find_all_by("invoiceitems", "invoice_id", id).each { |item|
           revenue = revenue + (item.unit_price * item.quantity) }
       end
       revenue
     end
 
-    def self.create(attributes)
-      invoice = SalesEngine::Invoice.new(:id => SalesEngine::Database.instance.invoices.count + 1,
-        :customer_id => attributes[:customer].id,
-        :merchant_id => attributes[:merchant].id, :status => attributes[:status])
-      attributes[:items].each do |item|
-        invoice_item = SalesEngine::InvoiceItem.new(:id => SalesEngine::Database.instance.invoiceitems.count + 1,
-          :invoice_id => invoice.id, :item_id => item.id, :quantity => 1)
-        SalesEngine::Database.instance.add_to_list(invoice_item)
-      end
-      attributes[:transaction].invoice_id = invoice.id unless !attributes[:transaction]
-      SalesEngine::Database.instance.add_to_list(invoice)
+    def self.create(values)
+      invoice = SalesEngine::Invoice.new(:id => DATABASE.invoices.count + 1,
+        :customer_id => values[:customer].id,
+        :merchant_id => values[:merchant].id,
+        :status => values[:status])
+      create_invoice_items(values[:items], invoice)
+      values[:transaction].invoice_id = invoice.id unless !values[:transaction]
+      DATABASE.add_to_list(invoice)
       invoice
     end
 
-    def charge(attributes)
-      transaction = SalesEngine::Transaction.new(:id => SalesEngine::Database.instance.transactions.count + 1,
-        :invoice_id => self.id, :credit_card_number => attributes[:credit_card_number],
-        :credit_card_expiration_date => attributes[:credit_card_expiration_date], :result => attributes[:result])
-      SalesEngine::Database.instance.add_to_list(transaction)
+    def self.create_invoice_items(items, invoice)
+      items.each do |item|
+        invoice_item = SalesEngine::InvoiceItem.new(:id =>
+          DATABASE.invoiceitems.count + 1, :invoice_id => invoice.id,
+          :item_id => item.id, :quantity => 1)
+        DATABASE.add_to_list(invoice_item)
+      end
+    end
+
+    def charge(values)
+      transaction = SalesEngine::Transaction.new(:id =>
+        DATABASE.transactions.count + 1, :invoice_id => self.id,
+        :credit_card_number => values[:credit_card_number],
+        :credit_card_expiration_date => values[:credit_card_expiration_date],
+        :result => values[:result])
+      DATABASE.add_to_list(transaction)
       transaction
     end
 
     def total_items
-      SalesEngine::Database.instance.find_all_by("invoiceitems", "invoice_id", self.id).count
+      DATABASE.find_all_by("invoiceitems", "invoice_id", id).count
     end
 
     def self.random
-      SalesEngine::Database.instance.get_random_record("invoices")
+      DATABASE.get_random_record("invoices")
     end
 
     def transactions
-      SalesEngine::Database.instance.find_all_by("transactions", "invoice_id", self.id)
+      DATABASE.find_all_by("transactions", "invoice_id", id)
     end
 
     def invoice_items
-      SalesEngine::Database.instance.find_all_by("invoiceitems", "invoice_id", self.id)
+      DATABASE.find_all_by("invoiceitems", "invoice_id", id)
     end
 
     def items
       items = []
-      invoice_items = SalesEngine::Database.instance.find_all_by("invoiceitems", "invoice_id", self.id)
+      invoice_items = DATABASE.find_all_by("invoiceitems", "invoice_id", id)
       items = invoice_items.collect { |invoice_item|
-        SalesEngine::Database.instance.find_by("items", "id", invoice_item.item_id) }
+        DATABASE.find_by("items", "id", invoice_item.item_id) }
     end
 
     def customer
-      SalesEngine::Database.instance.find_by("customers", "id", self.customer_id)
+      DATABASE.find_by("customers", "id", customer_id)
     end
 
     def merchant
-      SalesEngine::Database.instance.find_by("merchants", "id", self.merchant_id)
+      DATABASE.find_by("merchants", "id", merchant_id)
     end
 
     def self.find_by_id(id)
-      SalesEngine::Database.instance.find_by("invoices", "id", id)
+      DATABASE.find_by("invoices", "id", id)
     end
 
     def self.find_by_customer_id(customer_id)
-      SalesEngine::Database.instance.find_by("invoices", "customer_id", customer_id)
+      DATABASE.find_by("invoices", "customer_id", customer_id)
     end
 
     def self.find_by_merchant_id(merchant_id)
-      SalesEngine::Database.instance.find_by("invoices", "merchant_id", merchant_id)
+      DATABASE.find_by("invoices", "merchant_id", merchant_id)
     end
 
     def self.find_by_status(status)
-      SalesEngine::Database.instance.find_by("invoices", "status", status)
+      DATABASE.find_by("invoices", "status", status)
     end
 
     def self.find_by_created_at(time)
-      SalesEngine::Database.instance.find_by("invoices", "created_at", time)
+      DATABASE.find_by("invoices", "created_at", time)
     end
 
     def self.find_by_updated_at(time)
-      SalesEngine::Database.instance.find_by("invoices", "updated_at", time)
+      DATABASE.find_by("invoices", "updated_at", time)
     end
 
     def self.find_all_by_id(id)
-      SalesEngine::Database.instance.find_all_by("invoices", "id", id)
+      DATABASE.find_all_by("invoices", "id", id)
     end
 
     def self.find_all_by_customer_id(customer_id)
-      SalesEngine::Database.instance.find_all_by("invoices", "customer_id", customer_id)
+      DATABASE.find_all_by("invoices", "customer_id", customer_id)
     end
 
     def self.find_all_by_merchant_id(merchant_id)
-      SalesEngine::Database.instance.find_all_by("invoices", "merchant_id", merchant_id)
+      DATABASE.find_all_by("invoices", "merchant_id", merchant_id)
     end
 
     def self.find_all_by_status(status)
-      SalesEngine::Database.instance.find_all_by("invoices", "status", status)
+      DATABASE.find_all_by("invoices", "status", status)
     end
 
     def self.find_all_by_created_at(time)
-      SalesEngine::Database.instance.find_all_by("invoices", "created_at", time)
+      DATABASE.find_all_by("invoices", "created_at", time)
     end
 
     def self.find_all_by_updated_at(time)
-      SalesEngine::Database.instance.find_all_by("invoices", "updated_at", time)
+      DATABASE.find_all_by("invoices", "updated_at", time)
     end
 
     def self.find_all_created_on(date)
-      SalesEngine::Database.instance.find_all_created_on("invoices", date)
+      DATABASE.find_all_created_on("invoices", date)
     end
   end
 end

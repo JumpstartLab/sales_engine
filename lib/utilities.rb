@@ -13,7 +13,7 @@ class Array
     else
       return_array = self
     end
-    
+
     return_array
   end
 end
