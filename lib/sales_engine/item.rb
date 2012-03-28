@@ -39,60 +39,14 @@ module SalesEngine
         self.items.sample
     end
 
-    def self.find_by_id(match)
-      SalesEngine::Search.find_by("id", match, self.items)
-    end
-
-    def self.find_all_by_id(match)
-      SalesEngine::Search.find_all_by("id", match, self.items)
-    end
-
-    def self.find_by_name(match)
-      SalesEngine::Search.find_by("name", match, self.items)
-    end
-
-    def self.find_all_by_name(match)
-      SalesEngine::Search.find_all_by("name", match, self.items)
-    end
-
-    def self.find_by_description(match)
-      SalesEngine::Search.find_by("description", match, self.items)
-    end
-
-    def self.find_all_by_description(match)
-      SalesEngine::Search.find_all_by("description", match, self.items)
-    end
-
-    def self.find_by_unit_price(match)
-      SalesEngine::Search.find_by("unit_price", match, self.items)
-    end
-
-    def self.find_all_by_unit_price(match)
-      SalesEngine::Search.find_all_by("unit_price", match, self.items)
-    end
-
-    def self.find_by_merchant_id(match)
-      SalesEngine::Search.find_by("merchant_id", match, self.items)
-    end
-
-    def self.find_all_by_merchant_id(match)
-      SalesEngine::Search.find_all_by("merchant_id", match, self.items)
-    end
-
-    def self.find_by_updated_at(match)
-      SalesEngine::Search.find_by("updated_at", match, self.items)
-    end
-
-    def self.find_all_by_updated_at(match)
-      SalesEngine::Search.find_all_by("updated_at", match, self.items)
-    end
-
-    def self.find_by_created_at(match)
-      SalesEngine::Search.find_by("created_at", match, self.items)
-    end
-
-    def self.find_all_by_created_at(match)
-      SalesEngine::Search.find_all_by("created_at", match, self.items)
+    def self.method_missing(method_name, *args, &block)
+      if method_name =~ /^find_by_(\w+)$/
+        Search.find_by_attribute($1, args.first, self.items)
+      elsif method_name =~ /^find_all_by_(\w+)$/
+        Search.find_all_by_attribute($1, args.first, self.items)
+      else
+        super
+      end
     end
 
     def invoice_items

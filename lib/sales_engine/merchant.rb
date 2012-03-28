@@ -20,6 +20,10 @@ module SalesEngine
       merchants = DataStore.instance.merchants
     end
 
+    def merchants=(input)
+      @merchants = input
+    end
+
     def self.all
       self.merchants
     end
@@ -46,39 +50,16 @@ module SalesEngine
 
     def self.random
         self.merchants.sample
-        self.merchants.sample
     end
 
-    def self.find_by_id(match)
-      SalesEngine::Search.find_by("id", match, self.merchants)
-    end
-
-    def self.find_all_by_id(match)
-      SalesEngine::Search.find_all_by("id", match, self.merchants)
-    end
-
-    def self.find_by_name(match)
-      SalesEngine::Search.find_by("name", match, self.merchants)
-    end
-
-    def self.find_all_by_name(match)
-      SalesEngine::Search.find_all_by("name", match, self.merchants)
-    end
-
-    def self.find_by_updated_at(match)
-      SalesEngine::Search.find_by("updated_at", match, self.merchants)
-    end
-
-    def self.find_all_by_updated_at(match)
-      SalesEngine::Search.find_all_by("updated_at", match, self.merchants)
-    end
-
-    def self.find_by_created_at(match)
-      SalesEngine::Search.find_by("created_at", match, self.merchants)
-    end
-
-    def self.find_all_by_created_at(match)
-      SalesEngine::Search.find_all_by("created_at", match, self.merchants)
+    def self.method_missing(method_name, *args, &block)
+      if method_name =~ /^find_by_(\w+)$/
+        Search.find_by_attribute($1, args.first, self.merchants)
+      elsif method_name =~ /^find_all_by_(\w+)$/
+        Search.find_all_by_attribute($1, args.first, self.merchants)
+      else
+        super
+      end
     end
 
     def items
@@ -136,9 +117,6 @@ module SalesEngine
       end
       revenue = (revenue/100.0).to_s
       revenue = BigDecimal.new(revenue)
-      # puts revenue.ceil(2)
-      # puts revenue
-      # puts revenue.to_digits
     end
 
     def revenue(*date)

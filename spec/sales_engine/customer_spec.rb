@@ -1,15 +1,15 @@
 require 'spec_helper'
 
 describe SalesEngine::Customer do
-  a = SalesEngine::Customer.new({:id=>3})
 
-  let(:customer) do
-    c = Fabricate(:customer)
-    puts c.inspect
-    c
-  end
+  a = SalesEngine::Customer.new({:id=>3})
+  b = SalesEngine::Customer.new({:first_name=>"FirstName"})
+
+  let(:customer){Fabricate(:customer)}
 
   let(:customer_with_invoices){ Fabricate(:customer_with_invoices) }
+
+  let(:customer_with_merchants){ Fabricate(:customer_with_merchants) }
 
 
   describe ".random" do
@@ -45,10 +45,62 @@ describe SalesEngine::Customer do
 
   describe ".find_all_by_id" do
 
-    it "returns a array" do
+    it "returns an array" do
       SalesEngine::Customer.find_all_by_id(3).class.should == Array
     end
   end
+
+  describe ".find_by_first_name" do
+
+    it "finds customers with matching first name" do
+      SalesEngine::Customer.find_by_first_name("Jewess").first_name.should == "Jewess"
+    end
+  end
+
+    it "finds a customer" do
+      SalesEngine::Customer.find_by_first_name("Jewess").class.should == SalesEngine::Customer
+    end
+
+  describe ".find_all_by_last_name" do
+
+    it "returns an array" do
+      SalesEngine::Customer.find_all_by_last_name("Mercedes").class.should == Array
+    end
+
+    it "returns an array of customers" do
+      SalesEngine::Customer.find_all_by_last_name("Mercedes").each do |cust|
+        cust.class.should == SalesEngine::Customer
+      end
+    end
+
+    it "returns an array of customers with the same last name" do
+      test_last_name = "Mercedes"
+      SalesEngine::Customer.find_all_by_last_name(test_last_name).each do |cust|
+        cust.last_name.should == test_last_name
+      end
+    end
+  end
+
+  describe "#favorite_merchant" do
+    it "returns a merchant" do
+      SalesEngine::Customer.random.favorite_merchant.class.should == SalesEngine::Merchant
+    end
+  end
+
+  describe "#transactions" do
+    it "returns an array" do
+      SalesEngine::Customer.random.transactions.class.should == Array
+    end
+
+    it "returns an array of transaction objects" do
+      SalesEngine::Customer.random.transactions.each do |trans|
+        trans.class == SalesEngine::Transaction
+      end
+    end
+  end
+
+
+
 
   describe "#invoices" do
 
@@ -64,6 +116,16 @@ describe SalesEngine::Customer do
     # it "returns invoice objects" do
     #   customer.invoices[0].class.should == SalesEngine::Invoice
     # end
-
   end
+
+  describe "#invoice_ids" do
+    it "returns an array" do
+      customer_with_invoices.invoice_ids.should be_a(Array)
+    end
+  end 
+
+  # describe "#merchants_array" do
+  #   it "returns an array" do
+  #     customer 
+  # end
 end

@@ -18,7 +18,6 @@ module SalesEngine
       self.created_at = attributes[:created_at].to_s
       self.updated_at = attributes[:updated_at].to_s
       self.total = attributes[:quantity].to_i * attributes[:unit_price].to_i
-
     end
 
     def self.random

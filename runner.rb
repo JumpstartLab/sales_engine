@@ -4,5 +4,5 @@ require 'sales_engine'
 include SalesEngine
 
 SalesEngine.startup
-n = SalesEngine::Customer.find_by_id(448)
+n = SalesEngine::Merchant.find_by_id(59)
 puts n.inspect

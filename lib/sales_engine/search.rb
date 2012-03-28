@@ -1,21 +1,21 @@
 module SalesEngine
   module Search
 
-#NEED TO MAKE DOWNCASE
-    def self.find_all_by(attribute, match, array)
-      if match.is_a?(String)
-        array.select { |item| item.send(attribute.to_sym).downcase == match.downcase }
-      else
-        array.select { |item| item.send(attribute.to_sym) == match }
+    def self.find_by_attribute(name, value, array)
+      if value.is_a?(String)
+        array.detect { |i| i.send(name).downcase == value.downcase }
+      else  
+        array.detect { |i| i.send(name) == value }
       end
     end
 
-    def self.find_by(attribute, match, array)
-      if match.is_a?(String)
-        array.detect { |item| item.send(attribute.to_sym).downcase == match.downcase }
+    def self.find_all_by_attribute(name, value, array)
+      if value.is_a?(String)
+        array.select { |i| i.send(name).downcase == value.downcase }
       else
-        array.detect { |item| item.send(attribute.to_sym) == match }
+        array.select { |i| i.send(name) == value }
       end
     end
+    
   end
 end

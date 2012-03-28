@@ -1,6 +1,6 @@
 module SalesEngine
   class Customer
-    #extend SalesEngine::Search
+
     attr_accessor :id,
                   :first_name,
                   :last_name,
@@ -32,53 +32,27 @@ module SalesEngine
         self.customers.sample
     end
 
-    def self.find_by_id(match)
-      SalesEngine::Search.find_by("id", match, self.customers)
-    end
 
-    def self.find_all_by_id(match)
-      SalesEngine::Search.find_all_by("id", match, self.customers)
-    end
-
-    def self.find_by_first_name(match)
-      SalesEngine::Search.find_by("first_name", match, self.customers)
-    end
-
-    def self.find_all_by_first_name(match)
-      SalesEngine::Search.find_all_by("first_name", match, self.customers)
-    end
-
-    def self.find_by_last_name(match)
-      SalesEngine::Search.find_by("last_name", match, self.customers)
-    end
-
-    def self.find_all_by_last_name(match)
-      SalesEngine::Search.find_all_by("last_name", match, self.customers)
-    end
-
-    def self.find_by_updated_at(match)
-      SalesEngine::Search.find_by("updated_at", match, self.customers)
-    end
-
-    def self.find_all_by_updated_at(match)
-      SalesEngine::Search.find_all_by("updated_at", match, self.customers)
-    end
-
-    def self.find_by_created_at(match)
-      SalesEngine::Search.find_by("created_at", match, self.customers)
-    end
-
-    def self.find_all_by_created_at(match)
-      SalesEngine::Search.find_all_by("created_at", match, self.customers)
+    def self.method_missing(method_name, *args, &block)
+      if method_name =~ /^find_by_(\w+)$/
+        Search.find_by_attribute($1, args.first, self.customers)
+      elsif method_name =~ /^find_all_by_(\w+)$/
+        Search.find_all_by_attribute($1, args.first, self.customers)
+      else
+        super
+      end
     end
 
     def invoices
-      #@invoices || invoices_array.select { |inv| inv.customer_id == id}
       invoices_array.select { |inv| inv.customer_id == id}
     end
 
     def invoices=(input)
       @invoices = input
+    end
+
+    def merchants=(input)
+      @merchants = input
     end
 
     def invoice_ids
@@ -91,16 +65,6 @@ module SalesEngine
 
     def transactions
       transcations_array.select {|trans| invoice_ids.include?(trans.invoice_id)}
-    end
-
-    def any_rejected
-      any = ""
-      rejected = transactions.select {|transaction| transaction.result != "success"}
-      if rejected.length >0
-        any = "yes"
-      elsif rejected.length ==0
-        any = "no"
-      end
     end
 
     def merchants_array

@@ -19,6 +19,16 @@ module SalesEngine
       self.date = attributes[:created_at].to_s[0..9]
     end
 
+    def self.method_missing(method_name, *args, &block)
+      if method_name =~ /^find_by_(\w+)$/
+        Search.find_by_attribute($1, args.first, self.invoices)
+      elsif method_name =~ /^find_all_by_(\w+)$/
+        Search.find_all_by_attribute($1, args.first, self.invoices)
+      else
+        super
+      end
+    end
+
     def self.invoices
       invoices = DataStore.instance.invoices
     end
@@ -42,54 +52,6 @@ module SalesEngine
     def self.random
       self.invoices.sample
     end
-
-    def self.find_by_id(match)
-      SalesEngine::Search.find_by("id", match, self.invoices)
-    end
-
-    def self.find_all_by_id(match)
-      SalesEngine::Search.find_all_by("id", match, self.invoices)
-    end
-
-    def self.find_by_customer_id(match)
-      SalesEngine::Search.find_by("customer_id", match, self.invoices)
-    end
-
-    def self.find_all_by_customer_id(match)
-      SalesEngine::Search.find_all_by("customer_id", match, self.invoices)
-    end
-
-    def self.find_by_merchant_id(match)
-      SalesEngine::Search.find_by("merchant_id", match, self.invoices)
-    end
-
-    def self.find_all_by_merchant_id(match)
-      SalesEngine::Search.find_all_by("merchant_id", match, self.invoices)
-    end
-
-    def self.find_by_status(match)
-      SalesEngine::Search.find_by("status", match, self.invoices)
-    end
-
-    def self.find_all_by_status(match)
-      SalesEngine::Search.find_all_by("status", match, self.invoices)
-    end
-
-    def self.find_by_updated_at(match)
-      SalesEngine::Search.find_by("updated_at", match, self.invoices)
-    end
-
-    def self.find_all_by_updated_at(match)
-      SalesEngine::Search.find_all_by("updated_at", match, self.invoices)
-    end
-
-    def self.find_by_created_at(match)
-      SalesEngine::Search.find_by("created_at", match, self.invoices)
-    end
-
-    def self.find_all_by_created_at(match)
-      SalesEngine::Search.find_all_by("created_at", match, self.invoices)
-    end
     
     def transactions
       transactions_array.select { |trans| trans.invoice_id ==  id }
@@ -105,7 +67,7 @@ module SalesEngine
     end
 
     def customer
-      customer = customers_array.select { |cust| customer_id == cust.id }
+      customer = customers_array.detect { |cust| customer_id == cust.id }
     end
 
     def successful?
