@@ -10,6 +10,10 @@ module SalesEngine
       self.result = attributes[:result]
     end
 
+    def successful?
+      result.downcase == "success"
+    end
+
     def self.random
       SalesEngine::Database.instance.get_random_record("transactions")
     end

@@ -9,6 +9,10 @@ module SalesEngine
       self.status = attributes[:status]
     end
 
+    def paid?
+      transactions.any? { |transaction| transaction.successful? }
+    end
+
     def total_revenue
       revenue = BigDecimal.new("0")
       all_transactions_failed = true

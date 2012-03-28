@@ -22,7 +22,7 @@ module SalesEngine
       revenue = BigDecimal.new("0")
       SalesEngine::Invoice.find_all_created_on(date).each { |invoice|
         revenue += invoice.total_revenue }
-        revenue
+      revenue
     end
 
     def total_items_sold
@@ -31,18 +31,18 @@ module SalesEngine
 
     def revenue(date=nil)
       user_date = date.nil? ? nil : Date.parse(date)
-      revenue = BigDecimal.new("0")
-      self.invoices.each do |invoice|
+      paid_invoices.collect do |invoice|
         if user_date.nil?
-          revenue += invoice.total_revenue
+          invoice.total_revenue
         else
           invoice_date = Date.parse(Time.parse(invoice.created_at).strftime('%Y/%m/%d'))
-          if invoice_date == user_date
-            revenue += invoice.total_revenue
-          end
+          invoice_date == user_date ? invoice.total_revenue : 0
         end
-      end
-      revenue
+      end.sum
+    end
+
+    def paid_invoices
+      invoices.select { |invoice| invoice.paid? }
     end
 
     def favorite_customer
