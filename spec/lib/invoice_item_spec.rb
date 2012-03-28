@@ -58,7 +58,7 @@ describe SalesEngine::InvoiceItem do
   describe ".create" do
     let(:database) { SalesEngine::Database.instance.invoice_item_list = [ ] }
     let(:invoice) { SalesEngine::Invoice.new(:id => "1") }
-    let(:item) { SalesEngine::Item.new(:id => "1" :unit_price => "9") }
+    let(:item) { SalesEngine::Item.new(:id => "1", :unit_price => "9") }
     let(:invoice_item) { SalesEngine::InvoiceItem.create(:invoice_id => "1", 
                                                         :item_id => "1") }
     
