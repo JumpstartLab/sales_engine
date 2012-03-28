@@ -81,6 +81,10 @@ module SalesEngine
       @indices
     end
 
+    def import(data)
+      @data = data
+    end
+
     private
 
     def index_attribute_by_class(attribute, class_name)

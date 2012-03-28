@@ -22,8 +22,13 @@ module SalesEngine
   end
 
   def self.load_directory(directory, options = {})
-    Dir.foreach(directory) do |filename| 
-      load("#{directory}/#{filename}") if filename.match(/csv/)
+    if cache_exists?(directory)
+      load_cache(directory)
+    else
+      Dir.foreach(directory) do |filename| 
+        load("#{directory}/#{filename}") if filename.match(/csv/)
+      end
+      create_cache(directory)
     end
 
     if options[:index]
@@ -34,5 +39,19 @@ module SalesEngine
         puts "Indexing completed in #{Time.now - t} seconds!"
       end
     end
+  end
+
+  def self.cache_exists?(directory)
+    File.exists?(directory + '/cache.dump')
+  end
+
+  def self.load_cache(directory)
+    data = Marshal.load(File.open(directory + '/cache.dump', 'r'))
+    SalesEngine::Persistence.instance.import(data)
+  end
+
+  def self.create_cache(directory)
+    data = Marshal.dump(SalesEngine::Persistence.instance.dump_data)
+    File.open(directory + '/cache.dump', 'w') { |f| f.write data }
   end
 end
