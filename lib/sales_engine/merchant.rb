@@ -32,8 +32,6 @@ module SalesEngine
     end
 
     def invoices_on_date(date)
-      puts date.inspect
-      puts date.class
       date = SalesEngine::Merchant.clean_date(date)
       invoices.select {|inv| inv.created_at == date}
     end

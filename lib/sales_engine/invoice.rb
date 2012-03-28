@@ -104,12 +104,6 @@ module SalesEngine
       end
     end
 
-    # bad method
-
-    def self.average_revenue
-        SalesEngine::InvoiceItem.total_revenue / self.successful_invoices.size
-    end
-
     def charge(attrs)
       SalesEngine::Transaction.create({:invoice_id => self.id, 
                                        :credit_card_number => attrs[:credit_card_number],
@@ -117,8 +111,46 @@ module SalesEngine
                                        :result => attrs[:result] })
     end
 
-    #def self.average_revenue(*date)
-    #   invoices = SalesEngine::Database.instance.invoice_list
+    def self.clean_date(date)
+      date = Date.parse(date) if date.kind_of? String
+      date
+    end
+
+    def invoices_on_date(date)
+      date = self.clean_date(date)
+      successful_invoices.select {|inv| inv.created_at == date}
+    end
+
+    def invoices_on_range(range)
+      successful_invoices.select do |inv|
+        # DOES NOT HANDLE EDGE CASE WELL... e.g. RANGE DATE IS SAME
+        # AS UPDATED DATE
+        inv.created_at <= range.last && inv.created_at >= range.first
+      end
+    end
+
+    def self.average_revenue(*date)
+
+      if date.first.is_a?(Range)
+        results = invoices_on_date(date)
+      elsif  date.first
+        results = invoices_on_date(date.first)   
+      else
+        results = successful_invoices
+      end   
+    
+      total_revenue = BigDecimal.new("0")
+       
+      results.each do |invoice|
+        total_revenue += invoice.invoice_revenue
+      end
+      
+      average_rev = total_revenue / self.successful_invoices.size
+      average_rev 
+    end
+
+
+      # invoices = SalesEngine::Database.instance.invoice_list
       # puts SalesEngine::InvoiceItem.total_revenue.inspect
       # avg_rev = SalesEngine::InvoiceItem.total_revenue / invoices.size
 
@@ -135,11 +167,11 @@ module SalesEngine
       #   inv_ids_on_date.each do |inv_id|
       #     rev = SalesEngine::InvoiceItem.total_revenue_by_invoice_id(inv_id)
       #     total_rev += rev
-      #   end
+    #     # end
 
-      #   return 0 if inv_on_date.empty?
-      #   avg_rev = total_rev / inv_on_date.size
-      #   SalesEngine::InvoiceItem.total_revenue(date) / find_all_by_date(date)
+    #     return 0 if inv_on_date.empty?
+    #     avg_rev = total_rev / inv_on_date.size
+    #     SalesEngine::InvoiceItem.total_revenue(date) / find_all_by_date(date)
 
     # end
 
