@@ -1,10 +1,12 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib')).uniq!
 require "sales_engine"
 require "sales_engine/database"
+require "sales_engine/invoice_record"
 
 module SalesEngine
   class Invoice
     include SalesEngine
+    extend InvoiceRecord
     attr_accessor :id, :customer_id, :merchant_id,
     :status, :created_at, :updated_at
     def initialize(id, customer_id, merchant_id, status, created_at, updated_at)
@@ -17,11 +19,11 @@ module SalesEngine
     end
 
     def self.elements
-      SalesEngine::Database.instance.invoices
+      invoices
     end
 
     def transactions
-      SalesEngine::Database.instance.transactions.select { |transaction| transaction.invoice_id == id }
+      Transaction.transactions.select { |transaction| transaction.invoice_id == id }
     end
 
     def invoice_items
@@ -36,12 +38,12 @@ module SalesEngine
     end
 
     def customer
-      SalesEngine::Database.instance.customers.find { |customer| customer.id == customer_id}
+      Customer.customers.find { |customer| customer.id == customer_id}
     end
 
     def charge(input)
       input[:invoice_id] = id
-      Database.instance.insert_transaction(input)
+      Transaction.insert(input)
     end
 
     def self.create(input)
@@ -49,7 +51,7 @@ module SalesEngine
       invoice_hash[:customer_id] = input[:customer].id
       invoice_hash[:merchant_id] = input[:merchant].id
       invoice_hash[:status] = input[:status]
-      invoice_id = Database.instance.insert_invoice(invoice_hash)
+      invoice_id = Invoice.insert(invoice_hash)
 
       create_invoice_items(input[:items], invoice_id)
       Invoice.find_by_id(invoice_id)

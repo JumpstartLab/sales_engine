@@ -1,10 +1,12 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib')).uniq!
 require "sales_engine"
 require "sales_engine/database"
+require "sales_engine/item_record"
 
 module SalesEngine
   class Item
     include SalesEngine
+    extend ItemRecord
     attr_accessor :id, :name, :description, :unit_price,
     :merchant_id, :created_at, :updated_at
 
@@ -19,11 +21,11 @@ module SalesEngine
     end               
 
     def self.elements
-      SalesEngine::Database.instance.items
+      items
     end
 
     def merchant
-      SalesEngine::Database.instance.merchants.find { |merchant| merchant.id == id}
+      Merchant.merchants.find { |merchant| merchant.id == id}
     end
 
     def invoice_items
@@ -66,13 +68,11 @@ module SalesEngine
     end
 
     def self.most_revenue(total_items)
-      items = SalesEngine::Database.items
       items.sort_by!{ |item| item.revenue }.reverse!
       items[0,total_items]
     end
 
     def self.most_items(total_items)
-      items = SalesEngine::Database.items
       items.sort_by!{ |item| item.quantity }.reverse!
       items[0,total_items]
     end
