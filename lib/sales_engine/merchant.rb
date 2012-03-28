@@ -30,7 +30,7 @@ module SalesEngine
     end
 
     def revenue(date=nil)
-      user_date = date.nil? ? nil : Date.parse(date)
+      user_date = date.nil? ? nil : date
       paid_invoices.collect do |invoice|
         if user_date.nil?
           invoice.total_revenue

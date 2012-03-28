@@ -350,7 +350,7 @@ describe SalesEngine::Merchant do
     end
 
     it "returns the total revenue that merchant for a specific date" do
-      merchant_1.revenue("2012-02-01").should == 10
+      merchant_1.revenue(Date.parse("2012-02-01")).should == 10
     end
   end
 
