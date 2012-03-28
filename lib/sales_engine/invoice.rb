@@ -33,10 +33,6 @@ class SalesEngine
 
     def invoice_items
       SalesEngine::InvoiceItem.find_all_by_invoice_id(@id)
-
-      # SalesEngine::Database.instance.invoice_items.select do |invoice_item|
-      #   invoice_item.invoice_id == @id
-      # end
     end
 
     def customer

@@ -13,7 +13,6 @@ class SalesEngine
     include Model
     attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :total
 
-    
     def initialize(attributes)
         super
         @item_id = attributes[:item_id]
@@ -27,7 +26,6 @@ class SalesEngine
     end
 
     def item
-      
       SalesEngine::Item.find_by_id(@item_id)
     end
 
