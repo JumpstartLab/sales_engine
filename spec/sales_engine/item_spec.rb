@@ -73,7 +73,7 @@ describe SalesEngine::Item do
     end
   end
 
-  describe '.revenue' do
+  describe '#revenue' do
     it "returns a Big Decimal" do
       test_item.revenue.should be_a BigDecimal
     end
