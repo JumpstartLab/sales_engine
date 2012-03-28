@@ -54,19 +54,6 @@ module SalesEngine
         find_by_id(id)
       end
 
-      def find_by_id(id)
-        if indices = SalesEngine::Persistence.instance.fetch_indices(self)
-          model = indices[:id][model.id] if indices[:id]
-        end
-
-        unless model
-          models = SalesEngine::Persistence.instance.fetch(self)
-          model = models.find { |m| m.id == id }
-        end
-
-        model
-      end
-
       def find_all
         SalesEngine::Persistence.instance.fetch(self)
       end

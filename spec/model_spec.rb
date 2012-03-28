@@ -104,6 +104,7 @@ describe SalesEngine::Model do
 
     it "should use an index if one exists" do
       valid_sample
+      SalesEngine::Persistence.instance.stub(:fetch_indices => {})
       SalesEngine::Persistence.instance.index(:id)
       SalesEngine::Persistence.instance.should_receive(:fetch_indices).with(valid_sample.class)
       valid_sample.class.find(valid_sample.id)

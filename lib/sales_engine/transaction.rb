@@ -20,6 +20,10 @@ module SalesEngine
       validate_attributes
     end
 
+    def invoice
+      @invoice ||= Invoice.find(@invoice_id)
+    end
+
     private
 
     def validate_attributes

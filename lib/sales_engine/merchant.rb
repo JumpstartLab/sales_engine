@@ -20,11 +20,16 @@ module SalesEngine
     end
 
     def items
-      Item.find_all_by_merchant_id(self.id)
+      @items ||= Item.find_all_by_merchant_id(self.id)
     end
 
     def invoices
-      Invoice.find_all_by_merchant_id(self.id)
+      @invoices ||= Invoice.find_all_by_merchant_id(self.id)
     end
+
+    def revenue(date=nil)
+      
+    end
+
   end
 end

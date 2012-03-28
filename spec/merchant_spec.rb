@@ -94,10 +94,10 @@ describe SalesEngine::Merchant do
         merchant.invoices.should have(43).invoices
       end
 
-    #   it "has a shipped invoice for Block" do
-    #     invoice = merchant.invoices.find {|i| i.customer.last_name = 'Block' }
-    #     invoice.status.should == "shipped"
-    #   end
+      it "has a shipped invoice for Block" do
+        invoice = merchant.invoices.find {|i| i.customer.last_name == 'Block' }
+        invoice.status.should == "shipped"
+      end
     end
   end
 end

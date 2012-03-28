@@ -16,6 +16,10 @@ module SalesEngine
       validate_attributes
     end
 
+    def merchant
+      @merchant ||= Merchant.find(@merchant_id)
+    end
+
     private
 
     def validate_attributes

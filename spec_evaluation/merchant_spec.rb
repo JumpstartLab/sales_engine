@@ -121,4 +121,15 @@ describe SalesEngine::Merchant do
     end
   end
 
+  context "Business Intelligence" do
+    describe ".revenue" do
+      it "returns all revenue for a given date" do
+        date = Date.parse "Tue, 20 Mar 2012"
+
+        revenue = SalesEngine::Merchant.revenue(date)
+        revenue.should == BigDecimal.new("2549722.91")
+      end
+    end
+  end
+
 end
