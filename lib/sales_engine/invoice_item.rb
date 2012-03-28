@@ -7,7 +7,7 @@ module SalesEngine
 
     attr_accessor :id, :item_id, :invoice_id, :quantity, 
                   :unit_price, :created_at, :updated_at, 
-                  :inv_success
+                  :inv_success, :total
 
     def initialize(attributes={})
       self.id         = attributes[:id]
@@ -32,10 +32,16 @@ module SalesEngine
       end
     end
 
+    def total
+      @total ||= self.quantity.to_i * self.unit_price.to_i
+    end
+
     def inv_success
-      i = SalesEngine::Invoice.find_by_id(self.invoice_id)
-      if i.success
-        @inv_success = true
+      @inv_success ||= begin
+        i = SalesEngine::Invoice.find_by_id(self.invoice_id)
+        if i.success
+          @inv_success = true
+        end
       end
     end
 

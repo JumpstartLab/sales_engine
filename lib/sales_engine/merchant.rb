@@ -8,7 +8,7 @@ module SalesEngine
   class Merchant
     extend Find
 
-    attr_accessor :id, :name, :created_at, :updated_at
+    attr_accessor :id, :name, :created_at, :updated_at, :revenue
 
     def initialize(attributes={})
       if !attributes.nil? 
@@ -36,27 +36,25 @@ module SalesEngine
     end
 
     def items
-      #returns a collection of Item instances associated with that merchant for the products they sell
-      Database.instance.items.select do |i|
-        i.send(:merchant_id) == self.id
-      end
+      SalesEngine::Item.find_all_by_merchant_id(self.id)
     end
 
     def invoices
-      # returns a collection of Invoice instances associated with that merchant from their known orders
-      Database.instance.invoices.select do |i|
-        i.send(:merchant_id) == self.id
-      end
+      SalesEngine::Invoice.find_all_by_merchant_id(self.id)
     end
 
+    # def revenue(date=nil)
+    #   rev = 0
+    #   self.charged_invoices(date).each do |inv|
+    #     inv.invoice_items.each do |inv_item|
+    #       rev += (inv_item.unit_price.to_i * inv_item.quantity.to_i)
+    #     end
+    #   end
+    #   rev
+    # end
+
     def revenue(date=nil)
-      rev = 0
-      self.charged_invoices(date).each do |inv|
-        inv.invoice_items.each do |inv_item|
-          rev += (inv_item.unit_price.to_i * inv_item.quantity.to_i)
-        end
-      end
-      rev
+      self.charged_invoices(date).map { |i| i.revenue }.inject(:+)
     end
 
     def self.most_revenue(num_merchants)

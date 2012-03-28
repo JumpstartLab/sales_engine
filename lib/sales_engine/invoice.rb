@@ -12,7 +12,7 @@ module SalesEngine
     # invoice = Invoice.new(:customer_id => customer, :merchant_id => merchant, :status => "shipped", :items => [item1, item2, item3], :transaction => transaction)
 
     attr_accessor :id, :customer_id, :merchant_id, :status, 
-                  :created_at, :updated_at, :success
+                  :created_at, :updated_at, :revenue, :success 
 
     def initialize(attributes={})
       self.id           = attributes[:id]
@@ -36,6 +36,10 @@ module SalesEngine
       end
     end
 
+    def revenue
+      @revenue ||= invoice_items.map { |inv_item| inv_item.total }.inject(:+)
+    end
+
     def date
       self.created_at.split[0]
     end
@@ -45,42 +49,28 @@ module SalesEngine
     end
 
     def success
-      if !@success.nil?
-        return @success
-      else 
-        t = SalesEngine::Transaction.find_by_invoice_id(self.id)
-        if t.result == "success"
-          @success = true
+      @success ||= begin
+        self.transactions.each do |t|
+          if t.successful?
+            @success = true
+          end
         end
-      end
-    end
-
-    def transaction_successful?
-      t = SalesEngine::Transaction.find_by_invoice_id(self.id)
-      if t.result == "success"
-        return true
+        @success
       end
     end
 
     def transactions
-      Database.instance.transactions.select do |t|
-        t.send(:invoice_id) == self.id
-      end
+      SalesEngine::Transaction.find_all_by_invoice_id(self.id)
     end
 
     def invoice_items
-      Database.instance.invoice_items.select do |ii|
-        ii.send(:invoice_id) == self.id
-      end
+      SalesEngine::InvoiceItem.find_all_by_invoice_id(self.id)
     end
 
     def items
       #items returns a collection of associated Items by way of InvoiceItem objects
-      item_ids = self.invoice_items.collect { |i| i.item_id }
-      item_ids.collect do |item_id| 
-        Database.instance.items.select do |i|
-          i.send(:id) == item_id
-        end
+      self.invoice_items.collect do |inv_item|
+        inv_item.item
       end
     end
 
@@ -89,10 +79,7 @@ module SalesEngine
     end
 
     def customer
-      #customer returns an instance of Customer associated with this object
-      Database.instance.customers.find do |c|
-        c.send(:id) == self.customer_id
-      end
+      SalesEngine::Customer.find_by_id(self.customer_id)
     end
 
     def charge(attributes)

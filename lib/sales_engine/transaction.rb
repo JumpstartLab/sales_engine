@@ -34,6 +34,10 @@ module SalesEngine
       end
     end
 
+    def successful?
+      @result == "success"
+    end
+
     def date
       self.created_at.split[0]
     end

@@ -41,12 +41,17 @@ module SalesEngine
 
     def transactions
       #transactions returns an array of Transaction instances associated with the customer
-      invoice_ids = self.invoices.collect { |i| i.id }
-      invoice_ids.collect do |inv_id|
-        Database.instance.transactions.select do |t|
-          t.send(:invoice_id) == inv_id
-        end
+      self.invoices.select do |inv|
+        inv.transactions
       end
+
+
+      # invoice_ids = self.invoices.collect { |i| i.id }
+      # invoice_ids.collect do |inv_id|
+      #   Database.instance.transactions.select do |t|
+      #     t.send(:invoice_id) == inv_id
+      #   end
+      # end
     end
 
     def favorite_merchant
