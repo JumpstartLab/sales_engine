@@ -1,4 +1,6 @@
 require 'csv'
+require 'date'
+require 'bigdecimal'
 require './lib/sales_engine/database'
 require './lib/sales_engine/merchant'
 require './lib/sales_engine/customer'
@@ -18,12 +20,12 @@ module SalesEngine
   TRANSACTION_DATA    = "./data2/transactions.csv"
 
   def self.startup
-    self.load_merchants
     load_customers
     load_items
-    load_invoices 
     load_transactions
     load_invoice_items
+    load_merchants
+    load_invoices 
   end
 
   def self.load_merchants

@@ -61,7 +61,7 @@ module SalesEngine
         rank[inv.date] += inv_item.quantity.to_i
       end
       rank = rank.sort_by{ |d, q| -q }
-      rank[0][0]
+      Date.parse(rank[0][0])
     end
 
     def merchant

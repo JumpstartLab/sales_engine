@@ -23,6 +23,30 @@ module SalesEngine
       self.updated_at   = attributes[:updated_at]
     end
 
+    def self.create(attributes={})
+      # create new instance of Invoice
+      # invoice = Invoice.create(:customer => customer, :merchant => merchant, :status => "shipped", 
+      #                    :items => [item1, item2, item3])
+      # i = SalesEngine::Invoice.new (:customer_id => attributes[:customer].id, 
+      #                               :merchant_id => attributes[:merchant].id,
+      #                               :status => attributes[:status],
+      #                               :created_at => Time.now,
+      #                               :updated_at => Time.now)
+      # self.create_inv_items(attributes[:items])
+      # SalesEngine::Database.instance.invoices << i
+      # i
+    end
+
+    def create_inv_items(items)
+      #
+    end
+
+    def charge(attributes)
+      # invoice.charge(:credit_card_number => "4444333322221111", :credit_card_expiration => "10/13", :result => "success")
+      # will call new instance of Transaction
+      #t = 
+    end
+
     class << self
       attributes = [:id, :customer_id, :merchant_id, :status, 
                     :created_at, :updated_at, :date]
@@ -74,18 +98,11 @@ module SalesEngine
       end
     end
 
-    def create(attributes={})
-      # create new instance of Invoice
-    end
-
     def customer
       SalesEngine::Customer.find_by_id(self.customer_id)
     end
 
-    def charge(attributes)
-      # invoice.charge(:credit_card_number => "4444333322221111", :credit_card_expiration => "10/13", :result => "success")
-      # will call new instance of Transaction
-    end
+
 
   end
 end

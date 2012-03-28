@@ -33,7 +33,7 @@ module SalesEngine
     end
 
     def total
-      @total ||= self.quantity.to_i * self.unit_price.to_i
+      @total ||= (self.quantity.to_f * self.unit_price.to_f)/100
     end
 
     def inv_success

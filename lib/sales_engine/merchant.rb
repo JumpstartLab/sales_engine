@@ -11,12 +11,10 @@ module SalesEngine
     attr_accessor :id, :name, :created_at, :updated_at, :revenue
 
     def initialize(attributes={})
-      if !attributes.nil? 
-        self.id         = attributes[:id]
-        self.name       = attributes[:name]
-        self.created_at = attributes[:created_at]
-        self.updated_at = attributes[:updated_at]
-      end
+      self.id         = attributes[:id]
+      self.name       = attributes[:name]
+      self.created_at = attributes[:created_at]
+      self.updated_at = attributes[:updated_at]
     end
 
     class << self
@@ -53,8 +51,17 @@ module SalesEngine
     #   rev
     # end
 
+    # def revenue(date=nil)
+    #   self.charged_invoices(date).map { |i| i.revenue }.inject(:+)
+    # end
+
     def revenue(date=nil)
-      self.charged_invoices(date).map { |i| i.revenue }.inject(:+)
+      #rev = BigDecimal.new("")
+      rev = 0
+      self.charged_invoices(date).each do |inv|
+        rev += inv.revenue
+      end
+      rev
     end
 
     def self.most_revenue(num_merchants)
