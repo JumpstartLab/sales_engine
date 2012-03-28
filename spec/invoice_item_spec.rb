@@ -9,12 +9,12 @@ describe SalesEngine::InvoiceItem do
     valid_invoice_item.should_not be_nil
   end
 
-  it "has an item" do
-    valid_invoice_item.item.should be_an SalesEngine::Item
+  it "has an item_id" do
+    valid_invoice_item.item_id.should be_an Integer
   end
 
-  it "has an invoice" do
-    valid_invoice_item.invoice.should be_an SalesEngine::Invoice
+  it "has an invoice_id" do
+    valid_invoice_item.invoice_id.should be_an Integer
   end
 
   it "has a quantity" do
