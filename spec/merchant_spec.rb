@@ -39,6 +39,7 @@ describe SalesEngine::Merchant do
     end
   end
 
+
   describe "#items" do
     let(:item1) { mock(SalesEngine::Item) }
     let(:item2) { mock(SalesEngine::Item) }
@@ -103,6 +104,51 @@ describe SalesEngine::Merchant do
           SalesEngine::Database.instance.should_receive(
             :invoice_items_by_merchant).with(3)
           merchant.invoice_items
+      end
+    end
+  end
+
+  describe "#customers" do
+    let(:merchant) { merchant = Fabricate(:merchant, :id => 3) }
+
+    it "delgates to the Database#customers_by_merchant" do
+        SalesEngine::Database.instance.should_receive(
+          :customers_by_merchant).with(3)
+        merchant.customers
+    end
+  end
+
+  describe "#customers_with_pending_invoices" do
+    let(:merchant) { merchant = Fabricate(:merchant) }
+    let(:customer1) { double("customer") }
+    let(:customer2) { double("customer") }
+    let(:customer3) { double("customer") }
+    let(:customer4) { double("customer") }
+
+    before(:each) do
+      customer1.stub(:has_pending_invoice?).and_return(true)
+      customer2.stub(:has_pending_invoice?).and_return(true) 
+      customer3.stub(:has_pending_invoice?).and_return(false)
+      customer4.stub(:has_pending_invoice?).and_return(false)     
+    end
+    context "the merchant has customers" do
+      context "there are customers with pending invoices" do
+        it "returns the customers with pending transactions" do
+          merchant.stub(:customers).and_return([customer1, customer2, customer3, customer4])
+          merchant.customers_with_pending_invoices.should == [customer1, customer2]
+        end
+      end
+      context "there are no customers with pending invoices" do
+        it "returns an empty array" do
+          merchant.stub(:customers).and_return([customer3, customer4])
+          merchant.customers_with_pending_invoices.should == []         
+        end
+      end
+    end
+    context "the merchant has no customers" do
+      it "returns an empty array" do
+        merchant.stub(:customers).and_return([])
+        merchant.customers_with_pending_invoices.should == []
       end
     end
   end

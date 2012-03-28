@@ -122,6 +122,17 @@
        invoices
      end
 
+     def customers_by_merchant(merchant_id)
+       customers = []
+       query = "select * from customers
+                INNER JOIN invoices on customers.id = invoices.customer_id
+                where invoices.merchant_id = #{merchant_id}"
+       db.execute(query)  do |row| 
+         customers << create_customer(row)
+       end
+      customers
+     end
+
      def transactions_by_customer(customer_id)
        transactions = []
        query = "SELECT transactions.id as transaction_id, invoice_id,
@@ -201,7 +212,7 @@
                        created_at, updated_at)
      end
 
-      def create_invoice(row)
+     def create_invoice(row)
        id = row[0]
        customer_id = row[1]
        merchant_id = row[2]
@@ -210,6 +221,16 @@
        updated_at = row[6]
        Invoice.new(id, customer_id, merchant_id, status, 
                        created_at, updated_at)
+     end
+
+     def create_customer(row)
+      id = row[0]
+      last_name = row[1]
+      first_name = row[2]
+      created_at = row[3]
+      updated_at = row[4]
+      Customer.new(id, last_name, first_name,
+                   created_at, updated_at)
      end
 
      def create_transaction(row)

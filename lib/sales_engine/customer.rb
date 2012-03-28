@@ -26,6 +26,14 @@ module SalesEngine
       SalesEngine::Database.instance.transactions_by_customer(id)
     end
 
+    def has_pending_invoice?
+      pending_invoices = false
+      invoices.each do |invoice|
+        pending_invoices = true if invoice.status == "pending"
+      end
+      return pending_invoices
+    end
+
     def favorite_merchant
       merchant_map = Hash.new
       invoices.each do |invoice|

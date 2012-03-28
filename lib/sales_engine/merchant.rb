@@ -55,5 +55,9 @@ module SalesEngine
       merchants.sort_by!{ |merchant| merchant.revenue }.reverse!
       merchants[0,total_merchants]
     end
+
+    def customers_with_pending_invoices
+      customers.select{ |customer| customer.has_pending_invoice? }
+    end
   end
 end

@@ -66,6 +66,34 @@ describe SalesEngine::Customer do
     end
   end
 
+  describe "#has_pending_invoices?" do
+    let(:customer) { Fabricate(:customer, :id => 1) }
+    let(:invoice1) { double("invoice", :status => "pending") }
+    let(:invoice2) { double("invoice", :status => "shipped") }
+    let(:invoice3) { double("invoice", :status => "shipped") }
+
+    context "the customer has invoices" do
+      context "one or more of the invoices are pending" do
+        it "returns true" do
+          customer.stub(:invoices).and_return([invoice1, invoice2, invoice3])
+          customer.has_pending_invoice?.should == true
+        end
+      end
+      context "none of the invoices are pending" do
+        it "returns false" do
+          customer.stub(:invoices).and_return([invoice2, invoice3])
+          customer.has_pending_invoice?.should == false
+        end
+      end
+    end
+    context "the customer has no invoices" do
+      it "returns false" do
+        customer.stub(:invoices).and_return([])
+        customer.has_pending_invoice?.should == false
+      end
+    end
+  end
+
   describe "#favorite_merchant" do
     let(:customer) { Fabricate(:customer, :id => 1) }
     let(:invoice) { double("invoice", :customer_id => 1, 
