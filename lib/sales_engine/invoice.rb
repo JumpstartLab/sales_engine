@@ -22,10 +22,6 @@ class SalesEngine
       @merchant = input
     end
 
-   
-    def self.random
-      SalesEngine::Database.instance.invoices.sample
-    end
     # # def self.find_by_X(match)
     # # end
 

@@ -12,10 +12,6 @@ class SalesEngine
       @name = attributes[:name]
     end
 
-    def self.random
-      SalesEngine::Database.instance.merchants.sample
-    end
-
     # def self.find_by_X(match)
     # end
 

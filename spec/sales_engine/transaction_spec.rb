@@ -4,6 +4,7 @@ describe SalesEngine::Transaction do
 
   let(:test_transaction) { Fabricate(:transaction) }
 
+  
   describe "#invoice" do
     context "returns an invoice associated with this transaction" do
       it "returns an invoice" do

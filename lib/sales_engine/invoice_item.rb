@@ -15,10 +15,6 @@ class SalesEngine
         @unit_price = attributes[:unit_price]
     end
 
-    def self.random
-      SalesEngine::Database.instance.invoice_items.sample
-    end
-
     # # def self.find_by_X(match)
     # # end
 

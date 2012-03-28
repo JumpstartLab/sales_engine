@@ -21,10 +21,6 @@ class SalesEngine
       @invoices = input
     end
 
-    def self.random
-      SalesEngine::Database.instance.customers.sample
-    end
-
     def transactions
       correct_transactions = invoices.collect do |invoice|
         invoice.transactions

@@ -25,10 +25,6 @@ class SalesEngine
       end
     end
 
-    def self.random
-      SalesEngine::Database.instance.transactions.sample
-    end
-
     def self.all
       SalesEngine::Database.instance.transactions
     end
