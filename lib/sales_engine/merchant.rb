@@ -22,15 +22,15 @@ module SalesEngine
     end
 
     def self.most_revenue(num_merchants)
-      all.sort_by{|m| m.total_revenue}.first(num_merchants)
+      all.sort_by{ |m| m.total_revenue }.first(num_merchants)
     end
 
     def self.most_items(num_merchants)
-      all.sort_by{|m| m.items_sold}.first(num_merchants)
+      all.sort_by{ |m| m.items_sold }.first(num_merchants)
     end
 
     def self.revenue(date = nil)
-      all.map{|m| m.revenue(date)}.inject(:+)
+      all.map{ |m| m.revenue(date) }.inject(:+)
     end
 
     def self.dates_by_revenue(count = nil)
@@ -73,7 +73,7 @@ module SalesEngine
 
     def favorite_customer
       inv = invoices.group_by { |i| i.customer_id }
-      fc_id = inv.sort_by{|i| i.last.size}.last.first
+      fc_id = inv.sort_by{ |i| i.last.size }.last.first
       SalesEngine::Customer.find_by_id(fc_id)
     end
 
