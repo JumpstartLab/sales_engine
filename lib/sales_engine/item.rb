@@ -44,9 +44,11 @@ module SalesEngine
       end
 
       def calc_revenue
-        self.invoice_items.inject(0) do |sum, invoice_item|
-          invoice_item.revenue
-        end  
+        revenue = 0
+        revenue = self.invoice_items.inject(0) do |sum, invoice_item|
+          sum + invoice_item.revenue
+        end
+        revenue
       end
 
       def best_day

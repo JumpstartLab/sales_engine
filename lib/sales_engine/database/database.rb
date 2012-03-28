@@ -1,40 +1,51 @@
 $LOAD_PATH.unshift("./")
+$LOAD_PATH.unshift("../")
+$LOAD_PATH.unshift("../..")
 require "./class_methods"
 require "drb"
+require "./csv_loader"
 require "rinda/ring"
+require 'customer'
+require 'transaction'
+require 'merchant'
+require 'item'
+require 'invoice'
+require 'invoice_item'
+require 'class_methods'
+
 
 module SalesEngine
   class Database
-    include Singleton
-    include DRbUndumped
-    include AccessorBuilder
-    ATTRIBUTES = [:transaction, :customer, :item, :invoice_item,
-      :merchant, :invoice, :all_transactions, :all_customers, :all_items,
-      :all_invoice_items, :all_merchants, :all_invoices, :ring_server,
-      :loaders]
+   ATTRIBUTES = [:transaction, :customer, :item, :invoice_item,
+    :merchant, :invoice, :all_transactions, :all_customers, :all_items,
+    :all_invoice_items, :all_merchants, :all_invoices, :ring_server]
+    FILE_ARRAY = ["merchants.csv","items.csv","invoices.csv",
+      "invoice_items.csv","customers.csv","transactions.csv"]
+      include Singleton
+      include DRbUndumped
+      include AccessorBuilder
       HASHES = [:transaction, :customer, :item, :invoice_item,
         :merchant, :invoice]
         ARRAYS = [:all_transactions, :all_customers, :all_items,
           :all_invoice_items, :all_merchants, :all_invoices]
 
-          def initialize(filename_array)
+          def initialize()
+            ap "let's get it on"
+            DRb.start_service
             init_instance_variables
             add_self_to_ring_server
-            create_csv_loaders(filename_array.size)
-            load_csvs
+            create_csv_loaders
           end
 
           def add_self_to_ring_server
-            DRb.start_server
-            self.ring_server([:database_service,:Database, self, "Database"])
-            DRb.thread.join
+            self.ring_server.write([:database_service,:Database,
+              self, "Database"])
           end
 
           def init_instance_variables
             init_hashes
             init_arrays
-            @loaders = []
-            @ring_server = Rinda::RingServer.primary
+            @ring_server = Rinda::RingFinger.primary
           end
 
           def init_hashes
@@ -56,5 +67,33 @@ module SalesEngine
             end
           end
 
+          def create_csv_loaders
+            FILE_ARRAY.map do |filename|
+              Thread.new do
+                csv_loader = CSVLoader.new
+                csv_loader.load_file(filename)
+              end
+            end.each(&:join)
+            puts "I made them!"
+          end
         end
       end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -11,10 +11,10 @@ module SalesEngine
 
      def initialize (attributes = {})
       define_attributes(attributes)
-      Database.instance.invoice_item[id.to_i][:self] = self
-      Database.instance.invoice[invoice_id.to_i][:invoice_items] << self
-      Database.instance.item[item_id.to_i][:invoice_items] << self
-      Database.instance.all_invoice_items[id.to_i - 1] = self
+      Database.instance.invoice_item[id][:self] = self
+      Database.instance.invoice[invoice_id][:invoice_items] << self
+      Database.instance.item[item_id][:invoice_items] << self
+      Database.instance.all_invoice_items[id - 1] = self
     end
 
     def invoice
@@ -26,7 +26,7 @@ module SalesEngine
     end
 
     def revenue
-      @revenue ||= self.quantity * self.unit_price
+      @revenue||= quantity * unit_price
     end
   end
 end

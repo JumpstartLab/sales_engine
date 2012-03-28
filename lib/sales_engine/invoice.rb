@@ -13,10 +13,10 @@ module SalesEngine
 
       def initialize(attributes = {})
         define_attributes(attributes)
-        Database.instance.invoice[id.to_i][:self] = self
-        Database.instance.customer[customer_id.to_i][:invoices] << self
-        Database.instance.merchant[merchant_id.to_i][:invoices] << self
-        Database.instance.all_invoices[id.to_i - 1] = self
+        Database.instance.invoice[id][:self] = self
+        Database.instance.customer[customer_id][:invoices] << self
+        Database.instance.merchant[merchant_i][:invoices] << self
+        Database.instance.all_invoices[id - 1] = self
       end
 
       def all_invoices

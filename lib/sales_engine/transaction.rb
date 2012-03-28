@@ -9,13 +9,13 @@ module SalesEngine
 
     def initialize (attributes = {})
       define_attributes(attributes)
-      Database.instance.transaction[id.to_i][:self] = self
-      Database.instance.invoice[invoice_id.to_i][:transactions] << self
-      Database.instance.all_transactions[id.to_i - 1] = self
+      Database.instance.transaction[id][:self] = self
+      Database.instance.invoice[invoice_id][:transactions] << self
+      Database.instance.all_transactions[id - 1] = self
     end
 
     def invoice
-      @invoice ||= Database.instance.invoice[invoice_id.to_i][:self]
+      @invoice ||= Database.instance.invoice[invoice_id][:self]
     end
 
     def successful?
