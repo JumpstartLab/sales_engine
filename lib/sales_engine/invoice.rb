@@ -25,12 +25,12 @@ module SalesEngine
       if attributes[:created_at]
         self.created_at = Date.parse(attributes[:created_at])
       else
-        self.created_at = Date.now
+        self.created_at = Date.today
       end
       if attributes[:updated_at]
         self.updated_at = Date.parse(attributes[:updated_at])
       else
-        self.updated_at = Date.now
+        self.updated_at = Date.today
       end
     end
 
@@ -108,6 +108,13 @@ module SalesEngine
 
     def self.average_revenue
         SalesEngine::InvoiceItem.total_revenue / self.successful_invoices.size
+    end
+
+    def charge(attrs)
+      SalesEngine::Transaction.create({:invoice_id => self.id, 
+                                       :credit_card_number => attrs[:credit_card_number],
+                                       :credit_card_expiration => attrs[:credit_card_expiration],
+                                       :result => attrs[:result] })
     end
 
     #def self.average_revenue(*date)
