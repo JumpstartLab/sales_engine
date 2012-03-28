@@ -5,16 +5,26 @@ module SalesEngine
                   :unit_price, :created_at, :updated_at, :date
 
     def initialize(attributes)
-      self.id = attributes[:id]
+      if attributes[:id]
+        self.id = attributes[:id]
+      else
+        self.id = (SalesEngine::Database.instance.invoice_item_list.size + 1).to_s
+        # puts self.id
+        # puts SalesEngine::Database.instance.invoice_item_list.inspect
+      end
       self.item_id = attributes[:item_id]
       self.invoice_id = attributes[:invoice_id]
       self.quantity =   attributes[:quantity].to_i
       self.unit_price = BigDecimal.new(attributes[:unit_price]).round(2)
       if attributes[:created_at]
         self.created_at = Time.parse(attributes[:created_at])
+      else
+        self.created_at = Time.now
       end
       if attributes[:updated_at]
         self.updated_at = Time.parse(attributes[:updated_at])
+      else
+        self.updated_at = Time.now
       end
     end
 
@@ -29,8 +39,12 @@ module SalesEngine
     end
 
     def self.create(attributes)
-      self.new(:item_id => attributes[:item].id,
-        )
+      invoice_item = self.new({ :item_id => attributes[:item].id,
+                              :invoice_id => attributes[:invoice_id],
+                              :unit_price => attributes[:item].unit_price,
+                              :quantity => "1" })
+      SalesEngine::Database.instance.invoice_item_list << invoice_item
+      invoice_item
     end
 
     def self.total_revenue_by_invoice_id(invoice_id)

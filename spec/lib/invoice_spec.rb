@@ -54,15 +54,18 @@ describe SalesEngine::Invoice do
   end
 
   describe ".create" do
-    let(:database) { SalesEngine::Database.instance.invoice_list = [ ]}
+    before(:each) do
+      SalesEngine::InvoiceItem.stub(:create)
+      SalesEngine::Database.instance.invoice_list = [ ]
+    end
+
     let(:customer_one) { SalesEngine::Customer.new(:id => "1") }
     let(:merchant_one) { SalesEngine::Merchant.new(:id => "1") }
     let(:item_one) { SalesEngine::Item.new(:id => "1")}
-    let(:invoice) { SalesEngine::Invoice.create(:customer => customer_one, 
+    let(:invoice) { SalesEngine::Invoice.create( {:customer => customer_one, 
                                     :merchant => merchant_one, 
                                     :status => "shipped", 
-                                    :items => [ item_one ])}
-
+                                    :items => [ item_one ] } ) }
 
     it "assigns a customer id" do
       invoice.customer_id.should == "1"
@@ -85,12 +88,11 @@ describe SalesEngine::Invoice do
     end
 
     it "assigns an invoice id" do
-      puts database.inspect
       invoice.id.should == "1"
     end
 
     it "adds the invoice to the invoice_list" do
-      database.should include invoice
+      SalesEngine::Database.instance.invoice_list.should include invoice
     end
   end
 

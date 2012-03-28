@@ -61,6 +61,11 @@ module SalesEngine
                                :merchant_id => attributes[:merchant].id,
                                :status => attributes[:status])
       SalesEngine::Database.instance.invoice_list << invoice
+
+      attributes[:items].each do |item|
+        SalesEngine::InvoiceItem.create({:invoice_id => invoice.id, :item => item })
+      end
+
       invoice
     end
 
