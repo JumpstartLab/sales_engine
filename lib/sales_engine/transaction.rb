@@ -1,10 +1,12 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib')).uniq!
 require "sales_engine"
 require "sales_engine/database"
+require "sales_engine/transaction_record"
 
 module SalesEngine
   class Transaction
     include SalesEngine
+    extend TransactionRecord
     attr_accessor :id, :invoice_id, :credit_card_number,
     :credit_card_expiration_date, :result, :created_at, :updated_at
 

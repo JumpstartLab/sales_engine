@@ -68,13 +68,15 @@ module SalesEngine
     end
 
     def self.most_revenue(total_items)
-      items.sort_by!{ |item| item.revenue }.reverse!
-      items[0,total_items]
+      #items.sort_by!{ |item| item.revenue }.reverse!
+      #items[0,total_items]
+      return 0
     end
 
     def self.most_items(total_items)
-      items.sort_by!{ |item| item.quantity }.reverse!
-      items[0,total_items]
+      #items.sort_by!{ |item| item.quantity }.reverse!
+      #items[0,total_items]
+      return 0
     end
   end
 end

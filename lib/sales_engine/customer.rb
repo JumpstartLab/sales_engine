@@ -1,9 +1,11 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib')).uniq!
 require "sales_engine/database"
+require "sales_engine/customer_record"
 
 module SalesEngine
   class Customer
     include SalesEngine
+    extend CustomerRecord
     attr_accessor :id, :first_name, :last_name, :created_at, :updated_at
 
     def initialize(id, first_name, last_name, created_at, updated_at) 
