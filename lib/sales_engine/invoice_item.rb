@@ -22,6 +22,10 @@ module SalesEngine
       quantity * unit_price
     end
 
+    def sold?
+      invoice.paid?
+    end
+
     def self.random
       SalesEngine::Database.instance.get_random_record("invoiceitems")
     end

@@ -17,7 +17,7 @@ module SalesEngine
 
     def self.most_items(item_count)
       SalesEngine::Database.instance.items.sort_by { |item| 
-        item.invoice_items.count }.pop_multiple(item_count)
+        item.paid_invoice_items.count }.pop_multiple(item_count)
     end
 
     def self.random
@@ -26,7 +26,7 @@ module SalesEngine
 
     def best_day
       day_tracker = { }
-      self.invoice_items.each do |invoice_item|
+      self.paid_invoice_items.each do |invoice_item|
         temp_date = Date.parse(Time.parse(invoice_item.created_at).strftime('%Y/%m/%d'))
         if day_tracker[temp_date]
           day_tracker[temp_date] += 1
@@ -35,6 +35,11 @@ module SalesEngine
         end
       end
       day_tracker.sort_by {|day| day.last}.last.first
+    end
+
+    def paid_invoice_items
+      invoice_items.select { |invoice_item| 
+        invoice_item.sold? }
     end
 
     def total

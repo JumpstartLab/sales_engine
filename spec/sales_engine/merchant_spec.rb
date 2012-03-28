@@ -362,9 +362,9 @@ describe SalesEngine::Merchant do
 
   describe "#customers_with_pending_invoices" do
     it "returns a collection of Customer instances which have pending (unpaid) invoices" do
-      transaction_1.result = "Pending"
-      transaction_5.result = "Pending"
-      merchant_1.customers_with_pending_invoices.should == [invoice_1, invoice_5]
+      transaction_1.result = "failed"
+      transaction_5.result = "failed"
+      merchant_1.customers_with_pending_invoices.should == [customer_1, customer_2]
     end
   end
 end

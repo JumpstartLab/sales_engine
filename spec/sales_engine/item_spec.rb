@@ -2,25 +2,27 @@ require 'spec_helper'
 
 describe SalesEngine::Item do
   let(:se) { SalesEngine::Database.instance }
-  let(:item_1) { Fabricate(:item) }
-  let(:item_2) { Fabricate(:item) }
-  let(:item_3) { Fabricate(:item) }
-  let(:item_4) { Fabricate(:item) }
-  let(:item_5) { Fabricate(:item) }
-  let(:item_6) { Fabricate(:item) }
-  let(:item_7) { Fabricate(:item) }
-  let(:item_8) { Fabricate(:item) }
-  let(:invoice_item_1) { Fabricate(:invoice_item, :item_id => item_1.id, :unit_price => 1) }
-  let(:invoice_item_2) { Fabricate(:invoice_item, :item_id => item_2.id, :unit_price => 1) }
-  let(:invoice_item_3) { Fabricate(:invoice_item, :item_id => item_3.id, :unit_price => 1) }
-  let(:invoice_item_4) { Fabricate(:invoice_item, :item_id => item_4.id, :unit_price => 5) }
-  let(:invoice_item_5) { Fabricate(:invoice_item, :item_id => item_5.id, :unit_price => 1) }
-  let(:invoice_item_6) { Fabricate(:invoice_item, :item_id => item_6.id, :unit_price => 2) }
-  let(:invoice_item_7) { Fabricate(:invoice_item, :item_id => item_7.id, :unit_price => 2) }
-  let(:invoice_item_8) { Fabricate(:invoice_item, :item_id => item_1.id, :unit_price => 3) }
-  let(:invoice_item_9) { Fabricate(:invoice_item, :item_id => item_2.id, :unit_price => 20) }
-  let(:invoice_item_10) { Fabricate(:invoice_item, :item_id => item_3.id, :unit_price => 1) }
-  let(:invoice_item_11) { Fabricate(:invoice_item, :item_id => item_1.id, :unit_price => 4) }
+  let(:item_1)        { Fabricate(:item) }
+  let(:item_2)        { Fabricate(:item) }
+  let(:item_3)        { Fabricate(:item) }
+  let(:item_4)        { Fabricate(:item) }
+  let(:item_5)        { Fabricate(:item) }
+  let(:item_6)        { Fabricate(:item) }
+  let(:item_7)        { Fabricate(:item) }
+  let(:item_8)        { Fabricate(:item) }
+  let(:invoice_1)     { Fabricate(:invoice)}
+  let(:transaction_1) { Fabricate(:transaction)}
+  let(:invoice_item_1) { Fabricate(:invoice_item, :item_id => item_1.id, :unit_price => 1, :invoice_id => invoice_1.id) }
+  let(:invoice_item_2) { Fabricate(:invoice_item, :item_id => item_2.id, :unit_price => 1, :invoice_id => invoice_1.id) }
+  let(:invoice_item_3) { Fabricate(:invoice_item, :item_id => item_3.id, :unit_price => 1, :invoice_id => invoice_1.id) }
+  let(:invoice_item_4) { Fabricate(:invoice_item, :item_id => item_4.id, :unit_price => 5, :invoice_id => invoice_1.id) }
+  let(:invoice_item_5) { Fabricate(:invoice_item, :item_id => item_5.id, :unit_price => 1, :invoice_id => invoice_1.id) }
+  let(:invoice_item_6) { Fabricate(:invoice_item, :item_id => item_6.id, :unit_price => 2, :invoice_id => invoice_1.id) }
+  let(:invoice_item_7) { Fabricate(:invoice_item, :item_id => item_7.id, :unit_price => 2, :invoice_id => invoice_1.id) }
+  let(:invoice_item_8) { Fabricate(:invoice_item, :item_id => item_1.id, :unit_price => 3, :invoice_id => invoice_1.id) }
+  let(:invoice_item_9) { Fabricate(:invoice_item, :item_id => item_2.id, :unit_price => 20, :invoice_id => invoice_1.id) }
+  let(:invoice_item_10) { Fabricate(:invoice_item, :item_id => item_3.id, :unit_price => 1, :invoice_id => invoice_1.id) }
+  let(:invoice_item_11) { Fabricate(:invoice_item, :item_id => item_1.id, :unit_price => 4, :invoice_id => invoice_1.id) }
   let(:merchant_1) { Fabricate(:merchant) }
   let(:merchant_2) { Fabricate(:merchant) }
 
@@ -34,6 +36,9 @@ describe SalesEngine::Item do
     se.add_to_list(item_6)
     se.add_to_list(item_7) 
     se.add_to_list(item_8)
+    se.add_to_list(item_8)
+    se.add_to_list(invoice_1)
+    se.add_to_list(transaction_1)
     se.add_to_list(invoice_item_1)
     se.add_to_list(invoice_item_2)
     se.add_to_list(invoice_item_3)
@@ -48,6 +53,18 @@ describe SalesEngine::Item do
     se.add_to_list(merchant_1)
     se.add_to_list(merchant_2)
   end
+
+  # # describe "#best_day" do
+  # #   before(:each) do
+  # #     invoice_item_1.created_at = "2012-03-14 20:56:56 UTC"
+  # #     invoice_item_8.created_at = "2012-03-14 20:00:51 UTC"
+  # #     invoice_item_11.created_at = "2012-02-01 16:16:41 UTC"  
+  # #   end
+
+  #   it "returns the date with the most sales for the given item" do
+  #     item_1.best_day.should == Date.parse("2012-03-14")
+  #   end
+  # end
 
   describe ".random" do
     context "when items exist in the datastore" do
@@ -436,18 +453,6 @@ describe SalesEngine::Item do
   describe ".most_items" do
     it "returns the top x item instances ranked by total number sold" do
       SalesEngine::Item.most_items(2) == [item_1, item_2]
-    end
-  end
-
-  describe "#best_day" do
-    before(:each) do
-      invoice_item_1.created_at = "2012-03-14 20:56:56 UTC"
-      invoice_item_8.created_at = "2012-03-14 20:00:51 UTC"
-      invoice_item_11.created_at = "2012-02-01 16:16:41 UTC"  
-    end
-
-    it "returns the date with the most sales for the given item" do
-      item_1.best_day.should == Date.parse("2012-03-14")
     end
   end
 

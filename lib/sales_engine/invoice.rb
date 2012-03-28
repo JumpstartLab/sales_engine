@@ -10,7 +10,14 @@ module SalesEngine
     end
 
     def paid?
-      transactions.any? { |transaction| transaction.successful? }
+      result = transactions.any? { |transaction| transaction.successful? }
+      LOG.debug "invoice id #{self.id}\tpaid? = #{result}"
+      result
+    end
+
+    def pending?
+      # transactions.any? { |transaction| transaction.pending? }
+      transactions.empty?
     end
 
     def total_revenue

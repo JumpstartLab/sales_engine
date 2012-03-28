@@ -58,20 +58,8 @@ module SalesEngine
     end
 
     def customers_with_pending_invoices
-      pending_transactions = []
-      self.invoices.each do |invoice|
-        all_pending = true
-        invoice.transactions.each do |transaction|
-          if !transaction.result.downcase.include?("pending")
-            all_pending = false
-            break
-          end
-        end
-        if all_pending
-          pending_transactions << invoice
-        end
-      end
-      pending_transactions
+      pending_invoices = invoices.select { |invoice| !invoice.paid? }
+      pending_invoices.map { |invoice| invoice.customer }
     end
 
     def items
