@@ -16,7 +16,6 @@ class SalesEngine
 
       target.finder_attributes.each do |att|
         target.class_eval do
-          puts "find by is find_all_by_#{att}"
           define_singleton_method ("find_by_" + att).to_sym do |param|
             SalesEngine::Database.instance.find_by(class_name, att, param)
           end

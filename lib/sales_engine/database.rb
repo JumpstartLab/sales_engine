@@ -112,7 +112,6 @@ class SalesEngine
         i.send(attr) == param
       end
     end
-
   end
 end
 

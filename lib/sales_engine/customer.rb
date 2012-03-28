@@ -4,25 +4,21 @@ class SalesEngine
   class Customer
     
     ATTRIBUTES = ["id", "created_at", "updated_at", "first_name", "last_name"]
-
-    attr_accessor :id
-
-    def initialize(attributes)
-        super
-        @first_name = attributes[:first_name]
-        @last_name = attributes[:last_name]
-    end
-
     def self.finder_attributes
       ATTRIBUTES
     end
 
     include Model
+    attr_accessor :id
+
+    def initialize(attributes)
+      super
+      @first_name = attributes[:first_name]
+      @last_name = attributes[:last_name]
+    end
 
     def invoices
-      @invoices || SalesEngine::Database.instance.invoices.select do |invoice|
-        invoice.customer_id == @id
-      end
+      @invoices || SalesEngine::Invoice.find_all_by_customer_id(@id)
     end
 
     def invoices=(input)
@@ -42,6 +38,5 @@ class SalesEngine
       merchant_and_invoices = sorted_and_grouped_by_merchant.last
       merchant = merchant_and_invoices.first
     end
-
   end
 end

@@ -21,18 +21,15 @@ class SalesEngine
     include Model
 
     def invoice_items     
-      SalesEngine::Database.instance.invoice_items.select do |ii|
-        ii.item_id == @id
-      end
+      SalesEngine::InvoiceItem.find_all_by_item_id(@id)
     end
 
     def merchant
-      SalesEngine::Database.instance.merchants.find do |merchant|
-        merchant.id == @merchant_id
-      end
+      SalesEngine::Merchant.find_by_id(@merchant_id)
     end
 
     def best_day
+      puts "TODO #{self.class}"
       return "2012-02-02"
     end
   end

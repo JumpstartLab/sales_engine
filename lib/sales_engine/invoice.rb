@@ -3,6 +3,11 @@ require 'sales_engine/model'
 class SalesEngine
   class Invoice
     ATTRIBUTES = %w(id created_at updated_at merchant_id customer_id merchant)
+    def self.finder_attributes
+      ATTRIBUTES
+    end
+
+    include Model
     attr_accessor :merchant_id, :customer_id, :customer, :id, :merchant
     
     def initialize(attributes)
@@ -10,13 +15,7 @@ class SalesEngine
       @customer_id = attributes[:customer_id]
       @merchant_id = attributes[:merchant_id]
       @status = attributes[:status]
-    end
-
-    def self.finder_attributes
-      ATTRIBUTES
-    end
-
-    include Model
+    end  
 
     def customer=(input)
       @customer_id = input.id
@@ -29,15 +28,15 @@ class SalesEngine
     end
 
     def transactions
-      SalesEngine::Database.instance.transactions.select do |transaction|
-       transaction.invoice_id == @id 
-      end
+      SalesEngine::Transaction.find_all_by_invoice_id(@id)
     end
 
     def invoice_items
-      SalesEngine::Database.instance.invoice_items.select do |invoice_item|
-        invoice_item.invoice_id == @id
-      end
+      SalesEngine::InvoiceItem.find_all_by_invoice_id(@id)
+
+      # SalesEngine::Database.instance.invoice_items.select do |invoice_item|
+      #   invoice_item.invoice_id == @id
+      # end
     end
 
     def customer

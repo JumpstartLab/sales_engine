@@ -7,21 +7,19 @@ class SalesEngine
     ATTRIBUTES = %w(id created_at updated_at name)
     attr_accessor :id
 
-    def initialize(attributes)
-      super(attributes)
-      @name = attributes[:name]
-    end
-
     def self.finder_attributes
       ATTRIBUTES
     end
 
     include Model
 
+    def initialize(attributes)
+      super(attributes)
+      @name = attributes[:name]
+    end
+
     def items
-      SalesEngine::Database.instance.items.select do |item|
-        item.merchant_id == @id
-      end
+      SalesEngine::Item.find_all_by_merchant_id(@id)
     end
 
     def invoices=(input)
@@ -29,9 +27,7 @@ class SalesEngine
     end
 
     def invoices
-      @invoices || SalesEngine::Database.instance.invoices.select do |invoice|
-        invoice.merchant_id == @id
-      end
+      @invoices || SalesEngine::Invoice.find_all_by_merchant_id(@id)
     end
 
     def revenue
