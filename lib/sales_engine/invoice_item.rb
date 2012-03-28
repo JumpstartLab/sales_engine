@@ -26,11 +26,11 @@ module SalesEngine
     end
 
     def item 
-      SalesEngine::Database.instance.items.find { |item| item.id == item_id }  
+      Item.items.find { |item| item.id == item_id }  
     end
 
     def invoice
-      SalesEngine::Database.instance.invoices.find { |invoice| invoice.id == invoice_id }  
+      Invoice.invoices.find { |invoice| invoice.id == invoice_id }  
     end
   end
 end
