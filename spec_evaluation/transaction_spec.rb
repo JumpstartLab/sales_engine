@@ -16,13 +16,17 @@ describe SalesEngine::Transaction do
     end
 
     describe ".find_by_credit_card_number" do
-      transaction = SalesEngine::Transaction.find_by_credit_card_number "4634664005836219"
-      transaction.id.should == 5536
+      it "can find a record" do
+        transaction = SalesEngine::Transaction.find_by_credit_card_number "4634664005836219"
+        transaction.id.should == 5536
+      end
     end
 
     describe ".find_all_by_result" do
-      transactions = SalesEngine::Transaction.find_all_by_result "success"
-      transactions.should have(4648).transactions
+      it "can find multiple records" do
+        transactions = SalesEngine::Transaction.find_all_by_result "success"
+        transactions.should have(4648).transactions
+      end
     end
   end
 
