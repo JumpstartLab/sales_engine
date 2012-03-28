@@ -22,7 +22,7 @@ module SalesEngine
   end
 
   def self.load_directory(directory, options = {})
-    if cache_exists?(directory)
+    if cache_valid?(directory)
       load_cache(directory)
     else
       Dir.foreach(directory) do |filename| 
@@ -41,17 +41,38 @@ module SalesEngine
     end
   end
 
-  def self.cache_exists?(directory)
-    File.exists?(directory + '/cache.dump')
+  def self.cache_valid?(directory)
+    all_caches = Dir[directory + '/*.cache']
+
+    unless all_caches.empty?
+      filename = all_caches.first.split('.').first.split('/').last
+      filename == generate_filename(directory)
+    else
+      false
+    end
   end
 
   def self.load_cache(directory)
-    data = Marshal.load(File.open(directory + '/cache.dump', 'r'))
+    cache_path = "#{directory}/#{generate_filename(directory)}.cache"
+    data = Marshal.load(File.open(cache_path, 'r'))
     SalesEngine::Persistence.instance.import(data)
   end
 
   def self.create_cache(directory)
+    destroy_all_caches(directory)
     data = Marshal.dump(SalesEngine::Persistence.instance.dump_data)
-    File.open(directory + '/cache.dump', 'w') { |f| f.write data }
+    cache_path = "#{directory}/#{generate_filename(directory)}.cache"
+    File.open(cache_path, 'w') { |f| f.write data }
+  end
+
+  def self.destroy_all_caches(directory)
+    Dir[directory + '/*.cache'].map { |f| File.delete(f) }
+  end
+
+  def self.generate_filename(directory)
+    filenames = Dir[directory + '/*.csv']
+    timestamps = filenames.map { |f| File.stat(f).mtime }
+
+    Digest::MD5.hexdigest(filenames.join.to_s + timestamps.join.to_s)
   end
 end
