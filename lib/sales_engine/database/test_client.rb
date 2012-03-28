@@ -4,7 +4,7 @@ require "./database"
 
 DRb.start_service
 ap "here!"
-ring_server = Rinda::RingFinger.primary
+puts ring_server = Rinda::RingFinger.primary
 ap "there!"
 SalesEngine::Database.instance
 ap "and everywhere!"

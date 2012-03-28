@@ -11,22 +11,22 @@ module SalesEngine
 
      def initialize (attributes = {})
       define_attributes(attributes)
-      Database.instance.invoice_item[id.to_i][:self] = self
-      Database.instance.invoice[invoice_id.to_i][:invoice_items] << self
-      Database.instance.item[item_id.to_i][:invoice_items] << self
-      Database.instance.all_invoice_items[id.to_i - 1] = self
+      Database.instance.invoice_item[id][:self] = self
+      Database.instance.invoice[invoice_id][:invoice_items] << self
+      Database.instance.item[item_id][:invoice_items] << self
+      Database.instance.all_invoice_items[id - 1] = self
     end
 
     def invoice
-      @invoice ||= Database.instance.invoice[invoice_id.to_i][:self]
+      @invoice ||= Database.instance.invoice[invoice_id][:self]
     end
 
     def item
-      @item ||= Database.instance.item[item_id.to_i][:self]
+      @item ||= Database.instance.item[item_id][:self]
     end
 
     def revenue
-      @revenue ||= BigDecimal.new(self.quantity.to_i * self.unit_price.to_i)
+      @revenue||= quantity * unit_price
     end
   end
 end

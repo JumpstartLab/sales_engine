@@ -12,8 +12,8 @@ module SalesEngine
 
     def initialize (attributes = {})
       define_attributes(attributes)
-      Database.instance.customer[id.to_i][:self] = self
-      Database.instance.all_customers[id.to_i - 1] = self
+      Database.instance.customer[id][:self] = self
+      Database.instance.all_customers[id - 1] = self
     end
 
     def all_customers
@@ -21,7 +21,7 @@ module SalesEngine
     end
 
     def invoices
-      @invoices ||= Database.instance.customer[id.to_i][:invoices]
+      @invoices ||= Database.instance.customer[id][:invoices]
     end
 
     def transactions
