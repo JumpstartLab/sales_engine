@@ -4,10 +4,10 @@ module SalesEngine
 
     def initialize(attributes = {})
       super
-      self.item_id = attributes[:item_id]
-      self.invoice_id = attributes[:invoice_id]
-      self.quantity = attributes[:quantity]
-      self.unit_price = attributes[:unit_price]
+      self.item_id = attributes[:item_id].to_i
+      self.invoice_id = attributes[:invoice_id].to_i
+      self.quantity = attributes[:quantity].to_i
+      self.unit_price = attributes[:unit_price].to_i
     end
 
     def invoice

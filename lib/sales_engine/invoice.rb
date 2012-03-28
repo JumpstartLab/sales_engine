@@ -4,8 +4,8 @@ module SalesEngine
 
     def initialize(attributes = {})
       super
-      self.customer_id = attributes[:customer_id]
-      self.merchant_id = attributes[:merchant_id]
+      self.customer_id = attributes[:customer_id].to_i
+      self.merchant_id = attributes[:merchant_id].to_i
       self.status = attributes[:status]
     end
 

@@ -4,7 +4,7 @@ module SalesEngine
 
     def initialize(attributes ={})
       super
-      self.invoice_id = attributes[:invoice_id]
+      self.invoice_id = attributes[:invoice_id].to_i
       self.credit_card_number = attributes[:credit_card_number]
       self.credit_card_expiration_date = attributes[:credit_card_expiration_date]
       self.result = attributes[:result]

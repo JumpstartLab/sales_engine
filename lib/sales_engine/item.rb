@@ -7,8 +7,8 @@ module SalesEngine
       super
       self.name = attributes[:name]
       self.description = attributes[:description]
-      self.unit_price = attributes[:unit_price]
-      self.merchant_id = attributes[:merchant_id]
+      self.unit_price = attributes[:unit_price].to_i
+      self.merchant_id = attributes[:merchant_id].to_i
     end
 
     def self.most_revenue(item_count)
