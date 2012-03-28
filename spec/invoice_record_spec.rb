@@ -15,14 +15,14 @@ module SalesEngine
   describe "#invoices_by_merchant" do
     context "invoices for merchant exist" do
       it "returns a array of invoices" do
-        rows = InvoiceRecordTest.invoices_by_merchant(1)
+        rows = InvoiceRecordTest.for_merchant(1)
         rows.length.should == 51 
       end
     end
 
     context "invoices for merchant doesn't exists" do
       it "returns an empty array" do
-        rows = InvoiceRecordTest.invoices_by_merchant(1000)
+        rows = InvoiceRecordTest.for_merchant(1000)
         rows.length.should == 0 
       end
     end
@@ -31,14 +31,14 @@ module SalesEngine
   describe "#invoices_by_merchant_for_date" do
     context "invoices for merchant for that date exist" do
       it "returns a array of invoices" do
-        rows = InvoiceRecordTest.invoices_by_merchant_for_date(1, Date.parse("2012-02-19"))
+        rows = InvoiceRecordTest.for_merchant_and_date(1, Date.parse("2012-02-19"))
         rows.length.should == 4
       end
     end
 
     context "invoices for merchant for that date don't exist" do
       it "returns an empty array" do
-        rows = InvoiceRecordTest.invoices_by_merchant_for_date(1, Date.parse("2013-02-19"))
+        rows = InvoiceRecordTest.for_merchant_and_date(1, Date.parse("2013-02-19"))
         rows.length.should == 0
       end
     end

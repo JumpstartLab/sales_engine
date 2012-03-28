@@ -15,7 +15,7 @@ module SalesEngine
        invoices
      end
 
-      def invoices_by_merchant(merchant_id)
+      def for_merchant(merchant_id)
        invoices = []
        query = "select * from invoices
                 where merchant_id = #{merchant_id}"
@@ -25,7 +25,7 @@ module SalesEngine
       invoices
      end
 
-     def invoices_by_merchant_for_date(merchant_id, date)
+     def for_merchant_and_date(merchant_id, date)
        invoices = []
        query = "SELECT * FROM invoices
        WHERE merchant_id = 1
