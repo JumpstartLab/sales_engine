@@ -32,7 +32,6 @@ module SalesEngine
     end
 
     def invoice
-      puts self.invoice_id.inspect
       SalesEngine::Invoice.find_by_id(self.invoice_id)
     end
 
@@ -45,8 +44,6 @@ module SalesEngine
     end
 
     def is_successful?
-      puts self.inspect
-      puts SalesEngine::Database.instance.invoice_list.inspect
       self.invoice.is_successful?
     end
 
