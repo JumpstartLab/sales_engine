@@ -8,6 +8,7 @@ module SalesEngine
 
     def initialize(attributes)
       super(attributes)
+
       @customer_id = clean_integer(attributes[:customer_id])
       @merchant_id = clean_integer(attributes[:merchant_id])
       @status = attributes[:status]

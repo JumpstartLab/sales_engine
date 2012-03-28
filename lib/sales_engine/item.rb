@@ -7,6 +7,7 @@ module SalesEngine
 
     def initialize(attributes)
       super(attributes)
+      
       @name = attributes[:name]
       @description = attributes[:description]
       @unit_price = clean_float(attributes[:unit_price])
