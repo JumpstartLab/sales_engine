@@ -117,7 +117,7 @@ describe SalesEngine::Merchant do
     end
   end
 
-  describe "#successful_invoices" do
+  describe "#paid_invoices" do
     before(:each) do
       inv_one.stub(:is_successful?).and_return(true)
       inv_two.stub(:is_successful?).and_return(true)
@@ -127,32 +127,30 @@ describe SalesEngine::Merchant do
       merchant_one.stub(:invoices).and_return(invoices)
     end
 
-    it "returns successful invoices associated with the merchant" do
-      merchant_one.successful_invoices.should == [ inv_one, inv_two ]
+    it "returns paid invoices associated with the merchant" do
+      merchant_one.paid_invoices.should == [ inv_one, inv_two ]
     end
 
-    context "when no successful transactions" do
+    context "when no paid transactions" do
       it "returns an empty array" do
         invoices = [ inv_three ]
         merchant_one.stub(:invoices).and_return(invoices)
-        merchant_one.successful_invoices.should == [ ]
+        merchant_one.paid_invoices.should == [ ]
       end
     end
   end
 
   #WHAT IF THERE IS A TIE?
   describe "#favorite_customer" do
-    let(:customer_one){ mock(SalesEngine::Customer) }
+    let(:customer_one) { mock(SalesEngine::Customer, :id => "1") }
+    let(:inv_one)      { mock(SalesEngine::Invoice, :customer_id => "1" ) }
+    let(:inv_two)      { mock(SalesEngine::Invoice, :customer_id => "2" ) }
+    let(:inv_three)    { mock(SalesEngine::Invoice, :customer_id => "1" ) }
+    let(:invoices)     { [inv_one, inv_two, inv_three] }
 
     before(:each) do
-      inv_one.stub(:customer_id).and_return("1")
-      inv_two.stub(:customer_id).and_return("2")
-      inv_three.stub(:customer_id).and_return("1")
-      customer_one.stub(:id).and_return("1")
-
-      invoices = [ inv_one, inv_two, inv_three ]
-      merchant_one.stub(:successful_invoices).and_return(invoices)
-      merchant_two.stub(:successful_invoices).and_return([ ])
+      merchant_one.stub(:paid_invoices).and_return(invoices)
+      merchant_two.stub(:paid_invoices).and_return([ ])
       SalesEngine::Database.instance.stub(:customer_list).and_return([customer_one])
     end
 
@@ -168,29 +166,20 @@ describe SalesEngine::Merchant do
   end
 
   describe "#customers_with_pending_invoices" do
-    let(:inv_one)        { mock(SalesEngine::Invoice).tap do |o| 
-                             o.stub(:customer_id).and_return("1") 
-                           end }
-    let(:inv_two)        { mock(SalesEngine::Invoice).tap do |o| 
-                             o.stub(:customer_id).and_return("2") 
-                           end }
-    let(:inv_three)      { mock(SalesEngine::Invoice).tap do |o| 
-                             o.stub(:customer_id).and_return("1") 
-                           end }   
-    let(:invoices)       { [ inv_one, inv_two, inv_three ] }
-    let(:successful_invoices) { [ inv_one ] }
+    let(:inv_one)   { mock(SalesEngine::Invoice, :customer_id => "1", :is_successful? => true ) }
+    let(:inv_two)   { mock(SalesEngine::Invoice, :customer_id => "2", :is_successful? => false) }
+    let(:inv_three) { mock(SalesEngine::Invoice, :customer_id => "1", :is_successful? => false) }
+    let(:invoices)  { [ inv_one, inv_two, inv_three ] }
 
     before(:each) do
       merchant_one.stub(:invoices).and_return( invoices )
-      merchant_one.stub(:successful_invoices).and_return( successful_invoices )
     end
 
     it "returns all customers with pending invoices" do
-      SalesEngine::Customer.should_receive(:find_by_id).twice
-      merchant_one.customers_with_pending_invoices.should be_an Array
+      SalesEngine::Customer.should_receive(:find_by_id).with("2").and_return(:c2)
+      SalesEngine::Customer.should_receive(:find_by_id).with("1").and_return(:c1)
+      merchant_one.customers_with_pending_invoices.should == [:c2, :c1]
     end
-
-    #it...
   end
 
   describe ".clean_date" do

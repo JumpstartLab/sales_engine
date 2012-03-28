@@ -10,6 +10,8 @@ require 'sales_engine/invoice'
 module SalesEngine
   class CsvLoader
 
+    DB = SalesEngine::Database.instance
+
     def initialize
       load_transactions
       load_customers
@@ -19,47 +21,59 @@ module SalesEngine
       load_invoices
     end
 
-    def load_transactions(filename="./data/transactions.csv")
+    def self.load_transactions(filename="./data/transactions.csv")
       puts "Loading transactions..."
 
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol})
-      SalesEngine::Database.instance.transaction_list = file.collect{ |line| SalesEngine::Transaction.new(line) }
+      DB.transaction_list = file.collect do |line|
+        SalesEngine::Transaction.new(line)
+      end
     end
 
-    def load_customers(filename="./data/customers.csv")
+    def self.load_customers(filename="./data/customers.csv")
       puts "Loading customers..."
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol} )
-      SalesEngine::Database.instance.customer_list = file.collect{ |line| SalesEngine::Customer.new(line) }
+      DB.customer_list = file.collect do |line|
+        SalesEngine::Customer.new(line)
+      end
     end
 
-    def load_items(filename="./data/items.csv")
+    def self.load_items(filename="./data/items.csv")
       puts "Loading items..."
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol})
-      SalesEngine::Database.instance.item_list = file.collect{ |line| SalesEngine::Item.new(line) }
+      DB.item_list = file.collect do |line|
+        SalesEngine::Item.new(line)
+      end
     end
 
-    def load_merchants(filename="./data/merchants.csv")
+    def self.load_merchants(filename="./data/merchants.csv")
       puts "Loading merchants..."
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol})
-      SalesEngine::Database.instance.merchant_list = file.collect{ |line| SalesEngine::Merchant.new(line) }
+      DB.merchant_list = file.collect do |line|
+        SalesEngine::Merchant.new(line)
+      end
     end
 
-    def load_invoice_items(filename="./data/invoice_items.csv")
+    def self.load_invoice_items(filename="./data/invoice_items.csv")
       puts "Loading invoice items..."
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol})
-      SalesEngine::Database.instance.invoice_item_list = file.collect{ |line| SalesEngine::InvoiceItem.new(line) }
+      DB.invoice_item_list = file.collect do |line|
+        SalesEngine::InvoiceItem.new(line)
+      end
     end
 
-    def load_invoices(filename="./data/invoices.csv")
+    def self.load_invoices(filename="./data/invoices.csv")
       puts "Loading invoices..."
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol})
-      SalesEngine::Database.instance.invoice_list = file.collect{ |line| SalesEngine::Invoice.new(line) }
+      DB.invoice_list = file.collect do |line|
+        SalesEngine::Invoice.new(line)
+      end
     end
   end
 end

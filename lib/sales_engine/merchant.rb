@@ -38,7 +38,8 @@ module SalesEngine
 
     def invoices_on_range(range)
       invoices.select do |inv|
-        # DOES NOT HANDLE EDGE CASE WELL... e.g. RANGE DATE IS SAME AS UPDATED DATE
+        # DOES NOT HANDLE EDGE CASE WELL... e.g. RANGE DATE IS SAME
+        # AS UPDATED DATE
         inv.updated_at <= range.last && inv.updated_at >= range.first
       end
     end
@@ -55,26 +56,30 @@ module SalesEngine
       total_revenue
     end
 
-    def successful_invoices
-      results = invoices.select { |inv| inv if inv.is_successful? }
+    def paid_invoices
+      invoices.select { |inv| inv if inv.is_successful? }
     end
 
-    def favorite_customer
+    def paid_invoices_by_customer
       customer_data = { }
-      successful_invoices.each do |invoice|
+      paid_invoices.each do |invoice|
         customer_data[ invoice.customer_id.to_sym ] ||= 0
         customer_data[ invoice.customer_id.to_sym ] += 1
       end
-      return nil if customer_data.empty?
-      customer_data_max = customer_data.max_by{ |k, v| v }
-      SalesEngine::Customer.find_by_id(customer_data_max.first)   
+      customer_data
+    end
+
+    def favorite_customer
+      return nil if paid_invoices_by_customer.empty?
+      customer_data_max = paid_invoices_by_customer.max_by{ |k, v| v }
+      SalesEngine::Customer.find_by_id(customer_data_max.first)
     end
 
     def pending_invoices
-      invoices - successful_invoices
+      invoices - paid_invoices
     end
 
-    def customers_with_pending_invoices  
+    def customers_with_pending_invoices
       pending_invoices.collect do |inv|
         SalesEngine::Customer.find_by_id(inv.customer_id)
       end
@@ -100,10 +105,9 @@ module SalesEngine
     end
 
     def self.total_revenue_on_range(range)
-      total_revenue = BigDecimal.new("0.00")
+      total_revenue = 0
       SalesEngine::Invoice.successful_invoices.each do |i|
-        dt = i.updated_at
-        updated_at = Date.new(dt.year, dt.mon, dt.mday)
+        updated_at = Date.parse(i.updated_at.to_s)
         if range.first <= updated_at && range.last >= updated_at
             total_revenue += i.invoice_revenue
         end
@@ -119,8 +123,9 @@ module SalesEngine
     def self.merchants_by_revenue
       data = { }
       SalesEngine::Invoice.successful_invoices.each do |i|
-        data[ i.merchant_id.to_sym ] ||= 0
-        data[ i.merchant_id.to_sym ] += i.invoice_revenue
+        merchant_id = i.merchant_id.to_sym
+        data[ merchant_id ] ||= 0
+        data[ merchant_id ] += i.invoice_revenue
       end
       data
     end
@@ -128,17 +133,20 @@ module SalesEngine
     def self.most_revenue(num)
       data = merchants_by_revenue
       return nil if data.empty?
-      data = data.sort_by{ |k, v| -v }[0..(num-1)]
+      data = data.sort_by{ |merchant_id, revenue| -revenue }[0..(num-1)]
       data.collect { |merchant_id, revenue| self.find_by_id(merchant_id) }
     end
 
+    def self.paid_invoice_items
+      SalesEngine::InvoiceItem.successful_invoice_items
+    end
+
     def self.merchants_by_items_sold
-      successful_invoice_items = SalesEngine::InvoiceItem.successful_invoice_items
       item_data = { }
 
-      successful_invoice_items.each do |invoice_item|
+      paid_invoice_items.each do |invoice_item|
         item_data[ invoice_item.merchant_id.to_sym ] ||= 0
-        item_data[ invoice_item.merchant_id.to_sym ] += invoice_item.quantity 
+        item_data[ invoice_item.merchant_id.to_sym ] += invoice_item.quantity
       end
       item_data
     end
@@ -146,8 +154,8 @@ module SalesEngine
     def self.revenue_on_dates
       date_data = { }
       SalesEngine::Invoice.successful_invoices.each do |i|
-        date_data[ i.updated_at.strftime("%Y/%m/%d") ] ||= 0
-        date_data[ i.updated_at.strftime("%Y/%m/%d") ] += i.invoice_revenue.to_i
+        date_data[ i.updated_at.strftime("%Y/%m/%d") ]||= 0
+        date_data[ i.updated_at.strftime("%Y/%m/%d") ]+= i.invoice_revenue.to_i
       end
       date_data
     end
@@ -159,7 +167,7 @@ module SalesEngine
     end
 
     def self.most_items(num)
-      item_data = merchants_by_items_sold.sort_by do |merchant_id, quantity| 
+      item_data = merchants_by_items_sold.sort_by do |merchant_id, quantity|
         -quantity
       end
 
