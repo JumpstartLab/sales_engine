@@ -105,105 +105,126 @@ describe SalesEngine::Merchant do
     end
   end
 
+  test_merchants = [Fabricate(:merchant,
+                               :id => "1",
+                               :name => "Merchant Name",
+                               :created_at => "3/31",
+                               :updated_at => "3/31"),
+                    Fabricate(:merchant,
+                               :id => "2",
+                               :name => "Merchant Name",
+                               :created_at => "3/31",
+                               :updated_at => "3/31"),
+                    Fabricate(:merchant,
+                               :id => "3",
+                               :name => "Merchant Name",
+                               :created_at => "3/31",
+                               :updated_at => "3/31") ]
+
   describe ".find_by_id()" do
 
     it "returns one merchant" do
-      SalesEngine::Merchant.find_by_id("100").should be_a SalesEngine::Merchant
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      SalesEngine::Merchant.find_by_id("1").should be_a SalesEngine::Merchant
     end
 
     it "is associated with the id passed in" do
-      result = SalesEngine::Merchant.find_by_id("100")
-      result.id.should == "100"
-    end
-  end
-
-  describe ".find_by_id()" do
-    it "returns one merchant" do
-      SalesEngine::Merchant.find_by_id("100").should be_a SalesEngine::Merchant
-    end
-
-    it "is associated with the id passed in" do
-      result = SalesEngine::Merchant.find_by_id("100")
-      result.id.should == "100"
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      result = SalesEngine::Merchant.find_by_id("1")
+      result.id.should == "1"
     end
   end
 
   describe ".find_by_name()" do
     it "returns one merchant" do
-      SalesEngine::Merchant.find_by_name("Jakubowski, Buckridge and Kovacek").should be_a SalesEngine::Merchant
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      SalesEngine::Merchant.find_by_name("Merchant Name").should be_a SalesEngine::Merchant
     end
 
     it "is associated with the name passed in" do
-      result = SalesEngine::Merchant.find_by_name("Jakubowski, Buckridge and Kovacek")
-      result.name.should == "Jakubowski, Buckridge and Kovacek"
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      result = SalesEngine::Merchant.find_by_name("Merchant Name")
+      result.name.should == "Merchant Name"
     end
   end
 
   describe ".find_by_created_at()" do
     it "returns one merchant" do
-      SalesEngine::Merchant.find_by_created_at("2012-02-26 20:56:56 UTC").should be_a SalesEngine::Merchant
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      SalesEngine::Merchant.find_by_created_at("3/31").should be_a SalesEngine::Merchant
     end
 
     it "is associated with the created_at passed in" do
-      result = SalesEngine::Merchant.find_by_created_at("2012-02-26 20:56:56 UTC")
-      result.created_at.should == "2012-02-26 20:56:56 UTC"
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      result = SalesEngine::Merchant.find_by_created_at("3/31")
+      result.created_at.should == "3/31"
     end
   end
 
   describe ".find_by_updated_at()" do
     it "returns one merchant" do
-      SalesEngine::Merchant.find_by_updated_at("2012-02-26 20:56:56 UTC").should be_a SalesEngine::Merchant
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      SalesEngine::Merchant.find_by_updated_at("3/31").should be_a SalesEngine::Merchant
     end
 
     it "is associated with the updated_at passed in" do
-      result = SalesEngine::Merchant.find_by_updated_at("2012-02-26 20:56:56 UTC")
-      result.updated_at.should == "2012-02-26 20:56:56 UTC"
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      result = SalesEngine::Merchant.find_by_updated_at("3/31")
+      result.updated_at.should == "3/31"
     end
   end
 
   describe ".find_all_by_id()" do
     it "returns an array of merchants" do
-      SalesEngine::Merchant.find_all_by_id("100").all?{|i| i.is_a? SalesEngine::Merchant}.should == true
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      SalesEngine::Merchant.find_all_by_id("1").all?{|i| i.is_a? SalesEngine::Merchant}.should == true
     end
 
     it "contains merchants related to the id given" do
-      results = SalesEngine::Merchant.find_all_by_id("100")
-      results.sample.id.should == "100"
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      results = SalesEngine::Merchant.find_all_by_id("1")
+      results.sample.id.should == "1"
     end
   end
 
   describe ".find_all_by_name()" do
     it "returns an array of merchants" do
-      SalesEngine::Merchant.find_all_by_name("Jakubowski, Buckridge and Kovacek").all?{|i| i.is_a? SalesEngine::Merchant}.should == true
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      SalesEngine::Merchant.find_all_by_name("Merchant Name").all?{|i| i.is_a? SalesEngine::Merchant}.should == true
     end
 
     it "contains merchants related to the name given" do
-      results = SalesEngine::Merchant.find_all_by_name("Jakubowski, Buckridge and Kovacek")
-      results.sample.name.should == "Jakubowski, Buckridge and Kovacek"
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      results = SalesEngine::Merchant.find_all_by_name("Merchant Name")
+      results.sample.name.should == "Merchant Name"
     end
   end
 
   describe ".find_all_by_created_at()" do
     it "returns an array of merchants" do
-      SalesEngine::Merchant.find_all_by_created_at("2012-02-26 20:56:56 UTC").all?{|i| i.is_a? SalesEngine::Merchant}.should == true
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      SalesEngine::Merchant.find_all_by_created_at("3/31").all?{|i| i.is_a? SalesEngine::Merchant}.should == true
     end
 
 
     it "contains merchants related to the created_at given" do
-      results = SalesEngine::Merchant.find_all_by_created_at("2012-02-26 20:56:56 UTC")
-      results.sample.created_at.should == "2012-02-26 20:56:56 UTC"
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      results = SalesEngine::Merchant.find_all_by_created_at("3/31")
+      results.sample.created_at.should == "3/31"
     end
   end
 
   describe ".find_all_by_updated_at()" do
     it "returns an array of merchants" do
-      SalesEngine::Merchant.find_all_by_updated_at("2012-02-26 20:56:56 UTC").all?{|i| i.is_a? SalesEngine::Merchant}.should == true
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      SalesEngine::Merchant.find_all_by_updated_at("3/31").all?{|i| i.is_a? SalesEngine::Merchant}.should == true
     end
 
 
     it "contains merchants related to the updated_at given" do
-      results = SalesEngine::Merchant.find_all_by_updated_at("2012-02-26 20:56:56 UTC")
-      results.sample.updated_at.should == "2012-02-26 20:56:56 UTC"
+      SalesEngine::Database.instance.stub(:merchants).and_return(test_merchants)
+      results = SalesEngine::Merchant.find_all_by_updated_at("3/31")
+      results.sample.updated_at.should == "3/31"
     end
   end
 
