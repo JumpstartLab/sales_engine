@@ -100,5 +100,71 @@ describe SalesEngine::Invoice do
     end
   end
 
+  describe ".find_by_id()" do
+    it "returns one invoice" do
+      SalesEngine::Invoice.find_by_id("100").should be_a SalesEngine::Invoice
+    end
+
+    it "is associated with the id passed in" do
+      result = SalesEngine::Invoice.find_by_id("100")
+      result.id.should == "100"
+    end
+  end
+
+  describe ".find_by_customer_id()" do
+    it "returns one invoice" do
+      SalesEngine::Invoice.find_by_customer_id("100").should be_a SalesEngine::Invoice
+    end
+
+    it "is associated with the customer_id passed in" do
+      result = SalesEngine::Invoice.find_by_customer_id("100")
+      result.customer_id.should == "100"
+    end
+  end
+
+  describe ".find_by_merchant_id()" do
+    it "returns one merchant" do
+      SalesEngine::Invoice.find_by_merchant_id("100").should be_a SalesEngine::Invoice
+    end
+
+    it "is associated with the merchant_id passed in" do
+      result = SalesEngine::Invoice.find_by_merchant_id("100")
+      result.merchant_id.should == "100"
+    end
+  end
+
+  describe ".find_by_status()" do
+    it "returns one invoices" do
+      SalesEngine::Invoice.find_by_status("shipped").should be_a SalesEngine::Invoice
+    end
+
+    it "is associated with the status passed in" do
+      result = SalesEngine::Invoice.find_by_status("shipped")
+      result.status.should == "shipped"
+    end
+  end
+
+  describe ".find_by_created_at()" do
+    it "returns one invoices" do
+      SalesEngine::Invoice.find_by_created_at("2012-02-18 21:56:57 UTC").should be_a SalesEngine::Invoice
+    end
+
+    it "is associated with the created_at passed in" do
+      result = SalesEngine::Invoice.find_by_created_at("2012-02-18 21:56:57 UTC")
+      result.created_at.should == "2012-02-18 21:56:57 UTC"
+    end
+  end
+
+  describe ".find_by_updated_at()" do
+    it "returns one invoice" do
+      SalesEngine::Invoice.find_by_updated_at("2012-02-26 20:56:57 UTC").should be_a SalesEngine::Invoice
+    end
+
+    it "is associated with the updated_at passed in" do
+      result = SalesEngine::Invoice.find_by_updated_at("2012-02-26 20:56:57 UTC")
+      result.updated_at.should == "2012-02-26 20:56:57 UTC"
+    end
+  end
+
 end
 
