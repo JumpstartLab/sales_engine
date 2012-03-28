@@ -13,13 +13,13 @@ describe SalesEngine::Transaction do
         SalesEngine::Transaction.records.first.send(attribute).should == value
       end
     end
-    it "stores the raw CSV for each Transaction" do
-      SalesEngine::Transaction.records.first.raw_csv.should be_an Array
-    end
+    # it "stores the raw CSV for each Transaction" do
+    #   SalesEngine::Transaction.records.first.raw_csv.should be_an Array
+    # end
 
-    it "stores headers on the Transaction class" do
-      SalesEngine::Transaction.csv_headers.should be_an Array
-    end
+    # it "stores headers on the Transaction class" do
+    #   SalesEngine::Transaction.csv_headers.should be_an Array
+    # end
   end
 
   context "instance methods" do

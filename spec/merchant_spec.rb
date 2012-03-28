@@ -13,13 +13,13 @@ describe SalesEngine::Merchant do
       end
     end
 
-    it "stores the raw CSV for each merchant" do
-      SalesEngine::Merchant.records.first.raw_csv.should be_an Array
-    end
+    # it "stores the raw CSV for each merchant" do
+    #   SalesEngine::Merchant.records.first.raw_csv.should be_an Array
+    # end
 
-    it "stores headers on the Merchant class" do
-      SalesEngine::Merchant.csv_headers.should be_an Array
-    end
+    # it "stores headers on the Merchant class" do
+    #   SalesEngine::Merchant.csv_headers.should be_an Array
+    # end
   end
 
   context "instance methods" do

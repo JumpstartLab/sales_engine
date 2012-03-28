@@ -18,13 +18,13 @@ describe SalesEngine::Item do
       SalesEngine::Item.records.first.description.length.should == 214
     end
 
-    it "stores the raw CSV for each Item" do
-      SalesEngine::Item.records.first.raw_csv.should be_an Array
-    end
+    # it "stores the raw CSV for each Item" do
+    #   SalesEngine::Item.records.first.raw_csv.should be_an Array
+    # end
 
-    it "stores headers on the Item class" do
-      SalesEngine::Item.csv_headers.should be_an Array
-    end
+    # it "stores headers on the Item class" do
+    #   SalesEngine::Item.csv_headers.should be_an Array
+    # end
   end
 
   context "instance methods" do
