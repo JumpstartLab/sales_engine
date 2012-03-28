@@ -24,7 +24,7 @@ class CSVLoader
   end
 
   def load(filename)
-    CSV.open("/data/#{{filename}}", CSV_OPTIONS)
+    CSV.open("/unoriginal_data/#{{filename}}", CSV_OPTIONS)
   end
 
   def file_to_objects(file, klass)
