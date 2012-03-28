@@ -24,7 +24,7 @@ describe SalesEngine::Customer do
     se.add_to_list(customer_3)
     se.add_to_list(merchant_1)
     se.add_to_list(merchant_2)
-    se.add_to_list(merchant_3)    
+    se.add_to_list(merchant_3)
     se.add_to_list(invoice_1)
     se.add_to_list(invoice_2)
     se.add_to_list(invoice_3)
@@ -67,7 +67,7 @@ describe SalesEngine::Customer do
       end
     end
   end
-  
+
   describe ".find_by_first_name" do
     context "when customers exist in the datastore" do
       before(:each) do
@@ -139,7 +139,7 @@ describe SalesEngine::Customer do
       end
     end
   end
-  
+
   describe ".find_by_updated_at" do
       context "when customers exist in the datastore" do
       before(:each) do
@@ -163,7 +163,7 @@ describe SalesEngine::Customer do
       end
     end
   end
-  
+
   describe ".find_all_by_id" do
     context "when customers exist in the datastore" do
       it "returns the correct customer records that matches the id" do
@@ -291,7 +291,7 @@ describe SalesEngine::Customer do
 
       it "returns nothing if the customer has no invoices" do
         customer_3.invoices.should == []
-      end      
+      end
     end
   end
 

@@ -3,7 +3,7 @@ module SalesEngine
     include Singleton
     CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
     EVAL_DATA_DIR = "./data"
-    attr_accessor :merchants, :items, :invoices, :transactions, 
+    attr_accessor :merchants, :items, :invoices, :transactions,
                   :customers, :invoiceitems
 
     def initialize
@@ -66,8 +66,8 @@ module SalesEngine
       self.send(thing.class.to_s.split("::").last.downcase+"s") << thing
     end
 
-    def find_by(class_name,attribute,search_value)   
-      self.send(class_name).find { |record| 
+    def find_by(class_name,attribute,search_value)
+      self.send(class_name).find { |record|
         attribute_value = record.send(attribute)
         if attribute_value.is_a?(String)
           attribute_value.downcase == search_value.to_s.downcase
@@ -76,8 +76,8 @@ module SalesEngine
         end }
     end
 
-    def find_all_by(class_name,attribute,search_value)   
-      self.send(class_name).find_all { |record| 
+    def find_all_by(class_name,attribute,search_value)
+      self.send(class_name).find_all { |record|
         attribute_value = record.send(attribute)
         if attribute_value.is_a?(String)
           attribute_value.downcase == search_value.to_s.downcase
@@ -88,7 +88,7 @@ module SalesEngine
 
     def find_all_items_by_merchant_id(id)
       item_list = []
-      self.items.each do |item| 
+      self.items.each do |item|
         if item && item.merchant_id && item.merchant_id == id
           item_list << item
         end
@@ -98,7 +98,7 @@ module SalesEngine
 
     def find_all_invoices_by_merchant_id(id)
       invoice_list = []
-      self.invoices.each do |invoice| 
+      self.invoices.each do |invoice|
         if invoice && invoice.merchant_id && invoice.merchant_id == id
           invoice_list << invoice
         end
@@ -109,8 +109,8 @@ module SalesEngine
     def find_all_created_on(class_name, date)
       start_time = Time.parse("#{date} 00:00:00 UTC")
       end_time   = Time.parse("#{date} 23:59:59 UTC")
-      self.send(class_name).find_all { |record| 
-        Time.parse(record.created_at) >= start_time && 
+      self.send(class_name).find_all { |record|
+        Time.parse(record.created_at) >= start_time &&
           Time.parse(record.created_at) <= end_time }
     end
   end

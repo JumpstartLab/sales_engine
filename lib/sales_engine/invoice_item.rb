@@ -17,5 +17,17 @@ module SalesEngine
     def item
       Database.instance.find_by("items", "id", self.item_id)
     end
+
+    def self.random
+      SalesEngine::Database.instance.get_random_record("invoiceitems")
+    end
+
+    def self.find_by_id(id)
+      SalesEngine::Database.instance.find_by("invoiceitems", "id", id)
+    end
+
+    def total
+      quantity * unit_price
+    end
   end
 end

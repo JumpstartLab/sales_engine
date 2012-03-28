@@ -50,7 +50,7 @@ module SalesEngine
       self.invoices.each do |invoice|
         if user_date.nil?
           revenue += invoice.total_revenue
-        else 
+        else
           invoice_date = Date.parse(Time.parse(invoice.created_at).strftime('%Y/%m/%d'))
           if invoice_date == user_date
             revenue += invoice.total_revenue

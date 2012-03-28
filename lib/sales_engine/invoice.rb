@@ -25,7 +25,7 @@ module SalesEngine
     end
 
     def self.create(attributes)
-      invoice = SalesEngine::Invoice.new(:id => SalesEngine::Database.instance.invoices.count + 1, :customer_id => attributes[:customer_id].id, 
+      invoice = SalesEngine::Invoice.new(:id => SalesEngine::Database.instance.invoices.count + 1, :customer_id => attributes[:customer_id].id,
         :merchant_id => attributes[:merchant_id].id, :status => attributes[:status])
       attributes[:items].each do |item|
         invoice_item = SalesEngine::InvoiceItem.new(:id => SalesEngine::Database.instance.invoiceitems.count + 1,
@@ -38,7 +38,7 @@ module SalesEngine
     end
 
     def charge(attributes)
-      transaction = SalesEngine::Transaction.new(:id => SalesEngine::Database.instance.transactions.count + 1, 
+      transaction = SalesEngine::Transaction.new(:id => SalesEngine::Database.instance.transactions.count + 1,
         :invoice_id => self.id, :credit_card_number => attributes[:credit_card_number],
         :credit_card_expiration_date => attributes[:credit_card_expiration_date], :result => attributes[:result])
       SalesEngine::Database.instance.add_to_list(transaction)
@@ -64,7 +64,7 @@ module SalesEngine
     def items
       items = []
       invoice_items = SalesEngine::Database.instance.find_all_by("invoiceitems", "invoice_id", self.id)
-      items = invoice_items.collect { |invoice_item| 
+      items = invoice_items.collect { |invoice_item|
         SalesEngine::Database.instance.find_by("items", "id", invoice_item.item_id) }
     end
 
@@ -83,10 +83,10 @@ module SalesEngine
     def self.find_by_customer_id(customer_id)
       SalesEngine::Database.instance.find_by("invoices", "customer_id", customer_id)
     end
-    
+
     def self.find_by_merchant_id(merchant_id)
       SalesEngine::Database.instance.find_by("invoices", "merchant_id", merchant_id)
-    end  
+    end
 
     def self.find_by_status(status)
       SalesEngine::Database.instance.find_by("invoices", "status", status)
