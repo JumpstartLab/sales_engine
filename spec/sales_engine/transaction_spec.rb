@@ -51,10 +51,17 @@ describe SalesEngine::Transaction do
   end
 
   describe ".find_by_credit_card_expiration_date()" do
-    
     it "returns one transaction" do
       pending
-      SalesEngine::Transaction.find_by_credit_card_expiration_date(" ").should be_a SalesEngine::Transaction
+      # Transactions.csv currently has no ccd expiration information
+      SalesEngine::Transaction.find_by_credit_card_expiration_date("2012-02-26 20:56:56 UTC").should be_a SalesEngine::Transaction
+    end
+
+    it "is associated with the credit_card_expiration_date passed in" do
+      pending
+      # Transactions.csv currently has no data for ccd expiration.
+      result = SalesEngine::Transaction.find_by_credit_card_expiration_date("2012-02-26 20:56:56 UTC")
+      result.credit_card_expiration_date.should == "2012-02-26 20:56:56 UTC"
     end
   end
 end
