@@ -16,29 +16,29 @@ module SalesEngine
 
     def invoices(date = nil)
       if date
-        SalesEngine::Database.instance.invoices_by_merchant_for_date(id, date)
+        Database.instance.invoices_by_merchant_for_date(id, date)
       else
-        SalesEngine::Database.instance.invoices_by_merchant(id)
+        Database.instance.invoices_by_merchant(id)
       end
     end
 
     def items
-      SalesEngine::Database.instance.items.select { |item| item.merchant_id == id }
+      Database.instance.items.select { |item| item.merchant_id == id }
     end
 
     def customers
-      SalesEngine::Database.instance.customers_by_merchant(id)
+      Database.instance.customers_by_merchant(id)
     end
 
     def self.elements
-      SalesEngine::Database.instance.merchants
+      Database.instance.merchants
     end
 
     def invoice_items(date = nil)
       if date
-        SalesEngine::Database.instance.invoice_items_by_merchant_for_date(id, date)
+        Database.instance.invoice_items_by_merchant_for_date(id, date)
       else 
-        SalesEngine::Database.instance.invoice_items_by_merchant(id)
+        Database.instance.invoice_items_by_merchant(id)
       end
     end
 
@@ -51,7 +51,7 @@ module SalesEngine
     end
 
     def self.most_revenue(total_merchants)
-      merchants = SalesEngine::Database.instance.merchants
+      merchants = Database.instance.merchants
       merchants.sort_by!{ |merchant| merchant.revenue }.reverse!
       merchants[0,total_merchants]
     end
