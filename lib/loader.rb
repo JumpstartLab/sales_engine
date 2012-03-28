@@ -38,6 +38,7 @@ class Loader
 
     file = CSV.open(File.join(data_dir, FILES[:merchants]), {:headers => true, :header_converters => :symbol})
     file.each do |line|
+      #, (? ? ? ? ? )
       database.execute("insert into merchants values (?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:name], line[:created_at], line[:updated_at],
                        line[:created_at][0, 19], line[:updated_at][0, 19])
