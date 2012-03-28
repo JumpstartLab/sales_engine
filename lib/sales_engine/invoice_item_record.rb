@@ -2,23 +2,28 @@ module SalesEngine
   module InvoiceItemRecord
     attr_accessor :db
 
-    def for_merchant(merchant_id)
+    def successful_for_merchant(merchant_id)
      invoice_items = []
      query = "select * from invoice_items where invoice_id in 
-     (select id from invoices where merchant_id = #{merchant_id})"
+     (select invoices.id from invoices 
+      INNER JOIN transactions ON invoices.id = transactions.invoice_id
+      where invoices.merchant_id = #{merchant_id}
+      AND transactions.result LIKE 'success')"
      Database.instance.db.execute(query)  do |row| 
        invoice_items << create_invoice_item(row)
      end
      invoice_items
    end
 
-   def for_merchant_and_date(merchant_id, date)
+   def successful_for_merchant_and_date(merchant_id, date)
      invoice_items = []
      query = "SELECT * FROM invoice_items
      INNER JOIN invoices
      ON invoice_items.invoice_id = invoices.id
+     INNER JOIN transactions ON invoices.id = transactions.invoice_id
      WHERE invoices.merchant_id = 1
-     AND Date(invoices.created_date) = Date('#{date.to_s}')"
+     AND Date(invoices.created_date) = Date('#{date.to_s}')
+     AND transactions.result LIKE 'success'"
      Database.instance.db.execute(query)  do |row| 
        invoice_items << create_invoice_item(row)
      end

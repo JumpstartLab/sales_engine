@@ -4,33 +4,33 @@ module SalesEngine
   end
 
   describe InvoiceItemRecord do
-    describe "#invoice_items_by_merchant" do
-      context "invoice items for merchant exist" do
-        it "returns a array of invoice items" do
-          rows = InvoiceItemRecordTest.for_merchant(1)
-          rows.length.should == 215 
+    describe ".successful_for_merchant" do
+      context "successful invoice items for merchant exist" do
+        it "returns a array of successful invoice items" do
+          rows = InvoiceItemRecordTest.successful_for_merchant(1)
+          rows.length.should == 215
         end
       end
 
-      context "invoice items for merchant doesn't exists" do
+      context "successful invoice items for merchant don't exists" do
         it "returns an empty array" do
-          rows = InvoiceItemRecordTest.for_merchant(1000)
+          rows = InvoiceItemRecordTest.successful_for_merchant(1000)
           rows.length.should == 0 
         end
       end
     end
 
-    describe "#for_merchant_and_date" do
-      context "invoice items for merchant for that date exist" do
+    describe ".successful_for_merchant_and_date" do
+      context "successful invoice items for merchant for that date exist" do
         it "returns a array of invoice items" do
-          rows = InvoiceItemRecordTest.for_merchant_and_date(1, Date.parse("2012-02-19"))
+          rows = InvoiceItemRecordTest.successful_for_merchant_and_date(1, Date.parse("2012-02-19"))
           rows.length.should == 16 
         end
       end
 
-      context "invoice items for merchant for that date don't exist" do
+      context "successful invoice items for merchant for that date don't exist" do
         it "returns an empty array" do
-          rows = InvoiceItemRecordTest.for_merchant_and_date(1, Date.parse("2013-02-19"))
+          rows = InvoiceItemRecordTest.successful_for_merchant_and_date(1, Date.parse("2013-02-19"))
           rows.length.should == 0 
         end
       end

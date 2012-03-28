@@ -77,7 +77,7 @@ describe SalesEngine::Merchant do
     end
   end
 
-  describe "#invoice_items" do
+  describe "#paid_invoice_items" do
     let(:invoices) { mock(Array) }
     let(:invoice) { double("invoice", :created_at => DateTime.parse("2012-02-26 20:56:56 UTC")) }
     let(:invoice2) { double("invoice", :created_at => DateTime.parse("2012-02-28 20:56:56 UTC")) }
@@ -91,18 +91,18 @@ describe SalesEngine::Merchant do
       invoice2.stub(:invoice_items).and_return([invoice_item2])
     end
     context "when date is passed" do
-      it "returns the invoice items for that date" do
+      it "returns the paid invoice items for that date" do
         date = Date.parse "26 Feb 2012"
         merchant.stub(:invoices).with(date).and_return([invoice])
-        SalesEngine::Database.instance.stub(:invoice_items_by_merchant_for_date).and_return([invoice_item, other_invoice_item])
-        merchant.invoice_items(date).should == [invoice_item, other_invoice_item]
+        SalesEngine::InvoiceItem.stub(:successful_for_merchant_and_date).and_return([invoice_item, other_invoice_item])
+        merchant.paid_invoice_items(date).should == [invoice_item, other_invoice_item]
       end
     end
 
     context "when date is not passed" do
       it "delgates to the Database#invoice_items_by_merchant" do
-          SalesEngine::InvoiceItem.stub(:for_merchant).with(3).and_return([invoice_item])
-          merchant.invoice_items.should == [invoice_item]
+          SalesEngine::InvoiceItem.stub(:successful_for_merchant).with(3).and_return([invoice_item])
+          merchant.paid_invoice_items.should == [invoice_item]
       end
     end
   end
@@ -169,13 +169,13 @@ describe SalesEngine::Merchant do
 
     context "when there are invoice_items" do
       it "returns total revenue for merchant" do
-        merchant.stub({:invoice_items => [invoice_item, invoice_item2, other_invoice_item]})
+        merchant.stub({:paid_invoice_items => [invoice_item, invoice_item2, other_invoice_item]})
         merchant.revenue.should == 1400 
       end
     end
     context "when there are no invoice items" do
       it "returns 0" do
-        merchant.stub({:invoice_items => []})
+        merchant.stub({:paid_invoice_items => []})
         merchant.revenue.should == 0
       end
     end
@@ -228,19 +228,19 @@ describe SalesEngine::Merchant do
     let(:merchant) { merchant = Fabricate(:merchant, :id => 3) }
     let(:date) { "2012-02-26 20:56:56 UTC" }
     before(:each) do
-      merchant.stub(:invoice_items).and_return([invoice_item, invoice_item2, other_invoice_item])
+      merchant.stub(:paid_invoice_items).and_return([invoice_item, invoice_item2, other_invoice_item])
       invoice_item.stub(:created_at).and_return
     end
 
     context "invoice items exist for the provided date" do
       it "returns the total revenue for that date" do
-        merchant.stub(:invoice_items).with(date).and_return([invoice_item2, other_invoice_item])
+        merchant.stub(:paid_invoice_items).with(date).and_return([invoice_item2, other_invoice_item])
         merchant.revenue(date).should == BigDecimal.new("1300")
       end
     end
     context "no invoice items exist for the provided date" do
       it "returns zero" do
-        merchant.stub(:invoice_items).with(date).and_return([])
+        merchant.stub(:paid_invoice_items).with(date).and_return([])
         merchant.revenue(date).should == 0
       end
     end

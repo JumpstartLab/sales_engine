@@ -34,17 +34,18 @@ module SalesEngine
       Database.instance.merchants
     end
 
-    def invoice_items(date = nil)
+    def paid_invoice_items(date = nil)
       if date
-        Database.instance.invoice_items_by_merchant_for_date(id, date)
+        InvoiceItem.successful_for_merchant_and_date(id, date)
       else 
-        InvoiceItem.for_merchant(id)
+        InvoiceItem.successful_for_merchant(id)
       end
     end
 
     def revenue(date = nil)
       revenue = 0
-      invoice_items(date).each do |invoice_item|
+      puts paid_invoice_items.length
+      paid_invoice_items(date).each do |invoice_item|
         revenue += invoice_item.unit_price * invoice_item.quantity
       end
       revenue
