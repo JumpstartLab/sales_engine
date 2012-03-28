@@ -22,7 +22,7 @@ module SalesEngine
     end
 
     def self.random
-        SalesEngine::Database.instance.get_random_record("items")
+      SalesEngine::Database.instance.get_random_record("items")
     end
 
     def best_day

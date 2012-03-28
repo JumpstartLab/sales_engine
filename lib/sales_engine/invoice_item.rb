@@ -18,6 +18,10 @@ module SalesEngine
       Database.instance.find_by("items", "id", self.item_id)
     end
 
+    def total
+      quantity * unit_price
+    end
+
     def self.random
       SalesEngine::Database.instance.get_random_record("invoiceitems")
     end
@@ -26,8 +30,56 @@ module SalesEngine
       SalesEngine::Database.instance.find_by("invoiceitems", "id", id)
     end
 
-    def total
-      quantity * unit_price
+    def self.find_by_item_id(item_id)
+      SalesEngine::Database.instance.find_by("invoiceitems", "item_id", item_id)
+    end
+
+    def self.find_by_invoice_id(invoice_id)
+      SalesEngine::Database.instance.find_by("invoiceitems", "invoice_id", invoice_id)
+    end
+    
+    def self.find_by_unit_price(unit_price)
+      SalesEngine::Database.instance.find_by("invoiceitems", "unit_price", unit_price)
+    end
+
+    def self.find_by_quantity(quantity)
+      SalesEngine::Database.instance.find_by("invoiceitems", "quantity", quantity)
+    end
+
+    def self.find_by_created_at(time)
+      SalesEngine::Database.instance.find_by("invoiceitems", "created_at", time)
+    end
+
+    def self.find_by_updated_at(time)
+      SalesEngine::Database.instance.find_by("invoiceitems", "updated_at", time)
+    end
+
+    def self.find_all_by_id(id)
+      SalesEngine::Database.instance.find_all_by("invoiceitems", "id", id)
+    end
+
+    def self.find_all_by_item_id(item_id)
+      SalesEngine::Database.instance.find_all_by("invoiceitems", "item_id", item_id)
+    end
+
+    def self.find_all_by_invoice_id(invoice_id)
+      SalesEngine::Database.instance.find_all_by("invoiceitems", "invoice_id", invoice_id)
+    end
+    
+    def self.find_all_by_unit_price(unit_price)
+      SalesEngine::Database.instance.find_all_by("invoiceitems", "unit_price", unit_price)
+    end
+
+    def self.find_all_by_quantity(quantity)
+      SalesEngine::Database.instance.find_all_by("invoiceitems", "quantity", quantity)
+    end
+
+    def self.find_all_by_created_at(time)
+      SalesEngine::Database.instance.find_all_by("invoiceitems", "created_at", time)
+    end
+
+    def self.find_all_by_updated_at(time)
+      SalesEngine::Database.instance.find_all_by("invoiceitems", "updated_at", time)
     end
   end
 end

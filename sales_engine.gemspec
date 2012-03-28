@@ -17,6 +17,6 @@ Gem::Specification.new do |s|
  
   s.add_development_dependency "rspec"
  
-  s.files        = ["lib/sales_engine.rb"]
+  s.files        = Dir.glob("{bin,lib,data}/**/*")
   s.require_path = 'lib'
 end
