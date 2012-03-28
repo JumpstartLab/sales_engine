@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe SalesEngine::Merchant do
+module SalesEngine
+describe Merchant do
   describe "#invoices" do
     let(:invoice1) { double("invoice", :merchant_id => 1,
                                        :created_at => Date.parse("2012-02-26 20:56:56 UTC")) }
@@ -11,28 +12,28 @@ describe SalesEngine::Merchant do
 
     context "when date is specified" do
       it "returns the invoices for that date" do
-        SalesEngine::Database.instance.stub(:invoices_by_merchant_for_date).and_return([invoice2])
+        Database.instance.stub(:invoices_by_merchant_for_date).and_return([invoice2])
         merchant.invoices(Date.parse("2012-02-28 20:56:56 UTC")).should == [invoice2]
       end
     end
     context "when date is not specified" do
       context "when merchant has one invoice" do
         it "returns an array containing the single invoice" do
-          SalesEngine::Database.instance.stub(:invoices_by_merchant).and_return([invoice2])
+          Database.instance.stub(:invoices_by_merchant).and_return([invoice2])
           merchant.invoices.should == [invoice2]
         end
       end
 
       context "when merchant has multiple invoices" do
         it "returns all invoices" do
-          SalesEngine::Database.instance.stub(:invoices_by_merchant).and_return([invoice1, invoice3])
+          Database.instance.stub(:invoices_by_merchant).and_return([invoice1, invoice3])
           merchant.invoices.should == [invoice1, invoice3]
         end
       end
 
       context "when merchant has no invoices" do
         it "returns an empty array" do
-          SalesEngine::Database.instance.stub(:invoices_by_merchant).and_return([])
+          Database.instance.stub(:invoices_by_merchant).and_return([])
           merchant.invoices.should == []
         end
       end
@@ -41,9 +42,9 @@ describe SalesEngine::Merchant do
 
 
   describe "#items" do
-    let(:item1) { mock(SalesEngine::Item) }
-    let(:item2) { mock(SalesEngine::Item) }
-    let(:item3) { mock(SalesEngine::Item) }
+    let(:item1) { mock(Item) }
+    let(:item2) { mock(Item) }
+    let(:item3) { mock(Item) }
 
     before(:each) do
       item1.stub(:merchant_id).and_return(1)
@@ -51,7 +52,7 @@ describe SalesEngine::Merchant do
       item3.stub(:merchant_id).and_return(1)
 
       items = [item1, item2, item3]
-      SalesEngine::Database.instance.stub(:items).and_return(items)
+      Database.instance.stub(:items).and_return(items)
     end
 
 
@@ -94,14 +95,14 @@ describe SalesEngine::Merchant do
       it "returns the invoice items for that date" do
         date = Date.parse "26 Feb 2012"
         merchant.stub(:invoices).with(date).and_return([invoice])
-        SalesEngine::Database.instance.stub(:invoice_items_by_merchant_for_date).and_return([invoice_item, other_invoice_item])
+        InvoiceItem.stub(:for_merchant_and_date).and_return([invoice_item, other_invoice_item])
         merchant.invoice_items(date).should == [invoice_item, other_invoice_item]
       end
     end
 
     context "when date is not passed" do
       it "delgates to the Database#invoice_items_by_merchant" do
-          SalesEngine::InvoiceItem.stub(:for_merchant).with(3).and_return([invoice_item])
+          InvoiceItem.stub(:for_merchant).with(3).and_return([invoice_item])
           merchant.invoice_items.should == [invoice_item]
       end
     end
@@ -111,7 +112,7 @@ describe SalesEngine::Merchant do
     let(:merchant) { merchant = Fabricate(:merchant, :id => 3) }
 
     it "delgates to the Database#customers_by_merchant" do
-        SalesEngine::Database.instance.should_receive(
+        Database.instance.should_receive(
           :customers_by_merchant).with(3)
         merchant.customers
     end
@@ -153,9 +154,9 @@ describe SalesEngine::Merchant do
   end
 
   describe "#revenue" do
-    let(:invoice_item) { mock(SalesEngine::InvoiceItem)}
-    let(:invoice_item2) { mock(SalesEngine::InvoiceItem)}
-    let(:other_invoice_item) { mock(SalesEngine::InvoiceItem)}
+    let(:invoice_item) { mock(InvoiceItem)}
+    let(:invoice_item2) { mock(InvoiceItem)}
+    let(:other_invoice_item) { mock(InvoiceItem)}
     let(:merchant) { Fabricate(:merchant, :id => 3) }
 
     before(:each) do
@@ -189,26 +190,26 @@ describe SalesEngine::Merchant do
 
     context "when number of merchants is greater than X" do
       it "returns an array of merchants with the most revenue" do
-        SalesEngine::Database.instance.stub(:merchants).and_return([merchant, merchant2, merchant3, merchant4])
-        SalesEngine::Merchant.most_revenue(2).should == [merchant4, merchant3]
+        Database.instance.stub(:merchants).and_return([merchant, merchant2, merchant3, merchant4])
+        Merchant.most_revenue(2).should == [merchant4, merchant3]
       end
     end
     context "when number of merchants is less than X" do
       it "returns an array of all merchants" do
-        SalesEngine::Database.instance.stub(:merchants).and_return([merchant, merchant2])
-        SalesEngine::Merchant.most_revenue(3).should == [merchant2, merchant]
+        Database.instance.stub(:merchants).and_return([merchant, merchant2])
+        Merchant.most_revenue(3).should == [merchant2, merchant]
       end
     end
     context "when there is only one merchant" do
       it "returns an array with one merchant" do
-        SalesEngine::Database.instance.stub(:merchants).and_return([merchant])
-        SalesEngine::Merchant.most_revenue(1).should == [merchant]
+        Database.instance.stub(:merchants).and_return([merchant])
+        Merchant.most_revenue(1).should == [merchant]
       end
     end
     context "when there are no merchants" do
       it "returns an empty array" do
-        SalesEngine::Database.instance.stub(:merchants).and_return([])
-        SalesEngine::Merchant.most_revenue(3).should == []
+        Database.instance.stub(:merchants).and_return([])
+        Merchant.most_revenue(3).should == []
       end
     end 
   end
@@ -245,4 +246,5 @@ describe SalesEngine::Merchant do
       end
     end
   end
+end
 end
