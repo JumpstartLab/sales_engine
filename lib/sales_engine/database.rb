@@ -4,7 +4,9 @@ module SalesEngine
   class Database
     include Singleton
     attr_accessor :transaction_list, :customer_list, :item_list,
-                  :merchant_list, :invoice_item_list, :invoice_list
+                  :merchant_list, :invoice_item_list, :invoice_list,
+                  :transaction_id_hash, :customer_id_hash, :item_id_hash,
+                  :merchant_id_hash, :invoice_item_id_hash, :invoice_id_hash, :count
     def initialize
       self.transaction_list = []
       self.invoice_list = []

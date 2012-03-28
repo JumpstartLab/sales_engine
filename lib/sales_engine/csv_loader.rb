@@ -26,8 +26,10 @@ module SalesEngine
 
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol})
-      DB.transaction_list = file.collect do |line|
-        SalesEngine::Transaction.new(line)
+      file.each do |line|
+        x = SalesEngine::Transaction.new(line)
+        DB.transaction_list << x
+        DB.transaction_hash[ x.id ] = x
       end
     end
 
@@ -35,8 +37,10 @@ module SalesEngine
       puts "Loading customers..."
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol} )
-      DB.customer_list = file.collect do |line|
-        SalesEngine::Customer.new(line)
+      file.collect do |line|
+        x = SalesEngine::Customer.new(line)
+        DB.customer_list << x
+        DB.customer_hash[ x.id ] = x
       end
     end
 
@@ -44,8 +48,10 @@ module SalesEngine
       puts "Loading items..."
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol})
-      DB.item_list = file.collect do |line|
-        SalesEngine::Item.new(line)
+      file.collect do |line|
+        x = SalesEngine::Item.new(line)
+        DB.item_list << x
+        DB.item_hash[ x.id ] = x
       end
     end
 
@@ -53,8 +59,10 @@ module SalesEngine
       puts "Loading merchants..."
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol})
-      DB.merchant_list = file.collect do |line|
-        SalesEngine::Merchant.new(line)
+      file.collect do |line|
+        x = SalesEngine::Merchant.new(line)
+        DB.merchant_list << x
+        DB.merchant_hash[ x.id ] = x
       end
     end
 
@@ -62,8 +70,10 @@ module SalesEngine
       puts "Loading invoice items..."
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol})
-      DB.invoice_item_list = file.collect do |line|
-        SalesEngine::InvoiceItem.new(line)
+      file.collect do |line|
+        x = SalesEngine::InvoiceItem.new(line)
+        DB.invoice_item_list << x
+        DB.invoice_item_hash[ x.id ] = x
       end
     end
 
@@ -71,8 +81,10 @@ module SalesEngine
       puts "Loading invoices..."
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol})
-      DB.invoice_list = file.collect do |line|
-        SalesEngine::Invoice.new(line)
+      file.collect do |line|
+        x = SalesEngine::Invoice.new(line)
+        DB.invoice_list << x
+        DB.invoice_hash[ x.id ] = x
       end
     end
   end
