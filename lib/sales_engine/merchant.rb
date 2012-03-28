@@ -32,15 +32,17 @@ module SalesEngine
     end
 
     def invoices_on_date(date)
-      date = Time.parse(date)
-      invoices.select {|inv| inv.updated_at == date}
+      puts date.inspect
+      puts date.class
+      date = SalesEngine::Merchant.clean_date(date)
+      invoices.select {|inv| inv.created_at == date}
     end
 
     def invoices_on_range(range)
       invoices.select do |inv|
         # DOES NOT HANDLE EDGE CASE WELL... e.g. RANGE DATE IS SAME
         # AS UPDATED DATE
-        inv.updated_at <= range.last && inv.updated_at >= range.first
+        inv.created_at <= range.last && inv.created_at >= range.first
       end
     end
 
@@ -63,8 +65,8 @@ module SalesEngine
     def paid_invoices_by_customer
       customer_data = { }
       paid_invoices.each do |invoice|
-        customer_data[ invoice.customer_id.to_sym ] ||= 0
-        customer_data[ invoice.customer_id.to_sym ] += 1
+        customer_data[ invoice.customer_id.to_s.to_sym ] ||= 0
+        customer_data[ invoice.customer_id.to_s.to_sym ] += 1
       end
       customer_data
     end
@@ -96,8 +98,7 @@ module SalesEngine
     def self.total_revenue_on_date(date)
       total_revenue = BigDecimal.new("0.00")
       SalesEngine::Invoice.successful_invoices.each do |i|
-        dt = i.updated_at
-        if clean_date(date) == Time.new(dt.year, dt.mon, dt.mday)
+        if clean_date(date) == i.created_at
           total_revenue += i.invoice_revenue
         end
       end
@@ -116,7 +117,7 @@ module SalesEngine
     end
 
     def self.clean_date(date)
-      date = Time.parse(date) if date.kind_of? String
+      date = Date.parse(date) if date.kind_of? String
       date
     end
 

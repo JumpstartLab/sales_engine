@@ -13,13 +13,25 @@ module SalesEngine
      ]
 
     def initialize(attrs)
-      self.id = attrs[:id].to_i
+      if attrs[:id]
+        self.id = attrs[:id].to_i
+      else
+        self.id = (SalesEngine::Database.instance.invoice_list.size + 1).to_i
+      end
       self.invoice_id = attrs[:invoice_id]
       self.credit_card_number = attrs[:credit_card_number]
       self.credit_card_expiration_date = attrs[:credit_card_expiration_date]
       self.result = attrs[:result]
-      self.created_at = attrs[:created_at]
-      self.updated_at = attrs[:updated_at]
+      if attrs[:created_at]
+        self.created_at = Date.parse(attrs[:created_at])
+      else
+        self.created_at = Date.today
+      end
+      if attrs[:updated_at]
+        self.updated_at = Date.parse(attrs[:updated_at])
+      else
+        self.updated_at = Date.today
+      end
       store_result_in_invoice
     end
 
@@ -37,6 +49,15 @@ module SalesEngine
     end
 
     extend SalesEngine::DynamicFinder
+
+    def self.create(attrs)
+      transaction = self.new({:invoice_id => attrs[:invoice_id],
+                              :credit_card_number => attrs[:credit_card_number],
+                              :credit_card_expiration_date => attrs[:credit_card_expiration_date],
+                              :result => attrs[:result] })
+      SalesEngine::Database.instance.transaction_list << transaction
+      transaction
+    end
 
     def self.random 
       transactions = SalesEngine::Database.instance.transaction_list
