@@ -12,7 +12,7 @@ module SalesEngine
      ]
 
     def initialize(attributes)
-      self.id = attributes[:id]
+      self.id = attributes[:id].to_i
       self.first_name = attributes[:first_name]
       self.last_name = attributes[:last_name]
       self.created_at = attributes[:created_at]

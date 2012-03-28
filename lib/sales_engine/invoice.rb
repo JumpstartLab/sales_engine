@@ -19,7 +19,7 @@ module SalesEngine
       else
         self.id = (SalesEngine::Database.instance.invoice_list.size + 1).to_s
       end
-      self.customer_id = attributes[:customer_id]
+      self.customer_id = attributes[:customer_id].to_i
       self.merchant_id = attributes[:merchant_id]
       self.status = attributes[:status]
       if attributes[:created_at]

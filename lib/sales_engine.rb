@@ -1,6 +1,7 @@
 require 'bigdecimal'
 require 'date'
 require 'sales_engine/csv_loader'
+require 'time'
 
 module SalesEngine
   def self.startup
@@ -8,7 +9,7 @@ module SalesEngine
     SalesEngine::CsvLoader.load_customers
     SalesEngine::CsvLoader.load_items
     SalesEngine::CsvLoader.load_merchants
-    SalesEngine::CsvLoader.load_invoices_items
+    SalesEngine::CsvLoader.load_invoice_items
     SalesEngine::CsvLoader.load_invoices
   end
 end
