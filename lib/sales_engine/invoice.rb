@@ -2,7 +2,7 @@ module SalesEngine
   class Invoice
     extend Searchable
     attr_accessor :customer_id, :id, :merchant_id, :status, :created_at
-    attr_accessor :raw_csv
+    # attr_accessor :raw_csv
 
 
     def self.records
@@ -15,13 +15,13 @@ module SalesEngine
       end
     end
 
-    def self.csv_headers
-      @csv_headers
-    end
+    # def self.csv_headers
+    #   @csv_headers
+    # end
 
-    def self.csv_headers=(value)
-      @csv_headers=(value)
-    end
+    # def self.csv_headers=(value)
+    #   @csv_headers=(value)
+    # end
 
     def self.create(invoice_attributes)
       new_invoice = self.new( { created_at: DateTime.now.to_s } )
@@ -32,7 +32,7 @@ module SalesEngine
       invoice_attributes[:items].each do |item|
         SalesEngine::InvoiceItem.create( { item_id: item.id,
           invoice_id: new_invoice.id, created_at: DateTime.now.to_s,
-          uantity: 1, unit_price: item.unit_price.to_s } )
+          quantity: 1, unit_price: item.unit_price.to_s } )
       end
       records << new_invoice
       new_invoice
@@ -73,8 +73,8 @@ module SalesEngine
       self.merchant_id = raw_line[:merchant_id].to_i
       self.status = raw_line[:status]
       self.created_at = DateTime.parse(raw_line[:created_at])
-      self.raw_csv = raw_line.values
-      Invoice.csv_headers ||= raw_line.keys
+      # self.raw_csv = raw_line.values
+      # Invoice.csv_headers ||= raw_line.keys
       self.total_paid = 0
       self.num_items = 0
     end
@@ -112,9 +112,12 @@ module SalesEngine
     end
 
     def charge(params)
-      t = {invoice_id: id}
+      t = { invoice_id: id }
       SalesEngine::Transaction.create(t.merge(params))
       @transactions = SalesEngine::Transaction.find_all_by_invoice_id(id)
+      if params[:result] == "success"
+        invoice_items.each { |item| item.populate_stats }
+      end
     end
 
     def successful_transaction

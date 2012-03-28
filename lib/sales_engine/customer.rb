@@ -1,20 +1,21 @@
 module SalesEngine
   class Customer
     extend Searchable
-    attr_accessor :first_name, :last_name, :id, :raw_csv, :items_bought
-    attr_accessor :revenue_bought
+    attr_accessor :first_name, :last_name, :id, :items_bought, :revenue_bought
+    # attr_accessor :raw_csv
+
 
     def self.records
       @customers ||= get_customers
     end
 
-    def self.csv_headers
-      @csv_headers
-    end
+    # def self.csv_headers
+    #   @csv_headers
+    # end
 
-    def self.csv_headers=(value)
-      @csv_headers=(value)
-    end
+    # def self.csv_headers=(value)
+    #   @csv_headers=(value)
+    # end
 
     def self.get_customers
       CSVManager.load('data/customers.csv').collect do |record|
@@ -34,8 +35,8 @@ module SalesEngine
       self.first_name = raw_line[:first_name]
       self.last_name = raw_line[:last_name]
       self.id = raw_line[:id].to_i
-      self.raw_csv = raw_line.values
-      Customer.csv_headers ||= raw_line.keys
+      # self.raw_csv = raw_line.values
+      # Customer.csv_headers ||= raw_line.keys
       self.items_bought = 0
       self.revenue_bought = 0
     end

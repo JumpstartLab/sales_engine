@@ -1,19 +1,20 @@
 module SalesEngine
   class Merchant
     extend SalesEngine::Searchable
-    attr_accessor :name, :id, :total_revenue, :items_sold, :raw_csv
+    attr_accessor :name, :id, :total_revenue, :items_sold
+    # attr_accessor :raw_csv
 
     def self.records
       @merchants ||= get_merchants
     end
 
-    def self.csv_headers
-      @csv_headers
-    end
+    # def self.csv_headers
+    #   @csv_headers
+    # end
 
-    def self.csv_headers=(value)
-      @csv_headers=(value)
-    end
+    # def self.csv_headers=(value)
+    #   @csv_headers=(value)
+    # end
 
     def self.get_merchants
       CSVManager.load('data/merchants.csv').collect do |record|
@@ -29,8 +30,8 @@ module SalesEngine
       all.sort_by{ |m| - m.items_sold }.first(num_merchants)
     end
 
-    def self.revenue(date = nil)
-      all.map{ |m| m.revenue(date) }.inject(:+)
+    def self.revenue(dates = nil)
+      all.map{ |m| m.revenue(dates) }.inject(:+)
     end
 
     def self.dates_by_revenue(count = nil)
@@ -39,7 +40,7 @@ module SalesEngine
         dates[invoice.created_at.strftime("%y/%m/%d")] += invoice.total_paid
       end
       dates = dates.sort_by{ |k, v| v }.reverse
-      dates = dates.map(&:first).collect { |d| DateTime.parse(d) }
+      dates = dates.map(&:first).map { |d| DateTime.parse(d) }
       count ? dates.first(count) : dates
     end
 
@@ -48,8 +49,8 @@ module SalesEngine
       self.id = raw_line[:id].to_i
       self.total_revenue = 0
       self.items_sold = 0
-      self.raw_csv = raw_line.values
-      Merchant.csv_headers ||= raw_line.keys
+      # self.raw_csv = raw_line.values
+      # Merchant.csv_headers ||= raw_line.keys
     end
 
     def items
@@ -60,10 +61,15 @@ module SalesEngine
       @invoices ||= SalesEngine::Invoice.find_all_by_merchant_id(self.id)
     end
 
-    def revenue(date = nil)
-      if date
+    def revenue(dates = nil)
+      if dates.is_a?(Range)
         di = invoices.select do |i|
-          i.created_at.strftime("%d%m%y") == date.strftime("%d%m%y")
+          i.created_at.strftime("%d%m%y") >= dates.first.strftime("%d%m%y") && i.created_at.strftime("%d%m%y") <= dates.last.strftime("%d%m%y")
+        end
+        di.map(&:total_paid).inject(:+) || 0
+      elsif dates.is_a?(Date)
+        di = invoices.select do |i|
+          i.created_at.strftime("%d%m%y") == dates.strftime("%d%m%y")
         end
         di.map(&:total_paid).inject(:+) || 0
       else
