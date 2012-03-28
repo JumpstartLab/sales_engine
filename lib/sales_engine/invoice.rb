@@ -23,14 +23,14 @@ module SalesEngine
       self.merchant_id = attributes[:merchant_id]
       self.status = attributes[:status]
       if attributes[:created_at]
-        self.created_at = Time.parse(attributes[:created_at])
+        self.created_at = Date.parse(attributes[:created_at])
       else
-        self.created_at = Time.now
+        self.created_at = Date.now
       end
       if attributes[:updated_at]
-        self.updated_at = Time.parse(attributes[:updated_at])
+        self.updated_at = Date.parse(attributes[:updated_at])
       else
-        self.updated_at = Time.now
+        self.updated_at = Date.now
       end
     end
 

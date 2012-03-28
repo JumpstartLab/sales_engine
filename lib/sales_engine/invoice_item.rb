@@ -3,7 +3,16 @@ module SalesEngine
   class InvoiceItem
     attr_accessor :id, :item_id, :invoice_id, :quantity,
                   :unit_price, :created_at, :updated_at, :date
-
+    
+    INVOICE_ITEM_ATTS = [
+      "id",
+      "item_id",
+      "invoice_id",
+      "quantity",
+      "unit_price",
+      "created_at",
+      "updated_at"
+    ]
     def initialize(attributes)
       if attributes[:id]
         self.id = attributes[:id]
@@ -27,6 +36,12 @@ module SalesEngine
         self.updated_at = Time.now
       end
     end
+
+    def self.attributes_for_finders
+      INVOICE_ITEM_ATTS
+    end
+
+    extend SalesEngine::DynamicFinder
 
     def self.total_revenue
       #this includes only invoice items w/ successful transactions
