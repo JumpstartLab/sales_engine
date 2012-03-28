@@ -14,9 +14,7 @@ module SalesEngine
       revenue_tracker = []
       return_items = []
       SalesEngine::Database.instance.items.each { |item|
-        revenue = 0
-        item.invoice_items.each { |invoice_item| revenue += invoice_item.total }
-        revenue_tracker << { :item => item, :total_revenue => revenue } }
+        revenue_tracker << { :item => item, :total_revenue => item.total } }
       sorted_items = revenue_tracker.sort_by { |item| item[:total_revenue] }
       SalesEngine::Item.pop_items(item_count, sorted_items)
     end
@@ -38,9 +36,9 @@ module SalesEngine
       return_items
     end
 
-  def self.random
-      SalesEngine::Database.instance.get_random_record("items")
-  end
+    def self.random
+        SalesEngine::Database.instance.get_random_record("items")
+    end
 
     def best_day
       day_tracker = { }
@@ -53,7 +51,10 @@ module SalesEngine
         end
       end
       day_tracker.sort_by {|day| day.last}.last.first
+    end
 
+    def total
+      invoice_items.collect { |invoice_item| invoice_item.total }.sum
     end
 
     def invoice_items

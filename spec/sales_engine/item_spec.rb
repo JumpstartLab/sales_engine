@@ -447,4 +447,10 @@ describe SalesEngine::Item do
       item_1.best_day.should == Date.parse("2012-03-14")
     end
   end
+
+  describe "#total" do
+    it "returns the total revenue for an item" do
+      item_1.total.should == 8
+    end
+  end
 end
