@@ -45,7 +45,7 @@ describe SalesEngine::Persistence do
       attribute = :id
       persistence.index(attribute)
       indices = persistence.dump_indices
-      indices[model.class][attribute][model.id].should be model
+      indices[model.class][attribute][model.id].first.should be model
     end
   end
 

@@ -49,6 +49,10 @@ module SalesEngine
       target.extend ClassMethods
     end
 
+    def created_at_date
+      @created_at.to_date
+    end
+
     module ClassMethods
       def find(id)
         find_by_id(id)
@@ -94,7 +98,7 @@ module SalesEngine
         indices = SalesEngine::Persistence.instance.fetch_indices(self)
 
         unless indices.empty?
-          model = indices[attribute][value] if indices[attribute]
+          model = indices[attribute][value].first if indices[attribute]
         end
 
         unless model
@@ -109,8 +113,16 @@ module SalesEngine
         attribute = attribute.to_sym
         value = values[0]
 
-        models = SalesEngine::Persistence.instance.fetch(self)
-        model = models.find_all { |m| m.send(attribute) == value }
+        indices = SalesEngine::Persistence.instance.fetch_indices(self)
+
+        unless indices.empty?
+          models = indices[attribute][value] if indices[attribute]
+        end
+
+        unless models
+          models = SalesEngine::Persistence.instance.fetch(self)
+          model = models.find_all { |m| m.send(attribute) == value }
+        end
       end
     end
   end

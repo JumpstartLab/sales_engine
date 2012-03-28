@@ -34,9 +34,9 @@ module SalesEngine
     if options[:index]
       Thread.new do 
         t = Time.now
-        puts "indexing everything!"
         SalesEngine::Persistence.instance.index(:id)
-        puts "Indexing completed in #{Time.now - t} seconds!"
+        SalesEngine::Persistence.instance.insert_index(:merchant_id, SalesEngine::Invoice)
+        puts "\nIndexing completed in #{Time.now - t} seconds!"
       end
     end
   end

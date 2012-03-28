@@ -17,6 +17,7 @@ module SalesEngine
       else
         @data[name] = [model]
       end
+
       true
     end
 
@@ -59,6 +60,24 @@ module SalesEngine
       @indices[class_name][attribute] = result
     end
 
+    def index_attribute_by_class(attribute, class_name)
+      result = {}
+
+      data = @data[class_name]
+
+      data.each do |model|
+        value = model.send(attribute)
+
+        if result[value]
+          result[value].push model
+        else
+          result[value] = [model]
+        end
+      end
+
+      result
+    end
+
     def index_all
       @data.keys.each do |class_name|
         datum = @data[class_name]
@@ -83,21 +102,6 @@ module SalesEngine
 
     def import(data)
       @data = data
-    end
-
-    private
-
-    def index_attribute_by_class(attribute, class_name)
-      result = {}
-
-      data = @data[class_name]
-
-      data.each do |model|
-        value = model.send(attribute)
-        result[value] = model
-      end
-
-      result
     end
   end
 end

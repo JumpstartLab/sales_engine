@@ -3,6 +3,8 @@ require 'spec_helper'
 describe SalesEngine::Merchant do
   let(:merchant) { Fabricate(:merchant) }
 
+  before(:all) { SalesEngine.startup('data/evaluation') }
+
   it 'creates a merchant with valid attributes' do
     merchant.nil?.should be_false
   end
@@ -97,6 +99,24 @@ describe SalesEngine::Merchant do
       it "has a shipped invoice for Block" do
         invoice = merchant.invoices.find {|i| i.customer.last_name == 'Block' }
         invoice.status.should == "shipped"
+      end
+    end
+  end
+
+  context "Business Intelligence" do
+    describe ".revenue" do
+      it "returns all revenue for a given date" do
+        date = Date.parse "Tue, 20 Mar 2012"
+
+        SalesEngine::Merchant.revenue(date).to_f.should be_within(0.001).of(263902466.0)
+      end
+    end
+
+    describe ".most_revenue" do
+      it "returns the top n revenue-earners" do
+        most = SalesEngine::Merchant.most_revenue(3)
+        most.first.name.should == "Dicki-Bednar"
+        most.last.name.should  == "Okuneva, Prohaska and Rolfson"
       end
     end
   end

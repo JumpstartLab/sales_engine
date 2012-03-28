@@ -37,8 +37,8 @@ describe SalesEngine do
     end
 
     it "creates models" do
-      #SalesEngine.load_directory(directory)
-      #SalesEngine::Persistence.instance.dump_data.should_not be_empty
+      SalesEngine.load_directory(directory)
+      SalesEngine::Persistence.instance.dump_data.should_not be_empty
     end
   end
 end

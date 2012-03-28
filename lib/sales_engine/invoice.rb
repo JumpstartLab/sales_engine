@@ -25,5 +25,9 @@ module SalesEngine
     def merchant
       @merchant ||= Merchant.find(@merchant_id)
     end
+
+    def revenue
+      InvoiceItem.find_all_by_invoice_id(id).map(&:revenue).inject(:+)
+    end
   end
 end

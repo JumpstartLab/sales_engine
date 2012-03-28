@@ -16,6 +16,10 @@ module SalesEngine
       validate_attributes
     end
 
+    def revenue
+      unit_price * quantity
+    end
+
     private
 
     def validate_attributes
