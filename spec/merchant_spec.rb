@@ -170,7 +170,7 @@ describe Merchant do
     context "when there are invoice_items" do
       it "returns total revenue for merchant" do
         merchant.stub({:paid_invoice_items => [invoice_item, invoice_item2, other_invoice_item]})
-        merchant.revenue.should == 1400 
+        merchant.revenue.should == 14.00 
       end
     end
     context "when there are no invoice items" do
@@ -235,7 +235,7 @@ describe Merchant do
     context "invoice items exist for the provided date" do
       it "returns the total revenue for that date" do
         merchant.stub(:paid_invoice_items).with(date).and_return([invoice_item2, other_invoice_item])
-        merchant.revenue(date).should == BigDecimal.new("1300")
+        merchant.revenue(date).should == BigDecimal.new("13.00")
       end
     end
     context "no invoice items exist for the provided date" do
