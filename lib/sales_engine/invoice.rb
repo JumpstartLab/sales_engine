@@ -32,7 +32,7 @@ module SalesEngine
       invoice_attributes[:items].each do |item|
         SalesEngine::InvoiceItem.create( { item_id: item.id,
           invoice_id: new_invoice.id, created_at: DateTime.now.to_s,
-          quantity: 1, unit_price: item.unit_price.to_s } )
+          quantity: 1, unit_price: (item.unit_price*100).to_s } )
       end
       records << new_invoice
       new_invoice

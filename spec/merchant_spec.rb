@@ -44,7 +44,7 @@ describe SalesEngine::Merchant do
     end
     describe "#total_revenue" do
       it "returns the total revenue for the merchant" do
-        merchant.total_revenue.should == BigDecimal("512266.14")
+        merchant.total_revenue.should == BigDecimal("513387.14")
       end
     end
   end
