@@ -14,15 +14,23 @@ module SalesEngine
                   :created_at, :updated_at
 
     def initialize(attributes)
-      self.id = attributes[:id]
+      if attributes[:id]
+        self.id = attributes[:id]
+      else
+        self.id = (SalesEngine::Database.instance.invoice_list.size + 1).to_s
+      end
       self.customer_id = attributes[:customer_id]
       self.merchant_id = attributes[:merchant_id]
       self.status = attributes[:status]
       if attributes[:created_at]
         self.created_at = Time.parse(attributes[:created_at])
+      else
+        self.created_at = Time.now
       end
       if attributes[:updated_at]
         self.updated_at = Time.parse(attributes[:updated_at])
+      else
+        self.updated_at = Time.now
       end
     end
 
@@ -46,6 +54,14 @@ module SalesEngine
         revenue = SalesEngine::InvoiceItem.total_revenue_by_invoice_id(self.id)
       end
       revenue
+    end
+
+    def self.create(attributes)
+      invoice = SalesEngine::Invoice.new(:customer_id => attributes[:customer].id,
+                               :merchant_id => attributes[:merchant].id,
+                               :status => attributes[:status])
+      SalesEngine::Database.instance.invoice_list << invoice
+      invoice
     end
 
     def customer

@@ -42,6 +42,48 @@ describe SalesEngine::Invoice do
     end
   end
 
+  describe ".create" do
+    let(:database) { SalesEngine::Database.instance.invoice_list = [ ]}
+    let(:customer_one) { SalesEngine::Customer.new(:id => "1") }
+    let(:merchant_one) { SalesEngine::Merchant.new(:id => "1") }
+    let(:item_one) { SalesEngine::Item.new(:id => "1")}
+    let(:invoice) { SalesEngine::Invoice.create(:customer => customer_one, 
+                                    :merchant => merchant_one, 
+                                    :status => "shipped", 
+                                    :items => [ item_one ])}
+
+
+    it "assigns a customer id" do
+      invoice.customer_id.should == "1"
+    end
+
+    it "assigns a merchant id" do
+      invoice.merchant_id.should == "1"
+    end
+
+    it "assigns a status" do
+      invoice.status.should == "shipped"
+    end
+
+    it "assigns the created_at time" do
+      invoice.created_at.should be_a Time
+    end
+
+    it "assigns the updated_at time" do
+      invoice.updated_at.should be_a Time
+    end
+
+    it "assigns an invoice id" do
+      puts database.inspect
+      invoice.id.should == "1"
+    end
+
+    it "adds the invoice to the invoice_list" do
+      database.should include invoice
+    end
+
+  end
+
   describe "#is_successful?" do
     before(:each) do
       transaction_list

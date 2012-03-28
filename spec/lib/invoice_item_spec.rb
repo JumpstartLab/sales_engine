@@ -55,6 +55,21 @@ describe SalesEngine::InvoiceItem do
     end
   end
 
+  describe "#create" do
+    it "creates the quantity" do
+    end
+    it "assigns invoice id" do
+    end
+    it "assigns the item id" do
+    end
+    it "assigns the unit price" do
+    end
+    it "assigns the created_at time" do
+    end
+    it "assigns the updated_at time" do
+    end
+  end
+
   describe "#merchant_id" do
     it "returns the merchant_id associated with the invoice item" do
       SalesEngine::Database.instance.item_list = [ item_one, item_two ]
