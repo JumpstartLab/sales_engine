@@ -1,3 +1,4 @@
+require 'logger'
 module SalesEngine
   class Item < Record
     attr_accessor :name, :description, :unit_price, :merchant_id
@@ -11,29 +12,13 @@ module SalesEngine
     end
 
     def self.most_revenue(item_count)
-      revenue_tracker = []
-      return_items = []
-      SalesEngine::Database.instance.items.each { |item|
-        revenue_tracker << { :item => item, :total_revenue => item.total } }
-      sorted_items = revenue_tracker.sort_by { |item| item[:total_revenue] }
-      SalesEngine::Item.pop_items(item_count, sorted_items)
+      SalesEngine::Database.instance.items.sort_by { |item| 
+        item.total }.pop_multiple(item_count)
     end
 
     def self.most_items(item_count)
-      item_tracker = []
-      SalesEngine::Database.instance.items.each { |item|
-        item_tracker << { :item => item, :item_count => item.invoice_items.count } }
-      sorted_items = item_tracker.sort_by { |item| item[:item_count] }
-      SalesEngine::Item.pop_items(item_count, sorted_items)
-    end
-
-    def self.pop_items(pop_count, item_list)
-      return_items = []
-      pop_count.times do
-        element = item_list.pop
-        return_items << element[:item]
-      end
-      return_items
+      SalesEngine::Database.instance.items.sort_by { |item| 
+        item.invoice_items.count }.pop_multiple(item_count)
     end
 
     def self.random
