@@ -2,11 +2,13 @@ require 'spec_helper.rb'
 
 describe SalesEngine::InvoiceItem do
 
-  let(:inv_item_one){ SalesEngine::InvoiceItem.new( :unit_price => "10",
+  let(:inv_item_one){ SalesEngine::InvoiceItem.new( :id => "1",
+                                                    :unit_price => "10",
                                                     :quantity => "3",
                                                     :invoice_id => "1",
                                                     :item_id => "1" ) }
-  let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "1",
+  let(:inv_item_two){ SalesEngine::InvoiceItem.new( :id => "2",
+                                                    :unit_price => "1",
                                                     :quantity => "3",
                                                     :invoice_id => "2",
                                                     :item_id => "2" ) }
@@ -26,6 +28,7 @@ describe SalesEngine::InvoiceItem do
   let(:transactions )   { [ tr_one, tr_two, tr_three, tr_four ] }
   let(:transaction_list) { SalesEngine::Database.instance.transaction_list = transactions }
   let(:invoice_list) { SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two ]}
+  let(:invoice_item) { }
 
   describe "#invoice" do
     it "returns an instance of invoice associated with the instance" do
@@ -49,43 +52,53 @@ describe SalesEngine::InvoiceItem do
 
     context "when an invoice has an invalid item id" do
       it "returns nil" do
-        SalesEngine::Database.instance.item_list = [ item_two ]
+        database = SalesEngine::Database.instance.item_list = [ item_two ]
         inv_item_one.item.should be_nil
       end
     end
   end
 
   describe ".create" do
-    let(:database) { SalesEngine::Database.instance.invoice_item_list = [ ] }
     let(:invoice) { SalesEngine::Invoice.new(:id => "1") }
-    let(:item) { SalesEngine::Item.new(:id => "1" :unit_price => "9") }
-    let(:invoice_item) { SalesEngine::InvoiceItem.create(:invoice_id => "1", 
-                                                        :item_id => "1") }
-    
+    let(:item) { SalesEngine::Item.new(:id => "1", :unit_price => "9" ) }
+
+    before(:each) do
+      SalesEngine::Database.instance.invoice_item_list = [ ]
+      @invoice_item = SalesEngine::InvoiceItem.create( { :invoice_id => invoice.id, :item => item })
+    end
+
     it "assigns invoice id" do
-      invoice_item.customer_id.should == "1"
+      @invoice_item.invoice_id.should == "1"
     end
-    it "assigns the item id" do
-      invoice_item.item_id.should == "1"
-    end
-    it "assigns the unit price" do
-      invoice_item.unit_price.should == "9"
-    end
-    it "assigns a quantity" do
-      invoice_item.quantity.should == "1"
-    end
-    it "assigns the created_at time" do
-      invoice_item.created_at.should be_a Time
-    end
-    it "assigns the updated_at time" do
-      invoice_item.created_at.should be_a Time
-    end
+
     it "assigns an id" do
-      invoice_item.id.should == "1"
+      @invoice_item.id.should == "1"
     end
+
+    it "assigns the item id" do
+      @invoice_item.item_id.should == "1"
+    end
+
+    it "assigns the unit price" do
+      @invoice_item.unit_price.should == BigDecimal.new("9")
+    end
+
+    it "assigns a quantity" do
+      @invoice_item.quantity.should == 1
+    end
+
+    it "assigns the created_at time" do
+      @invoice_item.created_at.should be_a Time
+    end
+
+    it "assigns the updated_at time" do
+      @invoice_item.created_at.should be_a Time
+    end
+
     it "adds it to the invoice_item_list" do
-      database.should include invoice_item
+      SalesEngine::Database.instance.invoice_item_list.should include @invoice_item
     end
+
   end
 
   describe "#merchant_id" do
