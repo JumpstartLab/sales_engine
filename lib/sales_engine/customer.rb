@@ -81,7 +81,7 @@ module SalesEngine
         end
         if sorted_array.any?
           fav_merchant_id = sorted_array.first[0]
-          @favorite_merchant = Database.instance.merchant[fav_merchant_id.to_i][:self]
+          @favorite_merchant = Database.instance.merchant[fav_merchant_id][:self]
         end
       end
     end

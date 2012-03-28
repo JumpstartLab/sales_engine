@@ -15,7 +15,7 @@ module SalesEngine
         define_attributes(attributes)
         Database.instance.invoice[id][:self] = self
         Database.instance.customer[customer_id][:invoices] << self
-        Database.instance.merchant[merchant_i][:invoices] << self
+        Database.instance.merchant[merchant_id][:invoices] << self
         Database.instance.all_invoices[id - 1] = self
       end
 
@@ -55,6 +55,10 @@ module SalesEngine
         end
       end
 
+      def pending?
+        not successful?
+      end
+
       def items_sold(date=nil)
         if date
           invoice_items.inject(0) do |sum, invoice_item|
@@ -71,6 +75,7 @@ module SalesEngine
       end
 
       def charge(attributes = {})
+        attributes[:invoice_id] = id.to_s
         Transaction.new(attributes)
       end
 
@@ -90,11 +95,39 @@ module SalesEngine
       end
 
       def self.create(attributes = {})
-        self.new(attributes)
+        parsed_attributes = {}
+        parsed_attributes[:customer_id] = attributes[:customer].id.to_s
+        parsed_attributes[:merchant_id] = attributes[:merchant].id.to_s
+        last_invoice = Database.instance.all_invoices.max_by {|invoice| invoice.id}
+        parsed_attributes[:id] = (last_invoice.id + 1).to_s
+
+        accumulator = Hash.new {|hash,key| key = 0}
+        attributes[:items].each do |item|
+          accumulator[item] += 1
+        end
+        make_invoice_items(accumulator, parsed_attributes[:id].to_s)
+        SalesEngine::Invoice.new(parsed_attributes)
+      end
+
+      def self.make_invoice_items(accumulator, id)
+        last_i_item = Database.instance.all_invoice_items.max_by do |i_item|
+          i_item.id
+        end.id
+        last_i_item += 1
+        accumulator.each do |item,quantity|
+          SalesEngine::InvoiceItem.new({
+            :id => last_i_item.to_s,
+            :invoice_id => id,
+            :item_id => item.id.to_s, :quantity => quantity.to_s,
+            :unit_price => item.unit_price.to_s,
+            :created_at=> Date.today.to_s, :updated_at=> Date.today.to_s}
+            )
+          last_i_item += 1
+        end
       end
 
       def self.pending
-        pending = all_invoices.select {|invoice| not invoice.successful?}
+        pending = all_invoices.select {|invoice| invoice.pending?}
       end
 
       def self.average_revenue(date = nil)

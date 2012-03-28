@@ -6,6 +6,7 @@ class String
     self.gsub(/\D/,"")
   end
 end
+
 module SalesEngine
   module SearchMethods
     def self.extended(base)
@@ -21,7 +22,7 @@ module SalesEngine
             instances = Database.instance.send("all_#{method_name}s")
             result = nil
             instances.each do |instance|
-              if instance.send("#{attribute}") == query.to_s
+              if instance.send("#{attribute}") == query
                 result = instance
               end
             end
@@ -32,7 +33,7 @@ module SalesEngine
             instances = Database.instance.send("all_#{method_name}s")
             results = []
             instances.each do |instance|
-              if instance.send("#{attribute}") == query.to_s
+              if instance.send("#{attribute}") == query
                 results << instance
               end
             end
@@ -45,40 +46,17 @@ module SalesEngine
         end
       end
     end
-
-    module AccessorBuilder
-      def self.included(base)
-        base.class_eval do
-          self::ATTRIBUTES.each do |attribute|
-            attr_accessor attribute
-          end
-        end
-      end  
-
-      def define_attributes (attributes)  
-        attributes.each do |key, value|
-          if DataCleaner.instance.respond_to?("clean_#{key}")
-            value = DataCleaner.instance.send("clean_#{key}",value)
-          end
-          send("#{key}=",value)
-        end
-      end
-<<<<<<< HEAD
-=======
-
->>>>>>> 2d9ce322cc275566dbf765c462d51321ce144010
-    end
   end
 
   class DataCleaner
     include Singleton
 
     def clean_id(id)
-      id.only_digits
+      id.only_digits.to_i
     end
 
     def clean_unit_price(unit_price)
-      BigDecimal.new(unit_price)
+      BigDecimal(unit_price.to_s)/100
     end
 
     def clean_name(name)
@@ -101,53 +79,74 @@ module SalesEngine
       clean_id(id)
     end
 
+    def clean_invoice_id(id)
+      clean_id(id)
+    end
+
+    def clean_invoice_item_id(id)
+      clean_id(id)
+    end
+
+    def clean_transaction_id(id)
+      clean_id(id)
+    end
+
+    def clean_customer_id(id)
+      clean_id(id)
+    end
+
     def clean_quantity(quantity)
       quantity.to_i
     end
+  end
 
-    def clean_unit_price(price)
-      BigDecimal.new(price)
-    end
+  module AccessorBuilder
+      def self.included(base)
+        base.class_eval do
+          self::ATTRIBUTES.each do |attribute|
+            attr_accessor attribute
+          end
+        end
+      end  
 
+      def define_attributes (attributes)  
+        attributes.each do |key, value|
+          if DataCleaner.instance.respond_to?("clean_#{key.to_s}")
+            value = DataCleaner.instance.send("clean_#{key.to_s}",value)
+          end
+          send("#{key}=",value)
+        end
+      end
   end
 
   class Database 
     ATTRIBUTES = [:transaction, :customer, :item, :invoice_item,
       :merchant, :invoice, :all_transactions, :all_customers, :all_items,
       :all_invoice_items, :all_merchants, :all_invoices]
-      HASHES = [:transaction, :customer, :item, :invoice_item,
+    HASHES = [:transaction, :customer, :item, :invoice_item,
         :merchant, :invoice,]
-        ARRAYS = [:all_transactions, :all_customers, :all_items,
+    ARRAYS = [:all_transactions, :all_customers, :all_items,
           :all_invoice_items, :all_merchants, :all_invoices]
-          include Singleton
-          include AccessorBuilder
+    include Singleton
+    include AccessorBuilder
 
-          class_eval do 
-            def initialize
-              HASHES.each do |hash|
-                hash_init = Hash.new do |hash,key|
-                  hash[key] = Hash.new do |hash, key|
-                    if key.to_s.end_with?("s")
-                      hash[key] = []
-                    end
-                  end 
-                end
-                send("#{hash}=", hash_init)
+    class_eval do 
+      def initialize
+        HASHES.each do |hash|
+          hash_init = Hash.new do |hash,key|
+            hash[key] = Hash.new do |hash, key|
+              if key.to_s.end_with?("s")
+                hash[key] = []
               end
-<<<<<<< HEAD
             end 
           end
           send("#{hash}=", hash_init)
         end
         ARRAYS.each do |array|
-          send("#{array}=", [])
-=======
-
-              ARRAYS.each do |array|
-                send("#{array}=", [])
-              end
-            end
-          end
->>>>>>> 2d9ce322cc275566dbf765c462d51321ce144010
+         send("#{array}=", [])
         end
       end
+    end
+  end
+
+end

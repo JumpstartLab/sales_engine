@@ -32,18 +32,49 @@ module SalesEngine
       @items_sold ||= calc_items_sold
     end
 
-    def revenue(date=nil, end_date=date)
-      if date
-        @revenue ||= calc_revenue_by_date(date, end_date)
+    def revenue(date=nil)
+      if date.is_a?(Date)
+        calc_revenue_by_date(date)
+      elsif date.is_a?(Range)
+        calc_revenue_by_range_of_dates(date)
       else
-        @revenue ||= calc_revenue
+        calc_revenue
       end
     end
 
     def pending_invoices
       self.invoices.select do |invoice|
-        not invoice.successful?
+        invoice.pending?
       end
+    end
+
+    def calc_revenue
+      invoices.inject(0) do |sum, invoice|
+        if invoice.successful?
+          sum += invoice.revenue
+        end
+        sum
+      end
+    end
+
+    def calc_revenue_by_date (date)
+      revenue = invoices.inject(0) do |sum, invoice|
+        if invoice.successful? && invoice.created_at == date
+          sum += invoice.revenue
+        end
+        sum
+      end
+      revenue
+    end
+
+    def calc_revenue_by_range_of_dates (range)
+      revenue = invoices.inject(0) do |sum, invoice|
+        if invoice.successful? && invoice.created_at >= range.first && invoice.created_at <= range.last
+          sum += invoice.revenue
+        end
+        sum
+      end
+      revenue
     end
 
     def customers_with_pending_invoices
@@ -52,27 +83,12 @@ module SalesEngine
       end
     end
 
-    def calc_revenue
-      invoices.inject(0) do |sum, invoice|
-        sum += invoice.revenue
-      end
-    end
-
-    def calc_revenue_by_date (date=nil, end_date=date)
-      revenue = invoices.inject(0) do |sum, invoice|
-        if invoice.created_at >= date && invoice.created_at <= end_date
-          sum += invoice.revenue
-        end
-        sum
-      end
-      revenue
-    end
-
     def calc_items_sold
       items_sold = 0
       items.inject(0) do |quantity, item|
         quantity += item.invoice_items.inject(0) do |q, i|
-          q += i.quantity
+          q += i.quantity if i.invoice.successful?
+          q
         end
       end
     end
@@ -94,10 +110,16 @@ module SalesEngine
       top_customer
     end
 
-    def self.revenue(date, end_date=date)
+    def self.revenue(date=nil)
       total_revenue = 0
-      Database.instance.all_merchants.each do |merchant|
-        total_revenue += merchant.revenue(date,end_date)
+      if date
+        Database.instance.all_merchants.each do |merchant|
+          total_revenue += merchant.revenue(date)
+        end
+      else
+        Database.instance.all_merchants.each do |merchant|
+          total_revenue += merchant.revenue
+        end
       end
       total_revenue
     end

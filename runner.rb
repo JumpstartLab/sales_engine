@@ -1,31 +1,22 @@
-
+require 'date'
 require 'awesome_print'
 require './lib/sales_engine'
 
 SalesEngine.startup
 
-# most = SalesEngine::Item.most_items(42)
 
+
+date = Date.parse "Tue, 20 Mar 2012"
+revenue = SalesEngine::Merchant.revenue(date)
+ap revenue
+
+
+
+# most = SalesEngine::Item.most_items(42)
 # ap most[0].items_sold
 # ap most[-1].items_sold
-
-test = SalesEngine::Customer.find_by_id("999")
-ap test.first_name
-ap test.last_name
-
-ap test.invoices
-
-
-# test = SalesEngine::Customer.find_by_last_name("Ullrich")
-# ap test.first_name
-# -- shouldn't have to match unique name
-# ("Annabell" and "Ramon" should both be valid for last_name Ullrich)
-# ap test.id
-
 # test2 = SalesEngine::Item.find_by_id("1704")
-
 # ap test2.items_sold
-
 
 
 ##############################################################################

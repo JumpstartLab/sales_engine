@@ -39,14 +39,20 @@ module SalesEngine
 
       def calc_items_sold
         self.invoice_items.inject(0) do |sum, invoice_item|
-          sum+=invoice_item.quantity
+          if invoice_item.invoice.successful?
+            sum+=invoice_item.quantity
+          end
+          sum
         end
       end
 
       def calc_revenue
         revenue = 0
         revenue = self.invoice_items.inject(0) do |sum, invoice_item|
-          sum + invoice_item.revenue
+          if invoice_item.invoice.successful?
+            sum += invoice_item.revenue
+          end
+          sum
         end
         revenue
       end
@@ -56,7 +62,7 @@ module SalesEngine
         top_day = nil
         self.invoice_items.each do |invoice_item|
           if invoice_item.invoice.successful?
-            date_counts[invoice_item.created_at] += 1
+            date_counts[invoice_item.invoice.created_at] += invoice_item.quantity
           end
         end
         top_day = date_counts.max_by{|k, v| v}

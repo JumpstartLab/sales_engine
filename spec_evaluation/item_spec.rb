@@ -16,8 +16,8 @@ describe SalesEngine::Item do
 
     describe ".find_by_unit_price" do
       it "can find one record" do
-        item =SalesEngine::Item.find_by_unit_price 93519
-        item.name.should == "Item Alias Nihil"
+        test = SalesEngine::Item.find_by_unit_price(93519)
+        test.name.should == "Item Alias Nihil"
       end
     end
 

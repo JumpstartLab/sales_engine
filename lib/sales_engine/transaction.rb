@@ -11,7 +11,7 @@ module SalesEngine
       define_attributes(attributes)
       Database.instance.transaction[id][:self] = self
       Database.instance.invoice[invoice_id][:transactions] << self
-      Database.instance.all_transactions[id - 1] = self
+      Database.instance.all_transactions[id.to_i - 1] = self
     end
 
     def invoice
