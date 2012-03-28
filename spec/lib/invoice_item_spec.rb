@@ -3,12 +3,12 @@ require 'spec_helper.rb'
 describe SalesEngine::InvoiceItem do
 
   let(:inv_item_one){ SalesEngine::InvoiceItem.new( :id => "1",
-                                                    :unit_price => "10",
+                                                    :unit_price => "1000",
                                                     :quantity => "3",
                                                     :invoice_id => "1",
                                                     :item_id => "1" ) }
   let(:inv_item_two){ SalesEngine::InvoiceItem.new( :id => "2",
-                                                    :unit_price => "1",
+                                                    :unit_price => "100",
                                                     :quantity => "3",
                                                     :invoice_id => "2",
                                                     :item_id => "2" ) }
@@ -60,7 +60,7 @@ describe SalesEngine::InvoiceItem do
 
   describe ".create" do
     let(:invoice) { SalesEngine::Invoice.new(:id => "1") }
-    let(:item) { SalesEngine::Item.new(:id => "1", :unit_price => "9" ) }
+    let(:item) { SalesEngine::Item.new(:id => "1", :unit_price => "900" ) }
 
     before(:each) do
       SalesEngine::Database.instance.invoice_item_list = [ ]

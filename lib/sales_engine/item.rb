@@ -18,7 +18,9 @@ module SalesEngine
       self.id = attributes[:id]
       self.name = attributes[:name]
       self.description = attributes[:description]
-      self.unit_price = BigDecimal.new(attributes[:unit_price])/100
+      if attributes[:unit_price]
+        self.unit_price = BigDecimal.new(attributes[:unit_price])/100 
+      end
       self.merchant_id = attributes[:merchant_id]
       self.created_at = attributes[:created_at]
       self.updated_at = attributes[:updated_at]

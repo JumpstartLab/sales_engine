@@ -16,13 +16,13 @@ describe SalesEngine::Invoice do
   let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "4", :result => "failure") }
   let(:transaction_list) { SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ] }
 
-  let(:inv_item_one){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3",
+  let(:inv_item_one){ SalesEngine::InvoiceItem.new( :unit_price => "1000", :quantity => "3",
                                                     :invoice_id => "1",  :item_id => "1" ) }
-  let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3",
+  let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "100", :quantity => "3",
                                                     :invoice_id => "2", :item_id => "2" ) } 
-  let(:inv_item_three){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3",
+  let(:inv_item_three){ SalesEngine::InvoiceItem.new( :unit_price => "1000", :quantity => "3",
                                                       :invoice_id => "1", :item_id => "2") }
-  let(:inv_item_four) { SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3",
+  let(:inv_item_four) { SalesEngine::InvoiceItem.new( :unit_price => "100", :quantity => "3",
                                                      :invoice_id => "1", :item_id => "2")}
   let(:invoice_item_list) {SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two, inv_item_three, inv_item_four]}
 
@@ -68,7 +68,7 @@ describe SalesEngine::Invoice do
                                     :items => [ item_one ] } ) }
 
     it "assigns a customer id" do
-      invoice.customer_id.should == "1"
+      invoice.customer_id.should == 1
     end
 
     it "assigns a merchant id" do
@@ -80,11 +80,11 @@ describe SalesEngine::Invoice do
     end
 
     it "assigns the created_at time" do
-      invoice.created_at.should be_a Time
+      invoice.created_at.should be_a Date
     end
 
     it "assigns the updated_at time" do
-      invoice.updated_at.should be_a Time
+      invoice.updated_at.should be_a Date
     end
 
     it "assigns an invoice id" do
