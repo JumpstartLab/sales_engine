@@ -44,7 +44,7 @@ describe SalesEngine::Merchant do
     end
     describe "#total_revenue" do
       it "returns the total revenue for the merchant" do
-        merchant.total_revenue.should == BigDecimal("512254.82")
+        merchant.total_revenue.should == BigDecimal("512266.14")
       end
     end
   end
@@ -55,9 +55,9 @@ describe SalesEngine::Merchant do
         SalesEngine::Merchant.most_revenue(1).first.should be_a(SalesEngine::Merchant)
       end
       it "returns merchants sorted by descending revenue" do
-        merch_a = SalesEngine::Merchant.find_by_id(54)
-        merch_b = SalesEngine::Merchant.find_by_id(7)
-        merch_c = SalesEngine::Merchant.find_by_id(58)
+        merch_a = SalesEngine::Merchant.find_by_id(89)
+        merch_b = SalesEngine::Merchant.find_by_id(74)
+        merch_c = SalesEngine::Merchant.find_by_id(10)
         SalesEngine::Merchant.most_revenue(3).should == [ merch_a, merch_b, merch_c ]
       end
     end
@@ -66,9 +66,9 @@ describe SalesEngine::Merchant do
         SalesEngine::Merchant.most_items(1).first.should be_a(SalesEngine::Merchant)
       end
       it "returns merchants sorted by descending items sold" do
-        merch_a = SalesEngine::Merchant.find_by_id(85)
-        merch_b = SalesEngine::Merchant.find_by_id(22)
-        merch_c = SalesEngine::Merchant.find_by_id(58)
+        merch_a = SalesEngine::Merchant.find_by_id(89)
+        merch_b = SalesEngine::Merchant.find_by_id(43)
+        merch_c = SalesEngine::Merchant.find_by_id(88)
         SalesEngine::Merchant.most_items(3).should == [ merch_a, merch_b, merch_c ]
       end
     end
@@ -125,8 +125,8 @@ describe SalesEngine::Merchant do
         dates = SalesEngine::Merchant.dates_by_revenue(5)
 
         dates.size.should == 5
-        dates[1].should == DateTime.parse("2012-03-08")
-        dates.last.should == DateTime.parse("2012-03-15")
+        dates[1].should == DateTime.parse("2012-02-17")
+        dates.last.should == DateTime.parse("2012-02-11")
       end
     end
 
@@ -136,7 +136,7 @@ describe SalesEngine::Merchant do
         date_2 = DateTime.parse("2012-03-16")
         revenue = SalesEngine::Merchant.revenue(date_1..date_2)
 
-        revenue.should == BigDecimal("8226179.74")
+        revenue.should == BigDecimal("6378509.83")
       end
     end
 
@@ -147,7 +147,7 @@ describe SalesEngine::Merchant do
         merchant = SalesEngine::Merchant.find_by_id(7)
         revenue = merchant.revenue(date_1..date_2)
 
-        revenue.should == BigDecimal("57103.77")
+        revenue.should == BigDecimal("68640.47")
       end
     end
   end

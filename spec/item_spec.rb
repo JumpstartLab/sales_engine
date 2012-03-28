@@ -54,9 +54,9 @@ describe SalesEngine::Item do
         SalesEngine::Item.most_revenue(1).first.should be_a(SalesEngine::Item)
       end
       it "returns items sorted by descending revenue" do
-        item_a = SalesEngine::Item.find_by_id(2382)
-        item_b = SalesEngine::Item.find_by_id(1824)
-        item_c = SalesEngine::Item.find_by_id(401)
+        item_a = SalesEngine::Item.find_by_id(230)
+        item_b = SalesEngine::Item.find_by_id(1704)
+        item_c = SalesEngine::Item.find_by_id(733)
         SalesEngine::Item.most_revenue(3).should == [ item_a, item_b, item_c ]
       end
     end
@@ -65,15 +65,15 @@ describe SalesEngine::Item do
         SalesEngine::Item.most_items(1).first.should be_a(SalesEngine::Item)
       end
       it "returns items sorted by descending amount sold" do
-        item_a = SalesEngine::Item.find_by_id(2225)
-        item_b = SalesEngine::Item.find_by_id(2177)
-        item_c = SalesEngine::Item.find_by_id(1337)
+        item_a = SalesEngine::Item.find_by_id(230)
+        item_b = SalesEngine::Item.find_by_id(463)
+        item_c = SalesEngine::Item.find_by_id(1704)
         SalesEngine::Item.most_items(3).should == [ item_a, item_b, item_c ]
       end
     end
     describe "#best_day" do
       it "returns the date with the most sales for this item" do
-        SalesEngine::Item.find_by_id(1).best_day.should == "080212"
+        SalesEngine::Item.find_by_id(1).best_day.strftime("%y%m%d").should == "120208"
       end
     end
 
