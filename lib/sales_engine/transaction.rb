@@ -4,7 +4,10 @@ module SalesEngine
   class Transaction
     include Model
 
-    attr_reader :invoice_id, :credit_card_number, :credit_card_expiration, :result
+    attr_reader :invoice_id,
+                :credit_card_number,
+                :credit_card_expiration,
+                :result
 
     def initialize(attributes)
       super(attributes)

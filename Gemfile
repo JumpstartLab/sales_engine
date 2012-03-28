@@ -12,4 +12,6 @@ group :development do
   gem 'guard-rspec'
   gem 'ruby_gntp'
   gem 'ruby-debug19'
+  gem 'cane'
+  gem 'reek'
 end

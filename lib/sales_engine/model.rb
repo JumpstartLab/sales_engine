@@ -6,7 +6,7 @@ module SalesEngine
 
     attr_reader :id, :created_at, :updated_at, :attributes
     attr_accessor :models
-    
+
     def initialize(attributes)
       super(attributes)
 
