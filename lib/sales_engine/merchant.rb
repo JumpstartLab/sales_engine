@@ -63,21 +63,31 @@ module SalesEngine
 
     def revenue(dates = nil)
       if dates.is_a?(Range)
-        di = invoices.select do |i|
-          i.created_at.strftime("%d%m%y") >= dates.first.strftime("%d%m%y") && i.created_at.strftime("%d%m%y") <= dates.last.strftime("%d%m%y")
-        end
-        di.map(&:total_paid).inject(:+) || 0
+        revenue_for_dates(dates)
       elsif dates.is_a?(Date)
-        di = invoices.select do |i|
-          i.created_at.strftime("%d%m%y") == dates.strftime("%d%m%y")
-        end
-        di.map(&:total_paid).inject(:+) || 0
+        revenue_for_date(dates)
       else
         @total_revenue || 0
       end
     end
 
-    ## REFACTOR THIS TO ONLY REACH OUT TO CUSTOMER ONCE
+    def revenue_for_dates(date_range)
+      di = invoices.select do |i|
+        first = date_range.first.strftime("%d%m%y")
+        last = date_range.last.strftime("%d%m%y")
+        compare = i.created_at.strftime("%d%m%y")
+        compare >= first && compare <= last
+      end
+      di.map(&:total_paid).inject(:+) || 0
+    end
+
+    def revenue_for_date(date)
+      di = invoices.select do |i|
+        i.created_at.strftime("%d%m%y") == date.strftime("%d%m%y")
+      end
+      di.map(&:total_paid).inject(:+) || 0
+    end
+
     def favorite_customer
       inv = invoices.group_by { |i| i.customer_id }
       fc_id = inv.sort_by{ |i| i.last.size }.last.first
