@@ -1,5 +1,5 @@
 module SalesEngine
-  module InvoiceItemFinder
+  module InvoiceItemRecord
     attr_accessor :db
 
     def for_merchant(merchant_id)

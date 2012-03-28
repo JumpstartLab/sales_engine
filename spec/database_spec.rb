@@ -1,14 +1,6 @@
 require 'spec_helper'
 
 describe SalesEngine::Database do
-#  let(:sqlite_db) { SQLite3::Database.new('data/integration_test.sqlite')}
-  #  let(:sqlite_db) { SQLite3::Database.new(':memory:')}
-
-  # before(:all) do
-  #   Loader.new(sqlite_db).load
-  #   SalesEngine::Database.instance.db = sqlite_db
-  # end
-
   describe "#merchants" do
     it "returns all merchants" do
       SalesEngine::Database.instance.merchants.length.should == 100
@@ -38,12 +30,6 @@ describe SalesEngine::Database do
       SalesEngine::Database.instance.transactions.length.should == 4985
     end
   end
-
-  # describe "#invoice_items" do
-  #   it "returns all invoice items" do
-  #     SalesEngine::Database.instance.invoice_items.length.should == 22264
-  #   end
-  # end
 
   describe "#invoices_by_merchant" do
     context "invoices for merchant exist" do
