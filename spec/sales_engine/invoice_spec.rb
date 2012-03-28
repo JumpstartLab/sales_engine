@@ -451,7 +451,7 @@ describe SalesEngine::Invoice do
 
   describe ".create" do
     it "create new invoices" do
-      invoice = SalesEngine::Invoice.create(:customer_id => customer_2, :merchant_id => merchant_3, 
+      invoice = SalesEngine::Invoice.create(:customer => customer_2, :merchant => merchant_3, 
         :status => "shipped", :items => [item_1, item_2, item_3], :transaction => transaction_4)
       invoice.customer.should == customer_2
       invoice.merchant.should == merchant_3
