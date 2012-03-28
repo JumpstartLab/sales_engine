@@ -1,12 +1,6 @@
 require 'spec_helper'
 
 describe SalesEngine::Database do
-  describe "#invoices" do
-    it "returns all invoices" do
-      SalesEngine::Database.instance.invoices.length.should == 4985
-    end
-  end
-
   describe "#customers" do
     it "returns all customers" do
       SalesEngine::Database.instance.customers.length.should == 1000
@@ -16,38 +10,6 @@ describe SalesEngine::Database do
   describe "#transactions" do
     it "returns all transactions" do
       SalesEngine::Database.instance.transactions.length.should == 4985
-    end
-  end
-
-  describe "#invoices_by_merchant" do
-    context "invoices for merchant exist" do
-      it "returns a array of invoices" do
-        rows = SalesEngine::Database.instance.invoices_by_merchant(1)
-        rows.length.should == 51 
-      end
-    end
-
-    context "invoices for merchant doesn't exists" do
-      it "returns an empty array" do
-        rows = SalesEngine::Database.instance.invoices_by_merchant(1000)
-        rows.length.should == 0 
-      end
-    end
-  end
-
-  describe "#invoices_by_merchant_for_date" do
-    context "invoices for merchant for that date exist" do
-      it "returns a array of invoices" do
-        rows = SalesEngine::Database.instance.invoices_by_merchant_for_date(1, Date.parse("2012-02-19"))
-        rows.length.should == 4
-      end
-    end
-
-    context "invoices for merchant for that date don't exist" do
-      it "returns an empty array" do
-        rows = SalesEngine::Database.instance.invoices_by_merchant_for_date(1, Date.parse("2013-02-19"))
-        rows.length.should == 0
-      end
     end
   end
 
@@ -94,35 +56,6 @@ describe SalesEngine::Database do
       it "returns customer 959 with 2 transactions" do
         rows[959].should == 2
       end
-    end
-  end
-
-  describe "#insert_invoice" do
-    let (:invoice_hash) { { :customer_id => 1, :merchant_id => 2, 
-                  :status => "shipped" } } 
-    
-    before(:all) do
-      @old_invoices = SalesEngine::Database.instance.invoices
-      @id = SalesEngine::Database.instance.insert_invoice(invoice_hash)
-      @new_invoices = SalesEngine::Database.instance.invoices
-    end
-
-    it "database execute insert query" do
-      clean_date = SalesEngine::Database.get_dates[1]
-      sql = "insert into invoices values (?, ?, ?, ?, ?, ?, ?, ?)"
-      SalesEngine::Database.instance.db.should_receive(:execute).with(sql, nil,
-                               invoice_hash[:customer_id], invoice_hash[:merchant_id],
-                               invoice_hash[:status], DateTime.now.to_s,
-                               DateTime.now.to_s, clean_date, clean_date)
-      SalesEngine::Database.instance.insert_invoice(invoice_hash)
-    end
-
-    it "adds a new invoice to the database" do
-      @new_invoices.length.should == @old_invoices.length + 1
-    end
-
-    it "increments invoice id" do
-      @id.should == 4986
     end
   end
 

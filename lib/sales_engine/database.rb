@@ -5,21 +5,6 @@
      include Singleton
      attr_accessor :db
 
-     def invoices
-       invoices = []
-       db.execute("select * from invoices") do |row|
-         id = row[0]
-         customer_id = row[1]
-         merchant_id = row[2]
-         status = row[3]
-         created_at = row[4]
-         updated_at = row[5]
-         invoices << Invoice.new(id, customer_id, merchant_id, status, 
-                                  created_at, updated_at)
-       end
-       invoices
-     end
-
      def customers 
        customers = []
        db.execute("select * from customers") do |row|
@@ -40,27 +25,6 @@
          transactions << create_transaction(row)
        end
        transactions 
-     end
-
-      def invoices_by_merchant(merchant_id)
-       invoices = []
-       query = "select * from invoices
-                where merchant_id = #{merchant_id}"
-       db.execute(query)  do |row| 
-         invoices << create_invoice(row)
-       end
-      invoices
-     end
-
-     def invoices_by_merchant_for_date(merchant_id, date)
-       invoices = []
-       query = "SELECT * FROM invoices
-       WHERE merchant_id = 1
-       AND Date(invoices.created_date) = Date('#{date.to_s}')"
-       db.execute(query)  do |row| 
-        invoices << create_invoice(row)
-       end
-       invoices
      end
 
      def customers_by_merchant(merchant_id)
@@ -102,15 +66,6 @@
       customers
      end
 
-     def insert_invoice(hash)
-      raw_date, clean_date = Database.get_dates
-      db.execute("insert into invoices values (?, ?, ?, ?, ?, ?, ?, ?)",
-                  nil, hash[:customer_id].to_i, hash[:merchant_id].to_i,
-                  hash[:status], raw_date.to_s, raw_date.to_s,
-                  clean_date, clean_date)
-      return db.last_insert_row_id
-     end
-
      def insert_transaction(hash)
       raw_date, clean_date = Database.get_dates
       db.execute("insert into transactions values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -130,17 +85,6 @@
      private_class_method :new
 
      private
-
-     def create_invoice(row)
-       id = row[0]
-       customer_id = row[1]
-       merchant_id = row[2]
-       status = row[3]
-       created_at = row[5]
-       updated_at = row[6]
-       Invoice.new(id, customer_id, merchant_id, status, 
-                       created_at, updated_at)
-     end
 
      def create_customer(row)
       id = row[0]
