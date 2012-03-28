@@ -3,10 +3,15 @@ require 'sqlite3'
 
 
 class Loader 
-  attr_accessor :database 
+  FILES = {:merchants => "merchants.csv", :items => "items.csv",
+           :customers => "customers.csv", :invoices => "invoices.csv",
+           :invoice_items => "invoice_items.csv", 
+           :transactions => "transactions.csv" }
+  attr_accessor :database, :data_dir
 
-  def initialize(database)
+  def initialize(database, data_dir = "data")
     self.database = database
+    self.data_dir = data_dir
   end 
 
   def load
@@ -31,7 +36,7 @@ class Loader
       updated_date text);
     }
 
-    file = CSV.open("data/merchants.csv", {:headers => true, :header_converters => :symbol})
+    file = CSV.open(File.join(data_dir, FILES[:merchants]), {:headers => true, :header_converters => :symbol})
     file.each do |line|
       database.execute("insert into merchants values (?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:name], line[:created_at], line[:updated_at],
@@ -54,7 +59,7 @@ class Loader
       foreign key(merchant_id) references merchant(id));
     }
 
-    file = CSV.open("data/items.csv", {:headers => true, :header_converters => :symbol})
+    file = CSV.open(File.join(data_dir, FILES[:items]), {:headers => true, :header_converters => :symbol})
     file.each do |line|
       database.execute("insert into items values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:name], line[:description], 
@@ -76,7 +81,7 @@ class Loader
       updated_date text)
     }
 
-    file = CSV.open("data/customers.csv", {:headers => true, :header_converters => :symbol})
+    file = CSV.open(File.join(data_dir, FILES[:customers]), {:headers => true, :header_converters => :symbol})
     file.each do |line|
       database.execute("insert into customers values (?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:first_name], line[:last_name], 
@@ -126,7 +131,7 @@ class Loader
       foreign key(invoice_id) references invoices(id));
     }
 
-    file = CSV.open("data/invoice_items.csv", {:headers => true, :header_converters => :symbol})
+    file = CSV.open(File.join(data_dir, FILES[:invoice_items]), {:headers => true, :header_converters => :symbol})
     file.each do |line|
       database.execute("insert into invoice_items values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:item_id].to_i, line[:invoice_id].to_i, 
@@ -152,7 +157,7 @@ class Loader
       foreign key(invoice_id) references invoices(id));
     }
 
-    file = CSV.open("data/transactions.csv", {:headers => true, :header_converters => :symbol})
+    file = CSV.open(File.join(data_dir, FILES[:transactions]), {:headers => true, :header_converters => :symbol})
     file.each do |line|
       database.execute("insert into transactions values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:invoice_id].to_i, line[:credit_card_number],
@@ -162,6 +167,3 @@ class Loader
     end
   end
 end
-
-
-#Loader.new(SQLite3::Database.new(':memory:')).load
