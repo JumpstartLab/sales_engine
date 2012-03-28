@@ -81,8 +81,9 @@ describe SalesEngine::Invoice do
     it "adds the invoice to the invoice_list" do
       database.should include invoice
     end
-
   end
+
+
 
   describe "#is_successful?" do
     before(:each) do

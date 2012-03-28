@@ -55,18 +55,36 @@ describe SalesEngine::InvoiceItem do
     end
   end
 
-  describe "#create" do
-    it "creates the quantity" do
-    end
+  describe ".create" do
+    let(:database) { SalesEngine::Database.instance.invoice_item_list = [ ] }
+    let(:invoice) { SalesEngine::Invoice.new(:id => "1") }
+    let(:item) { SalesEngine::Item.new(:id => "1" :unit_price => "9") }
+    let(:invoice_item) { SalesEngine::InvoiceItem.create(:invoice_id => "1", 
+                                                        :item_id => "1") }
+    
     it "assigns invoice id" do
+      invoice_item.customer_id.should == "1"
     end
     it "assigns the item id" do
+      invoice_item.item_id.should == "1"
     end
     it "assigns the unit price" do
+      invoice_item.unit_price.should == "9"
+    end
+    it "assigns a quantity" do
+      invoice_item.quantity.should == "1"
     end
     it "assigns the created_at time" do
+      invoice_item.created_at.should be_a Time
     end
     it "assigns the updated_at time" do
+      invoice_item.created_at.should be_a Time
+    end
+    it "assigns an id" do
+      invoice_item.id.should == "1"
+    end
+    it "adds it to the invoice_item_list" do
+      database.should include invoice_item
     end
   end
 

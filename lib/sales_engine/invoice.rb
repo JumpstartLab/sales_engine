@@ -57,7 +57,7 @@ module SalesEngine
     end
 
     def self.create(attributes)
-      invoice = SalesEngine::Invoice.new(:customer_id => attributes[:customer].id,
+      invoice = self.new(:customer_id => attributes[:customer].id,
                                :merchant_id => attributes[:merchant].id,
                                :status => attributes[:status])
       SalesEngine::Database.instance.invoice_list << invoice

@@ -28,6 +28,11 @@ module SalesEngine
       total_revenue
     end
 
+    def self.create(attributes)
+      self.new(:item_id => attributes[:item].id,
+        )
+    end
+
     def self.total_revenue_by_invoice_id(invoice_id)
       total_revenue = BigDecimal.new("0.00")
       find_all_by_invoice_id(invoice_id).each do |i_i|
