@@ -58,7 +58,17 @@ class SalesEngine
     end
 
     def self.most_items(x)
-      ranked_items_by_count = [SalesEngine::Database.instance.items.sample]
+      ranked_items_by_count = SalesEngine::Database.instance.items.sort do |a,b|
+        b.sales_count <=> a.sales_count
+      end
+    end
+
+    def sales_count
+      @sales_count || invoice_items.inject(0) {|sum, element| sum + element.quantity }
+    end
+
+    def sales_count=(input)
+      @sales_count = input
     end
 
     def revenue=(input)

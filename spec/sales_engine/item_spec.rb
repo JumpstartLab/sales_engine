@@ -120,14 +120,50 @@ describe SalesEngine::Item do
 
   describe ".most_items(x)" do
     test_x_param = 4
+    item_1 = Fabricate(:item, :sales_count => 1)
+    item_2 = Fabricate(:item, :sales_count => 3)
+    item_3 = Fabricate(:item, :sales_count => 4)
+    item_4 = Fabricate(:item, :sales_count => 2)
+    item_array = [item_1, item_2, item_3, item_4]
+
     it "returns an array" do
+      SalesEngine::Database.instance.stub(:items).and_return(item_array)
       SalesEngine::Item.most_items(test_x_param).should be_an Array
     end
 
     it "contains only items" do
+      SalesEngine::Database.instance.stub(:items).and_return(item_array)
       SalesEngine::Item.most_items(test_x_param).all? do |i|
         i.should be_a SalesEngine::Item
       end
+    end
+
+    it "constains as many items as the x parameter" do
+      SalesEngine::Database.instance.stub(:items).and_return(item_array)
+      SalesEngine::Item.most_items(test_x_param).count.should == test_x_param
+    end
+
+    it "is ranked by count" do
+      SalesEngine::Database.instance.stub(:items).and_return(item_array)
+      SalesEngine::Item.most_items(4).first.sales_count.should == 4
+    end
+  end
+
+  describe "#sales_count" do
+    test_sales_item = Fabricate(:item)
+    ii_1 = Fabricate(:invoice_item, :quantity => 2)
+    ii_2 = Fabricate(:invoice_item, :quantity => 2)
+    ii_3 = Fabricate(:invoice_item, :quantity => 2)
+
+    ii_array = [ii_1, ii_2, ii_3]
+    test_sales_item.invoice_items = ii_array;
+
+    it "returns a number" do
+      test_sales_item.sales_count.should be_a Integer
+    end
+
+    it "returns the number of successful transactions for this item" do
+      test_sales_item.sales_count.should == 6
     end
   end
 end
