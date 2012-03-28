@@ -101,6 +101,17 @@ class SalesEngine
       @transactions
     end
 
+    def find_by(class_name, attr, param)
+      SalesEngine::Database.instance.send(class_name).find do |i|
+        i.send(attr) == param
+      end
+    end
+
+    def find_all_by(class_name, attr, param)
+      SalesEngine::Database.instance.send(class_name).select do |i|
+        i.send(attr) == param
+      end
+    end
 
   end
 end

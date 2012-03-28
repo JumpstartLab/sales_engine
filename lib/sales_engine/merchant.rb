@@ -4,7 +4,7 @@ require 'bigdecimal'
 
 class SalesEngine
   class Merchant
-    include Model
+    ATTRIBUTES = %w(id created_at updated_at name)
     attr_accessor :id
 
     def initialize(attributes)
@@ -12,11 +12,11 @@ class SalesEngine
       @name = attributes[:name]
     end
 
-    # def self.find_by_X(match)
-    # end
+    def self.finder_attributes
+      ATTRIBUTES
+    end
 
-    # def self.find_all_by_X(match)
-    # end
+    include Model
 
     def items
       SalesEngine::Database.instance.items.select do |item|

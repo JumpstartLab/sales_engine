@@ -4,7 +4,7 @@ describe SalesEngine::Transaction do
 
   let(:test_transaction) { Fabricate(:transaction) }
 
-  
+
   describe "#invoice" do
     context "returns an invoice associated with this transaction" do
       it "returns an invoice" do
@@ -19,6 +19,12 @@ describe SalesEngine::Transaction do
   describe ".random" do
     it "returns a transaction" do
       SalesEngine::Transaction.random.should be_a SalesEngine::Transaction
+    end
+  end
+
+  describe ".find_all_by_invoice_id()" do
+    it "returns an array of transactions" do
+      SalesEngine::Transaction.find_all_by_invoice_id("2").all?{|i| i.is_a? SalesEngine::Transaction}.should == true
     end
   end
 
@@ -48,7 +54,7 @@ describe SalesEngine::Transaction do
     
     it "returns one transaction" do
       pending
-      SalesEngine::Transaction.find_by_credit_card_expiration_date("2012-02-26 20:56:56 UTC").should be_a SalesEngine::Transaction
+      SalesEngine::Transaction.find_by_credit_card_expiration_date(" ").should be_a SalesEngine::Transaction
     end
   end
 end

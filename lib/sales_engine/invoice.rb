@@ -2,7 +2,7 @@ require 'sales_engine/model'
 
 class SalesEngine
   class Invoice
-    include Model
+    ATTRIBUTES = %w(id created_at updated_at merchant_id customer_id customer_id id merchant)
     attr_accessor :merchant_id, :customer_id, :customer, :id, :merchant
     
     def initialize(attributes)
@@ -12,6 +12,12 @@ class SalesEngine
       @status = attributes[:status]
     end
 
+    def self.finder_attributes
+      ATTRIBUTES
+    end
+
+    include Model
+    
     def customer=(input)
       @customer_id = input.id
       @customer = input

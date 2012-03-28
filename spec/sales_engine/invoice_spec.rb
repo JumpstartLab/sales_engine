@@ -4,11 +4,6 @@ describe SalesEngine::Invoice do
 
   let(:test_invoice){ Fabricate(:invoice) }
 
-  describe ".lucky?" do
-    it "is lucky" do
-      SalesEngine::Invoice.lucky?.should == "lucky!"
-    end
-  end
   describe "#customer=" do
     it "sets the customer" do
       customer = Fabricate(:customer)

@@ -13,12 +13,21 @@ class SalesEngine
     def self.included(target)
       class_name = target.name.split("::").last.underscores
       target.class_eval do
-        define_singleton_method ("lucky?").to_sym do
-          "lucky!"
-        end
-
         define_singleton_method ("random").to_sym do
           SalesEngine::Database.instance.send(class_name).sample
+        end
+      end
+
+      target.finder_attributes.each do |att|
+        target.class_eval do
+          puts "find by is find_by_#{att}"
+          define_singleton_method ("find_by_" + att).to_sym do |param|
+            SalesEngine::Database.instance.find_by(class_name, att, param)
+          end
+
+          define_singleton_method ("find_all_by_" + att).to_sym do |param|
+            SalesEngine::Database.instance.find_all_by(class_name, att, param)
+          end
         end
       end
       target.extend ClassMethods

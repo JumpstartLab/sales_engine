@@ -2,7 +2,8 @@ require 'sales_engine/model'
 
 class SalesEngine
   class Item
-    include Model
+    ATTRIBUTES = %w(id created_at updated_at name description unit_price merchant_id)
+
     attr_accessor :merchant_id, :id, :item_id
 
     def initialize(attributes)
@@ -13,9 +14,11 @@ class SalesEngine
       @merchant_id = attributes[:merchant_id]
     end
 
-    # def self.random
-    #   # return a random Merchant
-    # end
+    def self.finder_attributes
+      ATTRIBUTES
+    end
+
+    include Model
 
     # # def self.find_by_X(match)
     # # end

@@ -2,9 +2,10 @@ require 'sales_engine/model'
 
 class SalesEngine
   class Transaction
-    include Model
+    ATTRIBUTES = ["id", "created_at", "updated_at", "invoice_id",
+                  "credit_card_number", "credit_card_expiration_date", "result"]
 
-    attr_accessor :invoice_id, :credit_card_number
+    attr_accessor :invoice_id, :credit_card_number, :credit_card_expiration_date
 
     def initialize(attr)
       super(attr)
@@ -13,11 +14,12 @@ class SalesEngine
       @credit_card_expiration_date = attr[:credit_card_expiration_date]
       @result = attr[:result]
     end
-    # # def self.find_by_X(match)
-    # # end
 
-    # # def self.find_all_by_X(match)
-    # # end
+    def self.finder_attributes
+      ATTRIBUTES
+    end
+
+    include Model
 
     def invoice
       SalesEngine::Database.instance.invoices.find do |invoice|
@@ -29,16 +31,5 @@ class SalesEngine
       SalesEngine::Database.instance.transactions
     end
 
-    def self.find_by_invoice_id(param)
-      self.all.find do |transaction|
-        transaction.invoice_id == param
-      end
-    end
-
-    def self.find_by_credit_card_number(number)
-      self.all.find do |transaction|
-        transaction.credit_card_number == number
-      end
-    end
   end
 end

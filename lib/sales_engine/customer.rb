@@ -2,14 +2,22 @@ require 'sales_engine/model'
 
 class SalesEngine
   class Customer
-    include Model
-    attr_accessor :id
     
+    ATTRIBUTES = ["id", "created_at", "updated_at", "first_name", "last_name"]
+
+    attr_accessor :id
+
     def initialize(attributes)
         super
         @first_name = attributes[:first_name]
         @last_name = attributes[:last_name]
     end
+
+    def self.finder_attributes
+      ATTRIBUTES
+    end
+
+    include Model
 
     def invoices
       @invoices || SalesEngine::Database.instance.invoices.select do |invoice|

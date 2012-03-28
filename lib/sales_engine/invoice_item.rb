@@ -3,8 +3,8 @@ require 'sales_engine/model'
 
 class SalesEngine
   class InvoiceItem
-    include Model
-
+    ATTRIBUTES = ["id", "created_at", "updated_at", "item_id", "invoice_id",
+               "quantity", "unit_price"]
     attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :total
 
     def initialize(attributes)
@@ -15,11 +15,12 @@ class SalesEngine
         @unit_price = attributes[:unit_price]
     end
 
-    # # def self.find_by_X(match)
-    # # end
+    def self.finder_attributes
+      ATTRIBUTES
+    end
 
-    # # def self.find_all_by_X(match)
-    # # end
+    include Model
+
     def invoice
       SalesEngine::Database.instance.invoices.find do |invoice|
         invoice.id == @invoice_id
