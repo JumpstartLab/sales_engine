@@ -23,29 +23,31 @@ module SalesEngine
       self.updated_at   = Date.parse(attributes[:updated_at])
     end
 
-    # def self.create(attributes={})
-    #   # create new instance of Invoice
-    #   inv = self.new (:customer_id => attributes[:customer].id, 
-    #                                 :merchant_id => attributes[:merchant].id,
-    #                                 :status => attributes[:status])
-    #   SalesEngine::Database.instance.invoices << inv
+    def self.create(attributes={})
+      inv = self.new({:id           => Database.instance.invoices.count + 1,
+                      :customer_id  => attributes[:customer].id, 
+                      :merchant_id  => attributes[:merchant].id,
+                      :status       => attributes[:status],
+                      :created_at   => DateTime.now.to_s,
+                      :updated_at   => DateTime.now.to_s})
 
-    #   # attributes[:items].each do |item|
-    #   #   SalesEngine::InvoiceItem.create(:invoice_id => invoice.id,
-    #   #                                   item.id => item_id)
-    #   # end
+      SalesEngine::Database.instance.invoices << inv
 
-    #   inv
-    # end
+      SalesEngine::InvoiceItem.create(inv.id, attributes[:items])
 
-    def create_inv_items(items)
-      #
+      inv
     end
 
     def charge(attributes)
-      # invoice.charge(:credit_card_number => "4444333322221111", :credit_card_expiration => "10/13", :result => "success")
-      # will call new instance of Transaction
-      #t = 
+     t = SalesEngine::Transaction.new({
+              :id => Database.instance.transactions.count + 1,
+              :invoice_id => self.id,
+              :credit_card_number => attributes[:credit_card_number],
+              :credit_card_expiration_date => attributes[:credit_card_expiration_date],
+              :result => attributes[:result]})
+     SalesEngine::Database.instance.transactions << t
+
+     t
     end
 
     class << self
