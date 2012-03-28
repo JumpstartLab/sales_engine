@@ -17,7 +17,7 @@ module SalesEngine
 
     def self.most_items(item_count)
       SalesEngine::Database.instance.items.sort_by { |item| 
-        item.paid_invoice_items.count }.pop_multiple(item_count)
+        item.total_sold }.pop_multiple(item_count)
     end
 
     def self.random
@@ -40,6 +40,10 @@ module SalesEngine
     def paid_invoice_items
       invoice_items.select { |invoice_item| 
         invoice_item.sold? }
+    end
+
+    def total_sold
+      paid_invoice_items.collect { |invoice_item| invoice_item.quantity }.sum
     end
 
     def total
