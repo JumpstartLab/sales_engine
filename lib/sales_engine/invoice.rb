@@ -2,7 +2,7 @@ require 'sales_engine/model'
 
 class SalesEngine
   class Invoice
-    ATTRIBUTES = %w(id created_at updated_at merchant_id customer_id customer_id id merchant)
+    ATTRIBUTES = %w(id created_at updated_at merchant_id customer_id merchant)
     attr_accessor :merchant_id, :customer_id, :customer, :id, :merchant
     
     def initialize(attributes)
@@ -17,7 +17,7 @@ class SalesEngine
     end
 
     include Model
-    
+
     def customer=(input)
       @customer_id = input.id
       @customer = input
@@ -27,12 +27,6 @@ class SalesEngine
       @merchant_id = input.id
       @merchant = input
     end
-
-    # # def self.find_by_X(match)
-    # # end
-
-    # # def self.find_all_by_X(match)
-    # # end
 
     def transactions
       SalesEngine::Database.instance.transactions.select do |transaction|
@@ -47,11 +41,11 @@ class SalesEngine
     end
 
     def customer
-      @customer || SalesEngine::Database.instance.customers.find { |customer| customer.id == customer_id }
+      @customer || SalesEngine::Customer.find_by_id(@customer_id)
     end
 
     def merchant
-      @merchant || SalesEngine::Database.instance.merchants.find { |merchant| merchant.id == merchant_id }
+      @merchant || SalesEngine::Merchant.find_by_id(@merchant_id)
     end
 
     def items

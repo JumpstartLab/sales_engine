@@ -6,10 +6,6 @@ class SalesEngine
       @updated_at = attributes[:updated_at]
     end
 
-    module ClassMethods
-
-    end
-
     def self.included(target)
       class_name = target.name.split("::").last.underscores
       target.class_eval do
@@ -20,7 +16,7 @@ class SalesEngine
 
       target.finder_attributes.each do |att|
         target.class_eval do
-          puts "find by is find_by_#{att}"
+          puts "find by is find_all_by_#{att}"
           define_singleton_method ("find_by_" + att).to_sym do |param|
             SalesEngine::Database.instance.find_by(class_name, att, param)
           end
@@ -30,11 +26,12 @@ class SalesEngine
           end
         end
       end
-      target.extend ClassMethods
     end
   end
 end
 
+# underscores and adds s to end of a string, for converting
+# class names into database accessors
 class String
   def underscores
     word = self.dup

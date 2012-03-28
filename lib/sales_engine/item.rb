@@ -20,12 +20,6 @@ class SalesEngine
 
     include Model
 
-    # # def self.find_by_X(match)
-    # # end
-
-    # # def self.find_all_by_X(match)
-    # # end
-
     def invoice_items     
       SalesEngine::Database.instance.invoice_items.select do |ii|
         ii.item_id == @id
