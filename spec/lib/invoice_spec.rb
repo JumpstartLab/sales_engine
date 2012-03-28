@@ -26,6 +26,17 @@ describe SalesEngine::Invoice do
                                                      :invoice_id => "1", :item_id => "2")}
   let(:invoice_item_list) {SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two, inv_item_three, inv_item_four]}
 
+  describe ".random" do
+    before(:each) do
+      invoices = [ inv_one, inv_two, inv_three ]
+      SalesEngine::Database.instance.stub(:invoice_list).and_return(invoices)
+    end
+
+    it "returns a random Invoice" do
+        SalesEngine::Invoice.random.should be_a SalesEngine::Invoice
+    end
+  end
+
   describe "#transactions" do
     before(:each) do
       transaction_list

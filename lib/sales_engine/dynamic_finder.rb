@@ -11,6 +11,10 @@ module SalesEngine
           define_singleton_method ("find_all_by_" + att).to_sym do |param|
             SalesEngine::Database.instance.find_all(class_name, att, param)
           end
+
+          define_singleton_method "random".to_sym do 
+            SalesEngine::Database.instance.random(class_name)
+          end
         end
       end
     end
