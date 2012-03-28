@@ -3,3 +3,4 @@
 /lib/sales_engine/.DS_Store
 coverage/
 Gemfile.lock
+/spec2/*

@@ -12,8 +12,8 @@ module SalesEngine
                   :created_at, :updated_at
 
     def initialize(attributes={})
-      self.id                           = attributes[:id]
-      self.invoice_id                   = attributes[:invoice_id]
+      self.id                           = attributes[:id].to_i
+      self.invoice_id                   = attributes[:invoice_id].to_i
       self.credit_card_number           = attributes[:credit_card_number]
       self.credit_card_expiration_date  = attributes[:credit_card_expiration_date]
       self.result                       = attributes[:result]
@@ -26,10 +26,10 @@ module SalesEngine
                   :created_at, :updated_at, :date]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
-          find_transactions(attribute, input.to_s)
+          find_transactions(attribute, input)
         end
         define_method "find_all_by_#{attribute}" do |input|
-          find_all_transactions(attribute, input.to_s)
+          find_all_transactions(attribute, input)
         end
       end
     end
@@ -49,9 +49,10 @@ module SalesEngine
 
     def invoice
       #invoice returns an instance of Invoice associated with this object
-      Database.instance.invoices.find do |i|
-        i.send(:id) == self.invoice_id
-      end
+      # Database.instance.invoices.find do |i|
+      #   i.send(:id) == self.invoice_id
+      # end
+      SalesEngine::Invoice.find_by_id(self.invoice_id)
     end
   end
 end

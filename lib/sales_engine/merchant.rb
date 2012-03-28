@@ -11,7 +11,7 @@ module SalesEngine
     attr_accessor :id, :name, :created_at, :updated_at, :revenue
 
     def initialize(attributes={})
-      self.id         = attributes[:id]
+      self.id         = attributes[:id].to_i
       self.name       = attributes[:name]
       self.created_at = attributes[:created_at]
       self.updated_at = attributes[:updated_at]
@@ -21,10 +21,10 @@ module SalesEngine
       attributes = [:id, :name, :created_at, :updated_at]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
-          find_merchants(attribute, input.to_s)
+          find_merchants(attribute, input)
         end
         define_method "find_all_by_#{attribute}" do |input|
-          find_all_merchants(attribute, input.to_s)
+          find_all_merchants(attribute, input)
         end
       end
     end
@@ -95,7 +95,7 @@ module SalesEngine
       end
     end
 
-    def self.items(num_merchants)
+    def self.most_items(num_merchants)
       # returns the top x merchant instances ranked by total number of items sold
       rank = Hash.new
       Database.instance.merchants.each do |merch|

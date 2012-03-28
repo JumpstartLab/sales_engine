@@ -13,11 +13,12 @@ module SalesEngine
                   :created_at, :updated_at
 
     def initialize(attributes={})
-      self.id           = attributes[:id]
+      self.id           = attributes[:id].to_i
       self.name         = attributes[:name]
       self.description  = attributes[:description]
-      self.unit_price   = attributes[:unit_price]
-      self.merchant_id  = attributes[:merchant_id]
+      #self.unit_price   = attributes[:unit_price]
+      self.unit_price = BigDecimal.new(attributes[:unit_price])/100
+      self.merchant_id  = attributes[:merchant_id].to_i
       self.created_at   = attributes[:created_at]
       self.updated_at   = attributes[:updated_at]
     end
@@ -27,10 +28,10 @@ module SalesEngine
                   :created_at, :updated_at]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
-          find_items(attribute, input.to_s)
+          find_items(attribute, input)
         end
         define_method "find_all_by_#{attribute}" do |input|
-          find_all_items(attribute, input.to_s)
+          find_all_items(attribute, input)
         end
       end
     end
@@ -61,7 +62,7 @@ module SalesEngine
         rank[inv.date] += inv_item.quantity.to_i
       end
       rank = rank.sort_by{ |d, q| -q }
-      Date.parse(rank[0][0])
+      rank[0][0]
     end
 
     def merchant

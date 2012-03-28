@@ -10,10 +10,10 @@ module SalesEngine
                   :inv_success, :total
 
     def initialize(attributes={})
-      self.id         = attributes[:id]
-      self.item_id    = attributes[:item_id]
-      self.invoice_id = attributes[:invoice_id]
-      self.quantity   = attributes[:quantity]
+      self.id         = attributes[:id].to_i
+      self.item_id    = attributes[:item_id].to_i
+      self.invoice_id = attributes[:invoice_id].to_i
+      self.quantity   = attributes[:quantity].to_i
       self.unit_price = BigDecimal.new(attributes[:unit_price])/100
       self.created_at = attributes[:created_at]
       self.updated_at = attributes[:updated_at]
@@ -24,16 +24,16 @@ module SalesEngine
                   :unit_price, :created_at, :updated_at, :date]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
-          find_invoice_items(attribute, input.to_s)
+          find_invoice_items(attribute, input)
         end
         define_method "find_all_by_#{attribute}" do |input|
-          find_all_invoice_items(attribute, input.to_s)
+          find_all_invoice_items(attribute, input)
         end
       end
     end
 
     def total
-      @total ||= (self.quantity.to_i * self.unit_price)
+      @total ||= (self.quantity * self.unit_price)
     end
 
     def inv_success

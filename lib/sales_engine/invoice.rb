@@ -15,9 +15,9 @@ module SalesEngine
                   :created_at, :updated_at, :revenue, :success 
 
     def initialize(attributes={})
-      self.id           = attributes[:id]
-      self.customer_id  = attributes[:customer_id]
-      self.merchant_id  = attributes[:merchant_id]
+      self.id           = attributes[:id].to_i
+      self.customer_id  = attributes[:customer_id].to_i
+      self.merchant_id  = attributes[:merchant_id].to_i
       self.status       = attributes[:status]
       self.created_at   = Date.parse(attributes[:created_at])
       self.updated_at   = Date.parse(attributes[:updated_at])
@@ -53,10 +53,10 @@ module SalesEngine
                     :created_at, :updated_at, :date]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
-          find_invoices(attribute, input.to_s)
+          find_invoices(attribute, input)
         end
         define_method "find_all_by_#{attribute}" do |input|
-          find_all_invoices(attribute, input.to_s)
+          find_all_invoices(attribute, input)
         end
       end
     end

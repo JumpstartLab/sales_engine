@@ -4,6 +4,7 @@ SimpleCov.start do
 end
 
 require 'bundler'
+require 'date'
 Bundler.require(:default, :test)
 
 require 'sales_engine'
