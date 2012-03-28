@@ -1,7 +1,6 @@
 require 'csv'
 require 'sqlite3'
 
-
 class Loader 
   FILES = {:merchants => "merchants.csv", :items => "items.csv",
            :customers => "customers.csv", :invoices => "invoices.csv",

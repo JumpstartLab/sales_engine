@@ -15,15 +15,15 @@ module SalesEngine
     end     
 
     def self.elements
-      SalesEngine::Database.instance.customers
+      customers
     end
 
     def invoices
-      SalesEngine::Database.instance.invoices.select { |invoice| invoice.customer_id == id }  
+      Invoice.invoices.select { |invoice| invoice.customer_id == id }  
     end
 
     def transactions
-      SalesEngine::Database.instance.transactions_by_customer(id)
+      Transaction.for_customer(id)
     end
 
     def has_pending_invoice?
@@ -47,7 +47,7 @@ module SalesEngine
 
       unless merchant_map.empty?
         sorted_map = merchant_map.sort_by { |key, value| value }.reverse
-        SalesEngine::Merchant.find_by_id(sorted_map.first[0])
+        Merchant.find_by_id(sorted_map.first[0])
       end
     end
   end

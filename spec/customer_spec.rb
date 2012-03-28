@@ -1,17 +1,18 @@
 require 'spec_helper'
 
-describe SalesEngine::Customer do
+module SalesEngine
+describe Customer do
   describe "#invoices" do
     let(:customer) { Fabricate(:customer, :id => 1) }
-    let(:invoice) { mock(SalesEngine::Invoice) }
-    let(:invoice2) { mock(SalesEngine::Invoice) }
-    let(:other_invoice) { mock(SalesEngine::Invoice) }
+    let(:invoice) { mock(Invoice) }
+    let(:invoice2) { mock(Invoice) }
+    let(:other_invoice) { mock(Invoice) }
 
     before(:each) do
       invoice.stub(:customer_id).and_return(1)
       invoice2.stub(:customer_id).and_return(2)
       other_invoice.stub(:customer_id).and_return(1)
-      SalesEngine::Database.instance.stub(:invoices).and_return([invoice, invoice2 , other_invoice])
+      Invoice.stub(:invoices).and_return([invoice, invoice2 , other_invoice])
     end
     
     context "when customer has multiple invoices" do
@@ -43,7 +44,7 @@ describe SalesEngine::Customer do
 
     context "multiple transactions" do 
       it "returns an array of transactions" do
-        SalesEngine::Database.instance.stub(:transactions_by_customer).with(1).
+        Transaction.stub(:for_customer).with(1).
           and_return([transaction, other_transaction])
         customer.transactions.should == [transaction, other_transaction]
       end
@@ -51,7 +52,7 @@ describe SalesEngine::Customer do
 
     context "one transaction" do
       it "returns an array of one transaction" do
-        SalesEngine::Database.instance.stub(:transactions_by_customer).with(1).
+        Transaction.stub(:for_customer).with(1).
           and_return([transaction])
         customer.transactions.should == [transaction]
       end
@@ -59,7 +60,7 @@ describe SalesEngine::Customer do
 
     context "no transactions" do
       it "returns an empty array" do
-        SalesEngine::Database.instance.stub(:transactions_by_customer).with(1).
+        Transaction.stub(:for_customer).with(1).
           and_return([])
         customer.transactions.should == []
       end
@@ -109,7 +110,7 @@ describe SalesEngine::Customer do
     context "when transactions with more than one merchant" do 
       it "returns merchant with most transactions" do
         customer.stub(:invoices).and_return([invoice, invoice3, other_invoice])
-        SalesEngine::Merchant.stub(:find_by_id).with(100).and_return(merchant)
+        Merchant.stub(:find_by_id).with(100).and_return(merchant)
         customer.favorite_merchant.should == merchant
       end
     end
@@ -121,4 +122,5 @@ describe SalesEngine::Customer do
       end
     end
   end
+end
 end
