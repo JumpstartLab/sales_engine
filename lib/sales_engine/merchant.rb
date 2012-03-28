@@ -26,6 +26,10 @@ module SalesEngine
       SalesEngine::Database.instance.items.select { |item| item.merchant_id == id }
     end
 
+    def customers
+      SalesEngine::Database.instance.customers_by_merchant(id)
+    end
+
     def self.elements
       SalesEngine::Database.instance.merchants
     end
