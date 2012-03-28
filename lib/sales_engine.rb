@@ -16,16 +16,17 @@ require 'sales_engine/transaction'
 require 'sales_engine/invoice_item'
 
 module SalesEngine
+  LOG = Logger.new("log.txt")
+  
   def self.startup
-    log = Logger.new("log.txt")
     ljust_default = 30
     se = SalesEngine::Database.instance
     se.load_data
-    log.debug "Merchant Record Count".ljust(ljust_default) + se.merchants.count.to_s
-    log.debug "Invoice Record Count".ljust(ljust_default) + se.invoices.count.to_s
-    log.debug "Customer Record Count".ljust(ljust_default) + se.customers.count.to_s
-    log.debug "Item Record Count".ljust(ljust_default) + se.items.count.to_s
-    log.debug "Invoice Item Record Count".ljust(ljust_default) + se.invoiceitems.count.to_s
-    log.debug "Transaction Record Count".ljust(ljust_default) + se.transactions.count.to_s
+    LOG.debug "Merchant Record Count".ljust(ljust_default) + se.merchants.count.to_s
+    LOG.debug "Invoice Record Count".ljust(ljust_default) + se.invoices.count.to_s
+    LOG.debug "Customer Record Count".ljust(ljust_default) + se.customers.count.to_s
+    LOG.debug "Item Record Count".ljust(ljust_default) + se.items.count.to_s
+    LOG.debug "Invoice Item Record Count".ljust(ljust_default) + se.invoiceitems.count.to_s
+    LOG.debug "Transaction Record Count".ljust(ljust_default) + se.transactions.count.to_s
   end
 end

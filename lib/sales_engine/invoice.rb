@@ -33,7 +33,7 @@ module SalesEngine
           :invoice_id => invoice.id, :item_id => item.id, :quantity => 1)
         SalesEngine::Database.instance.add_to_list(invoice_item)
       end
-      attributes[:transaction].invoice_id = invoice.id
+      attributes[:transaction].invoice_id = invoice.id unless !attributes[:transaction]
       SalesEngine::Database.instance.add_to_list(invoice)
       invoice
     end

@@ -1,4 +1,3 @@
-require 'logger'
 module SalesEngine
   class Item < Record
     attr_accessor :name, :description, :unit_price, :merchant_id
@@ -7,7 +6,7 @@ module SalesEngine
       super
       self.name = attributes[:name]
       self.description = attributes[:description]
-      self.unit_price = attributes[:unit_price].to_i
+      self.unit_price = convert_to_big_decimal(attributes[:unit_price])
       self.merchant_id = attributes[:merchant_id].to_i
     end
 

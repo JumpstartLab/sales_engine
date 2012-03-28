@@ -7,7 +7,7 @@ module SalesEngine
       self.item_id = attributes[:item_id].to_i
       self.invoice_id = attributes[:invoice_id].to_i
       self.quantity = attributes[:quantity].to_i
-      self.unit_price = attributes[:unit_price].to_i
+      self.unit_price = convert_to_big_decimal(attributes[:unit_price])
     end
 
     def invoice

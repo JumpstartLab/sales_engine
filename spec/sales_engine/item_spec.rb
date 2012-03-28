@@ -134,24 +134,27 @@ describe SalesEngine::Item do
   describe ".find_by_unit_price" do
     context "when items exist in the datastore" do
       before(:each) do
-        item_1.unit_price = 5
-        item_2.unit_price = 10
-        item_3.unit_price = 5555
+        item_1.unit_price = BigDecimal.new("5")
+        item_2.unit_price = BigDecimal.new("10")
+        item_3.unit_price = BigDecimal.new("5555")
       end
 
       it "returns the correct item record that matches the unit price" do
-        SalesEngine::Item.find_by_unit_price(10).should == item_2
+        value = BigDecimal.new("10")
+        SalesEngine::Item.find_by_unit_price(value).should == item_2
       end
 
       it "returns nothing if no item records match the unit price" do
-        SalesEngine::Item.find_by_unit_price(99).should be_nil
+        value = BigDecimal.new("9999")
+        SalesEngine::Item.find_by_unit_price(value).should be_nil
       end
     end
 
     context "when there are no items in the datastore" do
       it "returns nothing" do
         se.clear_all_data
-        SalesEngine::Item.find_by_unit_price(10).should be_nil
+        value = BigDecimal.new("10")
+        SalesEngine::Item.find_by_unit_price(value).should be_nil
       end
     end
   end
