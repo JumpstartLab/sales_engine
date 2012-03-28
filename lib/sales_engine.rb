@@ -1,14 +1,14 @@
-$LOAD_PATH.unshift "./lib"
-require 'sales_engine/database'
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), "lib")
+
 require 'sqlite3'
 require 'loader'
-
 module SalesEngine
   attr_accessor :elements
 
   def self.startup
-     #Loader.new(SQLite3::Database.new(':memory:')).load
-     Loader.new(SQLite3::Database.new("/Users/danielkaufman/Desktop/test.sqlite")).load
+     db = SQLite3::Database.new(':memory:')
+     Database.instance.db = db
+     Loader.new(db).load
   end
 
   def self.find_by(elements, attribute, value)
@@ -59,3 +59,12 @@ module SalesEngine
     target.extend(ClassMethods)
   end
 end
+
+require 'sales_engine/database'
+require 'sales_engine/customer'
+require 'sales_engine/invoice_item'
+require 'sales_engine/invoice'
+require 'sales_engine/item'
+require 'sales_engine/merchant'
+require 'sales_engine/transaction'
+
