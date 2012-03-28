@@ -34,14 +34,13 @@ module SalesEngine
           invoice_id: new_invoice.id, created_at: DateTime.now.to_s,
           uantity: 1, unit_price: item.unit_price.to_s } )
       end
-      SalesEngine::Transaction.create({invoice_id: new_invoice.id})
       records << new_invoice
       new_invoice
     end
 
     def self.pending
       ids = Transaction.all.select{|t| t.result != "success"}.map(&:invoice_id)
-      ids.uniq.collect { |id| Invoice.find_by_id(id) }
+      ids.uniq.map { |id| Invoice.find_by_id(id) }
     end
 
     def self.average_revenue(date = nil)
@@ -89,10 +88,7 @@ module SalesEngine
     end
 
     def items
-      @items ||= invoice_items.collect do |invoice_item|
-        invoice_item.item
-      end
-      @items.uniq
+      @items ||= invoice_items.map(&:item).uniq
     end
 
     def customer
@@ -100,11 +96,7 @@ module SalesEngine
     end
 
     def total_paid
-      if successful_transaction
-        @total_paid
-      else
-        0
-      end
+      successful_transaction ? @total_paid : 0
     end
 
     def total_paid=(value)
@@ -112,11 +104,7 @@ module SalesEngine
     end
 
     def num_items
-      if successful_transaction
-        @num_items
-      else
-        0
-      end
+      successful_transaction ? @num_items : 0
     end
 
     def num_items=(value)
@@ -124,10 +112,9 @@ module SalesEngine
     end
 
     def charge(params)
-      t = transactions.first
-      t.credit_card_number = params[:credit_card_number]
-      t.credit_card_expiration_date = params[:credit_card_expiration]
-      t.result = params[:result]
+      t = {invoice_id: id}
+      SalesEngine::Transaction.create(t.merge(params))
+      @transactions = SalesEngine::Transaction.find_all_by_invoice_id(id)
     end
 
     def successful_transaction

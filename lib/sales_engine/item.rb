@@ -23,11 +23,11 @@ module SalesEngine
     end
 
     def self.most_revenue(num_items)
-      all.sort_by{|i| i.total_revenue}.first(num_items)
+      all.sort_by{|i| - i.total_revenue}.first(num_items)
     end
 
     def self.most_items(num_items)
-      all.sort_by{|i| i.items_sold}.first(num_items)
+      all.sort_by{|i| - i.items_sold}.first(num_items)
     end
 
     def initialize(raw_line)

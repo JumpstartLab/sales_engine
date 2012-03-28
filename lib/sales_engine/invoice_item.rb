@@ -9,7 +9,7 @@ module SalesEngine
     end
 
     def self.get_invoice_items
-      CSVManager.load('data/invoice_items.csv').collect do |record|
+      CSVManager.load('data/invoice_items.csv').map do |record|
         InvoiceItem.new(record)
       end
     end
@@ -22,8 +22,10 @@ module SalesEngine
       @csv_headers=(value)
     end
 
+    #SHORTEN, MAKE WORK FOR WHEN A TRANSACTION IS ADDED
     def self.populate_stats
       records.each do |record|
+        next unless record.invoice.successful_transaction
         record.merchant.total_revenue += record.line_total
         record.merchant.items_sold += record.quantity
         record.item.total_revenue += record.line_total

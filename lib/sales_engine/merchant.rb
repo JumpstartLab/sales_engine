@@ -22,11 +22,11 @@ module SalesEngine
     end
 
     def self.most_revenue(num_merchants)
-      all.sort_by{ |m| m.total_revenue }.first(num_merchants)
+      all.sort_by{ |m| - m.total_revenue }.first(num_merchants)
     end
 
     def self.most_items(num_merchants)
-      all.sort_by{ |m| m.items_sold }.first(num_merchants)
+      all.sort_by{ |m| - m.items_sold }.first(num_merchants)
     end
 
     def self.revenue(date = nil)
