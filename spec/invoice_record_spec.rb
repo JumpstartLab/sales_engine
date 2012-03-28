@@ -12,7 +12,7 @@ module SalesEngine
     end
   end
 
-  describe "#invoices_by_merchant" do
+  describe "#successful_for_merchant" do
     context "invoices for merchant exist" do
       it "returns a array of invoices" do
         rows = InvoiceRecordTest.for_merchant(1)
@@ -28,7 +28,7 @@ module SalesEngine
     end
   end
 
-  describe "#invoices_by_merchant_for_date" do
+  describe "#successful_merchant_and_date" do
     context "invoices for merchant for that date exist" do
       it "returns a array of invoices" do
         rows = InvoiceRecordTest.for_merchant_and_date(1, Date.parse("2012-02-19"))
@@ -39,6 +39,22 @@ module SalesEngine
     context "invoices for merchant for that date don't exist" do
       it "returns an empty array" do
         rows = InvoiceRecordTest.for_merchant_and_date(1, Date.parse("2013-02-19"))
+        rows.length.should == 0
+      end
+    end
+  end
+
+  describe "#for_item" do
+    context "invoice items for item exist" do
+      it "returns a array of invoices" do
+        rows = InvoiceItem.for_item(1)
+        rows.length.should == 11
+      end
+    end
+
+    context "invoice items for item don't exist" do
+      it "returns an empty array" do
+        rows = InvoiceItem.for_item(10000)
         rows.length.should == 0
       end
     end

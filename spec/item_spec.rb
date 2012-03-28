@@ -24,24 +24,23 @@ module SalesEngine
         invoice_item.stub(:item_id).and_return(1)
         invoice_item2.stub(:item_id).and_return(2)
         invoice_item3.stub(:item_id).and_return(1)
-        invoice_items = [invoice_item, invoice_item2, invoice_item3]
-        InvoiceItem.stub(:invoice_items).and_return(invoice_items)
       end
 
       context "when one invoice item matches item id" do
         it "returns an array containing that one invoice_item object" do
-          item.id = 2
+          InvoiceItem.stub(:for_item).and_return([invoice_item2])
           item.invoice_items.should == [invoice_item2]
         end
       end
       context "when multiple invoice items match item id" do
         it "returns an array of all matching invoice_item objects" do
+          InvoiceItem.stub(:for_item).and_return([invoice_item, invoice_item3])
           item.invoice_items.should == [invoice_item, invoice_item3]
         end
       end
       context "when no invoice items match item id" do
         it "returns an empty array" do
-          item.id = 3
+          InvoiceItem.stub(:for_item).and_return([])
           item.invoice_items.should == []
         end
       end

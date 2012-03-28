@@ -29,7 +29,7 @@ module SalesEngine
     end
 
     def invoice_items
-      InvoiceItem.invoice_items.select { |invoice_item| invoice_item.item_id == id}
+      InvoiceItem.for_item(id)
     end
 
     def revenue
@@ -68,15 +68,13 @@ module SalesEngine
     end
 
     def self.most_revenue(total_items)
-      #items.sort_by!{ |item| item.revenue }.reverse!
-      #items[0,total_items]
-      return 0
+      items.sort_by!{ |item| item.revenue }.reverse!
+      items[0,total_items]
     end
 
     def self.most_items(total_items)
-      #items.sort_by!{ |item| item.quantity }.reverse!
-      #items[0,total_items]
-      return 0
+      items.sort_by!{ |item| item.quantity }.reverse!
+      items[0,total_items]
     end
   end
 end

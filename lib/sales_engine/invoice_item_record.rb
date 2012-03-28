@@ -30,6 +30,17 @@ module SalesEngine
      invoice_items
    end
 
+   def for_item(item_id)
+     invoice_items = []
+     query = "SELECT * FROM invoice_items
+              INNER JOIN items ON invoice_items.item_id = items.id
+              WHERE items.id = #{item_id}"
+     Database.instance.db.execute(query)  do |row| 
+       invoice_items << create_invoice_item(row)
+     end
+     invoice_items
+   end
+
    def invoice_items 
      invoice_items = []
      Database.instance.db.execute("select * from invoice_items") do |row|
