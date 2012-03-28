@@ -15,7 +15,11 @@ module SalesEngine
       self.item_id = attributes[:item_id]
       self.invoice_id = attributes[:invoice_id]
       self.quantity =   attributes[:quantity].to_i
-      self.unit_price = BigDecimal.new(attributes[:unit_price]).round(2)
+      if attributes[:unit_price].class == BigDecimal
+        self.unit_price = attributes[:unit_price]
+      else
+        self.unit_price = BigDecimal.new(attributes[:unit_price])/100 
+      end
       if attributes[:created_at]
         self.created_at = Time.parse(attributes[:created_at])
       else
