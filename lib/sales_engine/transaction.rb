@@ -32,10 +32,20 @@ module SalesEngine
       else
         self.updated_at = Date.today
       end
+      store_result_in_invoice
     end
 
     def self.attributes_for_finders
       TRANSACTION_ATTS
+    end
+
+    def store_result_in_invoice
+      return 0 if invoice.nil?
+      if self.result == "success"
+        invoice.result = true
+      else
+        invoice.result = false unless invoice.result
+      end
     end
 
     extend SalesEngine::DynamicFinder

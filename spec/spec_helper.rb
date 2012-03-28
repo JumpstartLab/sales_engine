@@ -1,12 +1,16 @@
 require 'bundler'
-
 Bundler.require
 
-require 'sales_engine'
-require 'date'
+require 'simplecov'
+SimpleCov.start
 
-RSpec.configure do |config|
-  config.before(:suite) do
-    SalesEngine.startup
-  end
-end
+#Eventually just require the main file and all the other files
+# in lib will get required
+
+require 'sales_engine.rb'
+require 'sales_engine/customer.rb'
+require 'sales_engine/item.rb'
+require 'sales_engine/invoice.rb'
+require 'sales_engine/transaction.rb'
+require 'sales_engine/merchant.rb'
+require 'sales_engine/invoice_item.rb'

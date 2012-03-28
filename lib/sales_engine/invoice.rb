@@ -11,7 +11,7 @@ module SalesEngine
     ]
 
     attr_accessor :id, :customer_id, :merchant_id, :status,
-                  :created_at, :updated_at
+                  :created_at, :updated_at, :result
 
     def initialize(attributes)
       if attributes[:id]
@@ -80,11 +80,9 @@ module SalesEngine
     end
 
     def is_successful?
+      return self.result unless self.result.nil?
       transactions = SalesEngine::Transaction.find_all_by_invoice_id(self.id)
-
-      transactions.any? do |transaction|
-        transaction.is_successful?
-      end
+      self.result = transactions.any? { |transaction| transaction.is_successful? }
     end
 
     def self.successful_invoices
