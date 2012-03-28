@@ -32,7 +32,9 @@ module SalesEngine
     end
 
     def invoices_on_date(date)
-      date = Date.parse(date)
+      puts date.inspect
+      puts date.class
+      date = SalesEngine::Merchant.clean_date(date)
       invoices.select {|inv| inv.created_at == date}
     end
 
@@ -63,8 +65,8 @@ module SalesEngine
     def paid_invoices_by_customer
       customer_data = { }
       paid_invoices.each do |invoice|
-        customer_data[ invoice.customer_id.to_sym ] ||= 0
-        customer_data[ invoice.customer_id.to_sym ] += 1
+        customer_data[ invoice.customer_id.to_s.to_sym ] ||= 0
+        customer_data[ invoice.customer_id.to_s.to_sym ] += 1
       end
       customer_data
     end
@@ -96,7 +98,6 @@ module SalesEngine
     def self.total_revenue_on_date(date)
       total_revenue = BigDecimal.new("0.00")
       SalesEngine::Invoice.successful_invoices.each do |i|
-        dt = i.created_at
         if clean_date(date) == i.created_at
           total_revenue += i.invoice_revenue
         end
