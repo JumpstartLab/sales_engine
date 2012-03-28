@@ -1,3 +1,4 @@
+require 'logger'
 module SalesEngine
   class Merchant < Record
     attr_accessor :name
@@ -8,33 +9,13 @@ module SalesEngine
     end
 
     def self.most_revenue(merchant_count)
-      revenue_tracker = []
-      return_merchants = []
-      SalesEngine::Database.instance.merchants.each { |merchant|
-        revenue = BigDecimal.new("0")
-        merchant.invoices.each { |invoice| revenue += invoice.total_revenue }
-        revenue_tracker << { :merchant => merchant, :total_revenue => revenue } }
-      sorted_merchants = revenue_tracker.sort_by { |merchant| merchant[:total_revenue] }
-      SalesEngine::Merchant.pop_merchants(merchant_count, sorted_merchants)
+      SalesEngine::Database.instance.merchants.sort_by { |merchant|
+        merchant.revenue }.pop_multiple(merchant_count)
     end
-
+    
     def self.most_items(merchant_count)
-      item_tracker = []
-      SalesEngine::Database.instance.merchants.each { |merchant|
-        total_item_count = 0
-        merchant.invoices.each { |invoice| total_item_count += invoice.total_items }
-        item_tracker << { :merchant => merchant, :item_count => total_item_count } }
-      sorted_merchants = item_tracker.sort_by { |merchant| merchant[:item_count] }
-      SalesEngine::Merchant.pop_merchants(merchant_count, sorted_merchants)
-    end
-
-    def self.pop_merchants(pop_count, merchant_list)
-      return_merchants = []
-      pop_count.times do
-        element = merchant_list.pop
-        return_merchants << element[:merchant]
-      end
-      return_merchants
+      sorted_list = SalesEngine::Database.instance.merchants.sort_by { |merchant|
+        merchant.total_items_sold }.pop_multiple(merchant_count)
     end
 
     def self.revenue(date)
@@ -42,6 +23,10 @@ module SalesEngine
       SalesEngine::Invoice.find_all_created_on(date).each { |invoice|
         revenue += invoice.total_revenue }
         revenue
+    end
+
+    def total_items_sold
+      invoices.collect { |invoice| invoice.total_items }.sum
     end
 
     def revenue(date=nil)
