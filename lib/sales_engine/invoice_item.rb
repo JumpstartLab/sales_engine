@@ -67,7 +67,7 @@ module SalesEngine
     end
 
     def date
-      @date ||= SalesEngine::Invoice.find_by_id(invoice_id).created_at
+      @date ||= invoice.created_at
     end
 
     private

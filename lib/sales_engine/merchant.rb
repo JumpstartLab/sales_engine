@@ -71,6 +71,7 @@ module SalesEngine
       end
     end
 
+    ## REFACTOR THIS TO ONLY REACH OUT TO CUSTOMER ONCE
     def favorite_customer
       inv = invoices.group_by { |i| i.customer_id }
       fc_id = inv.sort_by{ |i| i.last.size }.last.first
