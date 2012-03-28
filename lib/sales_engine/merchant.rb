@@ -17,5 +17,13 @@ module SalesEngine
       @name = name
       update!
     end
+
+    def items
+      Item.find_all_by_merchant_id(self.id)
+    end
+
+    def invoices
+      Invoice.find_all_by_merchant_id(self.id)
+    end
   end
 end

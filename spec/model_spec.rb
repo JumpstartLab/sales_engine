@@ -28,16 +28,21 @@ describe SalesEngine::Model do
     it "has an id" do
       valid_sample.id.should_not be_nil
     end
+
     it "doesn't create a model with a blank id" do
       expect do
         SalesEngine::ModelSample.new(:id => "") 
       end.to raise_error(ArgumentError)
     end
 
-    it "raises an error unless given an integer id" do
+    it "raises an error when given a float id" do
       expect do
         SalesEngine::ModelSample.new :id => 1.5 
       end.to raise_error ArgumentError
+    end
+
+    it "converts a string id to an integer" do
+      SalesEngine::ModelSample.new(:id => '1').should_not be_nil
     end
   end
 
@@ -56,6 +61,15 @@ describe SalesEngine::Model do
       valid_sample.created_at.should == date
     end
 
+    it "converts a string created_at to a DateTime object" do
+      string_date_sample = SalesEngine::ModelSample.new(:id => 1, :created_at => '2012-03-27T16:25:22-04:00')
+      string_date_sample.created_at.should be_a DateTime
+    end
+
+    it "converts a string updated_at to a DateTime object" do
+      string_date_sample = SalesEngine::ModelSample.new(:id => 1, :updated_at => '2012-03-27T16:25:22-04:00')
+      string_date_sample.updated_at.should be_a DateTime
+    end
   end
 
   context "updated_at attribute" do
@@ -118,6 +132,13 @@ describe SalesEngine::Model do
       valid_sample = SalesEngine::ModelSample.new(attribute1 => 7, attribute2 => Date.today)
       valid_sample.attributes.should include :id
       valid_sample.attributes.should include :updated_at
+    end
+  end
+
+  context "#find_by_" do
+    it "created_at" do
+      valid_sample
+      SalesEngine::ModelSample.find_by_created_at(valid_sample.created_at).should be valid_sample
     end
   end
 end

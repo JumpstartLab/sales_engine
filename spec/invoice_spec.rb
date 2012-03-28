@@ -9,8 +9,8 @@ describe SalesEngine::Invoice do
     valid_invoice.should_not be_nil
   end
 
-  it "has a customer" do
-    valid_invoice.customer.should_not be_nil
+  it "has a customer_id" do
+    valid_invoice.customer_id.should_not be_nil
   end
 
   it "can't be created with a nil customer" do
@@ -24,8 +24,8 @@ describe SalesEngine::Invoice do
     end.to raise_error ArgumentError
   end
 
-  it "has a merchant" do
-    valid_invoice.merchant.should_not be_nil
+  it "has a merchant_id" do
+    valid_invoice.merchant_id.should_not be_nil
   end
 
   it "can't be created with a nil merchant" do
