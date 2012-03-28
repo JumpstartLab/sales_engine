@@ -14,7 +14,7 @@ module SalesEngine
       self.item_id    = attributes[:item_id]
       self.invoice_id = attributes[:invoice_id]
       self.quantity   = attributes[:quantity]
-      self.unit_price = attributes[:unit_price]
+      self.unit_price = BigDecimal.new(attributes[:unit_price])/100
       self.created_at = attributes[:created_at]
       self.updated_at = attributes[:updated_at]
     end
@@ -33,7 +33,7 @@ module SalesEngine
     end
 
     def total
-      @total ||= (self.quantity.to_f * self.unit_price.to_f)/100
+      @total ||= (self.quantity.to_i * self.unit_price)
     end
 
     def inv_success
