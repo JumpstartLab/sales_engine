@@ -106,14 +106,15 @@ describe SalesEngine::Merchant do
     end
   end
 
-  describe "#revenue(*date)"
-  date="2012-02-14"
-  it "returns a revenue in BigDecimal for the merchant if no date provided" do
-    SalesEngine::Merchant.random.revenue.class.should ==BigDecimal
-  end
+  describe "#revenue(*date)" do
+    date="2012-02-14"
+    it "returns a revenue in BigDecimal for the merchant if no date provided" do
+      SalesEngine::Merchant.random.revenue.class.should ==BigDecimal
+    end
 
-  it "returns a revenue in BigDecimal for the merchant by date if a date is provided" do
-    SalesEngine::Merchant.random.revenue(date).class.should ==BigDecimal
+    it "returns a revenue in BigDecimal for the merchant by date if a date is provided" do
+      SalesEngine::Merchant.random.revenue(date).class.should ==BigDecimal
+    end
   end
 
   describe ".most_items(x)" do

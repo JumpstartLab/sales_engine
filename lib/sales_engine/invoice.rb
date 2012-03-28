@@ -58,7 +58,7 @@ module SalesEngine
     end
 
     def invoice_items
-      invoice_items_array.select { |inv| inv.invoice_id == id}
+      @invoice_items ||= invoice_items_array.select { |inv| inv.invoice_id == id}
     end
 
     def items
@@ -91,5 +91,58 @@ module SalesEngine
       rev
     end
 
+    def self.create(attributes)
+      new_invoice_id = DataStore.instance.invoices.count + 1
+      invoice = SalesEngine::Invoice.new(:id => new_invoice_id,
+        :customer_id => attributes[:customer].id,
+        :merchant_id => attributes[:merchant].id,
+        :status => attributes[:status],
+        :created_at => Time.now.utc.to_s,
+        :updated_at => Time.now.utc.to_s)
+      DataStore.instance.invoices << invoice
+      self.item_hash(attributes, new_invoice_id)
+      invoice
+    end
+
+    def self.item_hash(attributes, new_invoice_id)
+      item_hash={}
+      attributes[:items].each do |item|
+        if item_hash.has_key?(item)
+          item_hash[item] += 1
+        else
+          item_hash[item] = 1
+        end
+      end
+      self.create_inv_items(item_hash, new_invoice_id)
+    end
+
+    def self.create_inv_items(item_hash, new_invoice_id)
+      increment = 1
+      item_hash.each do |item, quantity|
+        invoice_item = SalesEngine::InvoiceItem.new(:id=> DataStore.instance.invoice_items.count + increment,
+          :invoice_id => new_invoice_id,
+          :item_id => item.id,
+          :quantity => quantity,
+          :unit_price => item.unit_price,
+          :created_at => Time.now.utc.to_s,
+          :updated_at => Time.now.utc.to_s)
+        DataStore.instance.invoice_items << invoice_item
+        increment += 1 
+      end
+    end
+
+    def charge(attributes)
+      new_transaction_id = DataStore.instance.transactions.count + 1
+      transaction = SalesEngine::Transaction.new(:id => new_transaction_id,
+        :credit_card_number => attributes[:credit_card_number],
+        :credit_card_expiration_date => attributes[:credit_card_expiration_date],
+        :invoice_id => id,
+        :result => attributes[:result],
+        :created_at => Time.now.utc.to_s,
+        :updated_at => Time.now.utc.to_s)
+      DataStore.instance.transactions << transaction
+      transaction
+    end
   end
 end
+

@@ -1,5 +1,6 @@
 require 'csv'
 require 'bigdecimal'
+require 'date'
 require 'bundler'
 require 'sales_engine/customer'
 require 'sales_engine/invoice'

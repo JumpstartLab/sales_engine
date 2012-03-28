@@ -44,7 +44,7 @@ module SalesEngine
     end
 
     def invoices
-      invoices_array.select { |inv| inv.customer_id == id}
+      @invoices ||= invoices_array.select { |inv| inv.customer_id == id}
     end
 
     def successful_invoices
