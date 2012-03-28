@@ -13,7 +13,19 @@ module SalesEngine
     end
 
     def self.collection
-      SalesEngine::Database.instance.transactions
+      database.transactions
+    end
+
+    def self.database
+      SalesEngine::Database.instance
+    end
+
+    def database
+      @database ||= SalesEngine::Database.instance
+    end
+
+    def database=(input)
+      @database = input
     end
 
     def invoice

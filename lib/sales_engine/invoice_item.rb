@@ -13,7 +13,19 @@ module SalesEngine
     end
 
     def self.collection
-      SalesEngine::Database.instance.invoiceitems
+      database.invoiceitems
+    end
+
+    def self.database
+      SalesEngine::Database.instance
+    end
+
+    def database
+      @database ||= SalesEngine::Database.instance
+    end
+
+    def database=(input)
+      @database = input
     end
 
     def invoice
@@ -30,5 +42,9 @@ module SalesEngine
       quantity.to_i * unit_price.to_i
     end
  
+    def total
+      @total ||= quantity.to_i * unit_price.to_i
+    end
+
   end
 end

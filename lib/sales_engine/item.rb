@@ -38,32 +38,43 @@ module SalesEngine
     end
 
     def self.collection
-      SalesEngine::Database.instance.items
+      database.items
+    end
+
+    def self.database
+      SalesEngine::Database.instance
+    end
+
+    def database
+      @database ||= SalesEngine::Database.instance
+    end
+
+    def database=(input)
+      @database = input
     end
 
     def invoice_items
-      invoiceitems = SalesEngine::Database.instance.invoiceitems
-      matched_invoiceitems = invoiceitems.select { |invoiceitem| invoiceitem.item_id == self.id }
+      matched_invoiceitems = database.invoiceitems.select { |invoice_item| invoice_item.item_id == self.id }
     end
     
     def merchant
-      merchants = SalesEngine::Database.instance.merchants
+      merchants = database.merchants
       matched_merchants = merchants.select { |merchant| merchant.id == self.merchant_id }
       matched_merchants[0]
     end
 
     ####REVENUE####
 
-    def items_revenue
-      self.invoice_items.inject(0){ |acc,num| num.revenue + acc }
+    def revenue
+      @total ||= invoice_items.inject(0){ |acc,num| num.revenue + acc }
     end
 
-    def self.sort_revenue_list
-      collection[0..2].sort { |a,b| b.items_revenue <=> a.items_revenue }
+    def self.sort_by_revenue
+      collection.sort { |a,b| b.revenue <=> a.revenue }
     end
 
     def self.most_revenue(param)
-      sort_revenue_list[0...param]
+      sort_by_revenue[0...param]
     end
 
     ######ITEM######

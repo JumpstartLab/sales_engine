@@ -33,7 +33,19 @@ module SalesEngine
     end
 
     def self.collection
-      SalesEngine::Database.instance.merchants
+      database.merchants
+    end
+
+    def self.database
+      SalesEngine::Database.instance
+    end
+
+    def database
+      @database ||= SalesEngine::Database.instance
+    end
+
+    def database=(input)
+      @database = input
     end
 
     def items
@@ -46,13 +58,23 @@ module SalesEngine
       results = invoices.select { |invoice| invoice.merchant_id == self.id }
     end
 
-    def merchants_revenue
-      self.invoice_items.inject(0){ |acc,num| num.revenue + acc }
+    # def merchants_revenue
+    #   self.invoice_items.inject(0){ |acc,num| num.revenue + acc }
+    # end
+
+    def self.most_revenue(param)
+      @most_revenue ||= collection.sort_by { |m| m.revenue }.last
     end
 
-    # def most_revenue()
-    #   # returns the top x merchant instances ranked by total revenue
-    # end
+    def revenue
+      @revenue ||= paid_invoices.collect { |i| i.revenue }.sum
+    end
+
+    def paid_invoices
+      invoices.select do |i|
+        i.paid?
+      end
+    end
 
     # def most_items()
     #   # returns the top x merchant instances ranked by total number of items sold

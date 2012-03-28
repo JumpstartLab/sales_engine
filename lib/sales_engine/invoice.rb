@@ -34,30 +34,59 @@ module SalesEngine
     end
 
     def self.collection
-      SalesEngine::Database.instance.invoices
+      database.invoices
+    end
+
+    def self.database
+      SalesEngine::Database.instance
+    end
+
+    def database
+      @database ||= SalesEngine::Database.instance
+    end
+
+    def database=(input)
+      @database = input
     end
 
     def transactions
-      items = SalesEngine::Database.instance.transactions
-      results = items.select { |transaction| transaction.invoice_id == self.id }
+      database.transactions.select { |transaction| transaction.invoice_id == self.id }
     end
 
     def invoice_items
-      items = SalesEngine::Database.instance.invoiceitems
-      results = items.select { |invoiceitem| invoiceitem.invoice_id == self.id }
+      results = database.invoiceitems.select { |invoiceitem| invoiceitem.invoice_id == self.id }
     end
 
     def items
-      invoiceitems = SalesEngine::Database.instance.invoiceitems
-      matched_invoiceitems = invoiceitems.select { |invoiceitem| invoiceitem.invoice_id == self.id }
-      item_ids = matched_invoiceitems.map { |invoiceitem| invoiceitem.item_id }
-      matched_items = item_ids.map { |item_id| SalesEngine::Item.find_by_id(item_id) }
+      get_item_ids.map { |item_id| SalesEngine::Item.find_by_id(item_id) }
+    end
+
+    def get_item_ids
+      matched_invoiceitems.map { |invoiceitem| invoiceitem.item_id }
+    end
+
+    def matched_invoiceitems
+      database.invoiceitems.select { |invoiceitem| invoiceitem.invoice_id == self.id }
     end
 
     def customer
-      customers = SalesEngine::Database.instance.customers
-      matched_customers = customers.select { |customer| customer.id == self.customer_id }
       matched_customers[0]
+    end
+
+    def matched_customers
+      database.customers.select { |customer| customer.id == self.customer_id }
+    end
+
+    def paid?
+      transactions.any? { |t| t.successful? }
+    end
+
+    def successful?
+      result == "success"
+    end
+
+    def total_amount
+      @total ||= invoice_items.map { |inv_item| inv_item.total }.sum
     end
 
   end

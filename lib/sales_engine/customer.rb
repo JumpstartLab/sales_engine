@@ -35,29 +35,46 @@ module SalesEngine
     end
 
     def self.collection
-      SalesEngine::Database.instance.customers
+      database.customers
+    end
+
+    def self.database
+      SalesEngine::Database.instance
+    end
+
+    def database
+      @database ||= SalesEngine::Database.instance
+    end
+
+    def database=(input)
+      @database = input
     end
 
     def invoices
-      invoices = SalesEngine::Database.instance.invoices
-      results = invoices.select { |invoice| invoice.customer_id == self.id }
-    end
-
-    def favorite_merchant
-      invoices = SalesEngine::Database.instance.invoices
-      matched_invoices = SalesEngine::Invoice.find_all_by_customer_id(self.id)
-      result_hash = matched_invoices.group_by { |invoice| invoice.merchant_id }
-      fav_merch_id = result_hash.keys.last
-      SalesEngine::Merchant.find_by_id(fav_merch_id)
+      database.invoices.select { |invoice| invoice.customer_id == self.id }
     end
 
     def transactions
-      matched_invoices = SalesEngine::Invoice.find_all_by_customer_id(self.id)
-      matched_ids = matched_invoices.map { |invoice| invoice.id }
-      transactions = SalesEngine::Database.instance.transactions
-      transactions.select do |transaction|
-        matched_ids.include? transaction.invoice_id
+      database.transactions.select do |transaction|
+        extracted_ids.include? transaction.invoice_id
       end
+    end
+
+    def extracted_ids
+      matched_invoices.map { |invoice| invoice.id }
+    end
+
+    def matched_invoices
+      SalesEngine::Invoice.find_all_by_customer_id(self.id)
+    end
+
+    def favorite_merchant
+      SalesEngine::Merchant.find_by_id(fav_merch_id)
+    end
+
+    def fav_merch_id
+      result_hash = matched_invoices.group_by { |invoice| invoice.merchant_id }
+      result_hash.keys.last
     end
 
   end
