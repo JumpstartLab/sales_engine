@@ -38,7 +38,7 @@ module SalesEngine
       if date
         Database.instance.invoice_items_by_merchant_for_date(id, date)
       else 
-        Database.instance.invoice_items_by_merchant(id)
+        InvoiceItem.for_merchant(id)
       end
     end
 

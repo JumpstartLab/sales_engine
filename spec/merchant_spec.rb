@@ -101,9 +101,8 @@ describe SalesEngine::Merchant do
 
     context "when date is not passed" do
       it "delgates to the Database#invoice_items_by_merchant" do
-          SalesEngine::Database.instance.should_receive(
-            :invoice_items_by_merchant).with(3)
-          merchant.invoice_items
+          SalesEngine::InvoiceItem.stub(:for_merchant).with(3).and_return([invoice_item])
+          merchant.invoice_items.should == [invoice_item]
       end
     end
   end

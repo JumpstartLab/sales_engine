@@ -1,10 +1,13 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib')).uniq!
 require "sales_engine"
 require "sales_engine/database"
+require "sales_engine/invoice_item_finder"
 
 module SalesEngine
   class InvoiceItem
     include SalesEngine
+    extend InvoiceItemFinder
+
     attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price,
     :created_at, :updated_at
 

@@ -12,3 +12,7 @@ require 'faker'
 require 'sqlite3'
 
 require 'sales_engine'
+
+sqlite_db = SQLite3::Database.new(':memory:')
+Loader.new(sqlite_db).load
+SalesEngine::Database.instance.db = sqlite_db
