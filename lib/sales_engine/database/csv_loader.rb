@@ -4,6 +4,13 @@ require "./data_cleaner"
 require "drb"
 require "rinda/ring"
 require "csv"
+require 'customer'
+require 'transaction'
+require 'merchant'
+require 'item'
+require 'invoice'
+require 'invoice_item'
+require 'class_methods'
 
 class CSVLoader
   include DRbUndumped
@@ -19,7 +26,7 @@ class CSVLoader
   def load_file(filename)
     file = load(filename)
     method_name = filename.gsub("s.csv","")
-    klass_name = method_name.camelize
+    klass_name = "#{method_name.camelize}"
     klass = Kernel.const_get(klass_name)
     instances = file_to_objects(file, klass)
     send_instances_to_db(method_name, instances)
