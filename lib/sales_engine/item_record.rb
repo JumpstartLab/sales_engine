@@ -3,11 +3,11 @@ module SalesEngine
      def items 
        items = []
        Database.instance.db.execute("select * from items") do |row|
-         id = row[0]
+         id = row[0].to_i
          name = row[1]
          description = row[2]
-         unit_price = row[3]
-         merchant_id = row[4]
+         unit_price = row[3].to_i
+         merchant_id = row[4].to_i
          created_at = row[5]
          updated_at = row[6]
          items << Item.new(id, name, description, unit_price, 

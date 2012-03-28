@@ -50,7 +50,7 @@ class Loader
       id integer primary key, 
       name text,
       description text,
-      unit_price integer,
+      unit_price real,
       merchant_id integer,
       created_at text, 
       updated_at text,
@@ -63,7 +63,7 @@ class Loader
     file.each do |line|
       database.execute("insert into items values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:name], line[:description], 
-                       line[:unit_price].to_i, line[:merchant_id].to_i,
+                       line[:unit_price].to_i/100, line[:merchant_id].to_i,
                        line[:created_at], line[:updated_at],
                        line[:created_at][0, 19], line[:updated_at][0, 19])
     end
