@@ -12,17 +12,17 @@ module SalesEngine
     end
   end
 
-  describe "#customers_by_merchant" do
+  describe "#for_merchant" do
     context "customers for merchant exist" do
       it "returns a array of customers" do
-        rows = CustomerRecordTest.customers_by_merchant(1)
+        rows = CustomerRecordTest.for_merchant(1)
         rows.length.should == 51 
       end
     end
 
     context "customers for merchant doesn't exists" do
       it "returns an empty array" do
-        rows = CustomerRecordTest.customers_by_merchant(1000)
+        rows = CustomerRecordTest.for_merchant(1000)
         rows.length.should == 0 
       end
     end
