@@ -7,12 +7,6 @@ describe SalesEngine::Database do
     end
   end
 
-  describe "#items" do
-    it "returns all items" do
-      SalesEngine::Database.instance.items.length.should == 2415
-    end
-  end
-
   describe "#customers" do
     it "returns all customers" do
       SalesEngine::Database.instance.customers.length.should == 1000

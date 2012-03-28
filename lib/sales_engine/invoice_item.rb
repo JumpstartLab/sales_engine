@@ -22,7 +22,7 @@ module SalesEngine
     end               
 
     def self.elements
-      SalesEngine::Database.instance.invoice_items
+      invoice_items
     end
 
     def item 

@@ -1,10 +1,12 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib')).uniq!
 require "sales_engine"
 require "sales_engine/database"
+require "sales_engine/item_record"
 
 module SalesEngine
   class Item
     include SalesEngine
+    extend ItemRecord
     attr_accessor :id, :name, :description, :unit_price,
     :merchant_id, :created_at, :updated_at
 
@@ -19,7 +21,7 @@ module SalesEngine
     end               
 
     def self.elements
-      SalesEngine::Database.instance.items
+      items
     end
 
     def merchant

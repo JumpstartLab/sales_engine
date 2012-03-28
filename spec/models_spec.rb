@@ -1,9 +1,9 @@
 require "spec_helper"
 
 describe "Models" do
-  models = {SalesEngine::Merchant => "merchants" }
-            #SalesEngine::Item => "items",
-            #SalesEngine::InvoiceItem => "invoice_items",
+  models = {SalesEngine::Merchant => "merchants", 
+            SalesEngine::Item => "items", 
+            SalesEngine::InvoiceItem => "invoice_items" }
             #SalesEngine::Invoice => "invoices",
             #SalesEngine::Transaction => "transactions",
             #SalesEngine::Customer => "customers"}
