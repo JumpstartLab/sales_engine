@@ -14,7 +14,7 @@ module SalesEngine
       customers 
     end
 
-    def customers_by_merchant(merchant_id)
+    def for_merchant(merchant_id)
       customers = []
       query = "select * from customers
                 INNER JOIN invoices on customers.id = invoices.customer_id
