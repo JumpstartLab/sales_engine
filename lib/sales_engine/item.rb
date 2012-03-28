@@ -1,5 +1,6 @@
 require 'sales_engine/searchable'
 require 'sales_engine/randomize'
+require 'bigdecimal'
 
 module SalesEngine
   class Item
@@ -50,6 +51,38 @@ module SalesEngine
       matched_merchants = merchants.select { |merchant| merchant.id == self.merchant_id }
       matched_merchants[0]
     end
+
+    ####REVENUE####
+
+    def items_revenue
+      self.invoice_items.inject(0){ |acc,num| num.revenue + acc }
+    end
+
+    def self.sort_revenue_list
+      collection[0..2].sort { |a,b| b.items_revenue <=> a.items_revenue }
+    end
+
+    def self.most_revenue(param)
+      sort_revenue_list[0...param]
+    end
+
+    ######ITEM######
+
+    def items_quantity
+      self.invoice_items.inject(0){ |acc,num| num.quantity.to_i + acc }
+    end
+
+    def self.sort_items_list
+      collection.sort { |a,b| b.items_quantity <=> a.items_quantity }
+    end
+
+    def self.most_items(param)
+      sort_items_list[0...param]
+    end
+
+    ####BEST-DAY####
+
+    
 
   end
 end

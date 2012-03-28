@@ -31,6 +31,7 @@ describe SalesEngine::InvoiceItem do
       invoiceitems.should_not be_empty
     end
   end
+  
   describe '#invoice' do
     it 'returns an invoice' do
       invoiceitems[0].invoice.class.should == SalesEngine::Invoice
@@ -39,12 +40,19 @@ describe SalesEngine::InvoiceItem do
       invoiceitems[0].invoice.id.to_i.should == invoice_item.invoice_id
     end
   end
+  
   describe '#item' do
     it 'returns an item' do
       invoiceitems[0].item.class.should == SalesEngine::Item
     end
     it 'matches item id with instantiated invoice item\'s item_id' do
       invoiceitems[0].item.id.should == invoiceitems[0].item_id
+    end
+  end
+  
+  describe '#revenue' do
+    it 'returns revenue for invoice_item' do
+      (invoice_item.quantity * invoice_item.unit_price).should == invoice.revenue
     end
   end
 

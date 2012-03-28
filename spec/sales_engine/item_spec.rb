@@ -64,4 +64,39 @@ describe SalesEngine::Item do
       test_merchant.id.should == items[0].merchant_id
     end
   end
+
+  describe '.most_revenue(x)' do
+    pending
+  end
+
+  describe '.sort_revenue_list' do
+    pending
+  end
+
+  describe '#individual_revenue' do
+    pending
+  end
+
+  
+
+  describe '.most_items(x)' do
+    pending
+  end
+
+  describe '#best_day' do
+    pending
+  end
+
+  describe '.total_revenue' do
+    it 'returns the revenue of all invoice_items' do
+      pending
+    end
+  end
+
+  describe '#individual_revenue' do
+    it 'returns an individual item\'s revenue' do
+      pending
+    end
+  end
+
 end

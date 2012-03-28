@@ -22,6 +22,11 @@ module SalesEngine
       load_merchants
     end
 
+    def find_invoices_for_item_id(id)
+      
+      
+    end
+
 
     private
 

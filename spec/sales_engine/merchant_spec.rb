@@ -51,4 +51,33 @@ describe SalesEngine::Merchant do
       merchant.items.should == []
     end
   end
+
+  describe '.most_revenue(x)'  do
+    pending
+  end
+
+  describe '.most_items(x)' do
+    pending
+  end
+  
+  describe '.revenue(date)' do
+    pending
+  end
+  
+  describe '#revenue' do
+    pending
+  end
+  
+  describe '#revenue(date)' do
+    pending
+  end
+  
+  describe '#favorite_customer' do
+    pending
+  end
+  
+  describe '#customers_with_pending_invoices' do
+    pending
+  end
+
 end

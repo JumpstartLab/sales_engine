@@ -46,4 +46,17 @@ describe SalesEngine::Customer do
       customer.invoices.should == []
     end
   end
+
+  describe '#transactions' do
+    pending
+  end
+
+  describe '#invoices' do
+    pending
+  end
+
+  describe '#favorite_merchant' do
+    pending
+  end
+
 end

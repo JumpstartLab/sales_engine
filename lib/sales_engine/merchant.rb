@@ -46,6 +46,10 @@ module SalesEngine
       results = invoices.select { |invoice| invoice.merchant_id == self.id }
     end
 
+    def merchants_revenue
+      self.invoice_items.inject(0){ |acc,num| num.revenue + acc }
+    end
+
     # def most_revenue()
     #   # returns the top x merchant instances ranked by total revenue
     # end
