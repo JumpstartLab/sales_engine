@@ -8,6 +8,18 @@ describe SalesEngine::Merchant do
   let(:inv_one)     { mock(SalesEngine::Invoice) }
   let(:inv_two)     { mock(SalesEngine::Invoice) }
   let(:inv_three)   { mock(SalesEngine::Invoice) }
+  
+  
+  describe ".random" do
+    before(:each) do
+      merchants = [ merchant_one, merchant_two, merchant_three ]
+      SalesEngine::Database.instance.stub(:merchant_list).and_return(merchants)
+    end
+
+    it "returns a random Merchant" do
+      SalesEngine::Merchant.random.should be_a SalesEngine::Merchant
+    end
+  end
 
   describe "#invoices" do
     let(:inv_one){ SalesEngine::Invoice.new(:id => "1") }
