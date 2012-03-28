@@ -18,7 +18,7 @@ class SalesEngine
         @item_id = attributes[:item_id]
         @invoice_id = attributes[:invoice_id]
         @quantity = attributes[:quantity].to_i
-        @unit_price = attributes[:unit_price]
+        @unit_price = BigDecimal.new(attributes[:unit_price]).round(2)
     end
 
     def invoice

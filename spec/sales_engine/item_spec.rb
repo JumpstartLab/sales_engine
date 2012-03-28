@@ -73,21 +73,60 @@ describe SalesEngine::Item do
     end
   end
 
+  describe '.revenue' do
+    it "returns a Big Decimal" do
+      test_item.revenue.should be_a BigDecimal
+    end
+
+    it "gets the revenue for this item" do
+      item_1 = Fabricate(:item, :revenue => 4000)
+      item_1.revenue.should == BigDecimal.new(4000)
+    end
+  end
+
   describe ".most_revenue(x)" do
-    test_x_param = 5
+    item_1 = Fabricate(:item, :revenue => 3000)
+    item_2 = Fabricate(:item, :revenue => 1000)
+    item_3 = Fabricate(:item, :revenue => 4000)
+    item_4 = Fabricate(:item, :revenue => 2000)
+
+    item_array = [item_1, item_2, item_3, item_4]
+    test_x_param = 4
+
     context "returns the top x item instances ranked by total revenue generated" do
       it "returns an array" do
-        SalesEngine::Item.most_revenue(5).should be_an Array
+        SalesEngine::Database.instance.stub(:items).and_return(item_array)
+        SalesEngine::Item.most_revenue(4).should be_an Array
       end
 
       it "contains only items" do
+        SalesEngine::Database.instance.stub(:items).and_return(item_array)
         SalesEngine::Item.most_revenue(5).all? do |i|
           i.should be_an SalesEngine::Item
         end
       end
 
       it "contains as many items as the x parameter" do
+        SalesEngine::Database.instance.stub(:items).and_return(item_array)
         SalesEngine::Item.most_revenue(test_x_param).count.should == test_x_param
+      end
+
+      it "is ranked by revenue" do
+        SalesEngine::Database.instance.stub(:items).and_return(item_array)
+        SalesEngine::Item.most_revenue(4).first.revenue.should == 4000
+      end
+    end
+  end
+
+  describe ".most_items(x)" do
+    test_x_param = 4
+    it "returns an array" do
+      SalesEngine::Item.most_items(test_x_param).should be_an Array
+    end
+
+    it "contains only items" do
+      SalesEngine::Item.most_items(test_x_param).all? do |i|
+        i.should be_a SalesEngine::Item
       end
     end
   end

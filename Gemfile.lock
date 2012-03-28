@@ -38,4 +38,5 @@ DEPENDENCIES
   guard
   guard-rspec
   rspec
+  rspec-mocks
   simplecov

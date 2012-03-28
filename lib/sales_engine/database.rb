@@ -49,6 +49,10 @@ class SalesEngine
       @items
     end
 
+    def items=(input)
+      @items = input
+    end
+
     def load_invoices
       @invoices = []
       data = load("data/invoices.csv")

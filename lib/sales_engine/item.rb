@@ -51,7 +51,24 @@ class SalesEngine
     end
 
     def self.most_revenue(x)
-      ranked_items = SalesEngine::Database.instance.all("items").pop(x)
+      ranked_items_by_revenue = SalesEngine::Database.instance.items.sort do |a,b|
+        b.revenue <=> a.revenue
+      end
+      ranked_items_by_revenue.pop(x)
+    end
+
+    def self.most_items(x)
+      ranked_items_by_count = [SalesEngine::Database.instance.items.sample]
+    end
+
+    def revenue=(input)
+      @revenue = input
+    end
+
+    def revenue
+      result = invoice_items.inject(0) {|sum, element| sum + element.total }
+      b = BigDecimal.new(result) / 100
+      @revenue || b
     end
   end
 end
