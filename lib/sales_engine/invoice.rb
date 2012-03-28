@@ -24,15 +24,15 @@ module SalesEngine
       end
 
       def transactions
-        @transactions ||= Database.instance.invoice[id.to_i][:transactions]
+        @transactions ||= Database.instance.invoice[id][:transactions]
       end
 
       def customer
-        @customer ||= Database.instance.customer[customer_id.to_i][:self]
+        @customer ||= Database.instance.customer[customer_id][:self]
       end
 
       def invoice_items
-        @invoice_items ||= Database.instance.invoice[id.to_i][:invoice_items]
+        @invoice_items ||= Database.instance.invoice[id][:invoice_items]
       end
 
       def items
@@ -59,13 +59,13 @@ module SalesEngine
         if date
           invoice_items.inject(0) do |sum, invoice_item|
             if self.created_at == date
-              sum += invoice_item.quantity.to_i
+              sum += invoice_item.quantity
             end
             sum
           end
         else
           invoice_items.inject(0) do |sum, invoice_item|
-            sum += invoice_item.quantity.to_i
+            sum += invoice_item.quantity
           end
         end
       end
@@ -116,7 +116,7 @@ module SalesEngine
             sum += items_sold
           end
         end
-        BigDecimal.new(total_items/counter)
+        BigDecimal.new((total_items/counter).to_s)
       end
     end
   end

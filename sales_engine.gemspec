@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
- 
 require 'bundler/version'
  
 Gem::Specification.new do |s|
@@ -16,7 +15,7 @@ Gem::Specification.new do |s|
  
   s.required_rubygems_version = ">= 1.3.6"
  
-  s.add_development_dependency ["rspec", "awesome_print"]
+  s.add_development_dependency "rspec"
 
  
   s.files        = Dir.glob("{lib}/**/*")

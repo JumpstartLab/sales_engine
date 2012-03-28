@@ -1,4 +1,6 @@
+$LOAD_PATH << "lib"
 require 'csv'
+# require 'awesome_print'
 # require '../data'
 require 'sales_engine/customer'
 require 'sales_engine/transaction'

@@ -10,40 +10,37 @@ module SalesEngine
   module SearchMethods
     def self.extended(base)
       base.class_eval do
-
         class_name = base.to_s.gsub(/\w+::/, "")
         if class_name == "InvoiceItem"
           method_name = "invoice_item"
         else
           method_name = "#{class_name.downcase}"
         end
-
         self::ATTRIBUTES.each do |attribute|
           define_singleton_method("find_by_#{attribute}") do |query|
-            instances = Database.instance.send("#{method_name}")
+            instances = Database.instance.send("all_#{method_name}s")
             result = nil
-            instances.each do |id, instance|
-              if instance[:self].send("#{attribute}") == query.to_s
-                return result = instance[:self]
+            instances.each do |instance|
+              if instance.send("#{attribute}") == query.to_s
+                result = instance
               end
             end
+            result
           end
 
           define_singleton_method("find_all_by_#{attribute}") do |query|
-            instances = Database.instance.send("#{method_name}")
+            instances = Database.instance.send("all_#{method_name}s")
             results = []
-            instances.each do |id, instance|
-              if instance[:self].send("#{attribute}") == query.to_s
-                results << instance[:self]
+            instances.each do |instance|
+              if instance.send("#{attribute}") == query.to_s
+                results << instance
               end
             end
             results
           end
 
           define_singleton_method("random") do
-            instances = Database.instance.send("#{method_name}")
-            num_instances = instances.size
-            instances[rand(0...num_instances)][:self]
+            Database.instance.send("all_#{method_name}s").sample
           end
         end
       end
@@ -67,25 +64,21 @@ module SalesEngine
         send("#{key}=",value)
       end
     end
-
   end
-end
-
-
-      # ATTRIBUTES.each do |attribute|
-      #   define_singleton_method("all_#{attribute}s") do
-      #     self.instance.send("#{attribute}").collect do |i, hash|
-      #       self.instance.send("#{attribute}")[i][:self]
-      #     end
-      #   end
-      # end
-
 
   class DataCleaner
     include Singleton
 
     def clean_id(id)
       id.only_digits
+    end
+
+    def clean_unit_price(unit_price)
+      BigDecimal.new(unit_price)
+    end
+
+    def clean_name(name)
+      name.to_s
     end
 
     def clean_updated_at(date)
@@ -128,7 +121,6 @@ end
           end
           send("#{hash}=", hash_init)
         end
-
         ARRAYS.each do |array|
           send("#{array}=", [])
         end

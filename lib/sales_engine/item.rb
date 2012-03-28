@@ -12,9 +12,9 @@ module SalesEngine
 
       def initialize(attributes = {})
         define_attributes(attributes)
-        Database.instance.item[id.to_i][:self] = self
-        Database.instance.merchant[merchant_id.to_i][:items] << self
-        Database.instance.all_items[id.to_i - 1] = self
+        Database.instance.item[id][:self] = self
+        Database.instance.merchant[merchant_id][:items] << self
+        Database.instance.all_items[id - 1] = self
       end
 
       def all_items
@@ -22,11 +22,11 @@ module SalesEngine
       end
 
       def merchant
-        @merchant ||= Database.instance.merchant[merchant_id.to_i][:self]
+        @merchant ||= Database.instance.merchant[merchant_id][:self]
       end
 
       def invoice_items
-        @invoice_items ||= Database.instance.item[id.to_i][:invoice_items]
+        @invoice_items ||= Database.instance.item[id][:invoice_items]
       end
 
       def revenue
@@ -39,16 +39,14 @@ module SalesEngine
 
       def calc_items_sold
         self.invoice_items.inject(0) do |sum, invoice_item|
-          sum+=invoice_item.quantity.to_i
+          sum+=invoice_item.quantity
         end
       end
 
       def calc_revenue
-        revenue = 0
-        revenue = self.invoice_items.inject(0) do |sum, invoice_item|
-          sum += (invoice_item.quantity.to_i * invoice_item.unit_price.to_i)
-        end
-        BigDecimal.new(revenue)
+        self.invoice_items.inject(0) do |sum, invoice_item|
+          invoice_item.revenue
+        end  
       end
 
       def best_day
