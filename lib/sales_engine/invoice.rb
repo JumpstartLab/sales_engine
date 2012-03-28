@@ -79,6 +79,11 @@ module SalesEngine
     end
 
     # ASSHOLE
+
+    def self.average_revenue
+        SalesEngine::InvoiceItem.total_revenue / self.successful_invoices.size
+    end
+
     #def self.average_revenue(*date)
     #   invoices = SalesEngine::Database.instance.invoice_list
       # puts SalesEngine::InvoiceItem.total_revenue.inspect
