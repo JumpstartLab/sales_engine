@@ -1,7 +1,7 @@
 module SalesEngine
   require 'sales_engine/dynamic_finder'
   class Invoice
-    INVOICE_ATTS = [ 
+    INVOICE_ATTS = [
       "id",
       "customer_id",
       "merchant_id",
@@ -10,15 +10,20 @@ module SalesEngine
       "updated_at"
     ]
 
-    attr_accessor :id, :customer_id, :merchant_id, :status, :created_at, :updated_at
+    attr_accessor :id, :customer_id, :merchant_id, :status,
+                  :created_at, :updated_at
 
     def initialize(attributes)
       self.id = attributes[:id]
       self.customer_id = attributes[:customer_id]
       self.merchant_id = attributes[:merchant_id]
       self.status = attributes[:status]
-      self.created_at = Time.parse(attributes[:created_at]) if attributes[:created_at]
-      self.updated_at = Time.parse(attributes[:updated_at]) if attributes[:updated_at]
+      if attributes[:created_at]
+        self.created_at = Time.parse(attributes[:created_at])
+      end
+      if attributes[:updated_at]
+        self.updated_at = Time.parse(attributes[:updated_at])
+      end
     end
 
     def self.attributes_for_finders
@@ -65,8 +70,8 @@ module SalesEngine
       success_trans = SalesEngine::Transaction.find_all_by_result("success")
       success_trans.collect { |trans| find_by_id(trans.invoice_id) }
     end
-    
-    def self.pending    
+
+    def self.pending
       SalesEngine::Database.instance.invoice_list - successful_invoices
     end
 
@@ -78,7 +83,7 @@ module SalesEngine
       end
     end
 
-    # ASSHOLE
+    # bad method
 
     def self.average_revenue
         SalesEngine::InvoiceItem.total_revenue / self.successful_invoices.size
@@ -88,7 +93,7 @@ module SalesEngine
     #   invoices = SalesEngine::Database.instance.invoice_list
       # puts SalesEngine::InvoiceItem.total_revenue.inspect
       # avg_rev = SalesEngine::InvoiceItem.total_revenue / invoices.size
-      
+
       # avg_rev = avg_rev.to_f.round(2)
 
       #   #collect all the invoice ids that happened on date
@@ -100,12 +105,13 @@ module SalesEngine
       #   inv_on_date = find_all_successful_invoices_by_date(date)
       #   inv_ids_on_date = inv_on_date.collect { |inv| inv.id }
       #   inv_ids_on_date.each do |inv_id|
-      #     total_rev += SalesEngine::InvoiceItem.total_revenue_by_invoice_id(inv_id)
+      #     rev = SalesEngine::InvoiceItem.total_revenue_by_invoice_id(inv_id)
+      #     total_rev += rev
       #   end
-        
+
       #   return 0 if inv_on_date.empty?
       #   avg_rev = total_rev / inv_on_date.size
-      #   # SalesEngine::InvoiceItem.total_revenue(date) / find_all_by_date(date)
+      #   SalesEngine::InvoiceItem.total_revenue(date) / find_all_by_date(date)
 
     # end
 

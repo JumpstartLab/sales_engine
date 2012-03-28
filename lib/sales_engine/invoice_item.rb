@@ -1,7 +1,8 @@
 module SalesEngine
   require 'sales_engine/dynamic_finder'
   class InvoiceItem
-    attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :created_at, :updated_at, :date
+    attr_accessor :id, :item_id, :invoice_id, :quantity,
+                  :unit_price, :created_at, :updated_at, :date
 
     def initialize(attributes)
       self.id = attributes[:id]
@@ -9,8 +10,12 @@ module SalesEngine
       self.invoice_id = attributes[:invoice_id]
       self.quantity =   attributes[:quantity].to_i
       self.unit_price = BigDecimal.new(attributes[:unit_price]).round(2)
-      self.created_at = Time.parse(attributes[:created_at]) if attributes[:created_at]
-      self.updated_at = Time.parse(attributes[:updated_at]) if attributes[:updated_at]
+      if attributes[:created_at]
+        self.created_at = Time.parse(attributes[:created_at])
+      end
+      if attributes[:updated_at]
+        self.updated_at = Time.parse(attributes[:updated_at])
+      end
     end
 
     def self.total_revenue
@@ -18,7 +23,7 @@ module SalesEngine
       total_revenue = BigDecimal.new("0.00")
       data = successful_invoice_items
       data.each do |invoice_item|
-        total_revenue += invoice_item.quantity * invoice_item.unit_price
+        total_revenue += invoice_item.revenue
       end
       total_revenue
     end
@@ -26,9 +31,13 @@ module SalesEngine
     def self.total_revenue_by_invoice_id(invoice_id)
       total_revenue = BigDecimal.new("0.00")
       find_all_by_invoice_id(invoice_id).each do |i_i|
-        total_revenue += i_i.quantity * i_i.unit_price
+        total_revenue += i_i.revenue
       end
       total_revenue
+    end
+
+    def revenue
+      self.quantity * self.unit_price
     end
 
     def invoice
@@ -49,15 +58,17 @@ module SalesEngine
 
     def self.successful_invoice_items
       invoice_item_list = SalesEngine::Database.instance.invoice_item_list
-      
-      successful_list = invoice_item_list.select do |invoice_item| 
-        invoice_item.is_successful? 
+
+      successful_list = invoice_item_list.select do |invoice_item|
+        invoice_item.is_successful?
       end
     end
 
     # def self.total_revenue_by_invoice_ids(invoice_ids)
     #   total_revenue = BigDecimal.new("0")
-    #   data = invoice_ids.collect { |invoice_id| find_all_by_invoice_id(invoice_id) }
+    #   data = invoice_ids.collect do |invoice_id|
+    #     find_all_by_invoice_id(invoice_id)
+    #   end
     #   data.each do |i_i|
     #     total_revenue += i_i.quantity * i_i.unit_price
     #   end

@@ -2,10 +2,14 @@ require 'spec_helper.rb'
 
 describe SalesEngine::InvoiceItem do
 
-  let(:inv_item_one){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "3",
-                                                    :invoice_id => "1",  :item_id => "1" ) }
-  let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "1", :quantity => "3",
-                                                    :invoice_id => "2", :item_id => "2" ) } 
+  let(:inv_item_one){ SalesEngine::InvoiceItem.new( :unit_price => "10",
+                                                    :quantity => "3",
+                                                    :invoice_id => "1",
+                                                    :item_id => "1" ) }
+  let(:inv_item_two){ SalesEngine::InvoiceItem.new( :unit_price => "1",
+                                                    :quantity => "3",
+                                                    :invoice_id => "2",
+                                                    :item_id => "2" ) }
   let(:inv_one)   { SalesEngine::Invoice.new( :id => "1", :customer_id => "1",
                                    :updated_at => "2012-2-19" ) }
   let(:inv_two)   { SalesEngine::Invoice.new( :id => "2", :customer_id => "2",
@@ -13,11 +17,15 @@ describe SalesEngine::InvoiceItem do
   let(:item_one){ SalesEngine::Item.new( :id => "1", :merchant_id => "1") }
   let(:item_two){ SalesEngine::Item.new( :id => "2", :merchant_id => "2") }
   let(:tr_one)   { SalesEngine::Transaction.new( :invoice_id => "1") }
-  let(:tr_two)   { SalesEngine::Transaction.new( :invoice_id => "2", :result => "failure") }
-  let(:tr_three) { SalesEngine::Transaction.new( :invoice_id => "2", :result => "success") }
-  let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "3", :result => "failure") }
-  let(:transaction_list) {SalesEngine::Database.instance.transaction_list = [ tr_one, tr_two, tr_three, tr_four ]}
-  let(:invoice_list) {SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two ]}
+  let(:tr_two)   { SalesEngine::Transaction.new( :invoice_id => "2",
+                                                 :result => "failure") }
+  let(:tr_three) { SalesEngine::Transaction.new( :invoice_id => "2",
+                                                 :result => "success") }
+  let(:tr_four)  { SalesEngine::Transaction.new( :invoice_id => "3", 
+                                                 :result => "failure") }
+  let (:transactions )   { [ tr_one, tr_two, tr_three, tr_four ] }
+  let(:transaction_list) { SalesEngine::Database.instance.transaction_list = transactions }
+  let(:invoice_list) { SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two ]}
 
   describe "#invoice" do
     it "returns an instance of invoice associated with the instance" do
@@ -65,7 +73,8 @@ describe SalesEngine::InvoiceItem do
   end
 
   describe ".total_revenue" do
-    it "returns the total revenue for all invoice items with successful transactions" do
+    it "returns the total revenue for all invoice items with successful
+    transactions" do
       transaction_list
       invoice_list
       SalesEngine::InvoiceItem.total_revenue.should == 3
@@ -79,13 +88,15 @@ describe SalesEngine::InvoiceItem do
       invoice_list
     end
 
-    context "when an invoice item is on an invoice with at least one successful transaction" do 
+    context "when an invoice item is on an invoice with at least one successful
+    transaction" do
       it "returns one successful transaction" do
         inv_item_two.is_successful?.should be_true
       end
     end
-    
-    context "when an invoice item is on an invoice that has no successful transactions" do 
+
+    context "when an invoice item is on an invoice that has no successful
+    transactions" do
       it "should be false" do
         inv_item_one.is_successful?.should be_false
       end

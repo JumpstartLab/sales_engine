@@ -32,7 +32,8 @@ module SalesEngine
     def transactions
       trans_results = Array.new
       self.invoices.each do |invoice|
-        trans_results.concat( SalesEngine::Transaction.find_all_by_invoice_id(invoice.id) )
+        inv_trans = SalesEngine::Transaction.find_all_by_invoice_id(invoice.id)
+        trans_results.concat( inv_trans )
       end
       trans_results
     end
@@ -41,17 +42,20 @@ module SalesEngine
       results = invoices.select { |inv| inv if inv.is_successful? }
     end
 
-    def favorite_merchant
-      merchant_data = { }
-
+    def merchant_paid_invoice_count
+      paid_invoice_count = { }
+      
       successful_invoices.each do |invoice|
-        merchant_data[ invoice.merchant_id.to_sym ] ||= 0
-        merchant_data[ invoice.merchant_id.to_sym ] += 1
+        paid_invoice_count[ invoice.merchant_id.to_sym ] ||= 0
+        paid_invoice_count[ invoice.merchant_id.to_sym ] += 1
       end
+      paid_invoice_count
+    end
 
-      merchant_data_max = merchant_data.max_by{ |k, v| v }
+    def favorite_merchant
+      merchant_data_max = merchant_paid_invoice_count.max_by{ |k, v| v }
       return nil if merchant_data_max.nil?
-      SalesEngine::Merchant.find_by_id(merchant_data_max.first)   
+      SalesEngine::Merchant.find_by_id(merchant_data_max.first)
     end
 
   end

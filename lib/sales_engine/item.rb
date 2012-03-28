@@ -1,7 +1,8 @@
 module SalesEngine
   require 'sales_engine/dynamic_finder'
   class Item
-    attr_accessor :id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at
+    attr_accessor :id, :name, :description, :unit_price,
+                  :merchant_id, :created_at, :updated_at
 
     ITEM_ATTS = [
       "id",
@@ -29,58 +30,74 @@ module SalesEngine
 
     extend SalesEngine::DynamicFinder
 
-
     def invoice_items
       SalesEngine::InvoiceItem.find_all_by_item_id(self.id)
+    end
+
+    def self.paid_invoice_items
+      SalesEngine::InvoiceItem.successful_invoice_items
     end
 
     def merchant
       SalesEngine::Merchant.find_by_id(self.merchant_id)
     end
 
-    def self.most_revenue(num)
-      successful_invoice_items = SalesEngine::InvoiceItem.successful_invoice_items
+    def self.item_revenue_by_id
       item_data = { }
 
-      successful_invoice_items.each do |invoice_item|
+      paid_invoice_items.each do |invoice_item|
         item_data[ invoice_item.item_id.to_sym ] ||= 0
-        item_data[ invoice_item.item_id.to_sym ] += invoice_item.quantity * invoice_item.unit_price
+        item_data[ invoice_item.item_id.to_sym ] += invoice_item.revenue
+      end
+      item_data
+    end
+
+    def self.most_revenue(num)
+      sorted_results = item_revenue_by_id.sort_by do |item_id, revenue|
+        -revenue
       end
 
-      item_data = item_data.sort_by { |item_id, revenue| -revenue }
-
-      item_data[0..(num-1)].collect do |item_id, revenue|
+      sorted_results[0..(num-1)].collect do |item_id, revenue|
         SalesEngine::Item.find_by_id(item_id)
       end
+    end
+
+    def self.item_quantity_by_id
+      item_data = { }
+
+      paid_invoice_items.each do |invoice_item|
+        item_data[ invoice_item.item_id.to_sym ] ||= 0
+        item_data[ invoice_item.item_id.to_sym ] += invoice_item.quantity
+      end
+      item_data
     end
 
     def self.most_items(num)
-      successful_invoice_items = SalesEngine::InvoiceItem.successful_invoice_items
-      item_data = { }
-
-      successful_invoice_items.each do |invoice_item|
-        item_data[ invoice_item.item_id.to_sym ] ||= 0
-        item_data[ invoice_item.item_id.to_sym ] += invoice_item.quantity 
+      sorted_results = item_quantity_by_id.sort_by do |item_id, quantity|
+        -quantity
       end
 
-      item_data = item_data.sort_by {|item_id, quantity| -quantity }
-
-      item_data[0..(num-1)].collect do |item_id, quantity|
+      sorted_results[0..(num-1)].collect do |item_id, quantity|
         SalesEngine::Item.find_by_id(item_id)
       end
     end
 
-    def best_day
-      invoice_items = SalesEngine::InvoiceItem.find_all_by_item_id(self.id)
+    def item_quantity_by_day
       item_data = { }
 
       invoice_items.each do |invoice_item|
-        item_data[ invoice_item.updated_at.strftime("%Y/%m/%d") ] ||= 0
-        item_data[ invoice_item.updated_at.strftime("%Y/%m/%d") ] += invoice_item.quantity 
+        date_str = invoice_item.updated_at.strftime("%Y/%m/%d")
+        item_data[ date_str ] ||= 0
+        item_data[ date_str ] += invoice_item.quantity
       end
+      item_data
+    end
 
-      item_data = item_data.sort_by {|day, quantity| -quantity }
-      Date.parse(item_data.first[0])
+    def best_day
+      sorted_results = item_quantity_by_day.sort_by do |day, quantity| 
+        -quantity
+      end
+      Date.parse(sorted_results.first[0])
     end
   end
 end

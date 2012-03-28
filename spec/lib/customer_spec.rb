@@ -7,15 +7,29 @@ describe SalesEngine::Customer do
   let(:customer_two) { SalesEngine::Customer.new(:id => "2") }
   let(:customer_three) { SalesEngine::Customer.new(:id => "3") }
 
-  let(:invoice_one) { SalesEngine::Invoice.new(:id => "1", :customer_id => "0", :merchant_id => "0") }
-  let(:invoice_two) { SalesEngine::Invoice.new(:id => "2", :customer_id => "2", :merchant_id => "0") }
-  let(:invoice_three) { SalesEngine::Invoice.new(:id => "3", :customer_id => "0", :merchant_id => "0") }
-  let(:invoice_list) { SalesEngine::Database.instance.invoice_list = [ invoice_one, invoice_two, invoice_three ] }
+  let(:invoice_one) { SalesEngine::Invoice.new( :id => "1",
+                                                :customer_id => "0",
+                                                :merchant_id => "0") }
+  let(:invoice_two) { SalesEngine::Invoice.new( :id => "2",
+                                                :customer_id => "2",
+                                                :merchant_id => "0") }
+  let(:invoice_three) { SalesEngine::Invoice.new( :id => "3",
+                                                  :customer_id => "0",
+                                                  :merchant_id => "0") }
+  let(:invoices) { [ invoice_one, invoice_two, invoice_three ] }
+  let(:invoice_list) { SalesEngine::Database.instance.invoice_list = invoices }
 
-  let(:trans_one) { SalesEngine::Transaction.new(:id => "1", :invoice_id => "1") }
-  let(:trans_two) { SalesEngine::Transaction.new(:id => "2", :invoice_id => "2", :result => "failure") }
-  let(:trans_three) { SalesEngine::Transaction.new(:id => "3", :invoice_id => "2", :result => "success") }
-  let(:transaction_list) { SalesEngine::Database.instance.transaction_list = [ trans_one, trans_two, trans_three ]}
+  let(:trans_one) { SalesEngine::Transaction.new( :id => "1",
+                                                  :invoice_id => "1") }
+  let(:trans_two) { SalesEngine::Transaction.new( :id => "2",
+                                                  :invoice_id => "2",
+                                                  :result => "failure") }
+  let(:trans_three) { SalesEngine::Transaction.new( :id => "3",
+                                                    :invoice_id => "2",
+                                                    :result => "success") }
+  let(:transactions) { [ trans_one, trans_two, trans_three ] }
+
+  let(:transaction_list) { SalesEngine::Database.instance.transaction_list = transactions }
 
   let(:merchant_zero){ SalesEngine::Merchant.new( :id => "0" )}
 
