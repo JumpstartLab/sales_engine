@@ -90,7 +90,7 @@ describe SalesEngine::Merchant do
   end
 
   describe ".most_revenue(x)" do
-    x=rand(20)
+    x = rand(20) + 1 
     it "returns an array" do
       SalesEngine::Merchant.most_revenue(x).class.should ==Array
     end
@@ -117,7 +117,7 @@ describe SalesEngine::Merchant do
   end
 
   describe ".most_items(x)" do
-    x=rand(20)
+    x = rand(20) + 1
     it "returns an array" do
       SalesEngine::Merchant.most_items(x).class.should ==Array
     end
@@ -133,6 +133,50 @@ describe SalesEngine::Merchant do
     end
   end
 
+  describe "#favorite_customer" do
+
+    it "returns a customer instance" do
+      SalesEngine::Merchant.random.favorite_customer.class.should == SalesEngine::Customer
+    end
+  end
+
+  describe ".revenue(date)" do
+    sample_dates = ["2012-02-10","2012-02-11","2012-02-12","2012-02-13","2012-02-14"]
+    it "returns a BigDecimal figure for revenue if provided a date" do
+      SalesEngine::Merchant.revenue(sample_dates.sample).class.should == BigDecimal
+    end
+  end
+
+  describe "#all_customers" do
+    it "returns an array" do
+      SalesEngine::Merchant.random.all_customers.class.should == Array
+    end
+
+    it "returns an array containing customer instances" do
+      SalesEngine::Merchant.random.all_customers.each do |cust|
+        cust.class.should == SalesEngine::Customer
+      end
+    end
+  end
+
+  describe "#customers_with_pending_invoices" do
+    it "returns an array" do
+      SalesEngine::Merchant.random.all_customers.class.should == Array
+    end
+
+    context "if there are customers with pending invoices" do
+      it "returns customer instances" do
+        merchant1 = SalesEngine::Merchant.random
+        if merchant1.customers_with_pending_invoices != []
+          merchant1.customers_with_pending_invoices.each do |cust|
+            cust.class.should == SalesEngine::Customer   
+          end
+        else
+          merchant1.customers_with_pending_invoices.should == []
+        end
+      end
+    end
+  end
 end
 
 

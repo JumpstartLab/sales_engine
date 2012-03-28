@@ -34,11 +34,11 @@ module SalesEngine
 
     def item
       item=[]
-      item = items_array.select { |item| item.id ==  item_id }
+      item = items_array.detect { |item| item.id ==  item_id }
     end
 
     def invoice
-      invoices_array.detect { |inv| inv.id == invoice_id}
+      @invoice ||= invoices_array.detect { |inv| inv.id == invoice_id}
     end
 
     def self.invoice_items

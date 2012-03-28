@@ -82,8 +82,13 @@ describe SalesEngine::Customer do
   end
 
   describe "#favorite_merchant" do
-    it "returns a merchant" do
-      SalesEngine::Customer.random.favorite_merchant.class.should == SalesEngine::Merchant
+    it "returns a merchant if customer has associated merchants" do
+      customer1 = SalesEngine::Customer.random
+      if customer1.favorite_merchant.nil? == false
+        customer1.favorite_merchant.class.should == SalesEngine::Merchant
+      else
+        customer1.favorite_merchant.should == nil
+      end
     end
   end
 

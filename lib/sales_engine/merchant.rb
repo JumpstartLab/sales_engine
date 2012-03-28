@@ -20,13 +20,9 @@ module SalesEngine
       merchants = DataStore.instance.merchants
     end
 
-    def merchants=(input)
-      @merchants = input
-    end
-
-    def self.all
-      self.merchants
-    end
+    # def self.all
+    #   self.merchants
+    # end
 
     def items_array
       items = DataStore.instance.items
@@ -84,7 +80,6 @@ module SalesEngine
       invoice_items_array.select { |inv_item| merch_invoice_item_ids.include?(inv_item.invoice_id)}
     end
 
-
     def merch_quantity
       quantity = 0
       successful_invoice_items.each do |inv_item|
@@ -108,6 +103,14 @@ module SalesEngine
       revenue = BigDecimal.new(revenue)
     end
 
+    def revenue(*date)
+      if date ==[]
+        merch_revenue
+      else
+        merch_revenue_by_date(*date)
+      end
+    end
+
     def merch_revenue_by_date(date)
       revenue = 0
       successful_invoice_items.each do |inv_item|
@@ -115,16 +118,7 @@ module SalesEngine
           revenue = revenue + inv_item.total
         end
       end
-      revenue = (revenue/100.0).to_s
-      revenue = BigDecimal.new(revenue)
-    end
-
-    def revenue(*date)
-      if date ==[]
-        merch_revenue
-      else
-        merch_revenue_by_date(*date)
-      end
+      BigDecimal.new((revenue/100.0).to_s)
     end
 
     def self.set_revenue
@@ -188,9 +182,7 @@ module SalesEngine
           end
         end
       end
-      revenue = date_revs[date]
-      revenue = (revenue/100.0).to_s
-      revenue = BigDecimal.new(revenue)
+      BigDecimal.new(((date_revs[date])/100.0).to_s)
     end
 
   end

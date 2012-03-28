@@ -4,5 +4,5 @@ require 'sales_engine'
 include SalesEngine
 
 SalesEngine.startup
-n = SalesEngine::Merchant.find_by_id(59)
+n = SalesEngine::Item.find_by_id(3).best_day
 puts n.inspect

@@ -50,7 +50,7 @@ module SalesEngine
     end
 
     def invoice_items
-      invoice_items_array.select { |inv| inv.item_id == id}
+      @invoice_items ||= invoice_items_array.select { |inv| inv.item_id == id}
     end
 
     def successful_invoice_items
@@ -111,7 +111,7 @@ module SalesEngine
       days
     end
 
-    def best_day
+    def days_hash
       days_hash = {}
       days_array.each do |day|
         if days_hash.has_key?(day)
@@ -120,11 +120,12 @@ module SalesEngine
           days_hash[day] = 1
         end
       end
-      days_hash.max_by{ |date, count| count}[0]
-
+      days_hash
     end
 
-
+    def best_day
+      days_hash.max_by{ |date, count| count}[0]
+    end
   end
 end
 
