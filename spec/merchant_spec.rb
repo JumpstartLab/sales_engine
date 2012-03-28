@@ -12,28 +12,28 @@ describe Merchant do
 
     context "when date is specified" do
       it "returns the invoices for that date" do
-        Database.instance.stub(:invoices_by_merchant_for_date).and_return([invoice2])
+        Invoice.stub(:for_merchant_and_date).and_return([invoice2])
         merchant.invoices(Date.parse("2012-02-28 20:56:56 UTC")).should == [invoice2]
       end
     end
     context "when date is not specified" do
       context "when merchant has one invoice" do
         it "returns an array containing the single invoice" do
-          Database.instance.stub(:invoices_by_merchant).and_return([invoice2])
+          Invoice.stub(:for_merchant).and_return([invoice2])
           merchant.invoices.should == [invoice2]
         end
       end
 
       context "when merchant has multiple invoices" do
         it "returns all invoices" do
-          Database.instance.stub(:invoices_by_merchant).and_return([invoice1, invoice3])
+          Invoice.stub(:for_merchant).and_return([invoice1, invoice3])
           merchant.invoices.should == [invoice1, invoice3]
         end
       end
 
       context "when merchant has no invoices" do
         it "returns an empty array" do
-          Database.instance.stub(:invoices_by_merchant).and_return([])
+          Invoice.stub(:for_merchant).and_return([])
           merchant.invoices.should == []
         end
       end
@@ -52,7 +52,7 @@ describe Merchant do
       item3.stub(:merchant_id).and_return(1)
 
       items = [item1, item2, item3]
-      Database.instance.stub(:items).and_return(items)
+      Item.stub(:items).and_return(items)
     end
 
 
@@ -112,8 +112,7 @@ describe Merchant do
     let(:merchant) { merchant = Fabricate(:merchant, :id => 3) }
 
     it "delgates to the Database#customers_by_merchant" do
-        Database.instance.should_receive(
-          :customers_by_merchant).with(3)
+        Customer.should_receive(:for_merchant).with(3)
         merchant.customers
     end
   end
@@ -190,25 +189,25 @@ describe Merchant do
 
     context "when number of merchants is greater than X" do
       it "returns an array of merchants with the most revenue" do
-        Database.instance.stub(:merchants).and_return([merchant, merchant2, merchant3, merchant4])
+        Merchant.stub(:merchants).and_return([merchant, merchant2, merchant3, merchant4])
         Merchant.most_revenue(2).should == [merchant4, merchant3]
       end
     end
     context "when number of merchants is less than X" do
       it "returns an array of all merchants" do
-        Database.instance.stub(:merchants).and_return([merchant, merchant2])
+        Merchant.stub(:merchants).and_return([merchant, merchant2])
         Merchant.most_revenue(3).should == [merchant2, merchant]
       end
     end
     context "when there is only one merchant" do
       it "returns an array with one merchant" do
-        Database.instance.stub(:merchants).and_return([merchant])
+        Merchant.stub(:merchants).and_return([merchant])
         Merchant.most_revenue(1).should == [merchant]
       end
     end
     context "when there are no merchants" do
       it "returns an empty array" do
-        Database.instance.stub(:merchants).and_return([])
+        Merchant.stub(:merchants).and_return([])
         Merchant.most_revenue(3).should == []
       end
     end 
