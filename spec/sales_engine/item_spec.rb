@@ -46,157 +46,211 @@ describe SalesEngine::Item do
     end
   end
 
+  test_item_1 = Fabricate(:item,
+                          :id => "1",
+                          :name => "Item Name",
+                          :description => "Item description",
+                          :unit_price => "2930",
+                          :merchant_id => "3",
+                          :created_at => "3/31/1985",
+                          :updated_at => "3/31/1985")
+  test_item_2 = Fabricate(:item,
+                          :id => "2",
+                          :name => "Item Name",
+                          :description => "Item description",
+                          :unit_price => "2930",
+                          :merchant_id => "3",
+                          :created_at => "3/31/1985",
+                          :updated_at => "3/31/1985")
+  test_item_3 = Fabricate(:item,
+                          :id => "3",
+                          :name => "Item Name",
+                          :description => "Item description",
+                          :unit_price => "2930",
+                          :merchant_id => "3",
+                          :created_at => "3/31/1985",
+                          :updated_at => "3/31/1985")
+  test_items = [ test_item_1, test_item_2, test_item_3 ]
+
   describe "find_by_id()" do
     it "returns one item" do
-      SalesEngine::Item.find_by_id("100").should be_a SalesEngine::Item
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_by_id("2").should be_a SalesEngine::Item
     end
 
     it "returns an item with the id given" do
-      result = SalesEngine::Item.find_by_id("100")
-      result.id.should == "100"
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      result = SalesEngine::Item.find_by_id("2")
+      result.id.should == "2"
     end
   end
 
   describe "find_by_name()" do
     it "returns one item" do
-      SalesEngine::Item.find_by_name("Item Necessitatibus Facilis").should be_a SalesEngine::Item
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_by_name("Item Name").should be_a SalesEngine::Item
     end
 
     it "returns an item with the name given" do
-      result = SalesEngine::Item.find_by_name("Item Necessitatibus Facilis")
-      result.name.should == "Item Necessitatibus Facilis"
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      result = SalesEngine::Item.find_by_name("Item Name")
+      result.name.should == "Item Name"
     end
   end
 
   describe "find_by_description()" do
     it "returns one item" do
-      SalesEngine::Item.find_by_description("Omnis error accusantium est ea enim sint. Vero accusantium voluptatem natus et commodi deleniti. Autem soluta omnis in qui commodi. Qui corporis est ut blanditiis. Sit corrupti magnam sit dolores nostrum unde esse.").should be_a SalesEngine::Item
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_by_description("Item description").should be_a SalesEngine::Item
     end
 
     it "returns an item with the name given" do
-      result = SalesEngine::Item.find_by_description("Omnis error accusantium est ea enim sint. Vero accusantium voluptatem natus et commodi deleniti. Autem soluta omnis in qui commodi. Qui corporis est ut blanditiis. Sit corrupti magnam sit dolores nostrum unde esse.")
-      result.description.should == "Omnis error accusantium est ea enim sint. Vero accusantium voluptatem natus et commodi deleniti. Autem soluta omnis in qui commodi. Qui corporis est ut blanditiis. Sit corrupti magnam sit dolores nostrum unde esse."
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      result = SalesEngine::Item.find_by_description("Item description")
+      result.description.should == "Item description"
     end
   end
 
   describe "find_by_unit_price()" do
     it "returns one item" do
-      SalesEngine::Item.find_by_unit_price("16516").should be_a SalesEngine::Item
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_by_unit_price("2930").should be_a SalesEngine::Item
     end
 
     it "returns an item with the name given" do
-      result = SalesEngine::Item.find_by_unit_price("16516")
-      result.unit_price.should == "16516"
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      result = SalesEngine::Item.find_by_unit_price("2930")
+      result.unit_price.should == "2930"
     end
   end
 
   describe "find_by_merchant_id()" do
     it "returns one item" do
-      SalesEngine::Item.find_by_merchant_id("1").should be_a SalesEngine::Item
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_by_merchant_id("3").should be_a SalesEngine::Item
     end
 
     it "returns an item with the name given" do
-      result = SalesEngine::Item.find_by_merchant_id("1")
-      result.merchant_id.should == "1"
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      result = SalesEngine::Item.find_by_merchant_id("3")
+      result.merchant_id.should == "3"
     end
   end
 
   describe "find_by_created_at()" do
     it "returns one item" do
-      SalesEngine::Item.find_by_created_at("2012-02-26 20:56:50 UTC").should be_a SalesEngine::Item
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_by_created_at("3/31/1985").should be_a SalesEngine::Item
     end
 
     it "returns an item with the date given" do
-      result = SalesEngine::Item.find_by_created_at("2012-02-26 20:56:50 UTC")
-      result.created_at.should == "2012-02-26 20:56:50 UTC"
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      result = SalesEngine::Item.find_by_created_at("3/31/1985")
+      result.created_at.should == "3/31/1985"
     end
   end
 
   describe "find_by_updated_at()" do
     it "returns one item" do
-      SalesEngine::Item.find_by_updated_at("2012-02-26 20:56:50 UTC").should be_a SalesEngine::Item
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_by_updated_at("3/31/1985").should be_a SalesEngine::Item
     end
 
     it "returns an item with the date given" do
-      result = SalesEngine::Item.find_by_updated_at("2012-02-26 20:56:50 UTC")
-      result.updated_at.should == "2012-02-26 20:56:50 UTC"
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      result = SalesEngine::Item.find_by_updated_at("3/31/1985")
+      result.updated_at.should == "3/31/1985"
     end
   end
 
   describe ".find_all_by_id()" do
     it "returns an array of items" do
-      SalesEngine::Item.find_all_by_id("100").all?{|i| i.is_a? SalesEngine::Item}.should == true
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_all_by_id("3").all?{|i| i.is_a? SalesEngine::Item}.should == true
     end
 
     it "contains items related to the id given" do
-      results = SalesEngine::Item.find_all_by_id("100")
-      results.sample.id.should == "100"
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      results = SalesEngine::Item.find_all_by_id("3")
+      results.sample.id.should == "3"
     end
   end
 
   describe ".find_all_by_created_at()" do
     it "returns an array of items" do
-      SalesEngine::Item.find_all_by_created_at("2012-02-26 20:56:50 UTC").all?{|i| i.is_a? SalesEngine::Item}.should == true
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_all_by_created_at("3/31/1985").all?{|i| i.is_a? SalesEngine::Item}.should == true
     end
 
     it "contains items related to the date given" do
-      results = SalesEngine::Item.find_all_by_created_at("2012-02-26 20:56:50 UTC")
-      results.sample.created_at.should == "2012-02-26 20:56:50 UTC"
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      results = SalesEngine::Item.find_all_by_created_at("3/31/1985")
+      results.sample.created_at.should == "3/31/1985"
     end
   end
 
   describe ".find_all_by_updated_at()" do
     it "returns an array of items" do
-      SalesEngine::Item.find_all_by_updated_at("2012-02-26 20:56:50 UTC").all?{|i| i.is_a? SalesEngine::Item}.should == true
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_all_by_updated_at("3/31/1985").all?{|i| i.is_a? SalesEngine::Item}.should == true
     end
 
     it "contains items related to the date given" do
-      results = SalesEngine::Item.find_all_by_updated_at("2012-02-26 20:56:50 UTC")
-      results.sample.created_at.should == "2012-02-26 20:56:50 UTC"
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      results = SalesEngine::Item.find_all_by_updated_at("3/31/1985")
+      results.sample.created_at.should == "3/31/1985"
     end
   end
 
   describe ".find_all_by_name()" do
     it "returns an array of items" do
-      SalesEngine::Item.find_all_by_name("Item Repellat Dolorum").all?{|i| i.is_a? SalesEngine::Item}.should == true
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_all_by_name("Item Name").all?{|i| i.is_a? SalesEngine::Item}.should == true
     end
 
     it "contains items related to the name given" do
-      results = SalesEngine::Item.find_all_by_name("Item Repellat Dolorum")
-      results.sample.name.should == "Item Repellat Dolorum"
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      results = SalesEngine::Item.find_all_by_name("Item Name")
+      results.sample.name.should == "Item Name"
     end
   end
 
   describe ".find_all_by_description()" do
     it "returns an array of items" do
-      SalesEngine::Item.find_all_by_description("Nihil illo ut dolorem velit est. Est aut molestiae id optio. Minima nihil tenetur praesentium. Itaque aut libero necessitatibus et dolorem inventore.").all?{|i| i.is_a? SalesEngine::Item}.should == true
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_all_by_description("Item description").all?{|i| i.is_a? SalesEngine::Item}.should == true
     end
 
     it "contains items related to the description given" do
-      results = SalesEngine::Item.find_all_by_description("Nihil illo ut dolorem velit est. Est aut molestiae id optio. Minima nihil tenetur praesentium. Itaque aut libero necessitatibus et dolorem inventore.")
-      results.sample.description.should == "Nihil illo ut dolorem velit est. Est aut molestiae id optio. Minima nihil tenetur praesentium. Itaque aut libero necessitatibus et dolorem inventore."
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      results = SalesEngine::Item.find_all_by_description("Item description")
+      results.sample.description.should == "Item description"
     end
   end
 
   describe ".find_all_by_unit_price()" do
     it "returns an array of items" do
-      SalesEngine::Item.find_all_by_unit_price("80226").all?{|i| i.is_a? SalesEngine::Item}.should == true
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_all_by_unit_price("2930").all?{|i| i.is_a? SalesEngine::Item}.should == true
     end
 
     it "contains items related to the description given" do
-      results = SalesEngine::Item.find_all_by_unit_price("80226")
-      results.sample.unit_price.should == "80226"
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      results = SalesEngine::Item.find_all_by_unit_price("2930")
+      results.sample.unit_price.should == "2930"
     end
   end
 
   describe ".find_all_by_merchant_id()" do
     it "returns an array of items" do
-      SalesEngine::Item.find_all_by_merchant_id("1").all?{|i| i.is_a? SalesEngine::Item}.should == true
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      SalesEngine::Item.find_all_by_merchant_id("3").all?{|i| i.is_a? SalesEngine::Item}.should == true
     end
 
     it "contains items related to the description given" do
-      results = SalesEngine::Item.find_all_by_merchant_id("1")
-      results.sample.merchant_id.should == "1"
+      SalesEngine::Database.instance.stub(:items).and_return (test_items)
+      results = SalesEngine::Item.find_all_by_merchant_id("3")
+      results.sample.merchant_id.should == "3"
     end
   end
 
