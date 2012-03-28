@@ -19,8 +19,8 @@ module SalesEngine
       self.customer_id  = attributes[:customer_id]
       self.merchant_id  = attributes[:merchant_id]
       self.status       = attributes[:status]
-      self.created_at   = attributes[:created_at]
-      self.updated_at   = attributes[:updated_at]
+      self.created_at   = Date.parse(attributes[:created_at])
+      self.updated_at   = Date.parse(attributes[:updated_at])
     end
 
     def self.create(attributes={})
@@ -65,7 +65,8 @@ module SalesEngine
     end
 
     def date
-      self.created_at.split[0]
+      #self.created_at.split[0]
+      self.created_at
     end
 
     def self.random
