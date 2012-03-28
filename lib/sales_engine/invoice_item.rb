@@ -7,10 +7,12 @@ module SalesEngine
     attr_reader :item, :invoice, :quantity, :unit_price
 
     def initialize(attributes)
+      super(attributes)
+
       @item = attributes[:item]
       @invoice = attributes[:invoice]
-      @quantity = attributes[:quantity]
-      @unit_price = attributes[:unit_price]
+      @quantity = clean_integer(attributes[:quantity])
+      @unit_price = clean_float(attributes[:unit_price])
 
       validate_attributes
     end

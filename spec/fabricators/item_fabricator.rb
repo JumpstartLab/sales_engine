@@ -5,7 +5,7 @@ Fabricator(:item, :class_name => 'SalesEngine::Item') do
       :name => Faker::Lorem.words(1).join.capitalize,
       :description => Faker::Lorem.paragraph,
       :unit_price => (1..100000).to_a.sample,
-      :merchant => Fabricate(:merchant)
+      :merchant_id => 1
     )
   }
 end

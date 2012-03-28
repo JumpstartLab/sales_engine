@@ -21,16 +21,14 @@ describe SalesEngine::InvoiceItem do
     valid_invoice_item.quantity.should_not be_nil
   end
 
-  it "raises an error given a string quantity" do
-    expect do
-      SalesEngine::InvoiceItem.new(
-        :id => 1,
-        :item => valid_item,
-        :invoice => valid_invoice,
-        :quantity => 'puppy',
-        :unit_price => 1.75
-      )
-    end.to raise_error ArgumentError
+  it "creates an invoice item given a numeric quantity as a string" do
+    SalesEngine::InvoiceItem.new(
+      :id => 1,
+      :item => valid_item,
+      :invoice => valid_invoice,
+      :quantity => '5',
+      :unit_price => 1.75
+    )
   end
 
   it "raises an error given a float quantity" do

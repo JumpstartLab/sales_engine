@@ -112,9 +112,9 @@ describe SalesEngine::Item do
     end
   end
 
-  context "item's merchant" do
+  context "merchant_id" do
     it 'exists' do
-      valid_item.merchant.should_not be_nil
+      valid_item.merchant_id.should_not be_nil
     end
 
     it 'must be passed in as a parameter on creation' do

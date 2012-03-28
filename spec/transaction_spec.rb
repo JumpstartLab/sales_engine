@@ -9,7 +9,7 @@ describe SalesEngine::Transaction do
   end
 
   it "has an invoice" do
-    valid_transaction.invoice.should be_an SalesEngine::Invoice
+    valid_transaction.invoice_id.should be_an Integer
   end
 
   it "raises an ArgumentError when given a nil invoice" do
@@ -56,16 +56,14 @@ describe SalesEngine::Transaction do
     valid_transaction.credit_card_expiration.should be_a Date
   end
 
-  it "raises an ArgumentError when given a nil expiration" do
-    expect do
-      SalesEngine::Transaction.new(
-        :id => 1,
-        :invoice => valid_invoice,
-        :credit_card_number => 4751151955673308,
-        :credit_card_expiration => nil,
-        :result => 'shipped'
-      )
-      end.to raise_error ArgumentError
+  it "creates a transaction with a nil expiration date" do
+    SalesEngine::Transaction.new(
+      :id => 1,
+      :invoice_id => 1,
+      :credit_card_number => 4751151955673308,
+      :credit_card_expiration => nil,
+      :result => 'shipped'
+    )
   end
 
   it "has a result" do

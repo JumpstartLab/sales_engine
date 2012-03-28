@@ -46,4 +46,32 @@ describe SalesEngine::Merchant do
       merchant.created_at.should == old_created_at
     end
   end
+
+  # spec_evaluation
+
+  context "Searching" do
+    describe ".random" do
+      it "usually returns different things on subsequent calls" do
+        merchant_one = SalesEngine::Merchant.random
+        merchant_two = nil
+
+        10.times do
+          merchant_two = SalesEngine::Merchant.random
+          break if merchant_one.id != merchant_two.id
+        end
+
+        merchant_one.id.should_not == merchant_two.id
+      end
+    end
+
+    it ".find_by_name" do
+      merchant = SalesEngine::Merchant.find_by_name "Marvin Group"
+      merchant.should_not be_nil
+    end
+
+    # it ".find_by_all_name" do
+      # merchants = SalesEngine::Merchant.find_all_by_name "Williamson Group"
+      # merchants.should have(2).merchants
+    # end
+  end
 end
