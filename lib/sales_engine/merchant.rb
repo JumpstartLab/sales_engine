@@ -1,10 +1,12 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib')).uniq!
 require "sales_engine"
 require "sales_engine/invoice"
+require "sales_engine/merchant_record"
 
 module SalesEngine
   class Merchant
     include SalesEngine
+    extend MerchantRecord
     attr_accessor :id, :name, :created_at, :updated_at
 
     def initialize(id, name, created_at, updated_at)
@@ -31,7 +33,7 @@ module SalesEngine
     end
 
     def self.elements
-      Database.instance.merchants
+      merchants
     end
 
     def invoice_items(date = nil)

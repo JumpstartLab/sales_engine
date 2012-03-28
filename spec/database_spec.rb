@@ -1,12 +1,6 @@
 require 'spec_helper'
 
 describe SalesEngine::Database do
-  describe "#merchants" do
-    it "returns all merchants" do
-      SalesEngine::Database.instance.merchants.length.should == 100
-    end
-  end
-
   describe "#invoices" do
     it "returns all invoices" do
       SalesEngine::Database.instance.invoices.length.should == 4985

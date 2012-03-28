@@ -1,7 +1,5 @@
 module SalesEngine
   module InvoiceItemRecord
-    attr_accessor :db
-
     def for_merchant(merchant_id)
      invoice_items = []
      query = "select * from invoice_items where invoice_id in 
