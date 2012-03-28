@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name        = 'Sales Engine'
+  s.name        = 'sales_engine'
   s.version     = '0.1.0'
   s.summary     = "The sales engine project from Hungry Academy!"
   s.description = "The sales engine project from Hungry Academy! The sales engine project from Hungry Academy!"
