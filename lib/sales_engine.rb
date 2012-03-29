@@ -1,6 +1,8 @@
 $LOAD_PATH.unshift('lib','lib/sales_engine/','spec').uniq!
 Dir["./lib/sales_engine/*.rb"].each {|file| require file }
 
+require 'bigdecimal'
+
 module SalesEngine
   def self.startup(directory)
     load_directory(directory, :index => true)

@@ -28,9 +28,9 @@ module SalesEngine
 
     def revenue
       if transaction_successful?
-        InvoiceItem.find_all_by_invoice_id(id).map(&:revenue).inject(:+)
+        InvoiceItem.find_all_by_invoice_id(id).map(&:revenue).map { |rev| BigDecimal.new(rev.to_s) }.inject(:+)
       else
-        0
+        BigDecimal.new('0')
       end
     end
 
@@ -40,7 +40,10 @@ module SalesEngine
 
     def transaction_successful?
       transactions && transactions.any? { |t| t.successful? }
-      true
+    end
+
+    def invoice_item_count
+      InvoiceItem.find_all_by_invoice_id(id).map { |invoice_item| transaction_successful? ? invoice_item.quantity : 0 }.inject(:+)
     end
   end
 end

@@ -44,16 +44,4 @@ describe SalesEngine::InvoiceItem do
   it "has a unit_price" do
     valid_invoice_item.unit_price.should_not be_nil
   end
-
-  it "raises an error given a string unit_price" do
-    expect do
-      SalesEngine::InvoiceItem.new(
-        :id => 1,
-        :item_id => 1,
-        :invoice_id => 1,
-        :quantity => 1,
-        :unit_price => 'puppy'
-      )
-    end.to raise_error ArgumentError
-  end
 end

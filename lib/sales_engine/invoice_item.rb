@@ -11,20 +11,19 @@ module SalesEngine
       @item_id = clean_integer(attributes[:item_id])
       @invoice_id = clean_integer(attributes[:invoice_id])
       @quantity = clean_integer(attributes[:quantity])
-      @unit_price = clean_float(attributes[:unit_price])
+      @unit_price = BigDecimal.new(attributes[:unit_price].to_s)
 
       validate_attributes
     end
 
     def revenue
-      unit_price * quantity
+      BigDecimal.new(unit_price.to_s) * BigDecimal.new(quantity.to_s)
     end
 
     private
 
     def validate_attributes
       validates_numericality_of :quantity, @quantity, :integer => true
-      validates_numericality_of :unit_price, @unit_price
     end
   end
 end

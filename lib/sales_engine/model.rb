@@ -21,6 +21,10 @@ module SalesEngine
       SalesEngine::Persistence.instance.persist self
     end
 
+    def created_at_date
+      @created_at.to_date
+    end
+
     private
 
     def clean_integer(number)
@@ -47,10 +51,6 @@ module SalesEngine
 
     def self.included(target)
       target.extend ClassMethods
-    end
-
-    def created_at_date
-      @created_at.to_date
     end
 
     module ClassMethods
