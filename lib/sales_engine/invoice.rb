@@ -59,21 +59,6 @@ module SalesEngine
         not successful?
       end
 
-      def items_sold(date=nil)
-        if date
-          invoice_items.inject(0) do |sum, invoice_item|
-            if self.created_at == date
-              sum += invoice_item.quantity
-            end
-            sum
-          end
-        else
-          invoice_items.inject(0) do |sum, invoice_item|
-            sum += invoice_item.quantity
-          end
-        end
-      end
-
       def charge(attributes = {})
         attributes[:invoice_id] = id.to_s
         Transaction.new(attributes)
@@ -101,6 +86,21 @@ module SalesEngine
         end
         revenue
       end
+
+       def items_sold(date=nil)
+          if date
+            invoice_items.inject(0) do |sum, invoice_item|
+              if self.created_at == date
+                sum += invoice_item.quantity
+              end
+              sum
+            end
+          else
+            invoice_items.inject(0) do |sum, invoice_item|
+              sum += invoice_item.quantity
+            end
+          end
+        end
 
       def self.create(attributes = {})
         parsed_attributes = {}
@@ -158,7 +158,7 @@ module SalesEngine
         BigDecimal.new(average.round(2).to_s)
       end
 
-      def self.average_for_date
+      def self.average_for_all
         count = 0
         Database.instance.all_invoices.each do |invoice|
           if invoice.successful?
@@ -187,16 +187,23 @@ module SalesEngine
       end
 
       def self.average_items(date = nil)
+        array = count_total_items(date)
+        total_items = array[0]
+        counter = array[1]
+        BigDecimal.new((total_items/counter.to_f).round(2).to_s)
+      end
+
+      def self.count_total_items(date)
         counter = 0
-        total_items = Database.instance.all_invoices.inject(0) do |sum, invoice|
+        total_items = 0
+        Database.instance.all_invoices.each do |invoice|
           if invoice.successful?
             items_sold = invoice.items_sold(date)
+            total_items += items_sold
             counter += 1 unless items_sold == 0
-            sum += items_sold
           end
-          sum
+          [total_items, counter]
         end
-        BigDecimal.new((total_items/counter.to_f).round(2).to_s)
       end
     end
   end
