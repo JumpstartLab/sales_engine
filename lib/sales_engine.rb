@@ -12,12 +12,12 @@ require './lib/sales_engine/transaction'
 module SalesEngine
 
   CSV_OPTIONS         = {:headers => true, :header_converters => :symbol}
-  MERCHANT_DATA       = "./data2/merchants.csv"
-  CUSTOMER_DATA       = "./data2/customers.csv"
-  ITEM_DATA           = "./data2/items.csv"
-  INVOICE_DATA        = "./data2/invoices.csv"
-  INVOICE_ITEMS_DATA  = "./data2/invoice_items.csv"
-  TRANSACTION_DATA    = "./data2/transactions.csv"
+  MERCHANT_DATA       = "./data/evaluation_data/merchants.csv"
+  CUSTOMER_DATA       = "./data/evaluation_data/customers.csv"
+  ITEM_DATA           = "./data/evaluation_data/items.csv"
+  INVOICE_DATA        = "./data/evaluation_data/invoices.csv"
+  INVOICE_ITEMS_DATA  = "./data/evaluation_data/invoice_items.csv"
+  TRANSACTION_DATA    = "./data/evaluation_data/transactions.csv"
 
   def self.startup
     load_customers

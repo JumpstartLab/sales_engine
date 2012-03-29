@@ -4,3 +4,4 @@
 coverage/
 Gemfile.lock
 /spec2/*
+runner.rb
