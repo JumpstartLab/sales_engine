@@ -1,11 +1,10 @@
 module SalesEngine
-  require 'sales_engine/dynamic_finder'
   class Item
     attr_accessor :id, :name, :description, :unit_price,
                   :merchant_id, :created_at, :updated_at
 
     ITEM_ATTS = [
-      # "id",
+      "id",
       "name",
       "description",
       "unit_price",
@@ -14,16 +13,14 @@ module SalesEngine
       "updated_at"
       ]
 
-    def initialize(attributes)
-      self.id = attributes[:id].to_i
-      self.name = attributes[:name]
-      self.description = attributes[:description]
-      if attributes[:unit_price]
-        self.unit_price = BigDecimal.new(attributes[:unit_price])/100
-      end
-      self.merchant_id = attributes[:merchant_id].to_i
-      self.created_at = attributes[:created_at]
-      self.updated_at = attributes[:updated_at]
+    def initialize(attrs)
+      self.id = Cleaner::fetch_id("item", attrs[:id])
+      self.name = attrs[:name]
+      self.description = attrs[:description]
+      self.unit_price = Cleaner::fetch_price(attrs[:unit_price])
+      self.merchant_id = attrs[:merchant_id].to_i
+      self.created_at = Cleaner::fetch_date(attrs[:created_at])
+      self.updated_at = Cleaner::fetch_date(attrs[:updated_at])
 
       SalesEngine::Database.instance.item_list << self
       SalesEngine::Database.instance.item_id_hash[ self.id ] = self
@@ -74,9 +71,8 @@ module SalesEngine
     def self.item_quantity_by_id
       item_data = { }
       paid_invoice_items.each do |invoice_item|
-        invoice_item_id = invoice_item.item_id
-        item_data[ invoice_item_id ] ||= 0
-        item_data[ invoice_item_id ] += invoice_item.quantity
+        item_data[ invoice_item.item_id ] ||= 0
+        item_data[ invoice_item.item_id ] += invoice_item.quantity
       end
       item_data
     end
@@ -94,9 +90,8 @@ module SalesEngine
       item_data = { }
 
       invoice_items.each do |invoice_item|
-        date_str = invoice_item.invoice.updated_at.strftime("%Y/%m/%d")
-        item_data[ date_str ] ||= 0
-        item_data[ date_str ] += invoice_item.quantity
+        item_data[ invoice_item.format_created_at ] ||= 0
+        item_data[ invoice_item.format_created_at ] += invoice_item.quantity
       end
       item_data
     end

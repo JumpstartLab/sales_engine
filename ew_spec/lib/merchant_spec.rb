@@ -374,9 +374,9 @@ describe SalesEngine::Merchant do
 
   describe ".revenue_on_dates" do
     before(:each) do
-      inv_one.stub(:updated_at).and_return(Time.parse("2012-02-19"))
-      inv_two.stub(:updated_at).and_return(Time.parse("2012-02-20"))
-      inv_three.stub(:updated_at).and_return(Time.parse("2012-02-19"))
+      inv_one.stub(:created_at).and_return(Time.parse("2012-02-19"))
+      inv_two.stub(:created_at).and_return(Time.parse("2012-02-20"))
+      inv_three.stub(:created_at).and_return(Time.parse("2012-02-19"))
       inv_one.stub(:invoice_revenue).and_return("100")
       inv_two.stub(:invoice_revenue).and_return("150")
       inv_three.stub(:invoice_revenue).and_return("100")

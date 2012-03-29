@@ -24,8 +24,12 @@ module SalesEngine
     end
 
     def find(object_type, attribute, param)
-      self.send("#{object_type}_list").detect do |instance|
-        instance.send(attribute.to_sym).to_s.downcase == param.to_s.downcase
+      if attribute == "id"
+        find_by_id( object_type, param )
+      else
+        self.send("#{object_type}_list").detect do |instance|
+          instance.send(attribute.to_sym).to_s.downcase == param.to_s.downcase
+        end
       end
     end
 
