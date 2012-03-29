@@ -9,7 +9,7 @@ class SalesEngine
     end
 
     include Model
-    attr_accessor :id
+    attr_accessor :id, :first_name, :last_name, :created_at, :updated_at
 
     def initialize(attributes)
       super

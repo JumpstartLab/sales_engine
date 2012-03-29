@@ -8,7 +8,7 @@ class SalesEngine
     end
 
     include Model
-    attr_accessor :merchant_id, :customer_id, :customer, :id, :merchant, :updated_at
+    attr_accessor :merchant_id, :customer_id, :customer, :id, :merchant, :updated_at, :status, :created_at
     
     def initialize(attributes)
       super

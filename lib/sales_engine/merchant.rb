@@ -5,7 +5,7 @@ require 'bigdecimal'
 class SalesEngine
   class Merchant
     ATTRIBUTES = %w(id created_at updated_at name)
-    attr_accessor :id
+    attr_accessor :id, :created_at, :updated_at, :name
 
     def self.finder_attributes
       ATTRIBUTES
@@ -27,7 +27,7 @@ class SalesEngine
     end
 
     def invoices
-      @invoices || SalesEngine::Invoice.find_all_by_merchant_id(@id)
+      @invoices ||= SalesEngine::Invoice.find_all_by_merchant_id(@id)
     end
 
     def invoices_on_date(date)
@@ -41,8 +41,9 @@ class SalesEngine
       else
         result = invoices.inject(0) {|sum, element| sum + element.total }
       end
+      puts "result is #{result}"
       b = BigDecimal.new(result) / 100
-      @revenue || b
+      @revenue ||= b
     end
 
     def set_revenue=(input)

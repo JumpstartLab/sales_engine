@@ -40,29 +40,33 @@ describe SalesEngine::Merchant do
   end
 
   describe "#revenue(date=nil)" do
-    invoice_1 = Fabricate(:invoice, :total => 20.00)
-    invoice_2 = Fabricate(:invoice, :total => 10.00)
+    invoice_1 = Fabricate(:invoice, :total => 2000)
+    invoice_2 = Fabricate(:invoice, :total => 1000)
+    puts "hello"
+    
     # invoice_test
     test_date = "2012-02-02"
     context "returns total revenue for this merchant with no date" do
+      
       it "returns a BigDecimal" do
         test_merchant.revenue.is_a?(BigDecimal).should == true
       end
 
       it "gets the revenue for this merchant" do
-        test_merchant.revenue.should == BigDecimal.new(20)
+        test_merchant.invoices = [invoice_1, invoice_2]
+        test_merchant.revenue.should == BigDecimal.new("30.00")
       end
     end
 
-    context "returns total revenue for this merchant with a date" do
-      it "returns a BigDecimal" do
-        test_merchant.revenue(test_date).is_a?(BigDecimal).should == true
-      end
+    # context "returns total revenue for this merchant with a date" do
+    #   it "returns a BigDecimal" do
+    #     test_merchant.revenue(test_date).is_a?(BigDecimal).should == true
+    #   end
 
-      it "gets the revenue for this merchant on one date" do
-        test_merchant.revenue.should == BigDecimal.new(20)
-      end
-    end
+    #   it "gets the revenue for this merchant on one date" do
+    #     test_merchant.revenue.should == BigDecimal.new(20)
+    #   end
+    # end
   end
 
   describe "#favorite_customer" do

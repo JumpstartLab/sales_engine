@@ -41,17 +41,18 @@ describe SalesEngine::Item do
       test_item.best_day.should =~ /[0-9][0-9][0-9][0-9][-][0-1][0-9]-[0-3][0-9]/
     end
 
-    it "returns the top sales day for this item" do
+    it "returns the most sales day for this item" do
       item_1 = Fabricate(:item)
     
       ii_1 = Fabricate(:invoice_item, 
-        :updated_at => Time.parse('2012-02-15 13:56:57 UTC'), :quantity => 5 )
+        :updated_at => '2012-02-15 13:56:57 UTC', :quantity => 5 )
       ii_2 = Fabricate(:invoice_item, 
-        :updated_at => Time.parse('2012-02-15 13:51:57 UTC'), :quantity => 5)
+        :updated_at => '2012-02-15 13:51:57 UTC', :quantity => 5)
       ii_3 = Fabricate(:invoice_item, 
-        :updated_at => Time.parse('2012-03-15 13:56:57 UTC'), :quantity => 4)
+        :updated_at => '2012-03-15 13:56:57 UTC', :quantity => 6)
 
       item_1.invoice_items = [ii_1, ii_2, ii_3]
+      puts "item1 ii #{item_1.invoice_items}"
       item_1.best_day.should == "2012-02-15"
     end
   end

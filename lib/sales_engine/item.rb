@@ -5,7 +5,7 @@ class SalesEngine
   class Item
     ATTRIBUTES = %w(id created_at updated_at name description unit_price merchant_id)
 
-    attr_accessor :merchant_id, :id, :item_id
+    attr_accessor :merchant_id, :id, :item_id, :name, :description, :unit_price
 
     def initialize(attributes)
       super
@@ -27,6 +27,8 @@ class SalesEngine
 
     def invoice_items=(input)
       @invoice_items = input
+      # puts "@invoice_items are #{invoice_items.inspect}"
+      @invoice_items
     end
 
     def merchant
@@ -37,13 +39,15 @@ class SalesEngine
     # the given item using the invoice date
     def best_day
       sorted_days = item_quantity_per_day.sort_by{|date, count| -count}
-      sorted_days.first.first
+      sorted_days.first.first.to_s
     end
 
     def item_quantity_per_day
       item_quantities = {}
+      # puts "invoice_items are #{invoice_items}"
       invoice_items.each do |ii|
-        date = ii.updated_at.strftime("%Y-%m-%d")
+        date = (Date.parse(ii.updated_at)).strftime("%Y-%m-%d")
+        puts date
         item_quantities[date] ||= 0
         item_quantities[date] += ii.quantity
       end
