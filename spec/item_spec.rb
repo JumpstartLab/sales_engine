@@ -5,7 +5,7 @@ module SalesEngine
     describe ".merchant" do
       let(:merchant) { mock(SalesEngine::Merchant) }
       let(:merchant2) { mock(SalesEngine::Merchant)}
-      let(:item) { Fabricate(:item, :id => 1) }
+      let(:item) { Fabricate(:item, :merchant_id => 1) }
       it "returns the merchant with the correct id" do
         merchant.stub(:id).and_return(1)
         merchant2.stub(:id).and_return(2)
