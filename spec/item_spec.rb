@@ -110,21 +110,18 @@ module SalesEngine
     end
 
     describe "#quantity_by_day" do
-      let(:invoice1) { double("invoice", :created_at => Date.parse("2012-02-26 20:56:56 UTC"))}
-      let(:invoice2) { double("invoice", :created_at => Date.parse("2012-02-26 20:56:56 UTC"))}
-      let(:invoice3) { double("invoice", :created_at => Date.parse("2012-02-27 20:56:56 UTC"))}
+      let(:invoice1) { double("invoice", :created_at => "2012-02-26 20:56:56 UTC")}
+      let(:invoice2) { double("invoice", :created_at => "2012-02-26 20:56:56 UTC")}
+      let(:invoice3) { double("invoice", :created_at => "2012-02-27 20:56:56 UTC")}
 
-      let(:invoice_item1) { double("invoice_item", :quantity => 1,
-                                   :created_at => Date.parse("2012-02-26 20:56:56 UTC")) }
-      let(:invoice_item2) { double("invoice_item", :quantity => 2,
-                                   :created_at => Date.parse("2012-02-26 21:56:56 UTC")) }
-      let(:invoice_item3) { double("invoice_item", :quantity => 4,
-                                   :created_at => Date.parse("2012-02-27 20:56:56 UTC")) }
+      let(:invoice_item1) { double("invoice_item", :quantity => 1) }
+      let(:invoice_item2) { double("invoice_item", :quantity => 2) }
+      let(:invoice_item3) { double("invoice_item", :quantity => 4) }
       let(:item) { Fabricate(:item) }
 
       before(:each) do
         invoice_item1.stub(:invoice).and_return(invoice1)
-        invoice_item2.stub(:invoice).and_return(invoice3)
+        invoice_item2.stub(:invoice).and_return(invoice2)
         invoice_item3.stub(:invoice).and_return(invoice3)
       end
       context "when the item has invoice items" do
@@ -144,14 +141,14 @@ module SalesEngine
           item.stub({:invoice_items => []})
           item.quantity_by_day.should == {}
         end
-      end   
+      end
     end
 
     describe "#best_day" do
       let(:item) { Fabricate(:item) }
       context "when the item has invoice items" do
-        it "returns the day with the most items" do
-          item.stub(:quantity_by_day).and_return(Hash[Date.parse("2012-02-26") => 3, Date.parse("2012-02-27") => 4])
+        it "returns the day with the most items" do 
+          item.stub(:quantity_by_day).and_return( {Date.parse("2012-02-28") => 3, Date.parse("2012-02-27") => 4} )
           item.best_day.should == Date.parse("2012-02-27")
         end
       end

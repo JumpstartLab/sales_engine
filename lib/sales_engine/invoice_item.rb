@@ -11,7 +11,8 @@ module SalesEngine
     attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price,
     :created_at, :updated_at
 
-    def initialize(id, item_id, invoice_id, quantity, unit_price, created_at, updated_at) 
+    def initialize(id, item_id, invoice_id, quantity,
+                   unit_price, created_at, updated_at)
       @id = id
       @item_id = item_id
       @invoice_id = invoice_id
@@ -19,18 +20,18 @@ module SalesEngine
       @unit_price = unit_price
       @created_at = created_at
       @updated_at = updated_at
-    end               
+    end
 
     def self.elements
       invoice_items
     end
 
-    def item 
-      Item.items.find { |item| item.id == item_id }  
+    def item
+      Item.items.find { |item| item.id == item_id }
     end
 
     def invoice
-      Invoice.invoices.find { |invoice| invoice.id == invoice_id }  
+      Invoice.invoices.find { |invoice| invoice.id == invoice_id }
     end
   end
 end

@@ -13,12 +13,11 @@ module SalesEngine
      end
 
   def customers_with_pending_invoices
-    query = "select customer_id, invoice_id, result from transactions 
+    query = "select customer_id, invoice_id, result from transactions
              INNER JOIN invoices on transactions.invoice_id = invoices.id
              WHERE merchant_id = #{id}"
-
-    transaction_hash = {} 
-    Database.instance.db.execute(query)  do |row| 
+    transaction_hash = {}
+    Database.instance.db.execute(query)  do |row|
       invoice_id = row[1]
       if row[2] == "success"
          transaction_hash.delete(invoice_id)
@@ -26,29 +25,28 @@ module SalesEngine
         transaction_hash[invoice_id] = row[0]
       end
     end
-    
+
     customer_ids = transaction_hash.values
-    query = "SELECT customer_id FROM invoices 
-             WHERE id 
-             NOT IN(select invoice_id from transactions) 
+    query = "SELECT customer_id FROM invoices
+             WHERE id
+             NOT IN(select invoice_id from transactions)
              AND merchant_id = #{id}"
     Database.instance.db.execute(query) { |row| customer_ids << row[0] }
-    customer_ids.collect { |id| Customer.find_by_id(id) } 
+    customer_ids.collect { |id| Customer.find_by_id(id) }
   end
 
   def favorite_customer
-    query = "SELECT customer_id, count(customer_id) 
-     AS total FROM invoice_items
+    query = "SELECT customer_id, count(customer_id)
+     FROM invoice_items
      INNER JOIN invoices
      ON invoice_items.invoice_id = invoices.id
      INNER JOIN transactions ON invoices.id = transactions.invoice_id
-     WHERE invoices.merchant_id = #{id} 
+     WHERE invoices.merchant_id = #{id}
      AND transactions.result LIKE 'success'
      GROUP BY customer_id"
-
      most_transactions = 0
      favorite_customer_id = 0
-     Database.instance.db.execute(query)  do |row| 
+     Database.instance.db.execute(query)  do |row|
        customer_id = row[0]
        total_transactions = row[1]
        if total_transactions > most_transactions
@@ -61,23 +59,17 @@ module SalesEngine
 
   def most_revenue(total_merchants)
       invoice_items_array = []
-      query = "SELECT merchant_id, SUM(quantity * unit_price) as sum 
+      query = "SELECT merchant_id, SUM(quantity * unit_price) as sum
             FROM invoice_items
             INNER JOIN invoices ON invoice_items.invoice_id = invoices.id
             INNER JOIN transactions on invoices.id = transactions.invoice_id
             AND transactions.result LIKE 'success'
-            GROUP BY merchant_id 
-            ORDER BY sum DESC"
-
+            GROUP BY merchant_id ORDER BY sum DESC LIMIT #{total_merchants}"
     merchants = []
-    Database.instance.db.execute(query)  do |row| 
-      if merchants.length < total_merchants 
-        merchants << Merchant.find_by_id(row[0])
-      else
-        break
-      end
+    Database.instance.db.execute(query)  do |row|
+      merchants << Merchant.find_by_id(row[0])
     end
-    merchants 
+    merchants
   end
 end
 end

@@ -9,7 +9,8 @@ module SalesEngine
     extend InvoiceRecord
     attr_accessor :id, :customer_id, :merchant_id,
     :status, :created_at, :updated_at
-    def initialize(id, customer_id, merchant_id, status, created_at, updated_at)
+    def initialize(id, customer_id, merchant_id,
+                   status, created_at, updated_at)
       @id = id
       @customer_id = customer_id
       @merchant_id = merchant_id
@@ -23,11 +24,15 @@ module SalesEngine
     end
 
     def transactions
-      Transaction.transactions.select { |transaction| transaction.invoice_id == id }
+      Transaction.transactions.select do |transaction|
+        transaction.invoice_id == id
+      end
     end
 
     def invoice_items
-      InvoiceItem.invoice_items.select { |invoice_item| invoice_item.invoice_id == id }
+      InvoiceItem.invoice_items.select do |invoice_item|
+        invoice_item.invoice_id == id
+      end
     end
 
     def items
@@ -71,7 +76,7 @@ module SalesEngine
 
       items_hash.each do |item_id, values|
         InvoiceItem.insert({:item_id => item_id , :invoice_id => invoice_id,
-                                              :quantity => values[0], :unit_price => values[1] })
+                            :quantity => values[0], :unit_price => values[1] })
       end
     end
   end

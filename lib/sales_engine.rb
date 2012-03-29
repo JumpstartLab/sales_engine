@@ -40,7 +40,7 @@ module SalesEngine
       if meth.to_s =~ /^find_by_(.+)$/
         SalesEngine::find_by(self.elements, $1, args)
       elsif meth.to_s =~ /^find_all_by_(.+)$/
-        SalesEngine::find_all_by(self.elements, $1, args) 
+        SalesEngine::find_all_by(self.elements, $1, args)
       else
         super
       end

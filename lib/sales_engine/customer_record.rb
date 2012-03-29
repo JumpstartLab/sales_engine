@@ -1,6 +1,6 @@
 module SalesEngine
-  module CustomerRecord 
-    def customers 
+  module CustomerRecord
+    def customers
       customers = []
       Database.instance.db.execute("select * from customers") do |row|
         id = row[0]
@@ -8,10 +8,10 @@ module SalesEngine
         last_name = row[2]
         created_at = row[5]
         updated_at = row[6]
-        customers << Customer.new(id, first_name, last_name, 
+        customers << Customer.new(id, first_name, last_name,
                                   created_at, updated_at)
       end
-      customers 
+      customers
     end
 
     def for_merchant(merchant_id)
@@ -19,7 +19,7 @@ module SalesEngine
       query = "select * from customers
                 INNER JOIN invoices on customers.id = invoices.customer_id
                 where invoices.merchant_id = #{merchant_id}"
-      Database.instance.db.execute(query)  do |row| 
+      Database.instance.db.execute(query)  do |row|
         customers << create_customer(row)
       end
       customers
@@ -39,7 +39,7 @@ module SalesEngine
       customers
     end
 
-  private 
+  private
 
   def create_customer(row)
     id = row[0]

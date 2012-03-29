@@ -8,20 +8,20 @@ module SalesEngine
     extend CustomerRecord
     attr_accessor :id, :first_name, :last_name, :created_at, :updated_at
 
-    def initialize(id, first_name, last_name, created_at, updated_at) 
+    def initialize(id, first_name, last_name, created_at, updated_at)
       @id = id
       @first_name = first_name
       @last_name = last_name
       @created_at = created_at
       @updated_at = updated_at
-    end     
+    end
 
     def self.elements
       customers
     end
 
     def invoices
-      Invoice.invoices.select { |invoice| invoice.customer_id == id }  
+      Invoice.invoices.select { |invoice| invoice.customer_id == id }
     end
 
     def transactions

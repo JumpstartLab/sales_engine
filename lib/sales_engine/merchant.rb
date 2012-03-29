@@ -43,7 +43,7 @@ module SalesEngine
     def paid_invoice_items(date = nil)
       if date
         InvoiceItem.successful_for_merchant_and_date(id, date)
-      else 
+      else
         InvoiceItem.successful_for_merchant(id)
       end
     end
@@ -58,13 +58,13 @@ module SalesEngine
 
     def self.revenue(date)
       result = 0
-      merchants.each { |merchant| result += merchant.revenue(date) } 
+      merchants.each { |merchant| result += merchant.revenue(date) }
       BigDecimal.new(result.to_s).round(2)
     end
 
     def self.most_items(total_merchants)
-      results = merchants.sort_by do |merchant| 
-        merchant.paid_invoice_items.length 
+      results = merchants.sort_by do |merchant|
+        merchant.paid_invoice_items.quantity
       end.reverse!
       results[0,total_merchants]
     end

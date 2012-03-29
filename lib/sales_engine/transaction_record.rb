@@ -1,12 +1,12 @@
 module SalesEngine
   module TransactionRecord
 
-     def transactions 
+     def transactions
        transactions = []
        Database.instance.db.execute("select * from transactions") do |row|
          transactions << create_transaction(row)
        end
-       transactions 
+       transactions
      end
 
      def for_customer(customer_id)
@@ -25,15 +25,16 @@ module SalesEngine
 
      def insert(hash)
       raw_date, clean_date = Database.get_dates
-      Database.instance.db.execute("insert into transactions values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                  nil, hash[:invoice_id].to_i, hash[:credit_card_number],
-                  hash[:credit_card_expiration_date], hash[:result],
-                  raw_date.to_s, raw_date.to_s,
-                  clean_date, clean_date)
+      Database.instance.db.execute(
+              "insert into transactions values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+              nil, hash[:invoice_id].to_i, hash[:credit_card_number],
+              hash[:credit_card_expiration_date], hash[:result],
+              raw_date.to_s, raw_date.to_s,
+              clean_date, clean_date)
       return Database.instance.db.last_insert_row_id
      end
 
-     private 
+     private
 
      def create_transaction(row)
        id = row[0]
@@ -43,8 +44,8 @@ module SalesEngine
        result = row[4]
        created_at = row[5]
        updated_at = row[6]
-       Transaction.new(id, invoice_id, credit_card_number, 
-                       credit_card_expiration_date, result, 
+       Transaction.new(id, invoice_id, credit_card_number,
+                       credit_card_expiration_date, result,
                        created_at, updated_at)
      end
   end
