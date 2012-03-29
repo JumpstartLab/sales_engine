@@ -90,14 +90,14 @@ describe SalesEngine::Customer do
     end
    
     it "returns successful invoices associated with the customer" do
-      customer_one.successful_invoices.should == [ inv_one, inv_two ]
+      customer_one.paid_invoices.should == [ inv_one, inv_two ]
     end
 
     context "when no successful transactions" do
       it "returns an empty array" do
         invoices = [ inv_three ]
         customer_one.stub(:invoices).and_return(invoices)
-        customer_one.successful_invoices.should == [ ]
+        customer_one.paid_invoices.should == [ ]
       end
     end
   end

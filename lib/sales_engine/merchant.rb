@@ -43,7 +43,7 @@ module SalesEngine
       invoices.select do |inv|
         # DOES NOT HANDLE EDGE CASE WELL... e.g. RANGE DATE IS SAME
         # AS UPDATED DATE
-        inv.updated_at <= range.last && inv.updated_at >= range.first
+        inv.created_at <= range.last && inv.created_at >= range.first
       end
     end
 
@@ -108,8 +108,8 @@ module SalesEngine
     def self.total_revenue_on_range(range)
       total_revenue = 0
       SalesEngine::Invoice.successful_invoices.each do |i|
-        updated_at = Date.parse(i.updated_at.to_s)
-        if range.first <= updated_at && range.last >= updated_at
+        created_at = Date.parse(i.created_at.to_s)
+        if range.first <= created_at && range.last >= created_at
             total_revenue += i.invoice_revenue
         end
       end
@@ -117,7 +117,7 @@ module SalesEngine
     end
 
     def self.clean_date(date)
-      date = Date.parse(date) if date.kind_of? String
+      date = Date.parse(date.to_s) if date.kind_of? String
       date
     end
 

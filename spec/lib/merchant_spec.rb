@@ -89,9 +89,9 @@ describe SalesEngine::Merchant do
 
   describe "#invoices_on_range(range)" do
     before(:each) do
-      inv_one.stub(:updated_at).and_return(Time.parse("2012-2-19"))
-      inv_two.stub(:updated_at).and_return(Time.parse("2012-2-22"))
-      inv_three.stub(:updated_at).and_return(Time.parse("2012-2-24"))
+      inv_one.stub(:created_at).and_return(Date.parse("2012-2-19"))
+      inv_two.stub(:created_at).and_return(Date.parse("2012-2-22"))
+      inv_three.stub(:created_at).and_return(Date.parse("2012-2-24"))
       inv_one.stub(:merchant_id).and_return("1")
       inv_two.stub(:merchant_id).and_return("1")
       inv_three.stub(:merchant_id).and_return("1")
@@ -254,9 +254,9 @@ describe SalesEngine::Merchant do
       inv_one.stub(:invoice_revenue).and_return(100)
       inv_two.stub(:invoice_revenue).and_return(200)
       inv_three.stub(:invoice_revenue).and_return(300)
-      inv_one.stub(:updated_at).and_return(Time.parse("2012-02-19"))
-      inv_two.stub(:updated_at).and_return(Time.parse("2012-02-21"))
-      inv_three.stub(:updated_at).and_return(Time.parse("2012-02-19"))
+      inv_one.stub(:created_at).and_return(Date.parse("2012-02-19"))
+      inv_two.stub(:created_at).and_return(Date.parse("2012-02-21"))
+      inv_three.stub(:created_at).and_return(Date.parse("2012-02-19"))
       invoices = [ inv_one, inv_two, inv_three ]
       SalesEngine::Invoice.stub(:successful_invoices).and_return(invoices)
     end
