@@ -11,6 +11,7 @@ require 'sales_engine/invoice_item'
 require 'sales_engine/class_methods'
 
 module SalesEngine
+  EXTENSIONS = %w(customer invoice merchant)
   CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
   CLASS_FILES = {
     Customer => "customers.csv",
