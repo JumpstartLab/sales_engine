@@ -39,3 +39,4 @@ Obviously this means each team will be coding "in public," so please respect the
 
 1. Push your final code up to the Github repo
 2. Submit a pull request
+
