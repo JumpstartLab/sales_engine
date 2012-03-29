@@ -1,19 +1,19 @@
 require 'sales_engine/randomize'
 require 'sales_engine/searchable'
+require 'bigdecimal'
 
 module SalesEngine
   class Merchant
-
     extend Randomize
     extend Searchable
 
     attr_accessor :id, :name, :created_at, :updated_at
 
     def initialize(attributes)
-      self.id         = attributes[:id]
+      self.id         = attributes[:id].to_i
       self.name       = attributes[:name]
-      self.created_at = attributes[:created_at]
-      self.updated_at = attributes[:updated_at]
+      self.created_at = Date.parse(attributes[:created_at])
+      self.updated_at = Date.parse(attributes[:updated_at])
     end
 
     class << self
@@ -73,11 +73,11 @@ module SalesEngine
       if date
         revenue_by_date(date)
       else
-        revenue
         result = 0
         invoices.each do |invoice|
           result += invoice.total_amount
         end
+        result.round(2)
       end
     end
 
@@ -123,10 +123,6 @@ module SalesEngine
       end
     end
 
-    #######################
-    ###FAVORITE CUSTOMER###
-    #######################
-
     def grouped_customers
       paid_invoices.group_by { |invoice| invoice.customer_id }
     end
@@ -139,14 +135,13 @@ module SalesEngine
       SalesEngine::Customer.find_by_id(favorite_customer_id)
     end
 
-    #######################
-    ###FAVORITE CUSTOMER###
-    #######################
-
-    # def customers_with_pending_invoices
-    #   returns a collection of Customer instances
-    #   which have pending (unpaid) invoices
-    # end
-
+    def customers_with_pending_invoices
+      results = []
+      invoices.map(&:customer_id).uniq.each do |cust_id|
+        customer = SalesEngine::Customer.find_by_id(cust_id)
+        results << customer if customer.has_pending_invoices?(self.id)
+      end
+      results
+    end
   end
 end

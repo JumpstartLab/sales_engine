@@ -1,18 +1,55 @@
 module SalesEngine
   class Transaction
+    extend Randomize
+    extend Searchable
+
     attr_accessor :id, :invoice_id, :credit_card_number,
                   :credit_card_expiration_date, :result,
                   :created_at, :updated_at
 
     def initialize(attributes)
-      self.id         = attributes[:id]
-      self.invoice_id = attributes[:invoice_id]
+      self.id         = attributes[:id].to_i
+      self.invoice_id = attributes[:invoice_id].to_i
       self.credit_card_number = attributes[:credit_card_number]
       self.credit_card_expiration_date =
         attributes[:credit_card_expiration_date]
       self.result     = attributes[:result]
-      self.created_at = attributes[:created_at]
-      self.updated_at = attributes[:updated_at]
+      self.created_at = Date.parse(attributes[:created_at])
+      self.updated_at = Date.parse(attributes[:updated_at])
+    end
+
+    class << self
+      [:id, :invoice_id, :credit_card_number,
+       :credit_card_expiration_date, :result,
+       :created_at, :updated_at].each do |attribute|
+        define_method "find_by_#{attribute}" do |input|
+          find_by_(attribute, input)
+        end
+      end
+
+      [:id, :invoice_id, :credit_card_number,
+       :credit_card_expiration_date, :result,
+       :created_at, :updated_at].each do |attribute|
+        define_method "find_all_by_#{attribute}" do |input|
+          find_all_by_(attribute, input)
+        end
+      end
+    end
+
+
+    def self.create(invoice_id, attributes={})
+      t = Transaction.new(
+        :id => database.transactions.count + 1,
+        :invoice_id => invoice_id,
+        :credit_card_number => attributes[:credit_card_number],
+        :credit_card_expiration_date => attributes[:credit_card_expiration],
+        :result => attributes[:result],
+        :created_at => Time.now.to_s,
+        :updated_at => Time.now.to_s )
+
+      SalesEngine::Database.instance.transactions << t
+
+      t
     end
 
     def self.collection

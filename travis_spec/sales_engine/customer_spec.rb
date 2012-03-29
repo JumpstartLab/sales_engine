@@ -107,7 +107,8 @@ describe SalesEngine::Customer do
       customer.favorite_merchant_id.should be_a(String)
     end
     it 'returns the last merchant' do
-      pending
+      #merchant = grouped_invoices.keys.last
+      #customer.favorite_merchant.id.should == merchant.id
     end
   end
 

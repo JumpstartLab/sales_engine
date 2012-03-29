@@ -15,9 +15,9 @@ module SalesEngine
       self.name = attributes[:name]
       self.description = attributes[:description]
       self.unit_price = attributes[:unit_price]
-      self.merchant_id = attributes[:merchant_id]
-      self.created_at = attributes[:created_at]
-      self.updated_at = attributes[:updated_at]
+      self.merchant_id = attributes[:merchant_id].to_i
+      self.created_at = Date.parse(attributes[:created_at])
+      self.updated_at = Date.parse(attributes[:updated_at])
     end
 
     class << self
@@ -108,9 +108,13 @@ module SalesEngine
       end
     end
 
-    # def best_day
-    #   # best day
-    # end
+    def best_day
+      results = Hash.new(0)
+      paid_invoices.each do |invoice|
+        results[invoice.created_at] += invoice.quantity.to_i
+      end
+      results.sort_by { |key,value| value }.last.first
+    end
 
   end
 end

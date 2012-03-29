@@ -11,11 +11,11 @@ module SalesEngine
                   :updated_at
 
     def initialize(attributes)
-      self.id         = attributes[:id]
+      self.id         = attributes[:id].to_i
       self.first_name = attributes[:first_name]
       self.last_name  = attributes[:last_name]
-      self.created_at = attributes[:created_at]
-      self.updated_at = attributes[:updated_at]
+      self.created_at = Date.parse(attributes[:created_at])
+      self.updated_at = Date.parse(attributes[:updated_at])
     end
 
     class << self
@@ -74,6 +74,19 @@ module SalesEngine
 
     def favorite_merchant
       SalesEngine::Merchant.find_by_id(favorite_merchant_id)
+    end
+
+    def pending_invoices
+      invoices.reject do |invoice|
+        invoice.transactions.map(&:result).include?("success")
+      end
+    end
+
+    def has_pending_invoices?(merchant_id)
+      result = pending_invoices.select do |invoice|
+        invoice.merchant_id == merch_class_id
+      end
+      result.any?
     end
 
   end

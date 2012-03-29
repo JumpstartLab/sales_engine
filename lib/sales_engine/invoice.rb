@@ -11,11 +11,11 @@ module SalesEngine
 
     def initialize(attributes)
       self.id          = attributes[:id]
-      self.customer_id = attributes[:customer_id]
-      self.merchant_id = attributes[:merchant_id]
+      self.customer_id = attributes[:customer_id].to_i
+      self.merchant_id = attributes[:merchant_id].to_i
       self.status      = attributes[:status]
-      self.created_at  = attributes[:created_at]
-      self.updated_at  = attributes[:updated_at]
+      self.created_at  = Date.parse(attributes[:created_at])
+      self.updated_at  = Date.parse(attributes[:updated_at])
     end
 
     class << self
@@ -32,6 +32,28 @@ module SalesEngine
           find_all_by_(attribute, input)
         end
       end
+    end
+
+    def self.create(attributes={})
+      inv_id = Database.instance.invoices.count + 1
+
+      SalesEngine::InvoiceItem.create(inv_id, attributes[:items])
+
+      inv = self.new({
+        :id           => inv_id,
+        :customer_id  => attributes[:customer].id,
+        :merchant_id  => attributes[:merchant].id,
+        :status       => attributes[:status],
+        :created_at   => DateTime.now.to_s,
+        :updated_at   => DateTime.now.to_s })
+
+      SalesEngine::Database.instance.invoices << inv
+
+      inv
+    end
+
+    def charge(attributes={})
+      SalesEngine::Transaction.create(self.id, attributes)
     end
 
     def self.collection
@@ -51,9 +73,9 @@ module SalesEngine
     end
 
     def transactions
-      database.transactions.select {
+      database.transactions.select do
         |transaction| transaction.invoice_id == self.id
-      }
+      end
     end
 
     def invoice_items
@@ -69,7 +91,7 @@ module SalesEngine
     end
 
     def get_item_ids
-      matched_invoiceitems.map { |invoiceitem| invoiceitem.item_id }
+      matched_invoiceitems.map {|invoiceitem| invoiceitem.item_id }
     end
 
     def matched_invoiceitems
@@ -83,9 +105,7 @@ module SalesEngine
     end
 
     def matched_customers
-      database.customers.select {
-        |customer| customer.id == self.customer_id
-      }
+      database.customers.select {|customer| customer.id == self.customer_id}
     end
 
     def paid?
@@ -96,9 +116,9 @@ module SalesEngine
 
     def total_amount
       if paid?
-        @total ||= invoice_items.inject(0) do |sum,inv_item|
-          sum + inv_item.total
-        end
+        @total ||= invoice_items.inject(0){
+          |sum,inv_item| sum += inv_item.total
+        }
       else
         return 0
       end
