@@ -9,3 +9,4 @@ gem 'reek'
 gem 'ruby_gntp'
 gem 'simplecov', :require => false, :group => :test
 gem 'fabrication'
+gem 'rake'
