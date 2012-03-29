@@ -25,7 +25,7 @@ module SalesEngine
     end
 
     def merchant
-      Merchant.merchants.find { |merchant| merchant.id == id}
+      Merchant.merchants.find { |merchant| merchant.id == merchant_id}
     end
 
     def invoice_items
@@ -33,19 +33,19 @@ module SalesEngine
     end
 
     def revenue
-      revenue = 0
+      total = 0
       invoice_items.each do |invoice_item|
-        revenue += invoice_item.unit_price * invoice_item.quantity
+        total += invoice_item.unit_price * invoice_item.quantity
       end
-      revenue
+      total
     end
 
     def quantity
-      quantity = 0
+      total = 0
       invoice_items.each do |invoice_item|
-        quantity += invoice_item.quantity
+        total += invoice_item.quantity
       end
-      quantity
+      total
     end
 
     def quantity_by_day
@@ -68,13 +68,15 @@ module SalesEngine
     end
 
     def self.most_revenue(total_items)
-      items.sort_by!{ |item| item.revenue }.reverse!
-      items[0,total_items]
+      items_array = items
+      items_array.sort_by!{ |item| item.revenue }.reverse!
+      items_array[0,total_items]
     end
 
     def self.most_items(total_items)
-      items.sort_by!{ |item| item.quantity }.reverse!
-      items[0,total_items]
+      items_array = items_sold
+      items_array.sort_by!{ |item| item.quantity }.reverse!
+      items_array[0,total_items]
     end
   end
 end
