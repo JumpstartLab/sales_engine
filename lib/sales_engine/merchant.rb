@@ -82,7 +82,9 @@ module SalesEngine
     end
 
     def self.most_revenue(param)
-      @most_revenue ||= collection.sort_by { |m| m.get_revenue }[0...param]
+      @most_revenue ||= collection.sort_by do |m| 
+        m.get_revenue
+      end.last(param).reverse
     end
 
     def get_revenue
@@ -93,11 +95,11 @@ module SalesEngine
 
     def paid_invoices
       invoices.select do |i|
-        i.paid?
+        i if i.paid?
       end
     end
 
-    def self.revenue(date)
+    def self.revenue(date) 
       result = 0
       collection.each do |merchant|
         result += merchant.revenue_by_date(date)
@@ -114,7 +116,9 @@ module SalesEngine
     end
 
     def self.most_items(param)
-      collection.sort_by { |m| m.add_items }[0...param]
+      collection.sort_by do |m|
+        m.add_items
+      end.last(param).reverse
     end
 
     def add_items
@@ -123,16 +127,13 @@ module SalesEngine
       end
     end
 
-    def grouped_customers
-      paid_invoices.group_by { |invoice| invoice.customer_id }
-    end
-
-    def favorite_customer_id
-      grouped_customers.keys.last
-    end
-
     def favorite_customer
-      SalesEngine::Customer.find_by_id(favorite_customer_id)
+      grouped_by_customer = paid_invoices.group_by{|invoice| invoice.customer}
+      std_and_gpd_by_cstmr = grouped_by_customer.sort_by do |customer,invoices|
+        invoices.count
+      end
+      customer_and_invoices = std_and_gpd_by_cstmr.last
+      customer = customer_and_invoices.first
     end
 
     def customers_with_pending_invoices

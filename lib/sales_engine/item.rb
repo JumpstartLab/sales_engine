@@ -104,7 +104,7 @@ module SalesEngine
       if param == 1
         sort_by_items.first
       else
-        sort_by_items[0...param]
+        sort_by_items.last(param)
       end
     end
 

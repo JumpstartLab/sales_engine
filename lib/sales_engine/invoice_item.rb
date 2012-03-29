@@ -81,11 +81,6 @@ module SalesEngine
     def item
       SalesEngine::Item.find_by_id(self.item_id)
       #remove to_s here fixes 3 errors
-      # SalesEngine::Database.instance.items.find do |i|
-      #   i.send(:id) == self.item_id
-      # end
-      # matched_items = SalesEngine::Item.find_by_id(self.item_id)
-      # matched_items[0]
     end
 
     def total

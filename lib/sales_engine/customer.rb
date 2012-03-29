@@ -82,7 +82,7 @@ module SalesEngine
       end
     end
 
-    def has_pending_invoices?(merchant_id)
+    def has_pending_invoices?(merch_class_id)
       result = pending_invoices.select do |invoice|
         invoice.merchant_id == merch_class_id
       end
