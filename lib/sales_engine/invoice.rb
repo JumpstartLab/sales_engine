@@ -161,8 +161,8 @@ module SalesEngine
       def self.count_date_revenues(date)
         date_revenues = Hash.new {|hash, key| hash[key] = [0,0] }
         Database.instance.all_invoices.each do |invoice|
-          if invoice.successful?
-            date_revenues[invoice.created_at.to_s][0] += invoice.revenue(date)
+          if invoice.successful? && invoice.created_at == date
+            date_revenues[invoice.created_at.to_s][0] += invoice.revenue
             date_revenues[invoice.created_at.to_s][1] += 1
           end
         end
