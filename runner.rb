@@ -4,5 +4,6 @@ require 'sales_engine'
 include SalesEngine
 
 SalesEngine.startup
-n= SalesEngine::Item.find_by_name("Item Alias Nihil").unit_price
+n= SalesEngine::Merchant.find_by_name("Parisian Group").customers_with_pending_invoices
 puts n.inspect
+puts n.length

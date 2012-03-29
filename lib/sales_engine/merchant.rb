@@ -17,31 +17,27 @@ module SalesEngine
     end
 
     def self.merchants
-      merchants = DataStore.instance.merchants
+      merchants     = DataStore.instance.merchants
     end
 
-    # def self.all
-    #   self.merchants
-    # end
-
     def items_array
-      items = DataStore.instance.items
+      items         = DataStore.instance.items
     end
 
     def invoices_array
-      invoices = DataStore.instance.invoices
+      invoices      = DataStore.instance.invoices
     end
 
-    def invoice_items_array
+    def i_items_array
       invoice_items = DataStore.instance.invoice_items
     end
 
     def customers_array
-      customers= DataStore.instance.customers
+      customers     = DataStore.instance.customers
     end
 
     def transcations_array
-      transactions = DataStore.instance.transactions
+      transactions  = DataStore.instance.transactions
     end
 
     def self.random
@@ -71,15 +67,13 @@ module SalesEngine
     end
 
     def invoice_items
-      merch_invoice_item_ids = invoices.collect { |inv| inv.id}
-      invoice_items_array.select
-              { |inv_item| merch_invoice_item_ids.include?(inv_item.invoice_id)}
+      merch_i_item_ids = invoices.collect { |inv| inv.id}
+      i_items_array.select { |i_i| merch_i_item_ids.include?(i_i.invoice_id)}
     end
 
     def successful_invoice_items
-      merch_invoice_item_ids = successful_invoices.collect { |inv| inv.id}
-      invoice_items_array.select
-              { |inv_item| merch_invoice_item_ids.include?(inv_item.invoice_id)}
+      merch_i_item_ids = successful_invoices.collect { |inv| inv.id}
+      i_items_array.select { |i_i| merch_i_item_ids.include?(i_i.invoice_id)}
     end
 
     def merch_quantity
@@ -131,16 +125,14 @@ module SalesEngine
 
     def self.most_revenue(x)
       self.set_revenue
-      sorted_merchants = self.merchants.sort_by
-              { |merchant| merchant.total_revenue }.reverse
-      sorted_merchants[0..x-1]
+      sorted_merchants = self.merchants.sort_by { |merch| merch.total_revenue }
+      sorted_merchants.reverse[0..x-1]
     end
 
     def self.most_items(x)
       self.set_quantity
-      sorted_merchants = self.merchants.sort_by
-              { |merchant| merchant.quantity }.reverse
-      sorted_merchants[0..x-1]
+      sorted_merchants = self.merchants.sort_by { |merch| merch.quantity }
+      sorted_merchants.reverse[0..x-1]
     end
 
     def customer_ids
@@ -168,7 +160,7 @@ module SalesEngine
 
     def customers_with_pending_invoices
       pending_invoices = invoices.select { |inv| !inv.successful? }
-      pending_invoices.collect{|inv| Customer.find_by_id(inv.customer_id)}
+      pending_invoices.collect {|inv| Customer.find_by_id(inv.customer_id)}
     end
 
     def all_customers
@@ -188,6 +180,5 @@ module SalesEngine
       end
       BigDecimal.new(date_revs[date].to_s)/100
     end
-
   end
 end

@@ -54,13 +54,11 @@ module SalesEngine
     end
 
     def transactions
-      @transactions ||= transactions_array.select
-                        { |trans| trans.invoice_id ==  id }
+      @transactions ||= transactions_array.select { |t| t.invoice_id == id }
     end
 
     def invoice_items
-      @invoice_items ||= invoice_items_array.select
-                          { |inv| inv.invoice_id == id}
+      @invoice_items ||= invoice_items_array.select { |i| i.invoice_id == id}
     end
 
     def items

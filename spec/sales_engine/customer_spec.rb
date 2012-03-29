@@ -4,14 +4,7 @@ describe SalesEngine::Customer do
 
   a = SalesEngine::Customer.new({:id=>3})
   b = SalesEngine::Customer.new({:first_name=>"FirstName"})
-
-  # let(:customer){Fabricate(:customer)}
-
-  # let(:customer_with_invoices){ Fabricate(:customer_with_invoices) }
-
-  # let(:customer_with_merchants){ Fabricate(:customer_with_merchants) }
-
-
+  
   describe ".random" do
     it "returns a customer" do
       SalesEngine::Customer.random.class.should == SalesEngine::Customer
