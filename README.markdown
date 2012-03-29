@@ -6,7 +6,7 @@ This project will be completed over two weeks beginning Monday, March 13 and due
 
 ### Assignment
 
-The current version of the assignment is always here:
+The current version of the assignment is always here: 
 
 http://tutorials.jumpstartlab.com/projects/sales_engine.html
 
