@@ -150,28 +150,35 @@ module SalesEngine
       end
 
       def self.average_revenue(date = nil)
-
         if date
-         date_revenues = Hash.new {|hash, key| hash[key] = [0,0] }
-          Database.instance.all_invoices.each do |invoice|
-            if invoice.successful?
-              date_revenues[invoice.created_at.to_s][0] += invoice.revenue(date)
-              date_revenues[invoice.created_at.to_s][1] += 1
-            end
-          end
-          date_total = date_revenues[date.to_s][0]
-          count_total = date_revenues[date.to_s][1].to_f
-          average = date_total/count_total
+         average = average_for_date
         else
-          count = 0
-          Database.instance.all_invoices.each do |invoice|
-            if invoice.successful?
-              count += 1
-            end
-          end
-          average = total_revenue/count.to_f
+          average = average_for_all
         end
         BigDecimal.new(average.round(2).to_s)
+      end
+
+      def self.average_for_date
+        count = 0
+        Database.instance.all_invoices.each do |invoice|
+          if invoice.successful?
+            count += 1
+          end
+        end
+        average = total_revenue/count.to_f
+      end
+
+      def self.average_for_date
+        date_revenues = Hash.new {|hash, key| hash[key] = [0,0] }
+        Database.instance.all_invoices.each do |invoice|
+          if invoice.successful?
+            date_revenues[invoice.created_at.to_s][0] += invoice.revenue(date)
+            date_revenues[invoice.created_at.to_s][1] += 1
+          end
+        end
+        date_total = date_revenues[date.to_s][0]
+        count_total = date_revenues[date.to_s][1].to_f
+        average = date_total/count_total
       end
 
       def self.average_items(date = nil)
