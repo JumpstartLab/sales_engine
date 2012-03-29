@@ -30,12 +30,23 @@ class SalesEngine
       @invoices || SalesEngine::Invoice.find_all_by_merchant_id(@id)
     end
 
-    def revenue
-      sum = 0
-      invoices.each do |invoice|
-        sum = sum + invoice.total
+    def invoices_on_date(date)
+      invoices.select {|i| i.updated_at == date}
+    end
+
+    def revenue(date=nil)
+      result = ''
+      if date
+        result = invoices_on_date(date).inject(0) {|sum, element| sum + element.total }
+      else
+        result = invoices.inject(0) {|sum, element| sum + element.total }
       end
-      b = BigDecimal.new(sum).truncate(2)
+      b = BigDecimal.new(result) / 100
+      @revenue || b
+    end
+
+    def set_revenue=(input)
+      @revenue = input
     end
 
     def customers

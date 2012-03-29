@@ -49,6 +49,10 @@ class SalesEngine
       @items
     end
 
+    def items=(input)
+      @items = input
+    end
+
     def load_invoices
       @invoices = []
       data = load("data/invoices.csv")
@@ -111,6 +115,10 @@ class SalesEngine
       SalesEngine::Database.instance.send(class_name).select do |i|
         i.send(attr) == param
       end
+    end
+
+    def all(class_name)
+      SalesEngine::Database.instance.send(class_name)
     end
   end
 end

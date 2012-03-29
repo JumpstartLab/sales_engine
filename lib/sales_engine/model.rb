@@ -3,7 +3,7 @@ class SalesEngine
     def initialize(attributes)
       @id = attributes[:id] 
       @created_at = attributes[:created_at]
-      @updated_at = attributes[:updated_at]
+      @updated_at = Time.parse(attributes[:updated_at])
     end
 
     def self.included(target)
