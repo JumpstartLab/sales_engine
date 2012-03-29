@@ -13,16 +13,12 @@ SalesEngine.startup
 
 
 
-cust = SalesEngine::Customer.find_by_id(1)
-most_recent = cust.invoices.max_by do |invoice|
-          invoice.created_at
-        end
-puts most_recent.inspect
 
-
-
-
-
+# cust = SalesEngine::Customer.find_by_id(1)
+# most_recent = cust.invoices.max_by do |invoice|
+#           invoice.created_at
+#         end
+# puts most_recent.inspect
 
 # puts SalesEngine::Invoice.average_revenue.to_f
 

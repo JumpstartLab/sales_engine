@@ -69,7 +69,9 @@ module SalesEngine
 
     def calc_revenue_by_range_of_dates (range)
       revenue = invoices.inject(0) do |sum, invoice|
-        if invoice.successful? && invoice.created_at >= range.first && invoice.created_at <= range.last
+        if invoice.successful? &&
+           invoice.created_at >= range.first &&
+           invoice.created_at <= range.last
           sum += invoice.revenue
         end
         sum
@@ -148,7 +150,7 @@ module SalesEngine
     end
 
     def self.most_revenue(number)
-      sorted = Database.instance.all_merchants.sort_by do |merchant| 
+      sorted = Database.instance.all_merchants.sort_by do |merchant|
         -merchant.revenue
       end
       sorted.slice!(0...number)
@@ -162,10 +164,3 @@ module SalesEngine
     end
   end
 end
-
-
-
-
-
-
-

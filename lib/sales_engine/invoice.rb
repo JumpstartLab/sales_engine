@@ -106,7 +106,8 @@ module SalesEngine
         parsed_attributes = {}
         parsed_attributes[:customer_id] = attributes[:customer].id.to_s
         parsed_attributes[:merchant_id] = attributes[:merchant].id.to_s
-        last_invoice = Database.instance.all_invoices.max_by {|invoice| invoice.id}
+        all_invoices = Database.instance.all_invoices
+        last_invoice = all_invoices.max_by {|invoice| invoice.id}
         parsed_attributes[:id] = (last_invoice.id + 1).to_s
 
         accumulator = Hash.new {|hash,key| key = 0}
@@ -135,14 +136,10 @@ module SalesEngine
       end
 
       def self.pending
-        pending = Database.instance.all_invoices.select {|invoice| invoice.pending?}
+        pending = Database.instance.all_invoices.select do |invoice|
+          invoice.pending?
+        end
       end
-
-#           IT
-#           DONT
-            # WORK
-#           vvvvvvv
-#
 
       def self.total_revenue
         total = 0.0
@@ -162,7 +159,9 @@ module SalesEngine
               date_revenues[invoice.created_at.to_s][1] += 1
             end
           end
-          average = date_revenues[date.to_s][0]/(date_revenues[date.to_s][1].to_f)
+          date_total = date_revenues[date.to_s][0]
+          count_total = date_revenues[date.to_s][1].to_f
+          average = date_total/count_total
         else
           count = 0
           Database.instance.all_invoices.each do |invoice|
@@ -189,11 +188,3 @@ module SalesEngine
       end
     end
   end
-
-
-        # FROM self.average_revenue
-        #   total_revenue = Database.instance.all_invoices.inject(0) do |sum, invoice|
-        #   revenue = invoice.revenue(date)
-        #   counter += 1 unless revenue == 0
-        #   sum += revenue
-        # end

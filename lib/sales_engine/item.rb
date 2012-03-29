@@ -60,9 +60,9 @@ module SalesEngine
       def best_day
         date_counts = Hash.new {|hash, key| hash[key] = 0 }
         top_day = nil
-        self.invoice_items.each do |invoice_item|
-          if invoice_item.invoice.successful?
-            date_counts[invoice_item.invoice.created_at] += invoice_item.quantity
+        self.invoice_items.each do |ii|
+          if ii.invoice.successful?
+            date_counts[ii.invoice.created_at] += ii.quantity
           end
         end
         top_day = date_counts.max_by{|k, v| v}

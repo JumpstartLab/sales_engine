@@ -107,9 +107,9 @@ module SalesEngine
             attr_accessor attribute
           end
         end
-      end  
+      end
 
-      def define_attributes (attributes)  
+      def define_attributes (attributes)
         attributes.each do |key, value|
           if DataCleaner.instance.respond_to?("clean_#{key.to_s}")
             value = DataCleaner.instance.send("clean_#{key.to_s}",value)
@@ -119,7 +119,7 @@ module SalesEngine
       end
   end
 
-  class Database 
+  class Database
     ATTRIBUTES = [:transaction, :customer, :item, :invoice_item,
       :merchant, :invoice, :all_transactions, :all_customers, :all_items,
       :all_invoice_items, :all_merchants, :all_invoices]
@@ -130,7 +130,7 @@ module SalesEngine
     include Singleton
     include AccessorBuilder
 
-    class_eval do 
+    class_eval do
       def initialize
         HASHES.each do |hash|
           hash_init = Hash.new do |hash,key|
@@ -138,7 +138,7 @@ module SalesEngine
               if key.to_s.end_with?("s")
                 hash[key] = []
               end
-            end 
+            end
           end
           send("#{hash}=", hash_init)
         end
