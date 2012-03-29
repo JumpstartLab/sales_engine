@@ -12,7 +12,7 @@ class SalesEngine
       @name = attributes[:name]
       @description = attributes[:description]
       @unit_price = attributes[:unit_price]
-      @merchant_id = attributes[:merchant_id]
+      @merchant_id = attributes[:merchant_id].to_i
     end
 
     def self.finder_attributes
@@ -27,8 +27,6 @@ class SalesEngine
 
     def invoice_items=(input)
       @invoice_items = input
-      # puts "@invoice_items are #{invoice_items.inspect}"
-      @invoice_items
     end
 
     def merchant
@@ -44,10 +42,8 @@ class SalesEngine
 
     def item_quantity_per_day
       item_quantities = {}
-      # puts "invoice_items are #{invoice_items}"
       invoice_items.each do |ii|
         date = (Date.parse(ii.updated_at)).strftime("%Y-%m-%d")
-        puts date
         item_quantities[date] ||= 0
         item_quantities[date] += ii.quantity
       end

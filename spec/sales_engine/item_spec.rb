@@ -52,7 +52,6 @@ describe SalesEngine::Item do
         :updated_at => '2012-03-15 13:56:57 UTC', :quantity => 6)
 
       item_1.invoice_items = [ii_1, ii_2, ii_3]
-      puts "item1 ii #{item_1.invoice_items}"
       item_1.best_day.should == "2012-02-15"
     end
   end

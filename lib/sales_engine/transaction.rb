@@ -14,7 +14,7 @@ class SalesEngine
 
     def initialize(attr)
       super(attr)
-      @invoice_id = attr[:invoice_id]
+      @invoice_id = attr[:invoice_id].to_i
       @credit_card_number = attr[:credit_card_number]
       @credit_card_expiration_date = attr[:credit_card_expiration_date]
       @result = attr[:result]

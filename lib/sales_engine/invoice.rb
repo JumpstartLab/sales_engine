@@ -12,8 +12,8 @@ class SalesEngine
     
     def initialize(attributes)
       super
-      @customer_id = attributes[:customer_id]
-      @merchant_id = attributes[:merchant_id]
+      @customer_id = attributes[:customer_id].to_i
+      @merchant_id = attributes[:merchant_id].to_i
       @status = attributes[:status]
     end  
 

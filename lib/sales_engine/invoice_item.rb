@@ -15,8 +15,8 @@ class SalesEngine
 
     def initialize(attributes)
         super
-        @item_id = attributes[:item_id]
-        @invoice_id = attributes[:invoice_id]
+        @item_id = attributes[:item_id].to_i
+        @invoice_id = attributes[:invoice_id].to_i
         @quantity = attributes[:quantity].to_i
         @unit_price = BigDecimal.new(attributes[:unit_price]).round(2)
     end
