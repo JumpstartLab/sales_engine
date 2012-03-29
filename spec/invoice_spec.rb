@@ -92,7 +92,6 @@ describe SalesEngine::Invoice do
     describe ".find_all_by_status" do
       it "can find multiple records" do
         invoices = SalesEngine::Invoice.find_all_by_status "shipped"
-        puts invoices.map(&:status).uniq
         invoices.should have(4843).invoices
       end
     end

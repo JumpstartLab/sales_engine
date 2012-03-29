@@ -19,26 +19,8 @@ describe SalesEngine::Model do
   end
 
   context "id attribute" do
-    it "doesn't create a model with a nil id" do
-      expect do
-        SalesEngine::ModelSample.new(:id => nil) 
-      end.to raise_error(ArgumentError)
-    end
-
-    it "has an id" do
+    it "exists" do
       valid_sample.id.should_not be_nil
-    end
-
-    it "doesn't create a model with a blank id" do
-      expect do
-        SalesEngine::ModelSample.new(:id => "") 
-      end.to raise_error(ArgumentError)
-    end
-
-    it "raises an error when given a float id" do
-      expect do
-        SalesEngine::ModelSample.new :id => 1.5 
-      end.to raise_error ArgumentError
     end
 
     it "converts a string id to an integer" do

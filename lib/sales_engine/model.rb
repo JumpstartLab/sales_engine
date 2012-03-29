@@ -60,19 +60,6 @@ module SalesEngine
         find_by_id(id)
       end
 
-      def create(attributes)
-        kv_pairs = attributes.map do |attribute, value|
-          if value.respond_to? :id
-            ["#{attribute}_id".to_sym,value.id]
-          end
-        end
-
-        attributes = attributes.merge Hash[kv_pairs]
-        
-        puts attributes.keys
-        self.new(attributes)
-      end
-
       def find_all
         SalesEngine::Persistence.instance.fetch(self)
       end

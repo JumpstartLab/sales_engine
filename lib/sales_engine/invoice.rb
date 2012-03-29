@@ -17,6 +17,24 @@ module SalesEngine
       validates_numericality_of :merchant_id, @merchant_id, :integer => true
     end
 
+    def self.create(attributes)
+      attributes[:customer_id] = attributes[:customer].id
+      attributes[:merchant_id] = attributes[:merchant].id
+
+      invoice = Invoice.new(attributes)
+
+      attributes[:items].each do |item|
+        InvoiceItem.new(
+          :unit_price => item.unit_price,
+          :invoice_id => invoice.id,
+          :item_id => item.id,
+          :quantity => 1
+        )
+      end
+
+      invoice
+    end
+
     def customer
       @customer ||= Customer.find(@customer_id)
     end
