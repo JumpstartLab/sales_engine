@@ -65,6 +65,13 @@ module SalesEngine
       results[0,total_merchants]
     end
 
+    def self.most_items(total_merchants)
+      results = merchants.sort_by do |merchant| 
+        merchant.paid_invoice_items.length 
+      end.reverse!
+      results[0,total_merchants]
+    end
+
     def customers_with_pending_invoices
       customers.select{ |customer| customer.has_pending_invoice? }
     end
