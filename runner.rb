@@ -5,11 +5,9 @@ require './lib/sales_engine'
 SalesEngine.startup
 
 
+cust = SalesEngine::Customer.find_by_id(1)
 
-date = Date.parse "Tue, 20 Mar 2012"
-revenue = SalesEngine::Merchant.revenue(date)
-ap revenue
-
+ap cust.days_since_activity
 
 
 # most = SalesEngine::Item.most_items(42)

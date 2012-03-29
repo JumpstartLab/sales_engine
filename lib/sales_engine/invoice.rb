@@ -127,7 +127,7 @@ module SalesEngine
       end
 
       def self.pending
-        pending = all_invoices.select {|invoice| invoice.pending?}
+        pending = Database.instance.all_invoices.select {|invoice| invoice.pending?}
       end
 
       def self.average_revenue(date = nil)

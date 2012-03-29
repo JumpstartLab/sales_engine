@@ -58,9 +58,9 @@ module SalesEngine
     end
 
     def days_since_activity
-      if self.transactions.any?
-        most_recent = self.transactions.max_by do |transaction|
-          transaction.created_at
+      if invoices.any?
+        most_recent = invoices.max_by do |invoice|
+          invoice.created_at
         end
         days_since_activity = Date.today - most_recent.created_at
         days_since_activity.to_i
