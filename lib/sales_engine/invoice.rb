@@ -134,7 +134,7 @@ module SalesEngine
 
       def self.average_revenue(date = nil)
         if date
-         average = average_for_date(date)
+          average = average_for_date(date)
         else
           average = average_for_all
         end

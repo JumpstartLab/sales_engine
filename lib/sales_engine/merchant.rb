@@ -134,9 +134,9 @@ module SalesEngine
         -count
       end
       dates_array = sorted.collect do |date, value|
-        date
+        Date.parse(date.to_s)
       end
-      dates_array.slice(0...x)
+      dates_array.slice(0..x)
     end
 
     def self.most_revenue(number)
