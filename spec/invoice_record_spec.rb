@@ -48,7 +48,7 @@ module SalesEngine
     context "invoice items for item exist" do
       it "returns a array of invoices" do
         rows = InvoiceItem.for_item(1)
-        rows.length.should == 10
+        rows.length.should == 11
       end
     end
 
