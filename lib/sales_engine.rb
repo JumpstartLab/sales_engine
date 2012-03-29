@@ -13,7 +13,7 @@ module SalesEngine
 
   def self.find_by(elements, attribute, value)
     if attribute == "unit_price"
-      value = value.to_f
+      value = value.join.to_f
     end
     if elements
       elements.find { |element| element.send(attribute) == value[0] }
