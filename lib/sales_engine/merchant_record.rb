@@ -59,6 +59,24 @@ module SalesEngine
      Customer.find_by_id(favorite_customer_id)
   end
 
+  def revenue(date)
+    query = "SELECT SUM(invoice_items.quantity*invoice_items.unit_price) 
+             FROM invoices
+             INNER JOIN invoice_items ON invoices.id = invoice_items.invoice_id
+             INNER JOIN transactions ON invoices.id = transactions.invoice_id
+             WHERE transactions.result LIKE 'success'" 
+
+    if date 
+      query += " AND Date(invoices.created_date) = Date('#{date.to_s}')"
+    end
+
+    result = 0
+    Database.instance.db.execute(query)  do |row| 
+      result += row[0]
+    end
+    BigDecimal.new(result.to_s).round(2)
+  end
+
   def most_revenue(total_merchants)
       invoice_items_array = []
       query = "SELECT merchant_id, SUM(quantity * unit_price) as sum 
