@@ -80,6 +80,7 @@ describe SalesEngine::Customer do
     end
   end
 
+
    context "extensions" do
 
     describe "#days_since_activity" do
