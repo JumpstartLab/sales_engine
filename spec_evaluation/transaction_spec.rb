@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Transaction do
-
   context "Searching" do
     describe ".random" do
-      it "usually returns different things on subsequent calls" do
+      it "usually returns different
+          things on subsequent calls" do
         transaction_one = Transaction.random
         10.times do
           transaction_two = Transaction.random
@@ -32,7 +32,8 @@ describe Transaction do
     describe "#invoice" do
       it "exists" do
         invoice_customer = Customer.find_by_id 234
-        transaction.invoice.customer.first_name.should == invoice_customer.first_name
+        transaction.invoice.customer.first_name.should ==
+          invoice_customer.first_name
       end
     end
 
@@ -42,4 +43,3 @@ describe Transaction do
 
   end
 end
-

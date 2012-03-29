@@ -1,15 +1,16 @@
 require 'spec_helper'
 
 describe SalesEngine::Item do
-  param = {:id => 1, 
-           :name => "Item Necessitatibus Facilis", 
+  param = {:id => 1,
+           :name => "Item Necessitatibus Facilis",
            :description => "Omnis error accusantium est ea enim sint.
-            Vero accusantium voluptatem natus et commodi deleniti. Autem soluta
-            omnis in qui commodi. Qui corporis est ut blanditiis. Sit corrupti magnam
-             sit dolores nostrum unde esse.", 
-           :unit_price => 16180, 
-           :merchant_id => 1, 
-           :created_at => "2012-02-26 20:56:50 UTC", 
+            Vero accusantium voluptatem natus et commodi deleniti.
+            Autem soluta omnis in qui commodi. Qui corporis est ut
+            blanditiis. Sit corrupti magnam sit dolores nostrum
+            unde esse.",
+           :unit_price => 16180,
+           :merchant_id => 1,
+           :created_at => "2012-02-26 20:56:50 UTC",
            :updated_at => "2012-02-26 20:56:50 UTC"}
   let(:item) {SalesEngine::Item.new(param)}
   describe '#initialize' do
@@ -17,7 +18,8 @@ describe SalesEngine::Item do
       it 'receives a hash as a param' do
         param.should be_a(Hash)
       end
-      [:id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at].each do |method|
+      [:id, :name, :description, :unit_price, :merchant_id,
+        :created_at, :updated_at].each do |method|
         it "sets the item's attribute #{method} with the method #{method}" do
           item.send(method).should_not be_nil
         end
@@ -66,7 +68,7 @@ describe SalesEngine::Item do
       item.invoice_items.should be_a(Array)
     end
     it 'returns an instance of invoice item' do
-      array_of_invoiceitems = items[0].invoice_items 
+      array_of_invoiceitems = items[0].invoice_items
       array_of_invoiceitems[0].class.should == SalesEngine::InvoiceItem
     end
     it 'returns an empty array when no match' do
@@ -78,7 +80,7 @@ describe SalesEngine::Item do
       test_invoiceitem.item_id.should == items[0].id
     end
   end
-  
+
   describe '#merchant' do
     it 'returns a matched Merchant' do
       items[0].merchant.class.should == SalesEngine::Merchant
@@ -96,9 +98,19 @@ describe SalesEngine::Item do
   describe '#revenue' do
     it 'calculates revenue for each matched invoice item' do
       inv_items = items[0].invoice_items
-      sum = inv_items.inject(0){ |acc,num| (num.quantity.to_i * num.unit_price.to_i) + acc }
+      sum = inv_items.inject(0){
+        |acc,num| (num.quantity.to_i * num.unit_price.to_i) + acc
+      }
       items[0].revenue.should == sum
     end
+  end
+
+  describe '.sort_by_revenue' do
+    pending
+    # it 'returns a sorted collection' do
+    #   raise (result = SalesEngine::Item.sort_by_revenue).inspect
+    #   # result.first > result.last.should be > result.last
+    # end
   end
 
   describe '.most_revenue' do
@@ -119,26 +131,19 @@ describe SalesEngine::Item do
         result.should be_instance_of(SalesEngine::Item)
       end
     end
-    
   end
 
-  describe '.sort_by_revenue' do
-    pending
-    # it 'returns a sorted collection' do
-    #   raise (result = SalesEngine::Item.sort_by_revenue).inspect
-    #   # result.first > result.last.should be > result.last
-    # end
-  end
- 
   describe '#items_quantity' do
     it 'returns total quantity for an item' do
       results = items[0].items_quantity
-      add = items[0].invoice_items.inject(0){ |acc,num| num.quantity.to_i + acc }
+      add = items[0].invoice_items.inject(0){
+        |acc,num| num.quantity.to_i + acc
+      }
       results.should == add
     end
   end
 
-  describe '#sort_by_items' do
+  describe '.sort_by_items' do
     pending
   #   it 'returns largest quantity first' do
   #     result = SalesEngine::Item.sort_by_items
@@ -167,7 +172,9 @@ describe SalesEngine::Item do
   end
 
   describe '#best_day' do
-    pending
+    it '' do
+      pending
+    end
   end
 
 end

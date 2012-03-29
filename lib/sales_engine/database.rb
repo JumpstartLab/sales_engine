@@ -11,7 +11,8 @@ module SalesEngine
   class Database
     include Singleton
     CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
-    attr_accessor :invoices, :invoiceitems, :items, :transactions, :merchants, :customers
+    attr_accessor :invoices, :invoiceitems,
+                  :items, :transactions, :merchants, :customers
 
     def initialize
       load_customers

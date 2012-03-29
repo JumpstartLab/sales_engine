@@ -55,7 +55,9 @@ module SalesEngine
     end
 
     def invoice_items
-      database.invoiceitems.select { |invoice_item| invoice_item.item_id == self.id }
+      database.invoiceitems.select {
+        |invoice_item| invoice_item.item_id == self.id
+      }
     end
 
     def merchant
@@ -63,11 +65,15 @@ module SalesEngine
     end
 
     def match_merchant_to_item
-      database.merchants.select { |merchant| merchant.id == self.merchant_id }
+      database.merchants.select {
+        |merchant| merchant.id == self.merchant_id
+      }
     end
 
     def revenue
-      @total ||= invoice_items.inject(0){ |acc,num| num.total + acc }
+      @total ||= invoice_items.inject(0){
+        |acc,num| num.total + acc
+      }
     end
 
     def self.sort_by_revenue
@@ -83,11 +89,15 @@ module SalesEngine
     end
 
     def items_quantity
-      @quantity ||= invoice_items.inject(0){ |acc,num| num.quantity.to_i + acc }
+      @quantity ||= invoice_items.inject(0){
+        |acc,num| num.quantity.to_i + acc
+      }
     end
 
     def self.sort_by_items
-      collection.sort { |a,b| b.items_quantity <=> a.items_quantity }
+      collection.sort {
+        |a,b| b.items_quantity <=> a.items_quantity
+      }
     end
 
     def self.most_items(param = 1)
@@ -98,7 +108,9 @@ module SalesEngine
       end
     end
 
-    ####BEST-DAY####
+    # def best_day
+    #   # best day
+    # end
 
   end
 end

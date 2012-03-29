@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe SalesEngine::Merchant do
-  param = {:id => 1, 
-           :name => "Brekke, Haley and Wolff", 
-           :created_at => "2012-02-26 20:56:50 UTC", 
+  param = {:id => 1,
+           :name => "Brekke, Haley and Wolff",
+           :created_at => "2012-02-26 20:56:50 UTC",
            :updated_at => "2012-02-26 20:56:50 UTC"}
 
   let(:merchant) {SalesEngine::Merchant.new(param)}
@@ -14,7 +14,8 @@ describe SalesEngine::Merchant do
         param.should be_a(Hash)
       end
       [:id, :name, :created_at, :updated_at].each do |method|
-        it "sets the merchant's attribute #{method} with the method #{method}" do
+        it "sets the merchant's attribute #{method}
+        with the method #{method}" do
           merchant.send(method).should_not be_nil
         end
       end
@@ -22,7 +23,7 @@ describe SalesEngine::Merchant do
   end
 
   let(:merchants) {SalesEngine::Database.instance.merchants}
-  
+
   describe '.collection' do
     it 'creates an array' do
       merchants.should be_a(Array)
@@ -70,7 +71,7 @@ describe SalesEngine::Merchant do
       merchant.invoices.should == []
     end
   end
-  
+
   describe '#items' do
     let(:dbitems) {SalesEngine::Database.instance.items}
     it "returns an array" do
@@ -87,7 +88,33 @@ describe SalesEngine::Merchant do
   end
 
   describe '.most_items(x)' do
-    pending
+    it '' do
+      pending
+    end
+  end
+
+  describe '#invoice_items' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#get_invoice_ids' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#invoice_item_revenue' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#revenue(date)' do
+    it '' do
+      pending
+    end
   end
 
   describe '.revenue(date)' do
@@ -95,15 +122,13 @@ describe SalesEngine::Merchant do
       pending
     end
   end
-  
-  #################
-  #################
-  #################
 
   describe '#revenue' do
     it 'calculates revenue for each matched invoice item' do
       inv_items = merchants[0].invoice_items
-      sum = inv_items.inject(0){ |acc,num| (num.quantity.to_i * num.unit_price.to_i) + acc }
+      sum = inv_items.inject(0){
+        |acc,num| (num.quantity.to_i * num.unit_price.to_i) + acc
+      }
       merchants[0].revenue.should == sum
     end
   end
@@ -128,28 +153,63 @@ describe SalesEngine::Merchant do
     end
   end
 
-  describe '.sort_by_revenue' do
-    pending
-    # it 'returns a sorted collection' do
-    #   raise (result = SalesEngine::Item.sort_by_revenue).inspect
-    #   # result.first > result.last.should be > result.last
-    # end
-  end  
-
-  #################
-  #################
-  #################
-
-  describe '#revenue(date)' do
-    pending
+  describe '#get_revenue' do
+    it '' do
+      pending
+    end
   end
-  
+
+  describe '#paid_invoices' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '.revenue(date)' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#revenue_by_date(date)' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '.most_items(param)' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#add_items' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#grouped_customers' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#favorite_customer_id' do
+    it '' do
+      pending
+    end
+  end
+
   describe '#favorite_customer' do
-    pending
-  end
-  
-  describe '#customers_with_pending_invoices' do
-    pending
+    it '' do
+      pending
+    end
   end
 
+  describe '#customers_with_pending_invoices' do
+    it '' do
+      pending
+    end
+  end
 end

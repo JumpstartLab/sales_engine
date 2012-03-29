@@ -4,7 +4,7 @@ describe SalesEngine::Customer do
   param = {:id => 1, :first_name => "Eliezer", :last_name => "Lemke",
            :created_at => "2012-02-26 20:56:56 UTC",
            :updated_at => "2012-02-26 20:56:56 UTC"}
-  
+
   let(:collection) {SalesEngine::Database.instance.customers}
   let(:fake_customer) {SalesEngine::Customer.new(param)}
   let(:customer) {collection[0]}
@@ -16,7 +16,8 @@ describe SalesEngine::Customer do
         param.should be_a(Hash)
       end
       [:id, :first_name, :last_name, :created_at, :updated_at].each do |method|
-        it "sets the customer's attribute #{method} with the method #{method}" do
+        it "sets the customer's attribute #{method}
+        with the method #{method}" do
           fake_customer.send(method).should_not be_nil
         end
       end
@@ -56,20 +57,6 @@ describe SalesEngine::Customer do
     end
   end
 
-  describe 'extracted_ids' do
-    it 'returns ids of invoices' do
-      result = customer.extracted_ids
-      invoices[0].id.should == result[0]
-    end
-  end
-
-  describe '#transactions' do
-    it 'matches invoice ids to a transaction\'s invoice_id' do
-      ids = invoices.map { |invoice| invoice.id }
-      customer.transactions[0].invoice_id.should == ids[0]
-    end
-  end
-
   describe '#invoices' do
   let(:dbinvoices) {SalesEngine::Database.instance.invoices}
     it "returns an array" do
@@ -88,6 +75,20 @@ describe SalesEngine::Customer do
     end
     it 'returns invoices with the customer\'s id' do
       customer.invoices[0].id.should == customer.id
+    end
+  end
+
+  describe '#transactions' do
+    it 'matches invoice ids to a transaction\'s invoice_id' do
+      ids = invoices.map { |invoice| invoice.id }
+      customer.transactions[0].invoice_id.should == ids[0]
+    end
+  end
+
+  describe 'extracted_ids' do
+    it 'returns ids of invoices' do
+      result = customer.extracted_ids
+      invoices[0].id.should == result[0]
     end
   end
 

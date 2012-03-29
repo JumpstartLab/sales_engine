@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe SalesEngine::Invoice do
-  param = {:id => 1, :customer_id => 1, 
-           :merchant_id => 92, :status => "shipped", 
-           :created_at => "2012-02-14 20:56:56 UTC", 
+  param = {:id => 1, :customer_id => 1,
+           :merchant_id => 92, :status => "shipped",
+           :created_at => "2012-02-14 20:56:56 UTC",
            :updated_at => "2012-02-26 20:56:56 UTC"}
 
   let(:invoice) {SalesEngine::Invoice.new(param)}
@@ -12,8 +12,10 @@ describe SalesEngine::Invoice do
       it 'receives a hash as a param' do
         param.should be_a(Hash)
       end
-      [:id, :customer_id, :merchant_id, :status, :created_at, :updated_at].each do |method|
-        it "sets the invoice's attribute #{method} with the method #{method}" do
+      [:id, :customer_id, :merchant_id,
+        :status, :created_at, :updated_at].each do |method|
+        it "sets the invoice's attribute #{method}
+        with the method #{method}" do
           invoice.send(method).should_not be_nil
         end
       end
@@ -97,10 +99,22 @@ describe SalesEngine::Invoice do
       invoice = invoices[0]
       an_invoiceitem = invoice.invoice_items[0]
       an_item = invoice.items[0]
-      an_invoiceitem.item_id.should == an_item.id     
+      an_invoiceitem.item_id.should == an_item.id
     end
   end
-  
+
+  describe '#get_item_ids' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#matched_invoiceitems' do
+    it '' do
+      pending
+    end
+  end
+
   describe '#customer' do
     it "returns a Customer" do
       invoices[0].customer.class.should == SalesEngine::Customer
@@ -109,4 +123,47 @@ describe SalesEngine::Invoice do
       invoices[0].customer.id.to_i.should == invoice.customer_id
     end
   end
+
+  describe '#matched_customers' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#paid?' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#total_amount' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#revenue_by_date(date)' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#revenue' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#get_revenue' do
+    it '' do
+      pending
+    end
+  end
+
+  describe '#total_items' do
+    it '' do
+      pending
+    end
+  end
+
 end

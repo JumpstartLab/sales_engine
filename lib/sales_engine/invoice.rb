@@ -6,7 +6,8 @@ module SalesEngine
     extend Randomize
     extend Searchable
 
-    attr_accessor :id, :customer_id, :merchant_id, :status, :created_at, :updated_at
+    attr_accessor :id, :customer_id, :merchant_id,
+                  :status, :created_at, :updated_at
 
     def initialize(attributes)
       self.id          = attributes[:id]
@@ -50,15 +51,21 @@ module SalesEngine
     end
 
     def transactions
-      database.transactions.select { |transaction| transaction.invoice_id == self.id }
+      database.transactions.select {
+        |transaction| transaction.invoice_id == self.id
+      }
     end
 
     def invoice_items
-      results = database.invoiceitems.select { |invoiceitem| invoiceitem.invoice_id == self.id }
+      results = database.invoiceitems.select {
+        |invoiceitem| invoiceitem.invoice_id == self.id
+      }
     end
 
     def items
-      get_item_ids.map { |item_id| SalesEngine::Item.find_by_id(item_id) }
+      get_item_ids.map {
+        |item_id| SalesEngine::Item.find_by_id(item_id)
+      }
     end
 
     def get_item_ids
@@ -66,7 +73,9 @@ module SalesEngine
     end
 
     def matched_invoiceitems
-      database.invoiceitems.select { |invoiceitem| invoiceitem.invoice_id == self.id }
+      database.invoiceitems.select {
+        |invoiceitem| invoiceitem.invoice_id == self.id
+      }
     end
 
     def customer
@@ -74,7 +83,9 @@ module SalesEngine
     end
 
     def matched_customers
-      database.customers.select { |customer| customer.id == self.customer_id }
+      database.customers.select {
+        |customer| customer.id == self.customer_id
+      }
     end
 
     def paid?

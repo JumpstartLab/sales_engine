@@ -5,7 +5,7 @@ module SalesEngine
     extend Searchable
 
     def self.collection
-      [ 
+      [
         DummySearchableObject.new(:foo => "Verdi"),
         DummySearchableObject.new(:foo => "Verdi"),
         DummySearchableObject.new(:foo => "Jonan"),

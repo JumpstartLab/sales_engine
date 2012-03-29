@@ -144,7 +144,8 @@ module SalesEngine
     #######################
 
     # def customers_with_pending_invoices
-    #   returns a collection of Customer instances which have pending (unpaid) invoices
+    #   returns a collection of Customer instances
+    #   which have pending (unpaid) invoices
     # end
 
   end

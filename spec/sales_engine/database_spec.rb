@@ -4,7 +4,7 @@ require 'spec_helper'
 describe SalesEngine::Database do
   describe '#initialize' do
     let(:database) { SalesEngine::Database.instance }
-    context "when loading database" do 
+    context "when loading database" do
       it "sets customers" do
         database.customers.any?.should be_true
       end
