@@ -59,19 +59,20 @@ module SalesEngine
     def quantity_by_day
       days = {}
       invoice_items.each do |invoice_item|
-        date = invoice_item.created_at.to_date
+        date = Date.parse(invoice_item.invoice.created_at)
         if days.has_key?(date)
           days[date] += invoice_item.quantity
         else
           days[date] = invoice_item.quantity
         end
       end
+      puts days
       days
     end
 
     def best_day
       unless quantity_by_day.empty?
-        quantity_by_day.sort_by{ |date, quantity| quantity }.last[0]
+        date = quantity_by_day.sort_by{ |date, quantity| quantity }.last[0]
       end
     end
 

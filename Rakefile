@@ -11,6 +11,6 @@ task :harness => :gem do
 
   Dir.chdir(harness_path) do
     sh "git pull"
-    sh "bundle exec rspec spec/merchant_spec.rb"
+    sh "bundle exec rspec spec/item_spec.rb"
   end
 end
