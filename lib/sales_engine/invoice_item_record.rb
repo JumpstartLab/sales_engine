@@ -21,7 +21,7 @@ module SalesEngine
      INNER JOIN invoices
      ON invoice_items.invoice_id = invoices.id
      INNER JOIN transactions ON invoices.id = transactions.invoice_id
-     WHERE invoices.merchant_id = 1
+     WHERE invoices.merchant_id = #{merchant_id}
      AND Date(invoices.created_date) = Date('#{date.to_s}')
      AND transactions.result LIKE 'success'"
      Database.instance.db.execute(query)  do |row| 

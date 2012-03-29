@@ -99,13 +99,13 @@ class Loader
       status text,
       created_at text, 
       updated_at text,
-      created_date text,
-      updated_date text,
+      created_date date,
+      updated_date date,
       foreign key(merchant_id) references merchants(id));
       foreign key(customer_id) references customers(id));
     }
 
-    file = CSV.open("data/invoices.csv", {:headers => true, :header_converters => :symbol})
+    file = CSV.open(File.join(data_dir, FILES[:invoices]), {:headers => true, :header_converters => :symbol})
     file.each do |line|
       database.execute("insert into invoices values (?, ?, ?, ?, ?, ?, ?, ?)",
                        line[:id].to_i, line[:customer_id].to_i, line[:merchant_id].to_i, 
