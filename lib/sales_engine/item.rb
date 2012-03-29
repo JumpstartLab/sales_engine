@@ -26,11 +26,11 @@ module SalesEngine
     def best_day
       day_tracker = { }
       paid_invoice_items.each { |invoice_item|
-        add_quantity_to_date(day_tracker, invoice_item) }
+        determine_quantity_for_date(day_tracker, invoice_item) }
       day_tracker.sort_by {|day| day.last}.last.first
     end
 
-    def add_quantity_to_date(tracker_hash, inv_item)
+    def determine_quantity_for_date(tracker_hash, inv_item)
       temp_date = Date.parse(Time.parse(
         inv_item.invoice.created_at).strftime('%Y/%m/%d'))
       if tracker_hash[temp_date]

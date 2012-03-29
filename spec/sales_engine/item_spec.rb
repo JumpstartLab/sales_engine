@@ -11,7 +11,7 @@ describe SalesEngine::Item do
   let(:item_7)        { Fabricate(:item) }
   let(:item_8)        { Fabricate(:item) }
   let(:invoice_1)     { Fabricate(:invoice)}
-  let(:transaction_1) { Fabricate(:transaction)}
+  let(:transaction_1) { Fabricate(:transaction, :invoice_id => invoice_1.id)}
   let(:invoice_item_1) { Fabricate(:invoice_item, :item_id => item_1.id, :unit_price => 1, :invoice_id => invoice_1.id) }
   let(:invoice_item_2) { Fabricate(:invoice_item, :item_id => item_2.id, :unit_price => 1, :invoice_id => invoice_1.id) }
   let(:invoice_item_3) { Fabricate(:invoice_item, :item_id => item_3.id, :unit_price => 1, :invoice_id => invoice_1.id) }
@@ -54,17 +54,20 @@ describe SalesEngine::Item do
     se.add_to_list(merchant_2)
   end
 
-  # # describe "#best_day" do
-  # #   before(:each) do
-  # #     invoice_item_1.created_at = "2012-03-14 20:56:56 UTC"
-  # #     invoice_item_8.created_at = "2012-03-14 20:00:51 UTC"
-  # #     invoice_item_11.created_at = "2012-02-01 16:16:41 UTC"  
-  # #   end
+  describe "#best_day" do
+    before(:each) do
+      time_1 = "2012-03-14 20:56:56 UTC"
+      time_2 = "2012-02-01 16:16:41 UTC"
+      invoice_1.created_at       = time_1
+      invoice_item_1.created_at  = time_1
+      invoice_item_8.created_at  = time_1
+      invoice_item_11.created_at = time_2
+    end
 
-  #   it "returns the date with the most sales for the given item" do
-  #     item_1.best_day.should == Date.parse("2012-03-14")
-  #   end
-  # end
+    it "returns the date with the most sales for the given item" do
+      item_1.best_day.should == Date.parse("2012-03-14")
+    end
+  end
 
   describe ".random" do
     context "when items exist in the datastore" do

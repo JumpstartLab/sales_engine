@@ -2,11 +2,13 @@ require 'spec_helper'
 
 describe SalesEngine::InvoiceItem do
   let(:se) { SalesEngine::Database.instance}
-  let(:invoice_item_1) { Fabricate(:invoice_item) }
-  let(:invoice_item_2) { Fabricate(:invoice_item) }
-  let(:invoice_item_3) { Fabricate(:invoice_item) }
+  let(:invoice_1) { Fabricate(:invoice) }
+  let(:invoice_2) { Fabricate(:invoice) }
   let(:item_1) { Fabricate(:item) }
   let(:item_2) { Fabricate(:item) }
+  let(:invoice_item_1) { Fabricate(:invoice_item, :invoice_id => invoice_2.id, :item_id => item_1.id) }
+  let(:invoice_item_2) { Fabricate(:invoice_item, :invoice_id => invoice_1.id, :item_id => item_2.id) }
+  let(:invoice_item_3) { Fabricate(:invoice_item) }
 
 
   before(:each) do
@@ -16,20 +18,12 @@ describe SalesEngine::InvoiceItem do
     se.add_to_list(invoice_item_3)
     se.add_to_list(item_1)
     se.add_to_list(item_2)
+    se.add_to_list(invoice_1)
+    se.add_to_list(invoice_2)
   end
 
   describe "#invoice" do
     context "where there are invoices in the database" do
-      let(:invoice_1) { Fabricate(:invoice) }
-      let(:invoice_2) { Fabricate(:invoice) }
-
-      before(:each) do
-        se.add_to_list(invoice_1)
-        se.add_to_list(invoice_2)
-        invoice_item_1.invoice_id = invoice_2.id
-        invoice_item_2.invoice_id = invoice_1.id
-      end
-
       it "returns an instance of Invoice associated with this object" do
         invoice_item_1.invoice.should == invoice_2
       end
@@ -84,6 +78,37 @@ describe SalesEngine::InvoiceItem do
       it "returns nothing" do
         se.clear_all_data
         SalesEngine::InvoiceItem.find_by_id(invoice_item_2.id).should be_nil
+      end
+    end
+  end
+
+  describe ".find_by_item_id" do
+    context "when there are invoice items in the datastore" do
+      it "returns the invoice items associted with the item id" do
+        SalesEngine::InvoiceItem.find_by_item_id(item_1.id).should == invoice_item_1
+      end
+
+      it "returns nothing if no invoice items match the item id" do
+        SalesEngine::InvoiceItem.find_by_item_id(100023243).should be_nil
+      end
+    end
+  end
+
+  describe ".find_by_invoice_id" do
+    context "when there are invoice items in the datastore" do
+      it "returns the invoice items associated with the invoice id" do
+        SalesEngine::InvoiceItem.find_by_invoice_id(invoice_2.id).should == invoice_item_1
+      end
+
+      it "returns nothing if no invoice items match the invoice id" do
+        SalesEngine::InvoiceItem.find_by_invoice_id(100).should be_nil
+      end
+    end
+
+    context "when there are no invoice items in the datastore" do
+      it "returns nothing" do
+        se.clear_all_data
+        SalesEngine::InvoiceItem.find_by_invoice_id(invoice_2.id).should be_nil
       end
     end
   end
