@@ -11,10 +11,10 @@ module SalesEngine
                   :merchant_id, :created_at, :updated_at
 
     def initialize(attributes)
-      self.id = attributes[:id]
+      self.id = attributes[:id].to_i
       self.name = attributes[:name]
       self.description = attributes[:description]
-      self.unit_price = attributes[:unit_price]
+      self.unit_price = sanitize_unit_price(attributes[:unit_price])
       self.merchant_id = attributes[:merchant_id].to_i
       self.created_at = Date.parse(attributes[:created_at])
       self.updated_at = Date.parse(attributes[:updated_at])
@@ -114,6 +114,12 @@ module SalesEngine
         results[invoice.created_at] += invoice.quantity.to_i
       end
       results.sort_by { |key,value| value }.last.first
+    end
+
+    private
+
+    def sanitize_unit_price(original_price)
+      BigDecimal(original_price.to_s)/100
     end
 
   end

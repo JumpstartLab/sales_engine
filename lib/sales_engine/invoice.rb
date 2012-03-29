@@ -10,7 +10,7 @@ module SalesEngine
                   :status, :created_at, :updated_at
 
     def initialize(attributes)
-      self.id          = attributes[:id]
+      self.id          = attributes[:id].to_i
       self.customer_id = attributes[:customer_id].to_i
       self.merchant_id = attributes[:merchant_id].to_i
       self.status      = attributes[:status]

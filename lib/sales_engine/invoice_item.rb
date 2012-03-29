@@ -78,7 +78,7 @@ module SalesEngine
     end
 
     def item
-      SalesEngine::Item.find_by_id(self.item_id)
+      SalesEngine::Item.find_by_id(self.item_id.to_s)
       # SalesEngine::Database.instance.items.find do |i|
       #   i.send(:id) == self.item_id
       # end
