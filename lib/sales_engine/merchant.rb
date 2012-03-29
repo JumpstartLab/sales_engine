@@ -51,13 +51,13 @@ module SalesEngine
       paid_invoice_items(date).each do |invoice_item|
         revenue += invoice_item.unit_price * invoice_item.quantity
       end
-      BigDecimal.new(revenue.to_s)
+      BigDecimal.new(revenue.to_s).round(2)
     end
 
     def self.revenue(date)
       result = 0
       merchants.each { |merchant| result += merchant.revenue(date) } 
-      result.to_f
+      BigDecimal.new(result.to_s).round(2)
     end
 
     def self.most_revenue(total_merchants)
