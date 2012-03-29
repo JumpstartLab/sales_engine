@@ -82,12 +82,27 @@ describe SalesEngine::Customer do
   end
 
   describe "#pending_invoices" do
+<<<<<<< HEAD
     before(:each) do
       customer_one.stub(:invoices).and_return [ invoice_one ]
       invoice_one.stub(:transactions).and_return [ trans_one ]
     end
     it "returns all invoices that customer hasn't paid" do
       customer_one.pending_invoices.should == [ invoice_one ]
+=======
+    let(:customer) { SalesEngine::Customer.new(:id => "0") }
+    let(:invoice) { SalesEngine::Invoice.new( :id => "1",
+                                                :customer_id => "0",
+                                                :merchant_id => "0") }
+    let(:trans) { SalesEngine::Transaction.new( :id => "1",
+                                                  :invoice_id => "1",
+                                                  :result => "fail") }
+    let(:transaction_array) { [ trans ] }
+
+    before(:each) {invoice.stub(:transactions).and_return(transaction_array)}
+    it "returns an array of invoices with no successful trans" do
+      customer.pending_invoices.should == [ invoice ]
+>>>>>>> 546fc51806073375f968791bb26782f4ce8712c1
     end
   end
 

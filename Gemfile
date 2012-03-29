@@ -1,10 +1,15 @@
-source "http://rubygems.org"
+source :rubygems
 
-gem 'rspec'
-gem 'guard'
-gem 'guard-rspec'
-gem 'ruby-debug19'
-gem 'simplecov', :require => false, :group => :test
-gem 'cane'
-gem 'reek'
-# gem 'faster-csv'
+group :test do
+  gem 'rspec'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'simplecov', :require=>false, :group=> :test
+  gem 'crack'
+  gem 'cane'
+  gem 'reek'
+end
+
+group :test, :development do
+  gem 'ruby-debug19'
+end
