@@ -98,6 +98,14 @@ module SalesEngine
             INNER JOIN invoices ON invoice_items.invoice_id = invoices.id
             INNER JOIN transactions on invoices.id = transactions.invoice_id
             AND transactions.result LIKE 'success'
+<<<<<<< HEAD
+            GROUP BY merchant_id ORDER BY sum DESC LIMIT #{total_merchants}"
+    merchants = []
+    Database.instance.db.execute(query)  do |row|
+      merchants << Merchant.find_by_id(row[0])
+    end
+    merchants
+=======
             GROUP BY merchant_id 
             ORDER BY sum DESC"
 
@@ -110,6 +118,7 @@ module SalesEngine
       end
     end
     results
+>>>>>>> 60841997a5fc9108a4cc1d38b196f205c8f9bb87
   end
 end
 end

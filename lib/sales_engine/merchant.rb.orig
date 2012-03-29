@@ -55,10 +55,22 @@ module SalesEngine
       end
       BigDecimal.new(revenue.to_s).round(2)
     end
+<<<<<<< HEAD
 
+    def self.revenue(date)
+      result = 0
+      merchants.each { |merchant| result += merchant.revenue(date) }
+      BigDecimal.new(result.to_s).round(2)
+    end
 
+    def self.most_items(total_merchants)
+      results = merchants.sort_by do |merchant|
+        merchant.paid_invoice_items.quantity
+      end.reverse!
+      results[0,total_merchants]
+    end
 
-
-
+=======
+>>>>>>> 60841997a5fc9108a4cc1d38b196f205c8f9bb87
   end
 end

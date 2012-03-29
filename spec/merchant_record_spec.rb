@@ -27,4 +27,13 @@ module SalesEngine
         "Lemke"
     end
   end
+
+  describe ".revenue(date)" do
+    let(:date) { Date.parse '2012-02-20' }
+    context "when there are multiple merchants" do
+      it "returns the total revenue for all merchants " do
+        Merchant.revenue(date).should == 2889301.77
+      end
+    end
+  end
 end
