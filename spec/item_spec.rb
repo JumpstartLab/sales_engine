@@ -126,6 +126,26 @@ module SalesEngine
       end
     end
 
+    describe "#quantity_sold" do
+      let(:invoice_item1) { double("invoice_item", :quantity => 1) }
+      let(:invoice_item2) { double("invoice_item", :quantity => 2) }
+      let(:invoice_item3) { double("invoice_item", :quantity => 3) }
+      let(:item) { Fabricate(:item) }
+
+      context "when there are invoice_items for the item" do
+        it "returns total quantity sold for the item" do
+          InvoiceItem.stub(:invoice_items_sold_for).and_return([invoice_item1, invoice_item2, invoice_item3])
+          item.quantity_sold.should == 6
+        end
+      end
+      context "when there are no invoice items for the item" do
+        it "returns 0" do
+          InvoiceItem.stub(:invoice_items_sold_for).and_return([])
+          item.quantity_sold.should == 0
+        end
+      end
+    end
+
     describe ".most_items(x)" do
       let(:item1) { double("item") }
       let(:item2) { double("item") }
@@ -135,6 +155,7 @@ module SalesEngine
         item1.stub(:quantity_sold).and_return(1)
         item2.stub(:quantity_sold).and_return(2)
         item3.stub(:quantity_sold).and_return(3)
+        Item.stub(:items).and_return([item1, item2, item3])
       end                                            
 
       context "when number of items is greater than X" do
@@ -164,6 +185,10 @@ module SalesEngine
     end
 
     describe "#quantity_by_day" do
+      let(:invoice1) { double("invoice", :created_at => Date.parse("2012-02-26 20:56:56 UTC"))}
+      let(:invoice2) { double("invoice", :created_at => Date.parse("2012-02-26 20:56:56 UTC"))}
+      let(:invoice3) { double("invoice", :created_at => Date.parse("2012-02-27 20:56:56 UTC"))}
+
       let(:invoice_item1) { double("invoice_item", :quantity => 1,
                                    :created_at => Date.parse("2012-02-26 20:56:56 UTC")) }
       let(:invoice_item2) { double("invoice_item", :quantity => 2,
@@ -171,6 +196,12 @@ module SalesEngine
       let(:invoice_item3) { double("invoice_item", :quantity => 4,
                                    :created_at => Date.parse("2012-02-27 20:56:56 UTC")) }
       let(:item) { Fabricate(:item) }
+
+      before(:each) do
+        invoice_item1.stub(:invoice).and_return(invoice1)
+        invoice_item2.stub(:invoice).and_return(invoice3)
+        invoice_item3.stub(:invoice).and_return(invoice3)
+      end
       context "when the item has invoice items" do
         it "returns a hash of dates and total quantity" do
           item.stub({:invoice_items => [invoice_item1, invoice_item2, invoice_item3]})

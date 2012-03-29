@@ -42,6 +42,11 @@ module SalesEngine
       end
     end
 
+    describe "#invoice_items_sold_for(id)" do
+      it "returns only the invoice items for that item for which transactions are successes" do
+        InvoiceItem.invoice_items_sold_for(1).length.should == 10
+      end
+    end
 
   describe "#insert_invoice_item" do
     let (:invoice_item_hash) { { :item_id => 1, :invoice_id => 2, 
