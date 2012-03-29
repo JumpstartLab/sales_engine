@@ -50,5 +50,40 @@ describe SalesEngine::InvoiceItem do
       end
     end
   end
+
+  test_invoice_items = [  Fabricate(:invoice_item,
+                                    :id => "4",
+                                    :item_id => "123",
+                                    :quantity => "3",
+                                    :unit_price => "38",
+                                    :created_at => "3/31",
+                                    :updated_at => "3/31"
+                                    ),
+                          Fabricate(:invoice_item,
+                                    :id => "4",
+                                    :item_id => "123",
+                                    :quantity => "3",
+                                    :unit_price => "38",
+                                    :created_at => "3/31",
+                                    :updated_at => "3/31"
+                                    ),
+                          Fabricate(:invoice_item,
+                                    :id => "4",
+                                    :item_id => "123",
+                                    :quantity => "3",
+                                    :unit_price => "38",
+                                    :created_at => "3/31",
+                                    :updated_at => "3/31"
+                                    )]
+
+  describe ".find_by_id()" do
+    it "returns one invoice item"
+      SalesEngine::Database.instance.stub(:invoice_item).and_return(test_invoice_items)
+      SalesEngine::InvoiceItem.find_by_id("4").should be_a SalesEngine::InvoiceItem
+    end
+  end
+
+
+
 end
 

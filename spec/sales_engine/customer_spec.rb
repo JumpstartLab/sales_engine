@@ -57,4 +57,153 @@ describe SalesEngine::Customer do
     end
   end
 
+  test_customers = [ Fabricate(:customer,
+                                :id => "1",
+                                :first_name => "John",
+                                :last_name => "Doe",
+                                :created_at => "3/31",
+                                :updated_at => "3/31"),
+                      Fabricate(:customer,
+                                :id => "2",
+                                :first_name => "John",
+                                :last_name => "Doe",
+                                :created_at => "3/31",
+                                :updated_at => "3/31"),
+                      Fabricate(:customer,
+                                :id => "3",
+                                :first_name => "John",
+                                :last_name => "Doe",
+                                :created_at => "3/31",
+                                :updated_at => "3/31") ]
+
+  describe ".find_by_id()" do
+    it "returns one customer" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      SalesEngine::Customer.find_by_id("1").should be_a SalesEngine::Customer
+    end
+
+    it "is associated with the id passed in" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      result = SalesEngine::Customer.find_by_id("1")
+      result.id.should == "1"
+    end
+  end
+
+  describe ".find_all_by_id()" do
+    it "returns an array of transactions" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      SalesEngine::Customer.find_all_by_id("2").all?{|i| i.is_a? SalesEngine::Customer}.should == true
+    end
+
+    it "contains transactions related to the id passed in" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      result = SalesEngine::Customer.find_all_by_id("1")
+      result.sample.id.should == "1"
+    end
+  end
+
+  describe ".find_by_first_name()" do
+    it "returns one customer" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      SalesEngine::Customer.find_by_first_name("John").should be_a SalesEngine::Customer
+    end
+
+    it "is associated with the id passed in" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      result = SalesEngine::Customer.find_by_first_name("John")
+      result.first_name.should == "John"
+    end
+  end
+
+  describe ".find_all_by_first_name()" do
+    it "returns an array of transactions" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      SalesEngine::Customer.find_all_by_first_name("John").all?{|i| i.is_a? SalesEngine::Customer}.should == true
+    end
+
+    it "contains transactions related to the first_name passed in" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      result = SalesEngine::Customer.find_all_by_first_name("John")
+      result.sample.first_name.should == "John"
+    end
+  end
+
+  describe ".find_by_last_name()" do
+    it "returns one customer" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      SalesEngine::Customer.find_by_last_name("Doe").should be_a SalesEngine::Customer
+    end
+
+    it "is associated with the id passed in" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      result = SalesEngine::Customer.find_by_last_name("Doe")
+      result.last_name.should == "Doe"
+    end
+  end
+
+  describe ".find_all_by_last_name()" do
+    it "returns an array of transactions" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      SalesEngine::Customer.find_all_by_last_name("Doe").all?{|i| i.is_a? SalesEngine::Customer}.should == true
+    end
+
+    it "contains transactions related to the id passed in" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      result = SalesEngine::Customer.find_all_by_last_name("Doe")
+      result.sample.last_name.should == "Doe"
+    end
+  end
+
+  describe ".find_by_created_at()" do
+    it "returns one customer" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      SalesEngine::Customer.find_by_created_at("3/31").should be_a SalesEngine::Customer
+    end
+
+    it "is associated with the id passed in" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      result = SalesEngine::Customer.find_by_created_at("3/31")
+      result.created_at.should == "3/31"
+    end
+  end
+
+  describe ".find_all_by_created_at()" do
+    it "returns an array of transactions" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      SalesEngine::Customer.find_all_by_created_at("3/31").all?{|i| i.is_a? SalesEngine::Customer}.should == true
+    end
+
+    it "contains transactions related to the date passed in" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      result = SalesEngine::Customer.find_all_by_created_at("3/31")
+      result.sample.created_at.should == "3/31"
+    end
+  end
+
+  describe ".find_by_updated_at()" do
+    it "returns one customer" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      SalesEngine::Customer.find_by_updated_at("3/31").should be_a SalesEngine::Customer
+    end
+
+    it "is associated with the date passed in" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      result = SalesEngine::Customer.find_by_updated_at("3/31")
+      result.updated_at.should == "3/31"
+    end
+  end
+
+  describe ".find_all_by_updated_at()" do
+    it "returns an array of transactions" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      SalesEngine::Customer.find_all_by_updated_at("3/31").all?{|i| i.is_a? SalesEngine::Customer}.should == true
+    end
+
+    it "contains transactions related to the date passed in" do
+      SalesEngine::Database.instance.stub(:customers).and_return(test_customers)
+      result = SalesEngine::Customer.find_all_by_updated_at("3/31")
+      result.sample.updated_at.should == "3/31"
+    end
+  end
+
 end
