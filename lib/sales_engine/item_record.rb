@@ -16,17 +16,17 @@ module SalesEngine
        items
      end
 
-     def items_sold
-       items_array = []
-       query = "SELECT * FROM items
-                INNER JOIN invoice_items ON items.id = invoice_items.item_id
+     def invoice_items_sold_for(item_id)
+       invoice_items_array = []
+       query = "SELECT * FROM invoice_items
                 INNER JOIN invoices ON invoice_items.invoice_id = invoices.id
                 INNER JOIN transactions on invoices.id = transactions.invoice_id
+                WHERE invoice_items.item_id = #{item_id}
                 AND transactions.result LIKE 'success'"
        Database.instance.db.execute(query)  do |row| 
-         items_array << create_item(row)
+         invoice_items_array << create_invoice_item(row)
        end
-       items_array
+       invoice_items_array
      end
 
       def create_item(row)
