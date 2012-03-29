@@ -66,7 +66,6 @@ module SalesEngine
           days[date] = invoice_item.quantity
         end
       end
-      puts days
       days
     end
 
