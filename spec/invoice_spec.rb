@@ -173,15 +173,6 @@ describe SalesEngine::Invoice do
     end
     describe ".average_revenue" do
       context "when date is not passed" do
-        it "returns a 0 big decimal when no processed invoices" do
-          mock_invoice = {}
-          3.times do | i |
-            mock_invoice[i] = double("invoice")
-            mock_invoice[i].stub(:total_paid => 0)
-          end
-          SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
-          SalesEngine::Invoice.average_revenue.should == BigDecimal("0")
-        end
         it "returns the average of the total for each invoice" do
           mock_invoice = {}
           3.times do | i |
@@ -193,15 +184,6 @@ describe SalesEngine::Invoice do
         end
       end
       context "when date is not nil" do
-        it "returns a 0 BigDecimal when that date has no processed invoices" do
-          mock_invoice = {}
-          3.times do | i |
-            mock_invoice[i] = double("invoice")
-            mock_invoice[i].stub(:total_paid => 0, :created_at => DateTime.now)
-          end
-          SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
-          SalesEngine::Invoice.average_revenue(DateTime.now).should == BigDecimal("0")
-        end
         it "returns the average of the invoice revenues for that date" do
           mock_invoice = {}
           3.times do | i |
@@ -216,15 +198,6 @@ describe SalesEngine::Invoice do
     end
     describe ".average_items" do
       context "when date is not passed" do
-        it "returns a 0 big decimal when no processed invoices" do
-          mock_invoice = {}
-          3.times do | i |
-            mock_invoice[i] = double("invoice")
-            mock_invoice[i].stub(:num_items => 0)
-          end
-          SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
-          SalesEngine::Invoice.average_items.should == BigDecimal("0")
-        end
         it "returns the average of the number of items for each invoice" do
           mock_invoice = {}
           3.times do | i |
@@ -236,15 +209,6 @@ describe SalesEngine::Invoice do
         end
       end
       context "when date is not nil" do
-        it "returns a 0 BigDecimal when that date has no processed invoices" do
-          mock_invoice = {}
-          3.times do | i |
-            mock_invoice[i] = double("invoice")
-            mock_invoice[i].stub(:num_items => 0, :created_at => DateTime.now)
-          end
-          SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
-          SalesEngine::Invoice.average_items(DateTime.now).should == BigDecimal("0")
-        end
         it "returns the average of the invoice items for that date" do
           mock_invoice = {}
           3.times do | i |
