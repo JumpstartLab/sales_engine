@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SalesEngine::Merchant do
 
-  let(:test_merchant) { Fabricate(:merchant) }
+  let(:test_merchant) { Fabricate(:merchant)}
   
   describe "#items" do 
     context "returns a collection of items" do
@@ -39,25 +39,28 @@ describe SalesEngine::Merchant do
     end
   end
 
-  describe "#revenue" do
-    context "returns total revenue for this merchant" do
+  describe "#revenue(date=nil)" do
+    invoice_1 = Fabricate(:invoice, :total => 20.00)
+    invoice_2 = Fabricate(:invoice, :total => 10.00)
+    # invoice_test
+    test_date = "2012-02-02"
+    context "returns total revenue for this merchant with no date" do
       it "returns a BigDecimal" do
         test_merchant.revenue.is_a?(BigDecimal).should == true
       end
 
-      it "returns a BigDecimal to two decimal points" do
-        # test_merchant.should_receive(:invoices)
-        # test_merchant.revenue
+      it "gets the revenue for this merchant" do
+        test_merchant.revenue.should == BigDecimal.new(20)
+      end
+    end
+
+    context "returns total revenue for this merchant with a date" do
+      it "returns a BigDecimal" do
+        test_merchant.revenue(test_date).is_a?(BigDecimal).should == true
       end
 
-      it "gets the invoice items for each invoice" do
-        # test_merchant.invoices.should_receive(:invoice_items)
-        # test_merchant.revenue
-      end
-
-      it "correctly tallies each item on each invoice items" do
-        # call the revenue method on test_merchant
-        # it should equal what we put in the stub
+      it "gets the revenue for this merchant on one date" do
+        test_merchant.revenue.should == BigDecimal.new(20)
       end
     end
   end

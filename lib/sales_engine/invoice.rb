@@ -8,7 +8,7 @@ class SalesEngine
     end
 
     include Model
-    attr_accessor :merchant_id, :customer_id, :customer, :id, :merchant
+    attr_accessor :merchant_id, :customer_id, :customer, :id, :merchant, :updated_at
     
     def initialize(attributes)
       super
@@ -50,11 +50,11 @@ class SalesEngine
     end
 
     def total
-      sum = 0
-      invoice_items.each do |ii|
-        sum += ii.total
-      end
-      sum
+      @total || invoice_items.inject(0) {|sum, element| sum + element.total}
+    end
+
+    def total=(input)
+      @total = input
     end
   end
 end

@@ -99,6 +99,5 @@ describe SalesEngine::Invoice do
       end
     end
   end
-
 end
 
