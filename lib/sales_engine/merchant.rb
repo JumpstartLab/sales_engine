@@ -45,9 +45,21 @@ class SalesEngine
       else
         result = invoices.inject(0) {|sum, element| sum + element.total }
       end
-      puts "result is #{result}"
       b = BigDecimal.new(result) / 100
       @revenue ||= b
+    end
+
+    def self.revenue(date=nil)
+      result = ''
+      if date
+        result = SalesEngine::Invoice.find_all_by_updated_at(date)
+        result.inject(0) do |sum, element|
+          sum + element.total
+        end
+      else
+        result =  SalesEngine::Invoice.invoices.inject(0) {|sum, element| sum + element.total }
+      end
+      result
     end
 
     def set_revenue=(input)
