@@ -55,13 +55,5 @@ module SalesEngine
       end
       BigDecimal.new(revenue.to_s).round(2)
     end
-
-    def self.most_items(total_merchants)
-      results = merchants.sort_by do |merchant| 
-        merchant.paid_invoice_items.length 
-      end.reverse!
-      results[0,total_merchants]
-    end
-
   end
 end

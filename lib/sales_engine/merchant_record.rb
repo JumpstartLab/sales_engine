@@ -77,6 +77,23 @@ module SalesEngine
     BigDecimal.new(result.to_s).round(2)
   end
 
+  def most_items(total_merchants)
+    query = "SELECT merchants.id, SUM(quantity) FROM invoice_items
+             INNER JOIN invoices ON invoice_items.invoice_id = invoices.id
+             INNER JOIN merchants ON invoices.merchant_id = merchants.id
+             INNER JOIN transactions ON invoices.id = transactions.invoice_id
+             WHERE transactions.result LIKE 'success'
+             GROUP BY merchants.id ORDER BY SUM(quantity) DESC
+             limit #{total_merchants}"
+
+    results = []
+    Database.instance.db.execute(query)  do |row| 
+      puts row[0]
+      results << Merchant.find_by_id(row[0])
+    end
+    results
+  end
+
   def most_revenue(total_merchants)
       invoice_items_array = []
       query = "SELECT merchant_id, SUM(quantity * unit_price) as sum 
@@ -87,15 +104,15 @@ module SalesEngine
             GROUP BY merchant_id 
             ORDER BY sum DESC"
 
-    merchants = []
+    results = []
     Database.instance.db.execute(query)  do |row| 
-      if merchants.length < total_merchants 
-        merchants << Merchant.find_by_id(row[0])
+      if results.length < total_merchants 
+        results << Merchant.find_by_id(row[0])
       else
         break
       end
     end
-    merchants 
+    results
   end
 end
 end
