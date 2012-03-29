@@ -138,6 +138,11 @@ module SalesEngine
       end
 
       #couldn't get it working with dates; use strings, parse to dates below
+      dates_array.each do |i|
+        unless dates_array[i].is_a?(Date)
+        dates_array[i] = Date.parse(dates_array[i])
+        end
+      end
       dates_array.slice(0...x)
     end
 
