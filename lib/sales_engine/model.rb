@@ -121,8 +121,10 @@ module SalesEngine
 
         unless models
           models = SalesEngine::Persistence.instance.fetch(self)
-          model = models.find_all { |m| m.send(attribute) == value }
+          models = models.find_all { |m| m.send(attribute) == value }
         end
+
+        models
       end
     end
   end

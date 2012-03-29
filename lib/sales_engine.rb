@@ -32,12 +32,15 @@ module SalesEngine
     end
 
     if options[:index]
-      Thread.new do 
-        t = Time.now
-        SalesEngine::Persistence.instance.index(:id)
-        SalesEngine::Persistence.instance.insert_index(:merchant_id, SalesEngine::Invoice)
-        puts "\nIndexing completed in #{Time.now - t} seconds!"
-      end
+      t = Time.now
+      SalesEngine::Persistence.instance.index(:id)
+      SalesEngine::Persistence.instance.insert_index(:merchant_id, SalesEngine::Invoice)
+      SalesEngine::Persistence.instance.insert_index(:customer_id, SalesEngine::Invoice)
+      SalesEngine::Persistence.instance.insert_index(:merchant_id, SalesEngine::Item)
+      SalesEngine::Persistence.instance.insert_index(:item_id, SalesEngine::InvoiceItem)
+      SalesEngine::Persistence.instance.insert_index(:invoice_id, SalesEngine::InvoiceItem)
+      SalesEngine::Persistence.instance.insert_index(:invoice_id, SalesEngine::Transaction)
+      puts "\nIndexing completed in #{Time.now - t} seconds!"
     end
   end
 

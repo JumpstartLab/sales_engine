@@ -27,7 +27,20 @@ module SalesEngine
     end
 
     def revenue
-      InvoiceItem.find_all_by_invoice_id(id).map(&:revenue).inject(:+)
+      if transaction_successful?
+        InvoiceItem.find_all_by_invoice_id(id).map(&:revenue).inject(:+)
+      else
+        0
+      end
+    end
+
+    def transactions
+      Transaction.find_all_by_invoice_id(id)
+    end
+
+    def transaction_successful?
+      transactions && transactions.any? { |t| t.successful? }
+      true
     end
   end
 end

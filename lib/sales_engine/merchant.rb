@@ -36,14 +36,13 @@ module SalesEngine
     end
 
     def self.most_revenue(n)
-      merchants_and_revenues = []
+      merchants_revenue = {}
 
-      merchants = Merchant.find_all
-      merchants.each do |merchant|
-        merchants_and_revenues.push [merchant.revenue, merchant]
+      Merchant.find_all.each do |merchant|
+        merchants_revenue[merchant] = merchant.revenue
       end
 
-      # merchants_and_revenues.sort_by { |rev_mer| rev_mer[0] }.map(&:last)[0..n]
+      merchants_revenue.sort_by { |k,v| v }.map(&:first)[0...n]
     end
   end
 end

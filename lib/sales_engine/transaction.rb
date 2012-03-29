@@ -24,6 +24,10 @@ module SalesEngine
       @invoice ||= Invoice.find(@invoice_id)
     end
 
+    def successful?
+      @result == 'success'
+    end
+
     private
 
     def validate_attributes
