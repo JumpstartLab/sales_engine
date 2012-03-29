@@ -17,6 +17,10 @@ module SalesEngine
     def initialize
       load_customers
       load_invoices
+      load_more_reek
+    end
+
+    def load_more_reek
       load_invoiceitems
       load_items
       load_transactions
