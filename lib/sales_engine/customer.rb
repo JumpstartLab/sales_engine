@@ -12,12 +12,12 @@
      "updated_at"
      ]
 
-    def initialize(attributes)
-      self.id = attributes[:id].to_i
-      self.first_name = attributes[:first_name]
-      self.last_name = attributes[:last_name]
-      self.created_at = attributes[:created_at]
-      self.updated_at = attributes[:updated_at]
+    def initialize(attrs)
+      self.id = Cleaner::fetch_id("customer", attrs[:id])
+      self.first_name = attrs[:first_name]
+      self.last_name = attrs[:last_name]
+      self.created_at = Cleaner::fetch_date(attrs[:created_at])
+      self.updated_at = Cleaner::fetch_date(attrs[:updated_at])
 
       SalesEngine::Database.instance.customer_list << self
       SalesEngine::Database.instance.customer_id_hash[ self.id ] = self

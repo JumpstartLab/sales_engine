@@ -1,5 +1,4 @@
 module SalesEngine
-  require 'sales_engine/dynamic_finder'
   class InvoiceItem
     attr_accessor :id, :item_id, :invoice_id, :quantity,
                   :unit_price, :created_at, :updated_at, :date
@@ -13,22 +12,14 @@ module SalesEngine
       "created_at",
       "updated_at"
     ]
-    def initialize(attributes)
-      if attributes[:id]
-        self.id = attributes[:id].to_i
-      else
-        self.id = SalesEngine::Database.instance.invoice_item_list.size + 1
-        # puts self.id
-        # puts SalesEngine::Database.instance.invoice_item_list.inspect
-      end
-      self.item_id = attributes[:item_id].to_i
-      self.invoice_id = attributes[:invoice_id].to_i
-      self.quantity =   attributes[:quantity].to_i
-      if attributes[:unit_price].class == BigDecimal
-        self.unit_price = attributes[:unit_price]
-      else
-        self.unit_price = BigDecimal.new(attributes[:unit_price])/100
-      end
+    def initialize(attrs)
+      self.id = Cleaner::fetch_id("invoice_item", attrs[:id])
+      self.item_id = attrs[:item_id].to_i
+      self.invoice_id = attrs[:invoice_id].to_i
+      self.quantity =   attrs[:quantity].to_i
+      self.unit_price = Cleaner::fetch_price(attrs[:unit_price])
+      self.created_at = Cleaner::fetch_date(attrs[:created_at])
+      self.updated_at = Cleaner::fetch_date(attrs[:updated_at])
 
       SalesEngine::Database.instance.invoice_item_list << self
       SalesEngine::Database.instance.invoice_item_id_hash[ self.id ] = self

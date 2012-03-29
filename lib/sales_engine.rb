@@ -1,7 +1,4 @@
-require 'bigdecimal'
-require 'date'
 require 'sales_engine/csv_loader'
-require 'time'
 
 module SalesEngine
   def self.startup
@@ -13,6 +10,3 @@ module SalesEngine
     SalesEngine::CsvLoader.load_invoice_items
   end
 end
-
-# SE.load_invoices
-# puts SE.invoices

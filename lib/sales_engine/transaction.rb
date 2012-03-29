@@ -13,25 +13,14 @@ module SalesEngine
      ]
 
     def initialize(attrs)
-      if attrs[:id]
-        self.id = attrs[:id].to_i
-      else
-        self.id = (SalesEngine::Database.instance.invoice_list.size + 1).to_i
-      end
+      self.id = Cleaner::fetch_id("transaction", attrs[:id])
       self.invoice_id = attrs[:invoice_id].to_i
       self.credit_card_number = attrs[:credit_card_number]
       self.credit_card_expiration_date = attrs[:credit_card_expiration_date]
       self.result = attrs[:result]
-      if attrs[:created_at]
-        self.created_at = Date.parse(attrs[:created_at])
-      else
-        self.created_at = Date.today
-      end
-      if attrs[:updated_at]
-        self.updated_at = Date.parse(attrs[:updated_at])
-      else
-        self.updated_at = Date.today
-      end
+      self.created_at = Cleaner::fetch_date(attrs[:created_at])
+      self.updated_at = Cleaner::fetch_date(attrs[:updated_at])
+
       store_result_in_invoice
 
       SalesEngine::Database.instance.transaction_list << self

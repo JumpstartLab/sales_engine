@@ -10,11 +10,11 @@ module SalesEngine
       "updated_at"
     ]
 
-    def initialize(attributes)
-      self.id = attributes[:id].to_i
-      self.name = attributes[:name]
-      self.created_at = attributes[:created_at]
-      self.updated_at = attributes[:updated_at]
+    def initialize(attrs)
+      self.id = Cleaner::fetch_id("merchant", attrs[:id])
+      self.name = attrs[:name]
+      self.created_at = Cleaner::fetch_date(attrs[:created_at])
+      self.updated_at = Cleaner::fetch_date(attrs[:updated_at])
 
       SalesEngine::Database.instance.merchant_list << self
       SalesEngine::Database.instance.merchant_id_hash[ self.id ] = self
@@ -41,8 +41,6 @@ module SalesEngine
 
     def invoices_on_range(range)
       invoices.select do |inv|
-        # DOES NOT HANDLE EDGE CASE WELL... e.g. RANGE DATE IS SAME
-        # AS UPDATED DATE
         inv.created_at <= range.last && inv.created_at >= range.first
       end
     end
@@ -124,9 +122,8 @@ module SalesEngine
     def self.merchants_by_revenue
       data = { }
       SalesEngine::Invoice.successful_invoices.each do |i|
-        merchant_id = i.merchant_id
-        data[ merchant_id ] ||= 0
-        data[ merchant_id ] += i.invoice_revenue
+        data[ i.merchant_id ] ||= 0
+        data[ i.merchant_id ] += i.invoice_revenue
       end
       data
     end
@@ -155,9 +152,8 @@ module SalesEngine
     def self.revenue_on_dates
       date_data = { }
       SalesEngine::Invoice.successful_invoices.each do |i|
-        date_key = i.updated_at.strftime("%Y/%m/%d")
-        date_data[ date_key ]||= 0
-        date_data[ date_key ]+= i.invoice_revenue.to_i
+        date_data[ i.created_at.strftime("%Y/%m/%d") ]||= 0
+        date_data[ i.created_at.strftime("%Y/%m/%d") ]+= i.invoice_revenue.to_i
       end
       date_data
     end
