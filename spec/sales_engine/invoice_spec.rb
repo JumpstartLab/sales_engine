@@ -80,7 +80,7 @@ describe SalesEngine::Invoice do
         end
       end
     end
-<<<<<<< HEAD
+
 
     describe ".create" do
       let(:customer) { SalesEngine::Customer.random }
@@ -97,7 +97,6 @@ describe SalesEngine::Invoice do
         invoice.should be_is_a(SalesEngine::Invoice)
       end
     end
-=======
   
     context "#revenue(date)" do
       it "returns a valid revenue" do
@@ -145,7 +144,6 @@ describe SalesEngine::Invoice do
       invoice.should be_is_a(SalesEngine::Invoice)
 
     end
->>>>>>> 2fb9c7b578ae7f287b1f5554366e0c521548f7cb
   end
 
     context "extensions" do
