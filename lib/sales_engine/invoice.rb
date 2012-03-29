@@ -14,9 +14,9 @@ module SalesEngine
       self.customer_id = attributes[:customer_id].to_i
       self.merchant_id = attributes[:merchant_id].to_i
       self.status = attributes[:status].to_s
-      self.created_at = attributes[:created_at].to_s
-      self.updated_at = attributes[:updated_at].to_s
-      self.date = attributes[:created_at].to_s[0..9]
+      self.created_at = Date.parse(attributes[:created_at])
+      self.updated_at = Date.parse(attributes[:updated_at])
+      self.date = Date.parse(attributes[:created_at])
     end
 
     def self.method_missing(method_name, *args, &block)
@@ -141,6 +141,7 @@ module SalesEngine
         :created_at => Time.now.utc.to_s,
         :updated_at => Time.now.utc.to_s)
       DataStore.instance.transactions << transaction
+      transactions << transaction
       transaction
     end
   end

@@ -18,6 +18,16 @@ module SalesEngine
       self.updated_at = attributes[:updated_at].to_s
     end
 
+    def self.method_missing(method_name, *args, &block)
+      if method_name =~ /^find_by_(\w+)$/
+        Search.find_by_attribute($1, args.first, self.transactions)
+      elsif method_name =~ /^find_all_by_(\w+)$/
+        Search.find_all_by_attribute($1, args.first, self.transactions)
+      else
+        super
+      end
+    end
+
     def self.transactions
       DataStore.instance.transactions
     end

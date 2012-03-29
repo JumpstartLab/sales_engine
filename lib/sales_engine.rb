@@ -12,7 +12,7 @@ require 'sales_engine/data_store'
 require 'sales_engine/search'
 
 module SalesEngine
-  def startup
+  def self.startup
     DataStore.instance
   end
 end

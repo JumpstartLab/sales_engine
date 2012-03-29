@@ -20,6 +20,16 @@ module SalesEngine
       self.total = attributes[:quantity].to_i * attributes[:unit_price].to_i
     end
 
+    def self.method_missing(method_name, *args, &block)
+      if method_name =~ /^find_by_(\w+)$/
+        Search.find_by_attribute($1, args.first, self.invoice_items)
+      elsif method_name =~ /^find_all_by_(\w+)$/
+        Search.find_all_by_attribute($1, args.first, self.invoice_items)
+      else
+        super
+      end
+    end
+
     def self.random
       self.invoice_items.sample
     end

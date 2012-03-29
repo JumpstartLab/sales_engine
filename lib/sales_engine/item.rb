@@ -15,10 +15,10 @@ module SalesEngine
       self.id            = attributes[:id].to_i
       self.name          = attributes[:name].to_s
       self.description   = attributes[:description].to_s
-      self.unit_price    = attributes[:unit_price].to_i
+      self.unit_price    = BigDecimal.new(attributes[:unit_price].to_s)/100
       self.merchant_id   = attributes[:merchant_id].to_i
-      self.created_at    = attributes[:created_at].to_s
-      self.updated_at    = attributes[:updated_at].to_s
+      self.created_at    = Date.parse(attributes[:created_at])
+      self.updated_at    = Date.parse(attributes[:updated_at])
       self.total_sold    = 0
       self.total_revenue = 0
     end
@@ -67,7 +67,7 @@ module SalesEngine
       successful_invoice_items.each do |inv_item|
         revenue = revenue + inv_item.total
       end
-      revenue
+      BigDecimal.new(revenue.to_s)
     end
 
 
@@ -103,21 +103,13 @@ module SalesEngine
       sorted_items[0..x-1]
     end
 
-    def days_array
-      days = []
-      successful_invoice_items.each do|inv_item|
-        days << inv_item.invoice.created_at[0..9]
-      end
-      days
-    end
-
     def days_hash
       days_hash = {}
-      days_array.each do |day|
-        if days_hash.has_key?(day)
-          days_hash[day] += 1
+      successful_invoice_items.each do|inv_item|
+        if days_hash.has_key?(inv_item.invoice.created_at)
+          days_hash[inv_item.invoice.created_at] += inv_item.quantity
         else
-          days_hash[day] = 1
+          days_hash[inv_item.invoice.created_at] = inv_item.quantity
         end
       end
       days_hash

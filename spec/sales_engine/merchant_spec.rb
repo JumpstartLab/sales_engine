@@ -44,12 +44,12 @@ describe SalesEngine::Merchant do
   describe ".find_by_name" do
 
     it "finds merchant with matching name" do
-      SalesEngine::Merchant.find_by_name("Bosco and Sons").name.should == "Bosco and Sons"
+      SalesEngine::Merchant.find_by_name("Williamson Group").name.should == "Williamson Group"
     end
   end
 
     it "finds a merchant" do
-      SalesEngine::Merchant.find_by_name("Bosco and Sons").class.should == SalesEngine::Merchant
+      SalesEngine::Merchant.find_by_name("Williamson Group").class.should == SalesEngine::Merchant
     end
 
   describe ".find_all_by_name" do
@@ -113,7 +113,7 @@ describe SalesEngine::Merchant do
     end
 
     it "returns a revenue in BigDecimal for the merchant by date if a date is provided" do
-      SalesEngine::Merchant.random.revenue(date).class.should ==BigDecimal
+      SalesEngine::Merchant.random.revenue(Date.parse(date)).class.should ==BigDecimal
     end
   end
 
@@ -144,7 +144,7 @@ describe SalesEngine::Merchant do
   describe ".revenue(date)" do
     sample_dates = ["2012-02-10","2012-02-11","2012-02-12","2012-02-13","2012-02-14"]
     it "returns a BigDecimal figure for revenue if provided a date" do
-      SalesEngine::Merchant.revenue(sample_dates.sample).class.should == BigDecimal
+      SalesEngine::Merchant.revenue(Date.parse(sample_dates.sample)).class.should == BigDecimal
     end
   end
 

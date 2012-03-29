@@ -93,5 +93,28 @@ describe SalesEngine::Invoice do
       SalesEngine::Invoice.random.revenue.class.should == Fixnum
     end
   end
+
+  describe ".create" do
+    customer1 = SalesEngine::Customer.random
+    merchant1 = SalesEngine::Merchant.random
+    item1 = SalesEngine::Item.random
+    item2 = SalesEngine::Item.random
+    it "creates a new invoice" do
+      invoice = SalesEngine::Invoice.create(customer: customer1,
+                                            merchant: merchant1,
+                                            items: [item1, item2])
+      invoice.class.should == SalesEngine::Invoice
+      invoice.merchant_id.should == merchant1.id
+    end
+  end
+
+  describe "#charge" do
+    it "creates a transaction" do
+      invoice1 = SalesEngine::Invoice.random
+      transaction1 = invoice1.charge(credit_card_number: '122345678923456',  credit_card_expiration_date: "12/19", result: "success")
+      transaction1.class.should ==SalesEngine::Transaction
+      transaction1.invoice.id.should == invoice1.id
+    end
+  end
   
 end

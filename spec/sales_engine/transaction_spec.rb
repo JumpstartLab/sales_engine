@@ -26,4 +26,24 @@ describe SalesEngine::Transaction do
 
     end
   end
+
+  describe ".find_by_id" do
+    id = rand(2000) + 1
+    it "returns a transaction" do
+      SalesEngine::Transaction.find_by_id(id).class.should == SalesEngine::Transaction
+    end
+  end
+
+  describe ".find_all_by_id" do
+    id = rand(2000) + 1
+    it "returns an array" do
+      SalesEngine::Transaction.find_all_by_id(id).class.should == Array
+    end
+
+    it" returns an array with transactions" do
+      SalesEngine::Transaction.find_all_by_id(id).each do |t|
+        t.class.should == SalesEngine::Transaction
+      end
+    end
+  end
 end

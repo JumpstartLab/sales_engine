@@ -44,8 +44,8 @@ describe SalesEngine::Item do
   describe "#item_revenue" do
     item1 = SalesEngine::Item.random
 
-    it "returns a fixnum" do
-      item1.item_revenue.class.should == Fixnum
+    it "returns a BigDecimal" do
+      item1.item_revenue.class.should == BigDecimal
     end
   end
 
@@ -86,8 +86,10 @@ describe SalesEngine::Item do
 
   describe "#best_day" do
     item1 = SalesEngine::Item.random
-    it "returns a string" do
-      item1.best_day.class.should == String
+    it "if the item has a best day, returns a Date object" do
+      if item1.best_day
+        item1.best_day.class.should == Date
+      end
     end
   end
 end

@@ -21,6 +21,26 @@ describe SalesEngine::InvoiceItem do
     end
   end
 
+  describe ".find_by_id" do
+    id = rand(2000) + 1
+    it "returns an item" do
+      SalesEngine::InvoiceItem.find_by_id(id).class.should == SalesEngine::InvoiceItem
+    end
+  end
+
+  describe ".find_all_by_id" do
+    id = rand(2000) + 1
+    it "returns an array" do
+      SalesEngine::InvoiceItem.find_all_by_id(id).class.should == Array
+    end
+
+    it" returns an array with items" do
+      SalesEngine::InvoiceItem.find_all_by_id(id).each do |item|
+        item.class.should == SalesEngine::InvoiceItem
+      end
+    end
+  end
+
   describe "#item" do
     invoice_item1 = SalesEngine::InvoiceItem.random
     it "returns an item" do

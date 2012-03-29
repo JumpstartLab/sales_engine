@@ -112,13 +112,13 @@ module SalesEngine
     end
 
     def merch_revenue_by_date(date)
-      revenue = 0
+      rev = 0
       successful_invoice_items.each do |inv_item|
         if date == inv_item.invoice.date
-          revenue = revenue + inv_item.total
+          rev = rev + inv_item.total
         end
       end
-      BigDecimal.new((revenue/100.0).to_s)
+      BigDecimal.new((rev/100.0).to_s)
     end
 
     def self.set_revenue
@@ -175,14 +175,14 @@ module SalesEngine
       date_revs = {}
       self.merchants.each do |merchant|
         merchant.successful_invoices.each do |invoice|
-          if date_revs.has_key?(invoice.created_at[0..9])
-            date_revs[invoice.created_at[0..9]] += invoice.revenue
+          if date_revs.has_key?(invoice.created_at)
+            date_revs[invoice.created_at] += invoice.revenue
           else
-            date_revs[invoice.created_at[0..9]] = invoice.revenue
+            date_revs[invoice.created_at] = invoice.revenue
           end
         end
       end
-      BigDecimal.new(((date_revs[date])/100.0).to_s)
+      BigDecimal.new(date_revs[date].to_s)/100
     end
 
   end
