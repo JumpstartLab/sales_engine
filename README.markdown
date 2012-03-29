@@ -1,3 +1,7 @@
+#Zing!
+
+![Code Ninja](http://rlv.zcache.com/code_ninja_t_shirt-d235585588720290037y2th_325.jpg)
+
 ## SalesEngine
 
 ### Overview
