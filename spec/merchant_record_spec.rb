@@ -21,10 +21,9 @@ module SalesEngine
   end
 
   describe "#customers_with_pending_invoices" do
-    it "returns customer with pending invoices" do
-      merchant = Fabricate(:merchant)
-      merchant.customers_with_pending_invoices[0].last_name.should == 
-        "Lemke"
+    it "returns all customers with pending invoices" do
+      merchant = Merchant.find_by_id(1)
+      merchant.customers_with_pending_invoices.length.should == 0
     end
   end
 
