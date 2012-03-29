@@ -75,11 +75,5 @@ module SalesEngine
         date = quantity_by_day.sort_by{ |date, quantity| quantity }.last[0]
       end
     end
-
-    def self.most_revenue(total_items)
-      items_array = items
-      items_array.sort_by!{ |item| item.revenue }.reverse!
-      items_array[0,total_items]
-    end
   end
 end

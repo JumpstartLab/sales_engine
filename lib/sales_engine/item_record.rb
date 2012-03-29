@@ -16,6 +16,27 @@ module SalesEngine
       items
     end
 
+    def most_revenue(total_items)
+      invoice_items_array = []
+      query = "SELECT item_id, SUM(quantity * unit_price) as sum 
+            FROM invoice_items
+            INNER JOIN invoices ON invoice_items.invoice_id = invoices.id
+            INNER JOIN transactions on invoices.id = transactions.invoice_id
+            AND transactions.result LIKE 'success'
+            GROUP BY item_id
+            ORDER BY sum DESC"
+
+      items = []
+      Database.instance.db.execute(query)  do |row| 
+        if items.length < total_items
+          items << Item.find_by_id(row[0])
+        else
+          break
+        end
+      end
+      items
+    end
+
     def most_items(total_items)
       invoice_items_array = []
       query = "SELECT item_id, SUM(quantity) as sum FROM invoice_items
