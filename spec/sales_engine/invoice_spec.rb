@@ -279,8 +279,8 @@ describe SalesEngine::Invoice do
   end
 
   describe ".create" do
-    merch_1 = Fabricate(:merchant, :name => "Giles", :id => 5000)
-    cust_1 = Fabricate(:customer, :first_name => "Buffy", :id => 5001)
+    merch_1 = Fabricate(:merchant)
+    cust_1 = Fabricate(:customer)
 
     item_1 = Fabricate(:item)
     item_2 = Fabricate(:item)
@@ -296,14 +296,19 @@ describe SalesEngine::Invoice do
       SalesEngine::Invoice.create(attr).should be_a SalesEngine::Invoice
     end
 
-    it "adds a new customer to the database" do
+    it "adds a new invoice to the database" do
+      last_id = SalesEngine::Database.instance.invoices.last.id 
       SalesEngine::Invoice.create(attr)
-      SalesEngine::Customer.find_by_first_name("Buffy").should be_a SalesEngine::Customer
+      SalesEngine::Invoice.find_by_id(last_id + 1).should be_a SalesEngine::Invoice
     end
+  end
 
-    it "adds a new merchant to the database" do
-      SalesEngine::Invoice.create(attr)
-      SalesEngine::Merchant.find_by_name("Giles").should be_a SalesEngine::Merchant
+  describe ".add_to_db" do
+    invoice_1 = Fabricate(:invoice, :customer_id => 9999, :id => 9999)
+
+    it "adds a new invoice to the db" do
+      SalesEngine::Invoice.add_to_db(invoice_1)
+      SalesEngine::Invoice.find_by_id(9999).should be_a SalesEngine::Invoice
     end
   end
 end
