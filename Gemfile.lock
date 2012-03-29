@@ -1,3 +1,8 @@
+PATH
+  remote: ../hashyhash/
+  specs:
+    hashyhash (0.5)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -53,6 +58,7 @@ DEPENDENCIES
   growl
   guard
   guard-rspec
+  hashyhash!
   reek
   rspec
   simplecov

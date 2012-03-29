@@ -13,4 +13,5 @@ group :development do
   gem 'guard'
   gem 'guard-rspec'
   gem 'growl'
+  gem 'hashyhash', :path => '../hashyhash/'
 end
