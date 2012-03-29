@@ -20,6 +20,14 @@ module SalesEngine
       BigDecimal.new(unit_price.to_s) * BigDecimal.new(quantity.to_s)
     end
 
+    def name
+      item.name
+    end
+
+    def item
+      Item.find_by_id(item_id)
+    end
+
     private
 
     def validate_attributes

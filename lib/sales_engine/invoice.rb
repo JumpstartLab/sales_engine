@@ -45,5 +45,13 @@ module SalesEngine
     def invoice_item_count
       InvoiceItem.find_all_by_invoice_id(id).map { |invoice_item| transaction_successful? ? invoice_item.quantity : 0 }.inject(:+)
     end
+
+    def items
+      InvoiceItem.find_all_by_invoice_id(id)
+    end
+
+    def invoice_items
+      items
+    end
   end
 end

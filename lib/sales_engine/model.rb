@@ -12,7 +12,9 @@ module SalesEngine
 
       @attributes = attributes
       @models = {}
-      @id = clean_integer(attributes[:id])
+
+      @id = clean_integer(attributes[:id]) || (self.class.find_all.map(&:id).sort.last + 1)
+
       @created_at = clean_date(attributes[:created_at]) || DateTime.now
       @updated_at = clean_date(attributes[:updated_at]) || @created_at
 
@@ -56,6 +58,24 @@ module SalesEngine
     module ClassMethods
       def find(id)
         find_by_id(id)
+      end
+
+      def create(attributes)
+        attributes.each do |attribute, value|
+          new_key_value_pairs = []
+
+          if value.respond_to? :id
+            attributes[attribute] = nil
+            new_key_value_pairs.push ["#{attribute}_id".to_sym,value]
+          end
+
+          new_key_value_pairs.each do |kv_pair|
+            attributes[kv_pair[0] => kv_pair[1]]
+          end
+        end
+        
+        puts attributes.inspect
+        self.new(attributes)
       end
 
       def find_all
