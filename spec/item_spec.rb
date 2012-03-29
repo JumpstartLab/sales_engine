@@ -132,9 +132,9 @@ module SalesEngine
       let(:item3) { double("item") }
 
       before(:each) do
-        item1.stub(:quantity).and_return(1)
-        item2.stub(:quantity).and_return(2)
-        item3.stub(:quantity).and_return(3)
+        item1.stub(:quantity_sold).and_return(1)
+        item2.stub(:quantity_sold).and_return(2)
+        item3.stub(:quantity_sold).and_return(3)
       end                                            
 
       context "when number of items is greater than X" do

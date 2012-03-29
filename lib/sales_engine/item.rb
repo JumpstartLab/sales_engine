@@ -48,6 +48,14 @@ module SalesEngine
       total
     end
 
+    def quantity_sold
+      total = 0
+      InvoiceItem.invoice_items_sold_for(id).each do |invoice_item|
+        total += invoice_item.quantity
+      end
+      total
+    end
+
     def quantity_by_day
       days = {}
       invoice_items.each do |invoice_item|
@@ -74,8 +82,8 @@ module SalesEngine
     end
 
     def self.most_items(total_items)
-      items_array = items_sold
-      items_array.sort_by!{ |item| item.quantity }.reverse!
+      items_array = items
+      items_array.sort_by!{ |item| item.quantity_sold }.reverse!
       items_array[0,total_items]
     end
   end
