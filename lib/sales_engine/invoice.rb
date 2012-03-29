@@ -50,25 +50,31 @@ module SalesEngine
     def self.average_revenue(date = nil)
       if date
         di = all.select do |i|
+          next unless i.successful_transaction
           i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
         end
         tr = di.map(&:total_paid).inject(:+)
         BigDecimal((tr / di.size.to_f).round(2).to_s) rescue BigDecimal("0")
       else
-        BigDecimal((all.map(&:total_paid).inject(:+) / all.size).round(2).to_s)
+        BigDecimal((all.map(&:total_paid).inject(:+) / suc_size).round(2).to_s)
       end
     end
 
     def self.average_items(date = nil)
       if date
         di = all.select do |i|
+          next unless i.successful_transaction
           i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
         end
         ti = di.map(&:num_items).inject(:+)
         BigDecimal((ti / di.size.to_f).round(2).to_s) rescue BigDecimal("0")
       else
-        BigDecimal((all.map(&:num_items).inject(:+) / all.size).round(2).to_s)
+        BigDecimal((all.map(&:num_items).inject(:+) / suc_size).round(2).to_s)
       end
+    end
+
+    def self.suc_size
+      @suc_size ||= all.select{ |i| i.successful_transaction }.size.to_f
     end
 
     def initialize(raw_line)
