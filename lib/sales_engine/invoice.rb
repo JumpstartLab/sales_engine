@@ -53,9 +53,9 @@ module SalesEngine
           i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
         end
         total_rev = di.map(&:total_paid).inject(:+)
-        BigDecimal((total_rev / di.size.to_f).to_s) rescue BigDecimal("0")
+        BigDecimal((total_rev / di.size.to_f).round(2).to_s) rescue BigDecimal("0")
       else
-        BigDecimal((all.map(&:total_paid).inject(:+) / all.size).to_s)
+        BigDecimal((all.map(&:total_paid).inject(:+) / all.size).round(2).to_s)
       end
     end
 
@@ -65,9 +65,9 @@ module SalesEngine
           i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
         end
         total_items = di.map(&:num_items).inject(:+)
-        BigDecimal((total_items / di.size.to_f).to_s) rescue BigDecimal("0")
+        BigDecimal((total_items / di.size.to_f).round(2).to_s) rescue BigDecimal("0")
       else
-        BigDecimal((all.map(&:num_items).inject(:+) / all.size).to_s)
+        BigDecimal((all.map(&:num_items).inject(:+) / all.size).round(2).to_s)
       end
     end
 
