@@ -17,7 +17,6 @@ module SalesEngine
     query = "select customer_id, invoice_id, result from transactions 
              INNER JOIN invoices on transactions.invoice_id = invoices.id
              WHERE merchant_id = #{id}"
-             #AND result NOT LIKE 'success'"
 
     transaction_hash = {} 
     Database.instance.db.execute(query)  do |row| 
@@ -29,7 +28,13 @@ module SalesEngine
       end
     end
     
-    transaction_hash.values.collect { |id| Customer.find_by_id(id) } 
+    customer_ids = transaction_hash.values
+    query = "SELECT customer_id FROM invoices 
+             WHERE id 
+             NOT IN(select invoice_id from transactions) 
+             AND merchant_id = #{id}"
+    Database.instance.db.execute(query) { |row| customer_ids << row[0] }
+    customer_ids.collect { |id| Customer.find_by_id(id) } 
   end
 
   def find_favorite_customer(merchant_id)
