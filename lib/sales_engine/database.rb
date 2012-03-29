@@ -11,11 +11,43 @@ module SalesEngine
     end
 
     def clear_all_data
+      clear_first_half
+      clear_second_half
+    end
+
+    def clear_first_half
+      clear_merchants_data
+      clear_items_data
+      clear_invoices_data
+    end
+
+    def clear_second_half
+      clear_transactions_data
+      clear_customers_data
+      clear_invoice_items_data
+    end
+
+    def clear_merchants_data
       self.merchants = []
+    end
+
+    def clear_items_data
       self.items = []
+    end
+
+    def clear_invoices_data
       self.invoices = []
+    end
+
+    def clear_transactions_data
       self.transactions = []
+    end
+
+    def clear_customers_data
       self.customers = []
+    end
+
+    def clear_invoice_items_data
       self.invoiceitems = []
     end
 
@@ -24,9 +56,17 @@ module SalesEngine
     end
 
     def load_data
+      load_first_half
+      load_second_half
+    end
+
+    def load_first_half
       load_merchants_data
       load_items_data
       load_customers_data
+    end
+
+    def load_second_half
       load_invoices_data
       load_invoice_items_data
       load_transactions_data

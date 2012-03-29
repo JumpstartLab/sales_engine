@@ -25,16 +25,19 @@ module SalesEngine
 
     def best_day
       day_tracker = { }
-      paid_invoice_items.each do |invoice_item|
-        temp_date = Date.parse(Time.parse(
-          invoice_item.invoice.created_at).strftime('%Y/%m/%d'))
-        if day_tracker[temp_date]
-          day_tracker[temp_date] += invoice_item.quantity
-        else
-          day_tracker[temp_date] = invoice_item.quantity
-        end
-      end
+      paid_invoice_items.each { |invoice_item|
+        add_quantity_to_date(day_tracker, invoice_item) }
       day_tracker.sort_by {|day| day.last}.last.first
+    end
+
+    def add_quantity_to_date(tracker_hash, inv_item)
+      temp_date = Date.parse(Time.parse(
+        inv_item.invoice.created_at).strftime('%Y/%m/%d'))
+      if tracker_hash[temp_date]
+        tracker_hash[temp_date] += inv_item.quantity
+      else
+        tracker_hash[temp_date] = inv_item.quantity
+      end
     end
 
     def paid_invoice_items
@@ -43,19 +46,22 @@ module SalesEngine
     end
 
     def total_sold
-      paid_invoice_items.collect { |invoice_item| invoice_item.quantity }.sum
+      paid_invoice_items.collect { |invoice_item|
+        invoice_item.quantity }.sum
     end
 
     def total
-      invoice_items.collect { |invoice_item| invoice_item.total }.sum
+      invoice_items.collect { |invoice_item|
+        invoice_item.total }.sum
     end
 
     def invoice_items
-      DATABASE.find_all_by("invoiceitems", "item_id", self.id)
+      DATABASE.find_all_by("invoiceitems",
+        "item_id", self.id)
     end
 
     def merchant
-      DATABASE.find_by("merchants", "id", self.merchant_id)
+      @merchant ||= DATABASE.find_by("merchants", "id", self.merchant_id)
     end
 
     def self.find_by_id(id)

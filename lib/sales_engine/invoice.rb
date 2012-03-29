@@ -14,18 +14,9 @@ module SalesEngine
     end
 
     def total_revenue
-      revenue = BigDecimal.new("0")
-      all_transactions_failed = true
-      DATABASE.find_all_by("transactions", "invoice_id", id).each { |trans|
-        if !trans.result.downcase.include?("fail")
-          all_transactions_failed = false
-          break
-        end}
-      if !all_transactions_failed
-        DATABASE.find_all_by("invoiceitems", "invoice_id", id).each { |item|
-          revenue = revenue + (item.unit_price * item.quantity) }
-      end
-      revenue
+      revenue = invoice_items.collect { |invoice_item|
+        invoice_item.total }.sum
+      BigDecimal.new(revenue.to_s)
     end
 
     def self.create(values)
@@ -39,15 +30,6 @@ module SalesEngine
       invoice
     end
 
-    def self.create_invoice_items(items, invoice)
-      items.each do |item|
-        invoice_item = SalesEngine::InvoiceItem.new(:id =>
-          DATABASE.invoiceitems.count + 1, :invoice_id => invoice.id,
-          :item_id => item.id, :quantity => 1)
-        DATABASE.add_to_list(invoice_item)
-      end
-    end
-
     def charge(values)
       transaction = SalesEngine::Transaction.new(:id =>
         DATABASE.transactions.count + 1, :invoice_id => self.id,
@@ -59,11 +41,8 @@ module SalesEngine
     end
 
     def total_items
-      DATABASE.find_all_by("invoiceitems", "invoice_id", id).count
-    end
-
-    def self.random
-      DATABASE.get_random_record("invoices")
+      DATABASE.find_all_by("invoiceitems",
+        "invoice_id", id).count
     end
 
     def transactions
@@ -87,6 +66,19 @@ module SalesEngine
 
     def merchant
       DATABASE.find_by("merchants", "id", merchant_id)
+    end
+
+    def self.create_invoice_items(items, invoice)
+      items.each do |item|
+        invoice_item = SalesEngine::InvoiceItem.new(:id =>
+          DATABASE.invoiceitems.count + 1, :invoice_id => invoice.id,
+          :item_id => item.id, :quantity => 1)
+        DATABASE.add_to_list(invoice_item)
+      end
+    end
+
+    def self.random
+      DATABASE.get_random_record("invoices")
     end
 
     def self.find_by_id(id)

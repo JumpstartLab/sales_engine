@@ -48,25 +48,8 @@ describe SalesEngine::Invoice do
   end
 
   describe "#total_revenue" do
-    context "no transactions failed" do
-      it "returns the total revenue for an invoice" do
-        invoice_1.total_revenue.should == 3
-      end
-    end
-
-    context "one transaction failed but another was successful" do
-      it "returns the total revenue for an invoice" do
-        transaction_1.result = "Failed"
-        invoice_1.total_revenue.should == 3
-      end
-    end
-
-    context "one transaction failed but another was successful" do
-      it "returns the total revenue for an invoice" do
-        transaction_1.result = "Failed"
-        transaction_3.result = "Failed"
-        invoice_1.total_revenue.should == 0
-      end
+    it "returns the total revenue for an invoice" do
+      invoice_1.total_revenue.should == 3
     end
 
     context "invoice item has a quantity greater than 1" do
@@ -76,7 +59,6 @@ describe SalesEngine::Invoice do
         invoice_2.total_revenue.should == 12
       end
     end
-
   end
 
   describe ".random" do
@@ -115,7 +97,7 @@ describe SalesEngine::Invoice do
 
   describe ".find_by_customer_id" do
     before(:each) do
-      invoice_1.customer_id = customer_1.id        
+      invoice_1.customer_id = customer_1.id
       invoice_2.customer_id = customer_2.id
     end
 
@@ -139,7 +121,7 @@ describe SalesEngine::Invoice do
 
   describe ".find_by_merchant_id" do
     before(:each) do
-      invoice_1.merchant_id = merchant_1.id        
+      invoice_1.merchant_id = merchant_1.id
       invoice_2.merchant_id = merchant_2.id
     end
 
@@ -161,8 +143,6 @@ describe SalesEngine::Invoice do
       end
     end
   end
-
-  # WASN'T SURE WHAT THE NON-SHIPPED STATUS WOULD BE, SO MAYBE ADD TEST FOR THAT?
 
   describe ".find_by_status" do
     before(:each) do

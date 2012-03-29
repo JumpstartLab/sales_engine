@@ -10,7 +10,7 @@ module SalesEngine
 
     def transactions
       customer_transactions = []
-      self.invoices.each {|invoice|
+      invoices.each {|invoice|
         invoice.transactions.each {|transaction|
           customer_transactions << transaction } }
       customer_transactions.sort_by {|transaction| transaction.id}
@@ -18,7 +18,7 @@ module SalesEngine
 
     def favorite_merchant
       merchant_invoice_counter = { }
-      self.invoices.each do |invoice|
+      invoices.each do |invoice|
         if merchant_invoice_counter[invoice.merchant]
           merchant_invoice_counter[invoice.merchant] += 1
         else
@@ -28,12 +28,12 @@ module SalesEngine
       merchant_invoice_counter.sort_by {|merchant| merchant.last}.last.first
     end
 
-    def self.random
-      DATABASE.get_random_record("customers")
-    end
-
     def invoices
       DATABASE.find_all_by("invoices", "customer_id", self.id)
+    end
+
+    def self.random
+      DATABASE.get_random_record("customers")
     end
 
     def self.find_by_id(id)

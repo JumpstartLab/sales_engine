@@ -11,11 +11,11 @@ module SalesEngine
     end
 
     def invoice
-      Database.instance.find_by("invoices", "id", self.invoice_id)
+      @invoice ||= Database.instance.find_by("invoices", "id", self.invoice_id)
     end
 
     def item
-      Database.instance.find_by("items", "id", self.item_id)
+      @item ||= Database.instance.find_by("items", "id", self.item_id)
     end
 
     def total

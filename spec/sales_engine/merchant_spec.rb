@@ -328,11 +328,11 @@ describe SalesEngine::Merchant do
     end
 
     it "returns the total revenue for that date across all merchants" do
-      SalesEngine::Merchant.revenue("2012-03-14").should == 38
+      SalesEngine::Merchant.revenue(Date.parse("2012-03-14")).should == 38
     end
 
     it "returns 0 if no sales were made for that date" do
-      SalesEngine::Merchant.revenue("2012-01-21").should == 0
+      SalesEngine::Merchant.revenue(Date.parse("2012-01-21")).should == 0
     end
   end
 

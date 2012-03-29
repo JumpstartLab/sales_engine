@@ -1,4 +1,3 @@
-require 'logger'
 module SalesEngine
   class Merchant < Record
     attr_accessor :name
@@ -19,27 +18,23 @@ module SalesEngine
     end
 
     def self.revenue(date)
-      revenue = BigDecimal.new("0")
-      SalesEngine::Invoice.find_all_created_on(date).each { |invoice|
-        revenue += invoice.total_revenue }
-      revenue
+      DATABASE.merchants.collect { |merchant| merchant.revenue(date) }.sum
     end
 
     def total_items_sold
-      paid_invoices.collect { |invoice| invoice.total_items }.sum
+      paid_invoices.collect { |invoice|
+        invoice.total_items }.sum
     end
 
     def revenue(date=nil)
-      user_date = date.nil? ? nil : date
-      paid_invoices.collect do |invoice|
-        if user_date.nil?
+      paid_invoices.collect { |invoice|
+        if date.nil?
           invoice.total_revenue
         else
           invoice_date = Date.parse(Time.parse(
             invoice.created_at).strftime('%Y/%m/%d'))
-          invoice_date == user_date ? invoice.total_revenue : 0
-        end
-      end.sum
+          invoice_date == date ? invoice.total_revenue : 0
+        end }.sum
     end
 
     def paid_invoices
