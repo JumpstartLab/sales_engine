@@ -122,7 +122,7 @@ module SalesEngine
       total_revenue
     end
 
-    def self.dates_by_revenue(x = -1)
+    def self.dates_by_revenue(x = nil)
       accumulator = Hash.new {|hash, key| hash[key] = 0 }
       Database.instance.all_merchants.each do |merchant|
         merchant.invoices.each do |invoice|
@@ -136,7 +136,11 @@ module SalesEngine
       dates_array = sorted.collect do |date, value|
         Date.parse(date.to_s)
       end
-      dates_array.slice(0..x)
+      if x
+        dates_array.slice(0...x)
+      else
+        dates_array
+      end
     end
 
     def self.most_revenue(number)
