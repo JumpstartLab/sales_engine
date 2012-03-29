@@ -58,5 +58,14 @@ class SalesEngine
     def total=(input)
       @total = input
     end
+
+    def self.create(attr)
+      invoice = self.new ( { :customer => attr[:customer_id], 
+        :merchant => attr[:merchant_id], :status => attr[:status],
+        :items => attr[:items] } )
+      SalesEngine::Customer.add_to_db(attr[:customer])
+      SalesEngine::Merchant.add_to_db(attr[:merchant])
+      invoice
+    end
   end
 end

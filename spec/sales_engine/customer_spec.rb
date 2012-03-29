@@ -206,4 +206,13 @@ describe SalesEngine::Customer do
     end
   end
 
+  describe ".add_to_db(attr)" do
+    cust_1 = Fabricate(:customer, :first_name => "Xander", :id => 5000)
+
+    it "adds a new customer to the database" do
+      SalesEngine::Customer.add_to_db(cust_1)
+      SalesEngine::Customer.find_by_first_name("Xander").should be_a SalesEngine::Customer
+    end
+  end
+
 end

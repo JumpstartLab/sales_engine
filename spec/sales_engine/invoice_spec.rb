@@ -278,5 +278,33 @@ describe SalesEngine::Invoice do
     end
   end
 
+  describe ".create" do
+    merch_1 = Fabricate(:merchant, :name => "Giles", :id => 5000)
+    cust_1 = Fabricate(:customer, :first_name => "Buffy", :id => 5001)
+
+    item_1 = Fabricate(:item)
+    item_2 = Fabricate(:item)
+    item_3 = Fabricate(:item)
+
+    attr = {}
+    attr[:customer] = cust_1
+    attr[:merchant] = merch_1
+    attr[:status] = "shipped"
+    attr[:items] = [item_1, item_2, item_3]
+
+    it "returns a new invoice" do
+      SalesEngine::Invoice.create(attr).should be_a SalesEngine::Invoice
+    end
+
+    it "adds a new customer to the database" do
+      SalesEngine::Invoice.create(attr)
+      SalesEngine::Customer.find_by_first_name("Buffy").should be_a SalesEngine::Customer
+    end
+
+    it "adds a new merchant to the database" do
+      SalesEngine::Invoice.create(attr)
+      SalesEngine::Merchant.find_by_name("Giles").should be_a SalesEngine::Merchant
+    end
+  end
 end
 

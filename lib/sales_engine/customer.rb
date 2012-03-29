@@ -38,5 +38,11 @@ class SalesEngine
       merchant_and_invoices = sorted_and_grouped_by_merchant.last
       merchant = merchant_and_invoices.first
     end
+
+    def self.add_to_db(cust)
+      if self.find_by_id(cust.id) == nil
+        SalesEngine::Database.instance.customers << cust
+      end
+    end
   end
 end
