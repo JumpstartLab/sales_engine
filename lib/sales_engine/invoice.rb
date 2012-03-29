@@ -2,7 +2,7 @@ module SalesEngine
   class Invoice
     extend Searchable
     attr_accessor :customer_id, :id, :merchant_id, :status, :created_at
-    attr_accessor :raw_csv
+    # attr_accessor :raw_csv
 
 
     def self.records
@@ -15,57 +15,66 @@ module SalesEngine
       end
     end
 
-    def self.csv_headers
-      @csv_headers
-    end
+    # def self.csv_headers
+    #   @csv_headers
+    # end
 
-    def self.csv_headers=(value)
-      @csv_headers=(value)
-    end
+    # def self.csv_headers=(value)
+    #   @csv_headers=(value)
+    # end
 
     def self.create(invoice_attributes)
       new_invoice = self.new( { created_at: DateTime.now.to_s } )
-      new_invoice.id = records.last.id + 1
-      new_invoice.customer_id = invoice_attributes[:customer].id
-      new_invoice.merchant_id = invoice_attributes[:merchant].id
-      new_invoice.status = invoice_attributes[:status]
+      set_new_invoice_attributes(new_invoice, invoice_attributes)
       invoice_attributes[:items].each do |item|
         SalesEngine::InvoiceItem.create( { item_id: item.id,
           invoice_id: new_invoice.id, created_at: DateTime.now.to_s,
-          uantity: 1, unit_price: item.unit_price.to_s } )
+          quantity: 1, unit_price: (item.unit_price*100).to_s } )
       end
-      SalesEngine::Transaction.create({invoice_id: new_invoice.id})
       records << new_invoice
       new_invoice
     end
 
+    def self.set_new_invoice_attributes(new_invoice, invoice_attributes)
+      new_invoice.id = records.last.id + 1
+      new_invoice.customer_id = invoice_attributes[:customer].id
+      new_invoice.merchant_id = invoice_attributes[:merchant].id
+      new_invoice.status = invoice_attributes[:status]
+    end
+
     def self.pending
       ids = Transaction.all.select{|t| t.result != "success"}.map(&:invoice_id)
-      ids.uniq.collect { |id| Invoice.find_by_id(id) }
+      ids.uniq.map { |id| Invoice.find_by_id(id) }
     end
 
     def self.average_revenue(date = nil)
       if date
         di = all.select do |i|
+          next unless i.successful_transaction
           i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
         end
-        total_rev = di.map(&:total_paid).inject(:+)
-        BigDecimal((total_rev / di.size.to_f).to_s) rescue BigDecimal("0")
+        tr = di.map(&:total_paid).inject(:+)
+        BigDecimal((tr / di.size.to_f).round(2).to_s) rescue BigDecimal("0")
       else
-        BigDecimal((all.map(&:total_paid).inject(:+) / all.size).to_s)
+        BigDecimal((all.map(&:total_paid).inject(:+) / suc_size).round(2).to_s)
       end
     end
 
     def self.average_items(date = nil)
       if date
         di = all.select do |i|
+          next unless i.successful_transaction
           i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
         end
-        total_items = di.map(&:num_items).inject(:+)
-        BigDecimal((total_items / di.size.to_f).to_s) rescue BigDecimal("0")
+        ti = di.map(&:num_items).inject(:+)
+        BigDecimal((ti / di.size.to_f).round(2).to_s) rescue BigDecimal("0")
       else
-        BigDecimal((all.map(&:num_items).inject(:+) / all.size).to_s)
+        BigDecimal((all.map(&:num_items).inject(:+) / suc_size).round(2).to_s)
       end
+    end
+
+    def self.suc_size
+      @suc_size ||= all.select{ |i| i.successful_transaction }.size.to_f
     end
 
     def initialize(raw_line)
@@ -74,8 +83,8 @@ module SalesEngine
       self.merchant_id = raw_line[:merchant_id].to_i
       self.status = raw_line[:status]
       self.created_at = DateTime.parse(raw_line[:created_at])
-      self.raw_csv = raw_line.values
-      Invoice.csv_headers ||= raw_line.keys
+      # self.raw_csv = raw_line.values
+      # Invoice.csv_headers ||= raw_line.keys
       self.total_paid = 0
       self.num_items = 0
     end
@@ -89,10 +98,7 @@ module SalesEngine
     end
 
     def items
-      @items ||= invoice_items.collect do |invoice_item|
-        invoice_item.item
-      end
-      @items.uniq
+      @items ||= invoice_items.map(&:item).uniq
     end
 
     def customer
@@ -100,11 +106,7 @@ module SalesEngine
     end
 
     def total_paid
-      if successful_transaction
-        @total_paid
-      else
-        0
-      end
+      successful_transaction ? @total_paid : 0
     end
 
     def total_paid=(value)
@@ -112,11 +114,7 @@ module SalesEngine
     end
 
     def num_items
-      if successful_transaction
-        @num_items
-      else
-        0
-      end
+      successful_transaction ? @num_items : 0
     end
 
     def num_items=(value)
@@ -124,10 +122,12 @@ module SalesEngine
     end
 
     def charge(params)
-      t = transactions.first
-      t.credit_card_number = params[:credit_card_number]
-      t.credit_card_expiration_date = params[:credit_card_expiration]
-      t.result = params[:result]
+      t = { invoice_id: id }
+      SalesEngine::Transaction.create(t.merge(params))
+      @transactions = SalesEngine::Transaction.find_all_by_invoice_id(id)
+      if params[:result] == "success"
+        invoice_items.each { |item| item.populate_stats }
+      end
     end
 
     def successful_transaction

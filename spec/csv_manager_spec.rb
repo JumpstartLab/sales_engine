@@ -24,33 +24,12 @@ describe SalesEngine::CSVManager do
     end
     context "loads an empty CSV file" do
       it "doesn't raise an error" do
-        expect{SalesEngine::CSVManager.load('./spec/empty.csv')}.to_not raise_error
+        expect do
+          SalesEngine::CSVManager.load('./spec/empty.csv')
+        end.to_not raise_error
       end
       it "returns an empty array" do
         SalesEngine::CSVManager.load('./spec/empty.csv').should == []
-      end
-    end
-  end
-  describe ".save" do
-    context "saves all files to their _output counterpart" do
-      before(:all) { SalesEngine::CSVManager.save }
-      it "saves all merchant records to merchant_output.csv" do
-        SalesEngine::CSVManager.load('data/merchants.csv').should == SalesEngine::CSVManager.load('data/merchant_output.csv')
-      end
-      it "saves all customer records to customer_output.csv" do
-        SalesEngine::CSVManager.load('data/customers.csv').should == SalesEngine::CSVManager.load('data/customer_output.csv')
-      end
-      it "saves all invoice records to invoice_output.csv" do
-        SalesEngine::CSVManager.load('data/invoices.csv').should == SalesEngine::CSVManager.load('data/invoice_output.csv')
-      end
-      it "saves all invoice_item records to invoice_item_output.csv" do
-        SalesEngine::CSVManager.load('data/invoice_items.csv').should == SalesEngine::CSVManager.load('data/invoice_item_output.csv')
-      end
-      it "saves all item records to item_output.csv" do
-        SalesEngine::CSVManager.load('data/items.csv').should == SalesEngine::CSVManager.load('data/item_output.csv')
-      end
-      it "saves all transaction records to transaction_output.csv" do
-        SalesEngine::CSVManager.load('data/transactions.csv').should == SalesEngine::CSVManager.load('data/transaction_output.csv')
       end
     end
   end

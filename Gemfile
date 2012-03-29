@@ -5,11 +5,11 @@ group :test, :development do
   gem 'simplecov'
 	gem 'fabrication'
 	gem 'faker'
+  gem 'reek'
+  gem 'cane'
 end
 
 group :development do
-  gem 'reek'
-  gem 'cane'
   gem 'guard'
   gem 'guard-rspec'
   gem 'growl'

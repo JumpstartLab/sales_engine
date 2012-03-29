@@ -2,7 +2,8 @@ module SalesEngine
   class Transaction
     extend Searchable
     attr_accessor :id, :invoice_id, :credit_card_number
-    attr_accessor :credit_card_expiration_date, :result, :raw_csv
+    attr_accessor :credit_card_expiration_date, :result
+    # attr_accessor :raw_csv
 
     def self.records
       @transactions ||= get_transactions
@@ -14,13 +15,13 @@ module SalesEngine
       end
     end
 
-    def self.csv_headers
-      @csv_headers
-    end
+    # def self.csv_headers
+    #   @csv_headers
+    # end
 
-    def self.csv_headers=(value)
-      @csv_headers=(value)
-    end
+    # def self.csv_headers=(value)
+    #   @csv_headers=(value)
+    # end
 
     def self.create(params)
       t = self.new(params)
@@ -34,8 +35,8 @@ module SalesEngine
       self.credit_card_number = raw_line[:credit_card_number]
       self.credit_card_expiration_date = raw_line[:credit_card_expiration_date]
       self.result = raw_line[:result]
-      self.raw_csv = raw_line.values
-      Transaction.csv_headers ||= raw_line.keys
+      # self.raw_csv = raw_line.values
+      # Transaction.csv_headers ||= raw_line.keys
     end
 
     def invoice

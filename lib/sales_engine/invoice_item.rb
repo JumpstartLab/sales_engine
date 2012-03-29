@@ -2,41 +2,46 @@ module SalesEngine
   class InvoiceItem
     extend Searchable
     attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price
-    attr_accessor :line_total, :date, :raw_csv
+    attr_accessor :line_total, :date
+    # attr_accessor :raw_csv
 
     def self.records
       @invoice_items ||= get_invoice_items
     end
 
     def self.get_invoice_items
-      CSVManager.load('data/invoice_items.csv').collect do |record|
+      CSVManager.load('data/invoice_items.csv').map do |record|
         InvoiceItem.new(record)
       end
     end
 
-    def self.csv_headers
-      @csv_headers
-    end
+    # def self.csv_headers
+    #   @csv_headers
+    # end
 
-    def self.csv_headers=(value)
-      @csv_headers=(value)
+    # def self.csv_headers=(value)
+    #   @csv_headers=(value)
+    # end
+
+    def self.create(params)
+      records << self.new(params)
     end
 
     def self.populate_stats
       records.each do |record|
-        record.merchant.total_revenue += record.line_total
-        record.merchant.items_sold += record.quantity
-        record.item.total_revenue += record.line_total
-        record.item.items_sold += record.quantity
-        record.customer.revenue_bought += record.line_total
-        record.customer.items_bought += record.quantity
-        record.invoice.total_paid += record.line_total
-        record.invoice.num_items += record.quantity
+        record.populate_stats if record.invoice.successful_transaction
       end
     end
 
-    def self.create(params)
-      records << self.new(params)
+    def populate_stats
+      merchant.total_revenue += line_total
+      merchant.items_sold += quantity
+      item.total_revenue += line_total
+      item.items_sold += quantity
+      customer.revenue_bought += line_total
+      customer.items_bought += quantity
+      invoice.total_paid += line_total
+      invoice.num_items += quantity
     end
 
     def initialize(raw_line)
@@ -46,8 +51,8 @@ module SalesEngine
       self.quantity = raw_line[:quantity].to_i
       self.unit_price = clean_unit_price(raw_line[:unit_price])
       self.line_total = quantity * unit_price
-      self.raw_csv = raw_line.values
-      InvoiceItem.csv_headers ||= raw_line.keys
+      # self.raw_csv = raw_line.values
+      # InvoiceItem.csv_headers ||= raw_line.keys
     end
 
     def merchant
@@ -67,7 +72,7 @@ module SalesEngine
     end
 
     def date
-      @date ||= SalesEngine::Invoice.find_by_id(invoice_id).created_at
+      @date ||= invoice.created_at
     end
 
     private

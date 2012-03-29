@@ -12,19 +12,18 @@ module SalesEngine
       command = method.to_s.split('_')
       if command[0..1] == ["find", "by"]
         field = command[2..-1].join('_')
-        if self.records.first.respond_to?(field.to_sym)
-          return find_by(field, *args)
-        end
+        return find_by(field, *args) if valid_field?(field)
       elsif command[0..2] == ["find", "all", "by"]
         field = command[3..-1].join('_')
-        if self.records.first.respond_to?(field.to_sym)
-          return find_all_by(field, *args)
-        end
+        return find_all_by(field, *args) if valid_field?(field)
       end
       super(method, *args, &block)
     end
 
-    #FIX THIS TO NOT TRUST THAT ID = INDEX
+    def valid_field?(field)
+      self.records.first.respond_to?(field.to_sym)
+    end
+
     def find_by_id(id)
       records[id-1]
     end

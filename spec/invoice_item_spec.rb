@@ -12,13 +12,13 @@ describe SalesEngine::InvoiceItem do
         SalesEngine::InvoiceItem.records.first.send(attribute).should == value
       end
     end
-    it "stores the raw CSV for each InvoiceItem" do
-      SalesEngine::InvoiceItem.records.first.raw_csv.should be_an Array
-    end
+    # it "stores the raw CSV for each InvoiceItem" do
+    #   SalesEngine::InvoiceItem.records.first.raw_csv.should be_an Array
+    # end
 
-    it "stores headers on the InvoiceItem class" do
-      SalesEngine::InvoiceItem.csv_headers.should be_an Array
-    end
+    # it "stores headers on the InvoiceItem class" do
+    #   SalesEngine::InvoiceItem.csv_headers.should be_an Array
+    # end
   end
 
   context "instance methods" do

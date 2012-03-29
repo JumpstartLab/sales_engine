@@ -12,6 +12,7 @@ require 'sales_engine/csv_manager'
 require 'date'
 
 module SalesEngine
+  EXTENSIONS = %w(customer invoice merchant)
 
   def self.startup
     # Hi, Jeff!
