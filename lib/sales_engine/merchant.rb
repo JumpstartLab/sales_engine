@@ -9,6 +9,8 @@ module SalesEngine
   class Merchant
     include SalesEngine
     extend MerchantRecord
+    include MerchantRecord
+
     attr_accessor :id, :name, :created_at, :updated_at
 
     def initialize(id, name, created_at, updated_at)
@@ -60,11 +62,6 @@ module SalesEngine
       BigDecimal.new(result.to_s).round(2)
     end
 
-    def self.most_revenue(total_merchants)
-      results = merchants.sort_by{ |merchant| merchant.revenue }.reverse!
-      results[0,total_merchants]
-    end
-
     def self.most_items(total_merchants)
       results = merchants.sort_by do |merchant| 
         merchant.paid_invoice_items.length 
@@ -72,12 +69,5 @@ module SalesEngine
       results[0,total_merchants]
     end
 
-    #def customers_with_pending_invoices
-      #customers.select{ |customer| customer.has_pending_invoice? }
-    #end
-
-    def favorite_customer
-      find_favorite_customer(id)
-    end
   end
 end
