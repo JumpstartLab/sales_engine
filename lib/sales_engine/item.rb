@@ -94,9 +94,8 @@ module SalesEngine
       item_data = { }
 
       invoice_items.each do |invoice_item|
-        date_str = invoice_item.invoice.updated_at.strftime("%Y/%m/%d")
-        item_data[ date_str ] ||= 0
-        item_data[ date_str ] += invoice_item.quantity
+        item_data[ invoice_item.format_created_at ] ||= 0
+        item_data[ invoice_item.format_created_at ] += invoice_item.quantity
       end
       item_data
     end

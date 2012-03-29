@@ -73,14 +73,6 @@ describe SalesEngine::InvoiceItem do
       @invoice_item.quantity.should == 1
     end
 
-    it "assigns the created_at time" do
-      @invoice_item.created_at.should be_a Time
-    end
-
-    it "assigns the updated_at time" do
-      @invoice_item.created_at.should be_a Time
-    end
-
     it "adds it to the invoice_item_list" do
       SalesEngine::Database.instance.invoice_item_list.should include @invoice_item
     end

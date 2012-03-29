@@ -29,16 +29,6 @@ module SalesEngine
       else
         self.unit_price = BigDecimal.new(attributes[:unit_price])/100
       end
-      if attributes[:created_at]
-        self.created_at = Time.parse(attributes[:created_at])
-      else
-        self.created_at = Time.now
-      end
-      if attributes[:updated_at]
-        self.updated_at = Time.parse(attributes[:updated_at])
-      else
-        self.updated_at = Time.now
-      end
 
       SalesEngine::Database.instance.invoice_item_list << self
       SalesEngine::Database.instance.invoice_item_id_hash[ self.id ] = self
@@ -46,6 +36,10 @@ module SalesEngine
 
     def self.attributes_for_finders
       INVOICE_ITEM_ATTS
+    end
+
+    def format_created_at
+      self.invoice.created_at.strftime("%Y/%m/%d")
     end
 
     extend SalesEngine::DynamicFinder

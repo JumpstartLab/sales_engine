@@ -11,11 +11,11 @@ describe SalesEngine::Item do
   let(:item_one){ SalesEngine::Item.new( :id => 1, :merchant_id => 1 ) }
   let(:item_two){ SalesEngine::Item.new( :id => 2, :merchant_id => 2 )}
   let(:inv_one)   { SalesEngine::Invoice.new( :id => "1", :customer_id => "1",
-                                   :updated_at => "2012-2-19" ) }
+                                   :created_at => "2012-2-19" ) }
   let(:inv_two)   { SalesEngine::Invoice.new( :id => "2", :customer_id => "2",
-                                   :updated_at => "2012-9-09" ) }
+                                   :created_at => "2012-9-09" ) }
   let(:inv_three)   { SalesEngine::Invoice.new( :id => "3", :customer_id => "2",
-                                   :updated_at => "2012-1-01" ) }
+                                   :created_at => "2012-1-01" ) }
   let(:merchant_one){ SalesEngine::Merchant.new( :id => "1" )}
   let(:merchant_two){ SalesEngine::Merchant.new( :id => "2" )}
   let(:tr_one)   { SalesEngine::Transaction.new( :invoice_id => "1") }

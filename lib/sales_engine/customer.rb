@@ -108,9 +108,8 @@
       paid_invoice_count = { }
 
       paid_invoices.each do |invoice|
-        merchant_id = invoice.merchant_id
-        paid_invoice_count[ merchant_id ] ||= 0
-        paid_invoice_count[ merchant_id ] += 1
+        paid_invoice_count[ invoice.merchant_id ] ||= 0
+        paid_invoice_count[ invoice.merchant_id ] += 1
       end
       paid_invoice_count
     end
