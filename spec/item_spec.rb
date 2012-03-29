@@ -126,7 +126,7 @@ module SalesEngine
       end
     end
 
-    describe ".most_revenue(x)" do
+    describe ".most_items(x)" do
       let(:item1) { double("item") }
       let(:item2) { double("item") }
       let(:item3) { double("item") }
@@ -139,25 +139,25 @@ module SalesEngine
 
       context "when number of items is greater than X" do
         it "returns an array of items with the most units sold" do
-          Item.stub(:items).and_return([item1, item2, item3])
+          Item.stub(:items_sold).and_return([item1, item2, item3])
           Item.most_items(2).should == [item3, item2]
         end
       end
       context "when number of items is less than X" do
         it "returns an array of all merchants" do
-          Item.stub(:items).and_return([item1, item2])
+          Item.stub(:items_sold).and_return([item1, item2])
           Item.most_items(3).should == [item2, item1]
         end
       end
       context "when there is only one item" do
         it "returns an array with one item" do
-          Item.stub(:items).and_return([item1])
+          Item.stub(:items_sold).and_return([item1])
           Item.most_items(3).should == [item1]
         end
       end
       context "when there are no items" do
         it "returns an empty array" do
-          Item.stub(:items).and_return([])
+          Item.stub(:items_sold).and_return([])
           Item.most_items(3).should == []
         end
       end 
