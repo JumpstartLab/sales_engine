@@ -18,14 +18,14 @@ module SalesEngine
     end
 
     class << self
-      [:id, :customer_id, :merchant_id, :status, 
+      [:id, :customer_id, :merchant_id, :status,
        :created_at, :updated_at].each do |attribute|
         define_method "find_by_#{attribute}" do |input|
           find_by_(attribute, input)
         end
       end
 
-      [:id, :customer_id, :merchant_id, :status, 
+      [:id, :customer_id, :merchant_id, :status,
        :created_at, :updated_at].each do |attribute|
         define_method "find_all_by_#{attribute}" do |input|
           find_all_by_(attribute, input)
@@ -78,7 +78,7 @@ module SalesEngine
     end
 
     def paid?
-      transactions.any? do |t| 
+      transactions.any? do |t|
         t.successful?
       end
     end

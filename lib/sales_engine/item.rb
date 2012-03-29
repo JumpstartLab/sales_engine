@@ -7,7 +7,8 @@ module SalesEngine
     extend Randomize
     extend Searchable
 
-    attr_accessor :id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at
+    attr_accessor :id, :name, :description, :unit_price,
+                  :merchant_id, :created_at, :updated_at
 
     def initialize(attributes)
       self.id = attributes[:id]
@@ -20,16 +21,16 @@ module SalesEngine
     end
 
     class << self
-      [:id, :name, :description, :unit_price, 
-       :merchant_id, :created_at, 
+      [:id, :name, :description, :unit_price,
+       :merchant_id, :created_at,
        :updated_at].each do |attribute|
         define_method "find_by_#{attribute}" do |input|
           find_by_(attribute, input)
         end
       end
 
-      [:id, :name, :description, :unit_price, 
-       :merchant_id, :created_at, 
+      [:id, :name, :description, :unit_price,
+       :merchant_id, :created_at,
        :updated_at].each do |attribute|
         define_method "find_all_by_#{attribute}" do |input|
           find_all_by_(attribute, input)
@@ -56,7 +57,7 @@ module SalesEngine
     def invoice_items
       database.invoiceitems.select { |invoice_item| invoice_item.item_id == self.id }
     end
-    
+
     def merchant
       match_merchant_to_item[0]
     end
@@ -98,7 +99,6 @@ module SalesEngine
     end
 
     ####BEST-DAY####
-    
 
   end
 end

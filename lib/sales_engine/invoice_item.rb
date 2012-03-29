@@ -37,7 +37,7 @@ module SalesEngine
       matched_items = SalesEngine::Item.find_all_by_id(self.item_id)
       matched_items[0]
     end
- 
+
     def total
       @total ||= quantity.to_i * unit_price.to_i
     end

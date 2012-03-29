@@ -4,7 +4,7 @@ require 'sales_engine/searchable'
 module SalesEngine
   class Merchant
 
-    extend Randomize  
+    extend Randomize
     extend Searchable
 
     attr_accessor :id, :name, :created_at, :updated_at
@@ -17,14 +17,14 @@ module SalesEngine
     end
 
     class << self
-      [:id, :name, :created_at, 
+      [:id, :name, :created_at,
        :updated_at].each do |attribute|
         define_method "find_by_#{attribute}" do |input|
           find_by_(attribute, input)
         end
       end
 
-      [:id, :name, :created_at, 
+      [:id, :name, :created_at,
        :updated_at].each do |attribute|
         define_method "find_all_by_#{attribute}" do |input|
           find_all_by_(attribute, input)
@@ -123,12 +123,28 @@ module SalesEngine
       end
     end
 
-    # def favorite_customer
-    #   # returns the Customer who has conducted the most transactions
-    # end
+    #######################
+    ###FAVORITE CUSTOMER###
+    #######################
+
+    def grouped_customers
+      paid_invoices.group_by { |invoice| invoice.customer_id }
+    end
+
+    def favorite_customer_id
+      grouped_customers.keys.last
+    end
+
+    def favorite_customer
+      SalesEngine::Customer.find_by_id(favorite_customer_id)
+    end
+
+    #######################
+    ###FAVORITE CUSTOMER###
+    #######################
 
     # def customers_with_pending_invoices
-    #   # returns a collection of Customer instances which have pending (unpaid) invoices
+    #   returns a collection of Customer instances which have pending (unpaid) invoices
     # end
 
   end
