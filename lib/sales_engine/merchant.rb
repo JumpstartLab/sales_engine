@@ -55,8 +55,8 @@ module SalesEngine
     end
 
     def self.most_revenue(total_merchants)
-      merchants.sort_by!{ |merchant| merchant.revenue }.reverse!
-      merchants[0,total_merchants]
+      results = merchants.sort_by{ |merchant| merchant.revenue }.reverse!
+      results[0,total_merchants]
     end
 
     def customers_with_pending_invoices
