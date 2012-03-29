@@ -27,6 +27,11 @@ describe SalesEngine::Customer do
   let(:trans_three) { SalesEngine::Transaction.new( :id => "3",
                                                     :invoice_id => "2",
                                                     :result => "success") }
+  let(:inv_item_one){ SalesEngine::InvoiceItem.new( :id => "1",
+                                                    :unit_price => "1000",
+                                                    :quantity => "3",
+                                                    :invoice_id => "2",
+                                                    :item_id => "1" ) }
   let(:transactions) { [ trans_one, trans_two, trans_three ] }
 
   let(:transaction_list) { SalesEngine::Database.instance.transaction_list = transactions }
@@ -58,17 +63,76 @@ describe SalesEngine::Customer do
     end
   end
 
-  describe "#days_since_activity" do
+  describe ".most_revenue" do
+    before(:each) do
+      SalesEngine::Customer.stub(:customers_by_revenue_bought).and_return({ customer_two.id => 3000 })
+    end
+    it "returns the customer with the most revenue" do
+      SalesEngine::Customer.most_revenue.should == customer_two
+    end
   end
 
-  # def days_since_activity
-  #     invoice_array = paid_invoices.sort_by do |inv|
-  #                             inv.created_at
-  #                           end
-  #     latest_invoice = invoice_array.reverse.first
-  #     last_purchase_date = Date.parse(latest_invoice.created_at.to_s)
-  #     ( Date.today - last_purchase_date )
-  #   end
+  describe ".most_items" do
+    before(:each) do
+      SalesEngine::Customer.stub(:customers_by_items_bought).and_return({ customer_two.id => 3 })
+    end
+    it "returns the customer who bought the most items" do
+      SalesEngine::Customer.most_items.should == customer_two
+    end
+  end
+
+  describe "#pending_invoices" do
+    let(:customer) { SalesEngine::Customer.new(:id => "0") }
+    let(:invoice) { SalesEngine::Invoice.new( :id => "1",
+                                                :customer_id => "0",
+                                                :merchant_id => "0") }
+    let(:trans) { SalesEngine::Transaction.new( :id => "1",
+                                                  :invoice_id => "1",
+                                                  :result => "fail") }
+    let(:transaction_array) { [ trans ] }
+
+    before(:each) {invoice.stub(:transactions).and_return(transaction_array)}
+    it "returns an array of invoices with no successful trans" do
+      customer.pending_invoices.should == [ invoice ]
+    end
+  end
+
+  describe ".customers_by_revenue_bought" do
+    before(:each) do
+      SalesEngine::Customer.stub(:paid_invoices).and_return([ invoice_two ])
+    end
+    it "returns a hash of customers and revenue" do
+      SalesEngine::Customer.customers_by_revenue_bought.should include customer_two.id
+    end
+  end
+
+
+  describe ".customers_by_items_bought" do
+    before(:each) do
+      SalesEngine::Customer.stub(:paid_invoice_items).and_return([ inv_item_one ])
+    end
+
+    it "returns a hash of customers and quantity of items" do
+      SalesEngine::Customer.customers_by_items_bought.should == {customer_two.id => 3}
+    end
+  end
+
+
+  describe "#days_since_activity" do
+    let(:customer) { SalesEngine::Customer.new(:id => "1") }
+    let(:invoice) { SalesEngine::Invoice.new(:id => "1",
+                                              :invoice_id => "1",
+                                              :customer_id => "1",
+                                              :created_at => "2012-03-28")}
+    let(:transaction) { SalesEngine::Transaction.new(:id => "1", :result => "success", 
+                                                     :invoice_id => "1")}
+    let(:invoices) {[invoice]}
+    before(:each) { customer.stub(:paid_invoices).and_return(invoices) }
+
+    it "returns a count of the days since customer's last transaction" do
+      customer.days_since_activity.should == 1
+    end
+  end
 
   describe "#transactions" do
     before(:each) do

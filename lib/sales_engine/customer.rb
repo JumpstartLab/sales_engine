@@ -85,10 +85,14 @@
       find_by_id(top_customer_id)
     end
 
+    def self.paid_invoices
+      SalesEngine::Invoice.successful_invoices
+    end
+
     def self.customers_by_revenue_bought
       revenue_data = { }
 
-      SalesEngine::Invoice.successful_invoices.each do |inv|
+      paid_invoices.each do |inv|
         revenue_data[ inv.customer_id ] ||= 0
         revenue_data[ inv.customer_id ] += inv.invoice_revenue
       end
