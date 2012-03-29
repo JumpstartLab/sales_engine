@@ -65,7 +65,7 @@ module SalesEngine
 
     def calc_revenue_by_range_of_dates (range)
       revenue = invoices.inject(0) do |sum, invoice|
-        if invoice.successful? &&
+        if invoice.successful? && invoice.created_at &&
            invoice.created_at >= range.first &&
            invoice.created_at <= range.last
           sum += invoice.revenue
@@ -135,13 +135,6 @@ module SalesEngine
       end
       dates_array = sorted.collect do |date, value|
         date
-      end
-
-      #couldn't get it working with dates; use strings, parse to dates below
-      dates_array.each do |i|
-        unless dates_array[i].is_a?(Date)
-        dates_array[i] = Date.parse(dates_array[i])
-        end
       end
       dates_array.slice(0...x)
     end
