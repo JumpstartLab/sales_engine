@@ -33,6 +33,9 @@ module SalesEngine
         self.updated_at = Date.today
       end
       store_result_in_invoice
+
+      SalesEngine::Database.instance.transaction_list << self
+      SalesEngine::Database.instance.transaction_id_hash[ self.id ] = self
     end
 
     def self.attributes_for_finders

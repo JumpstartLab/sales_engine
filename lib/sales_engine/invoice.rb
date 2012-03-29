@@ -32,6 +32,9 @@ module SalesEngine
       else
         self.updated_at = Date.today
       end
+
+      SalesEngine::Database.instance.invoice_list << self
+      SalesEngine::Database.instance.invoice_id_hash[ self.id.to_s.to_sym ] = self
     end
 
     def self.attributes_for_finders

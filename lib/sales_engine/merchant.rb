@@ -15,6 +15,9 @@ module SalesEngine
       self.name = attributes[:name]
       self.created_at = attributes[:created_at]
       self.updated_at = attributes[:updated_at]
+
+      SalesEngine::Database.instance.merchant_list << self
+      SalesEngine::Database.instance.merchant_id_hash[ self.id ] = self
     end
 
     def self.attributes_for_finders
