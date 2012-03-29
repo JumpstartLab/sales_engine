@@ -80,11 +80,19 @@ describe SalesEngine::Customer do
     end
   end
 
+<<<<<<< HEAD
   context "extensions" do
 
     describe "#days_since_activity" do
       it "returns a count of the days since the customer's last transaction" do
         DateTime.stub(:now => DateTime.parse("March 29, 2012"))
+=======
+   context "extensions" do
+
+    describe "#days_since_activity" do
+      it "returns a count of the days since the customer's last transaction" do
+        Date.stub(:now => Date.parse("March 29, 2012"))
+>>>>>>> 2fb9c7b578ae7f287b1f5554366e0c521548f7cb
         Date.stub(:today => Date.parse("March 29, 2012"))
         days_since = SalesEngine::Customer.find_by_id(1).days_since_activity
 
@@ -123,5 +131,8 @@ describe SalesEngine::Customer do
       end
     end
   end
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2fb9c7b578ae7f287b1f5554366e0c521548f7cb
 end

@@ -17,10 +17,6 @@ module SalesEngine
         Database.instance.all_items[id - 1] = self
       end
 
-      def all_items
-        Database.instance.all_items
-      end
-
       def merchant
         @merchant ||= Database.instance.merchant[merchant_id][:self]
       end
