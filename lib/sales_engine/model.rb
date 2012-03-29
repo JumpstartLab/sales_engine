@@ -9,7 +9,7 @@ class SalesEngine
       end
 
       if attributes[:updated_at]
-        @updated = attributes[:updated_at]
+        @updated_at = attributes[:updated_at]
       else
         @upated_at = Time.now.utc.to_s
       end

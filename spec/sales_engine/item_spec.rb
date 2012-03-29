@@ -43,18 +43,24 @@ describe SalesEngine::Item do
     end
 
     it "returns the most sales day for this item" do
-      pending
       item_1 = Fabricate(:item)
+      invoice_1 = Fabricate(:invoice, :updated_at => '2012-02-15 13:56:57 UTC')
+      invoice_2 = Fabricate(:invoice, :updated_at => '2012-03-15 13:56:57 UTC')
     
       ii_1 = Fabricate(:invoice_item, 
-        :updated_at => '2012-02-15 13:56:57 UTC', :quantity => 5 )
+        :updated_at => '2012-02-15 13:56:57 UTC', :quantity => 5)
       ii_2 = Fabricate(:invoice_item, 
         :updated_at => '2012-02-15 13:51:57 UTC', :quantity => 5)
       ii_3 = Fabricate(:invoice_item, 
-        :updated_at => '2012-03-15 13:56:57 UTC', :quantity => 6)
+        :updated_at => '2012-03-15 13:56:57 UTC', :quantity => 11)
 
       item_1.invoice_items = [ii_1, ii_2, ii_3]
-      item_1.best_day.should == "2012-02-15"
+      ii_1.stub(:invoice).and_return(invoice_1)
+      ii_2.stub(:invoice).and_return(invoice_1)
+      ii_3.stub(:invoice).and_return(invoice_2)
+
+      date = Date.parse "2012-03-15"
+      item_1.best_day.should == date
     end
   end
 

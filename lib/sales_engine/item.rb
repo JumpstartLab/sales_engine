@@ -13,7 +13,7 @@ class SalesEngine
       super
       @name = attributes[:name]
       @description = attributes[:description]
-      @unit_price = BigDecimal.new(attributes[:unit_price]).round(2)
+      @unit_price = BigDecimal.new(attributes[:unit_price]) / 100
       @merchant_id = attributes[:merchant_id].to_i
     end
 
@@ -39,13 +39,13 @@ class SalesEngine
     # the given item using the invoice date
     def best_day
       sorted_days = item_quantity_per_day.sort_by{|date, count| -count}
-      sorted_days.first.first.to_s
+      sorted_days.first.first
     end
 
     def item_quantity_per_day
       item_quantities = {}
       invoice_items.each do |ii|
-        date = (Date.parse(ii.updated_at)).strftime("%Y-%m-%d")
+        date = (Date.parse(ii.invoice.updated_at))
         item_quantities[date] ||= 0
         item_quantities[date] += ii.quantity
       end
