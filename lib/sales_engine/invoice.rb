@@ -78,15 +78,33 @@ module SalesEngine
     end
 
     def paid?
-      transactions.any? { |t| t.successful? }
-    end
-
-    def successful?
-      result == "success"
+      transactions.any? do |t| 
+        t.successful?
+      end
     end
 
     def total_amount
-      @total ||= invoice_items.map { |inv_item| inv_item.total }.sum
+      if paid?
+        @total ||= invoice_items.map do |inv_item| 
+          inv_item.total
+        end.inject(:+)
+      else
+        return 0
+      end
+    end
+
+    def revenue_by_date(date)
+      result = 0
+      if paid?
+        invoice_items.each do |invoice_item|
+          result += invoice_item.total
+        end
+      end
+      result
+    end
+
+    def revenue
+      matched_invoiceitems.total
     end
 
   end

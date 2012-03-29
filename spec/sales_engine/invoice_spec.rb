@@ -33,6 +33,27 @@ describe SalesEngine::Invoice do
     end
   end
 
+  describe '.database' do
+    it 'proxies to Database' do
+      SalesEngine::Database.should_receive(:instance)
+      SalesEngine::Invoice.database
+    end
+  end
+
+  describe '#database' do
+    it 'proxies to Database' do
+      SalesEngine::Database.should_receive(:instance)
+      invoice.database
+    end
+  end
+
+  describe '#database=' do
+    it 'proxies to Database' do
+      SalesEngine::Database.should_receive(:instance)
+      invoice.database
+    end
+  end
+
   describe '#transactions' do
     let(:all_transactions) {SalesEngine::Database.instance.transactions}
     it "returns an array" do

@@ -54,45 +54,50 @@ module SalesEngine
     end
 
     def invoice_items
-      matched_invoiceitems = database.invoiceitems.select { |invoice_item| invoice_item.item_id == self.id }
+      database.invoiceitems.select { |invoice_item| invoice_item.item_id == self.id }
     end
     
     def merchant
-      merchants = database.merchants
-      matched_merchants = merchants.select { |merchant| merchant.id == self.merchant_id }
-      matched_merchants[0]
+      match_merchant_to_item[0]
     end
 
-    ####REVENUE####
+    def match_merchant_to_item
+      database.merchants.select { |merchant| merchant.id == self.merchant_id }
+    end
 
     def revenue
-      @total ||= invoice_items.inject(0){ |acc,num| num.revenue + acc }
+      @total ||= invoice_items.inject(0){ |acc,num| num.total + acc }
     end
 
     def self.sort_by_revenue
       collection.sort { |a,b| b.revenue <=> a.revenue }
     end
 
-    def self.most_revenue(param)
-      sort_by_revenue[0...param]
+    def self.most_revenue(param = 1)
+      if param == 1
+        sort_by_revenue.first
+      else
+        sort_by_revenue[0...param]
+      end
     end
-
-    ######ITEM######
 
     def items_quantity
-      self.invoice_items.inject(0){ |acc,num| num.quantity.to_i + acc }
+      @quantity ||= invoice_items.inject(0){ |acc,num| num.quantity.to_i + acc }
     end
 
-    def self.sort_items_list
+    def self.sort_by_items
       collection.sort { |a,b| b.items_quantity <=> a.items_quantity }
     end
 
-    def self.most_items(param)
-      sort_items_list[0...param]
+    def self.most_items(param = 1)
+      if param == 1
+        sort_by_items.first
+      else
+        sort_by_items[0...param]
+      end
     end
 
     ####BEST-DAY####
-
     
 
   end

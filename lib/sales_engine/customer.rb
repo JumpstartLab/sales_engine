@@ -51,7 +51,7 @@ module SalesEngine
     end
 
     def invoices
-      database.invoices.select { |invoice| invoice.customer_id == self.id }
+      SalesEngine::Invoice.find_all_by_customer_id(self.id)
     end
 
     def transactions
@@ -61,20 +61,19 @@ module SalesEngine
     end
 
     def extracted_ids
-      matched_invoices.map { |invoice| invoice.id }
+      invoices.map { |invoice| invoice.id }
     end
 
-    def matched_invoices
-      SalesEngine::Invoice.find_all_by_customer_id(self.id)
+    def grouped_invoices
+      invoices.group_by { |invoice| invoice.merchant_id }
+    end
+
+    def favorite_merchant_id
+      grouped_invoices.keys.last
     end
 
     def favorite_merchant
-      SalesEngine::Merchant.find_by_id(fav_merch_id)
-    end
-
-    def fav_merch_id
-      result_hash = matched_invoices.group_by { |invoice| invoice.merchant_id }
-      result_hash.keys.last
+      SalesEngine::Merchant.find_by_id(favorite_merchant_id)
     end
 
   end

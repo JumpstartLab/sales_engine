@@ -54,39 +54,62 @@ module SalesEngine
     end
 
     def invoices
-      invoices = SalesEngine::Database.instance.invoices
-      results = invoices.select { |invoice| invoice.merchant_id == self.id }
+      Invoice.find_all_by_merchant_id(self.id)
     end
 
-    # def merchants_revenue
-    #   self.invoice_items.inject(0){ |acc,num| num.revenue + acc }
+    def invoice_items
+      database.invoiceitems.select{ |ii| get_invoice_ids.include?(invoices) }
+    end
+
+    def get_invoice_ids
+      invoices.map { |i| i.id }
+    end
+
+    def invoice_item_revenue
+      invoice_items.map { |ii| ii.total }
+    end
+
+    # def revenue
+    #   result = 0
+    #   invoices.each do |invoice|
+    #     result += invoice.total_amount
+    #   end
     # end
 
     def self.most_revenue(param)
-      @most_revenue ||= collection.sort_by { |m| m.revenue }.last
+      @most_revenue ||= collection.sort_by { |m| m.revenue }
     end
 
-    def revenue
-      @revenue ||= paid_invoices.collect { |i| i.revenue }.sum
-    end
-
-    def paid_invoices
-      invoices.select do |i|
-        i.paid?
+    def self.revenue(date)
+      result = 0
+      collection.each do |merchant|
+        result += merchant.revenue_by_date(date)
       end
+      result
+    end
+
+    def revenue_by_date(date)
+      result = 0
+      invoices.each do |invoice|
+        result += invoice.revenue_by_date(date)
+      end
+      result
     end
 
     # def most_items()
     #   # returns the top x merchant instances ranked by total number of items sold
     # end
 
-    # def revenue(date)
-    #   # returns the total revenue for that date across all merchants
-    # end
-
-    # def revenue
-    #   # returns the total revenue for that merchant across all transactions
-    # end
+    def revenue(*date)
+      if date.nil?
+        result = 0
+        invoices.each do |invoice|
+          result += invoice.total_amount
+        end
+      else
+        revenue_by_date(date)
+      end
+    end
 
     # def favorite_customer
     #   # returns the Customer who has conducted the most transactions

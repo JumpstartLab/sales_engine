@@ -32,5 +32,22 @@ module SalesEngine
       matched_invoices = SalesEngine::Invoice.find_all_by_id(self.invoice_id)
       matched_invoices[0]
     end
+
+    def successful?
+      result == "success"
+    end
+
+    def self.find_all_by_date(date)
+      successful_transactions.select{ |transaction| transaction.created_at == date  }
+    end
+
+    def self.successful_transactions
+      collection.select{ |t| t.result == "success" }
+    end
+
+    def find_by_date(date)
+      collection.select{ |transaction| transaction.successful?.created_at == date  }
+    end
+
   end
 end
