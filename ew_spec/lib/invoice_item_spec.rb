@@ -90,7 +90,7 @@ describe SalesEngine::InvoiceItem do
   describe "#merchant_id" do
     it "returns the merchant_id associated with the invoice item" do
       SalesEngine::Database.instance.item_list = [ item_one, item_two ]
-      inv_item_one.merchant_id.should == "1"
+      inv_item_one.merchant_id.should == 1
     end
   end
 

@@ -280,15 +280,15 @@ describe SalesEngine::Merchant do
       inv_one.stub(:invoice_revenue).and_return(100)
       inv_two.stub(:invoice_revenue).and_return(200)
       inv_three.stub(:invoice_revenue).and_return(300)
-      inv_one.stub(:merchant_id).and_return("1")
-      inv_two.stub(:merchant_id).and_return("2")
-      inv_three.stub(:merchant_id).and_return("1")
+      inv_one.stub(:merchant_id).and_return(1)
+      inv_two.stub(:merchant_id).and_return(2)
+      inv_three.stub(:merchant_id).and_return(1)
       invoices = [ inv_one, inv_two, inv_three ]
       SalesEngine::Invoice.stub(:successful_invoices).and_return(invoices)
     end
 
     it "returns a hash with merchant_ids as keys and revenue as values" do
-      revenue_hash = { :"1" => 400, :"2" => 200 }
+      revenue_hash = { 1 => 400, 2 => 200 }
       SalesEngine::Merchant.merchants_by_revenue.should == revenue_hash
     end
 
@@ -308,9 +308,9 @@ describe SalesEngine::Merchant do
     let(:inv_item_three) { mock(SalesEngine::InvoiceItem) }
 
     before(:each) do
-      inv_item_one.stub(:merchant_id).and_return("1")
-      inv_item_two.stub(:merchant_id).and_return("2")
-      inv_item_three.stub(:merchant_id).and_return("1")
+      inv_item_one.stub(:merchant_id).and_return(1)
+      inv_item_two.stub(:merchant_id).and_return(2)
+      inv_item_three.stub(:merchant_id).and_return(1)
       inv_item_one.stub(:quantity).and_return(10)
       inv_item_two.stub(:quantity).and_return(20)
       inv_item_three.stub(:quantity).and_return(30)
@@ -319,7 +319,7 @@ describe SalesEngine::Merchant do
     end
 
     it "returns hash with merchant_id as keys and the total qty sold as values" do
-      SalesEngine::Merchant.merchants_by_items_sold.should == { :"1" => 40, :"2" => 20 }
+      SalesEngine::Merchant.merchants_by_items_sold.should == { 1 => 40, 2 => 20 }
     end
   end
 

@@ -6,6 +6,7 @@ describe SalesEngine::Customer, customer: true do
     describe "#days_since_activity" do
       it "returns a count of the days since the customer's last transaction" do
         DateTime.stub(:now => DateTime.parse("March 29, 2012"))
+        Date.stub(:today => Date.parse("March 29, 2012"))
         days_since = SalesEngine::Customer.find_by_id(1).days_since_activity
 
         days_since.should == 4
@@ -22,7 +23,7 @@ describe SalesEngine::Customer, customer: true do
       context "when there are pending invoices" do
         let(:first_invoice) { SalesEngine::Customer.find_by_id(2).invoices.first }
         it "returns an array of the pending invoices" do
-          bad_transaction = double("transaction")
+          bad_transaction = SalesEngine::Transaction.random
           bad_transaction.stub(:result => "failed")
           first_invoice.stub(:transactions => [bad_transaction])
 

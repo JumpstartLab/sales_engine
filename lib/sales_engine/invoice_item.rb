@@ -3,7 +3,7 @@ module SalesEngine
   class InvoiceItem
     attr_accessor :id, :item_id, :invoice_id, :quantity,
                   :unit_price, :created_at, :updated_at, :date
-    
+
     INVOICE_ITEM_ATTS = [
       "id",
       "item_id",
@@ -17,7 +17,7 @@ module SalesEngine
       if attributes[:id]
         self.id = attributes[:id].to_i
       else
-        self.id = (SalesEngine::Database.instance.invoice_item_list.size + 1).to_i
+        self.id = SalesEngine::Database.instance.invoice_item_list.size + 1
         # puts self.id
         # puts SalesEngine::Database.instance.invoice_item_list.inspect
       end
@@ -27,7 +27,7 @@ module SalesEngine
       if attributes[:unit_price].class == BigDecimal
         self.unit_price = attributes[:unit_price]
       else
-        self.unit_price = BigDecimal.new(attributes[:unit_price])/100 
+        self.unit_price = BigDecimal.new(attributes[:unit_price])/100
       end
       if attributes[:created_at]
         self.created_at = Time.parse(attributes[:created_at])

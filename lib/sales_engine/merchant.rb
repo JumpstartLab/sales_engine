@@ -48,15 +48,14 @@ module SalesEngine
     end
 
     def revenue(*date)
-      if date.first.is_a?(Range)
+      date = date.first
+      if date.is_a?(Range)
         results = invoices_on_range(date)
-      elsif date.first
-        results = invoices_on_date(date.first)
+      elsif date
+        results = invoices_on_date(date)
       else results = invoices
       end
-      total_revenue = BigDecimal.new("0.00")
-      results.each { |i| total_revenue += i.invoice_revenue }
-      total_revenue
+      results.inject(0) { |init, inv| init + inv.invoice_revenue }
     end
 
     def paid_invoices
@@ -89,7 +88,7 @@ module SalesEngine
     end
 
     def self.revenue(date)
-      if date.is_a?(Range)
+      if date.is_a? Range
         total_revenue_on_range(date)
       else
         total_revenue_on_date(date)
@@ -156,8 +155,9 @@ module SalesEngine
     def self.revenue_on_dates
       date_data = { }
       SalesEngine::Invoice.successful_invoices.each do |i|
-        date_data[ i.updated_at.strftime("%Y/%m/%d") ]||= 0
-        date_data[ i.updated_at.strftime("%Y/%m/%d") ]+= i.invoice_revenue.to_i
+        date_key = i.updated_at.strftime("%Y/%m/%d")
+        date_data[ date_key ]||= 0
+        date_data[ date_key ]+= i.invoice_revenue.to_i
       end
       date_data
     end

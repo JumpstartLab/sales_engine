@@ -6,7 +6,8 @@ module SalesEngine
     attr_accessor :transaction_list, :customer_list, :item_list,
                   :merchant_list, :invoice_item_list, :invoice_list,
                   :transaction_id_hash, :customer_id_hash, :item_id_hash,
-                  :merchant_id_hash, :invoice_item_id_hash, :invoice_id_hash, :count
+                  :merchant_id_hash, :invoice_item_id_hash, :invoice_id_hash,
+                  :count
     def initialize
       self.transaction_list = []
       self.customer_list = []
@@ -35,16 +36,13 @@ module SalesEngine
     end
 
     def find_by_id(object_type, param)
-      # puts SalesEngine::Database.instance.transaction_id_hash.inspect
-      # raise self.send("#{object_type}_id_hash".to_sym).inspect 
-      # puts [:debug, :find_by_id, param].inspect
-      # puts self.send("#{object_type}_id_hash".to_sym)
       self.send("#{object_type}_id_hash".to_sym)[param]
     end
 
     def random(object_type)
-      random_id = Random.rand(self.send("#{object_type}_list").size)
-      self.send("#{object_type}_list").detect do |instance|
+      object_array = self.send("#{object_type}_list")
+      random_id = Random.rand(object_array.size)
+      object_array.detect do |instance|
         instance.send(:id).to_s == ( random_id + 1 ).to_s
       end
     end

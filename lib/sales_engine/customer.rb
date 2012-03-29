@@ -1,7 +1,8 @@
-module SalesEngine
+ module SalesEngine
   require 'sales_engine/dynamic_finder'
   class Customer
-    attr_accessor :id, :first_name, :last_name, :created_at, :updated_at
+    attr_accessor :id, :first_name, :last_name, :created_at, :updated_at,
+                  :customer_invoices
 
     CUSTOMER_ATTS = [
      "id",
@@ -29,7 +30,17 @@ module SalesEngine
     extend SalesEngine::DynamicFinder
 
     def invoices
-      SalesEngine::Invoice.find_all_by_customer_id(self.id)
+      customer_invoices ||= SalesEngine::Invoice.find_all_by_customer_id(self.id)
+    end
+
+    def paid_invoices
+      invoices.select { |inv| inv.is_successful? }
+    end
+
+    def days_since_activity
+      purchase_date_array = paid_invoices.sort_by{ |inv| inv.created_at }.reverse.first
+      last_purchase_date = Date.parse(purchase_date_array.created_at.to_s)
+      ( Date.today - last_purchase_date )
     end
 
     def transactions
@@ -41,16 +52,62 @@ module SalesEngine
       trans_results
     end
 
-    def successful_invoices
-      results = invoices.select { |inv| inv if inv.is_successful? }
+    def pending_invoices
+      #Needs to do it uncached way b/c of Yoho's tests.
+      invoices.select do |inv| 
+        inv.transactions.none? { |trans| trans.result == "success" }
+      end
+    end
+
+    def self.paid_invoice_items
+      SalesEngine::InvoiceItem.successful_invoice_items
+    end
+
+    def self.customers_by_items_bought
+      item_data = { }
+
+      paid_invoice_items.each do |invoice_item|
+        item_data[ invoice_item.invoice.customer_id ] ||= 0
+        item_data[ invoice_item.invoice.customer_id ] += invoice_item.quantity
+      end
+      item_data
+    end
+
+    def self.most_items
+      item_data = customers_by_items_bought.sort_by do |customer_id, quantity|
+        -quantity
+      end
+
+      top_customer_id = item_data.first[0]
+      find_by_id(top_customer_id)
+    end
+
+    def self.customers_by_revenue_bought
+      revenue_data = { }
+
+      SalesEngine::Invoice.successful_invoices.each do |inv|
+        revenue_data[ inv.customer_id ] ||= 0
+        revenue_data[ inv.customer_id ] += inv.invoice_revenue
+      end
+      revenue_data
+    end
+
+    def self.most_revenue
+      revenue_data = customers_by_revenue_bought.sort_by do |customer_id, revenue|
+        -revenue
+      end
+
+      top_customer_id = revenue_data.first[0]
+      find_by_id(top_customer_id)
     end
 
     def merchant_paid_invoice_count
       paid_invoice_count = { }
 
-      successful_invoices.each do |invoice|
-        paid_invoice_count[ invoice.merchant_id ] ||= 0
-        paid_invoice_count[ invoice.merchant_id ] += 1
+      paid_invoices.each do |invoice|
+        merchant_id = invoice.merchant_id
+        paid_invoice_count[ merchant_id ] ||= 0
+        paid_invoice_count[ merchant_id ] += 1
       end
       paid_invoice_count
     end

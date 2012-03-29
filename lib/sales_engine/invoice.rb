@@ -11,13 +11,13 @@ module SalesEngine
     ]
 
     attr_accessor :id, :customer_id, :merchant_id, :status,
-                  :created_at, :updated_at, :result
+                  :created_at, :updated_at, :result, :revenue
 
     def initialize(attributes)
       if attributes[:id]
         self.id = attributes[:id].to_i
       else
-        self.id = (SalesEngine::Database.instance.invoice_list.size + 1).to_i
+        self.id = ( SalesEngine::Database.instance.invoice_list.size + 1 ).to_i
       end
       self.customer_id = attributes[:customer_id].to_i
       self.merchant_id = attributes[:merchant_id].to_i
@@ -52,23 +52,22 @@ module SalesEngine
     end
 
     def invoice_revenue
-      revenue = BigDecimal.new("0.00")
-      if self.is_successful?
-        revenue = SalesEngine::InvoiceItem.total_revenue_by_invoice_id(self.id)
-      end
-      revenue
+      return 0 unless self.is_successful?
+      return self.revenue if self.revenue
+
+      t_rev = SalesEngine::InvoiceItem.total_revenue_by_invoice_id(self.id)
+      self.revenue = t_rev
     end
 
     def self.create(attributes)
-      invoice = self.new(:customer_id => attributes[:customer].id,
-                               :merchant_id => attributes[:merchant].id,
-                               :status => attributes[:status])
-      SalesEngine::Database.instance.invoice_list << invoice
+      invoice = self.new( :customer_id => attributes[:customer].id,
+                          :merchant_id => attributes[:merchant].id,
+                          :status => attributes[:status])
 
       attributes[:items].each do |item|
-        SalesEngine::InvoiceItem.create({:invoice_id => invoice.id, :item => item })
+        SalesEngine::InvoiceItem.create( { :invoice_id => invoice.id,
+                                           :item => item } )
       end
-
       invoice
     end
 
@@ -82,15 +81,19 @@ module SalesEngine
       end
     end
 
-    def is_successful?
-      return self.result unless self.result.nil?
+    def is_successful?(*refresh)
+      return self.result unless self.result.nil? || refresh.first
+
       transactions = SalesEngine::Transaction.find_all_by_invoice_id(self.id)
-      self.result = transactions.any? { |transaction| transaction.is_successful? }
+      self.result = transactions.any? do |transaction|
+        transaction.is_successful?
+      end
     end
 
     def self.successful_invoices
-      success_trans = SalesEngine::Transaction.find_all_by_result("success")
-      success_trans.collect { |trans| find_by_id(trans.invoice_id) }
+      SalesEngine::Database.instance.invoice_list.select do |inv|
+        inv.is_successful?
+      end
     end
 
     def self.pending
@@ -106,48 +109,97 @@ module SalesEngine
     end
 
     def charge(attrs)
-      SalesEngine::Transaction.create({:invoice_id => self.id, 
-                                       :credit_card_number => attrs[:credit_card_number],
-                                       :credit_card_expiration => attrs[:credit_card_expiration],
-                                       :result => attrs[:result] })
+      SalesEngine::Transaction.create({:invoice_id => self.id,
+        :credit_card_number => attrs[:credit_card_number],
+        :credit_card_expiration => attrs[:credit_card_expiration],
+        :result => attrs[:result] })
     end
 
     def self.clean_date(date)
-      date = Date.parse(date) if date.kind_of? String
-      date
+      date = Date.parse(date.to_s)
     end
 
-    def invoices_on_date(date)
-      date = self.clean_date(date)
-      successful_invoices.select {|inv| inv.created_at == date}
+    def self.invoices_on_date(date)
+      date = clean_date(date)
+      successful_invoices.select { |inv| clean_date( inv.created_at ) == date }
     end
 
-    def invoices_on_range(range)
-      successful_invoices.select do |inv|
-        # DOES NOT HANDLE EDGE CASE WELL... e.g. RANGE DATE IS SAME
-        # AS UPDATED DATE
-        inv.created_at <= range.last && inv.created_at >= range.first
+    # def self.invoices_on_range(range)
+    #   successful_invoices.select do |inv|
+    #     # DOES NOT HANDLE EDGE CASE WELL... e.g. RANGE DATE IS SAME
+    #     # AS UPDATED DATE
+    #     inv.created_at <= range.last && inv.created_at >= range.first
+    #   end
+    # end
+
+    def self.total_revenue_over_period(date)
+      if date
+        revenue_invoices_on_date(Date.parse(date.to_s))
+      else 
+        revenue_invoices_on_all
       end
+    end
+
+    # def self.revenue_invoices_on_range(date)
+    #   inv_results = invoices_on_range(date)
+    #   tr = inv_results.inject(0) { |init, inv| init + inv.invoice_revenue }
+    #   return tr, inv_results.size
+    # end
+
+    def self.revenue_invoices_on_date(date)
+      inv_results = invoices_on_date(date)
+      tr = inv_results.inject(0) { |init, inv| init + inv.invoice_revenue }
+      return tr, inv_results.size
+    end
+
+    def self.revenue_invoices_on_all
+      inv_results = successful_invoices
+      tr = inv_results.inject(0) { |init, inv| init + inv.invoice_revenue }
+      return tr, inv_results.size
+    end
+
+    def self.total_items_over_period(date)
+      if date
+        items_on_date(Date.parse(date.to_s))
+      else 
+        items_on_all
+      end
+    end
+
+    def self.items_on_date(date)
+      items = 0
+      inv_results = invoices_on_date(date)
+      inv_results.each do |inv| 
+        inv.invoice_items.each do |inv_items|
+          items += inv_items.quantity
+        end
+      end
+      return items, inv_results.size
+    end
+
+    def self.items_on_all
+      items = 0
+      inv_results = successful_invoices
+      inv_results.each do |inv| 
+        inv.invoice_items.each do |inv_items|
+          items += inv_items.quantity
+        end
+      end
+      return items, inv_results.size
     end
 
     def self.average_revenue(*date)
+      date = date.first
+      total_revenue, invoice_count = total_revenue_over_period(date)
+      # puts total_revenue.inspect
+      # puts invoice_count.inspect
+      total_revenue / invoice_count # average revenue
+    end
 
-      if date.first.is_a?(Range)
-        results = invoices_on_date(date)
-      elsif  date.first
-        results = invoices_on_date(date.first)   
-      else
-        results = successful_invoices
-      end   
-    
-      total_revenue = BigDecimal.new("0")
-       
-      results.each do |invoice|
-        total_revenue += invoice.invoice_revenue
-      end
-      
-      average_rev = total_revenue / self.successful_invoices.size
-      average_rev 
+    def self.average_items(*date)
+      date = date.first
+      total_items, invoice_count = total_items_over_period(date)   
+      (BigDecimal.new(total_items.to_s) / invoice_count).round(2)
     end
 
 

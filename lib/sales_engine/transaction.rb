@@ -54,15 +54,15 @@ module SalesEngine
     extend SalesEngine::DynamicFinder
 
     def self.create(attrs)
-      transaction = self.new({:invoice_id => attrs[:invoice_id],
-                              :credit_card_number => attrs[:credit_card_number],
-                              :credit_card_expiration_date => attrs[:credit_card_expiration_date],
-                              :result => attrs[:result] })
-      SalesEngine::Database.instance.transaction_list << transaction
+      transaction = self.new( { :invoice_id => attrs[:invoice_id],
+        :credit_card_number => attrs[:credit_card_number],
+        :credit_card_expiration_date => attrs[:credit_card_expiration_date],
+        :result => attrs[:result] })
+      # SalesEngine::Database.instance.transaction_list << transaction
       transaction
     end
 
-    def self.random 
+    def self.random
       transactions = SalesEngine::Database.instance.transaction_list
       random_id = Random.rand(transactions.size)
       self.find_by_id(random_id + 1)
