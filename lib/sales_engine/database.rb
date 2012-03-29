@@ -66,6 +66,10 @@ class SalesEngine
       @invoices
     end
 
+    def invoices=(input)
+      @invoices << input
+    end
+
     def load_customers
       @customers = []
       data = load("data/customers.csv")
@@ -77,6 +81,14 @@ class SalesEngine
 
     def customers
       @customers
+    end
+
+    def customers=(input)
+      @customers << input
+    end
+
+    def merchants=(input)
+      @merchants << input
     end
 
     def load_invoice_items

@@ -23,8 +23,9 @@ class SalesEngine
 
     include Model
 
-    def invoice_items
-      @invoice_items || SalesEngine::InvoiceItem.find_all_by_item_id(@id)
+
+    def invoice_items     
+      @invoice_items ||= SalesEngine::InvoiceItem.find_all_by_item_id(@id)
     end
 
     def invoice_items=(input)
@@ -66,7 +67,7 @@ class SalesEngine
     end
 
     def sales_count
-      @sales_count || invoice_items.inject(0) do |sum, element|
+      @sales_count ||= invoice_items.inject(0) do |sum, element|
         sum + element.quantity
       end
     end

@@ -66,5 +66,11 @@ class SalesEngine
       customer_and_invoices = std_and_gpd_by_cstmr.last
       customer = customer_and_invoices.first
     end
+
+    def self.add_to_db(merch)
+      if self.find_by_id(merch.id) == nil
+        SalesEngine::Database.instance.merchants << merch
+      end
+    end
   end
 end

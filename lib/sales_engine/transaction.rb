@@ -15,7 +15,7 @@ class SalesEngine
 
     def initialize(attr)
       super(attr)
-      @id = attr[:id]
+      @id = attr[:id].to_i
       @invoice_id = attr[:invoice_id].to_i
       @credit_card_number = attr[:credit_card_number]
       @credit_card_expiration_date = attr[:credit_card_expiration_date]
@@ -25,10 +25,6 @@ class SalesEngine
     def invoice
       puts "TODO in #{self.class}"
       SalesEngine::Invoice.find_by_id(@invoice_id)
-
-      # SalesEngine::Database.instance.invoices.find do |invoice|
-      #   invoice.id == @invoice_id
-      # end
     end
   end
 end

@@ -2,8 +2,17 @@ class SalesEngine
   module Model
     def initialize(attributes)
       @id = attributes[:id].to_i
-      @created_at = attributes[:created_at]
-      @updated_at = attributes[:updated_at]
+      if attributes[:created_at]
+        @created_at = attributes[:created_at]
+      else
+        @created_at = Time.now.utc.to_s
+      end
+      
+      if attributes[:updated_at]
+        @updated = attributes[:updated_at]
+      else
+        @upated_at = Time.now.utc.to_s
+      end
     end
 
     def self.included(target)

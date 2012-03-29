@@ -260,6 +260,15 @@ describe SalesEngine::Merchant do
     end
   end
 
+  describe ".add_to_db(attr)" do
+    merch_1 = Fabricate(:merchant, :name => "The Bronze", :id => 6000)
+
+    it "adds a new merchant to the database" do
+      SalesEngine::Merchant.add_to_db(merch_1)
+      SalesEngine::Merchant.find_by_name("The Bronze").should be_a SalesEngine::Merchant
+    end
+  end
+
 end
 
 

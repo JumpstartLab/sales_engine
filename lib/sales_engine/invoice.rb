@@ -59,5 +59,22 @@ class SalesEngine
     def total=(input)
       @total = input
     end
+
+    def self.add_to_db(input)
+      if self.find_by_id(input.id) == nil
+        SalesEngine::Database.instance.invoices << input
+      end
+    end
+
+    def self.create(attr)
+
+      invoice = self.new ( { :customer_id => attr[:customer].id, 
+        :merchant_id => attr[:merchant].id, :status => attr[:status] } )
+      # add invoice items
+      last_id = SalesEngine::Database.instance.invoices.last.id
+      invoice.id =last_id + 1
+      self.add_to_db(invoice)
+      invoice
+    end
   end
 end

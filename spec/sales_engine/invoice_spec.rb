@@ -273,5 +273,38 @@ describe SalesEngine::Invoice do
     end
   end
 
+  describe ".create" do
+    merch_1 = Fabricate(:merchant)
+    cust_1 = Fabricate(:customer)
+
+    item_1 = Fabricate(:item)
+    item_2 = Fabricate(:item)
+    item_3 = Fabricate(:item)
+
+    attr = {}
+    attr[:customer] = cust_1
+    attr[:merchant] = merch_1
+    attr[:status] = "shipped"
+    attr[:items] = [item_1, item_2, item_3]
+
+    it "returns a new invoice" do
+      SalesEngine::Invoice.create(attr).should be_a SalesEngine::Invoice
+    end
+
+    it "adds a new invoice to the database" do
+      last_id = SalesEngine::Database.instance.invoices.last.id 
+      SalesEngine::Invoice.create(attr)
+      SalesEngine::Invoice.find_by_id(last_id + 1).should be_a SalesEngine::Invoice
+    end
+  end
+
+  describe ".add_to_db" do
+    invoice_1 = Fabricate(:invoice, :customer_id => 9999, :id => 9999)
+
+    it "adds a new invoice to the db" do
+      SalesEngine::Invoice.add_to_db(invoice_1)
+      SalesEngine::Invoice.find_by_id(9999).should be_a SalesEngine::Invoice
+    end
+  end
 end
 
