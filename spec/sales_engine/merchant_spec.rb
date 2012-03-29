@@ -66,7 +66,7 @@ describe SalesEngine::Merchant do
   describe ".most_revenue(num_of_merchants)" do
     it "returns the top num_of_merchants instances ranked by total revenue" do 
       num_of_merchants = 3 
-      result = Merchant.most_revenue(num_of_merchants)
+      result = SalesEngine::Merchant.most_revenue(num_of_merchants)
       result.length.should == num_of_merchants
     end 
   end
@@ -74,7 +74,7 @@ describe SalesEngine::Merchant do
   describe ".most_items(num_of_merchants)" do
     it "returns top num_of_merchants instances ranked by total items sold" do
       num_of_merchants = 3
-      result = Merchant.most_items(num_of_merchants)
+      result = SalesEngine::Merchant.most_items(num_of_merchants)
       result.length.should == num_of_merchants
     end
   end
@@ -93,20 +93,46 @@ describe SalesEngine::Merchant do
   end 
 
   describe "#revenue(date=nil)" do
-    it "returns the total revenue for the merchant for a specific date"
+    let (:merchant) { SalesEngine::Merchant.random }
+    it "returns as BigDecimal" do 
+      results = merchant.revenue(date=nil)
+      results.class.should == BigDecimal 
+    end 
   end
 
   describe "#favorite_customer" do
     let(:merchant) { SalesEngine::Merchant.random }
-
     it "responds to the method" do
       merchant.should respond_to("favorite_customer".to_sym)
     end
 
-    it "returns the Customer who has conducted the most transactions with "
+    it "returns the Customer who has conducted the most transactions with Merchant " do 
+      customer = merchant.favorite_customer 
+      customer.should_not be nil 
+    end 
   end
 
+  describe "#charged_invoices" do 
+    let (:merchant) { SalesEngine::Merchant.random }
+    it "returns a collection of charged invoices for the merchant" do 
+      charged_invoices = merchant.charged_invoices 
+      charged_invoices.size.should_not == 0  
+    end 
+  end 
+
+  describe "#pending_invoices" do 
+    let (:merchant) { SalesEngine::Merchant.random }
+    it "returns a collection of pending invoices associated with the merchant" do
+      pending_invoices = merchant.pending_invoices 
+      pending_invoices.size.should_not == 0
+    end
+  end 
+
   describe "#customers_with_pending_invoices" do
-    it "returns a collection of Customer instances which have pending(unpaid) invoices"
+    let (:merchant) { SalesEngine::Merchant.random }
+    it "returns a collection of Customer instances which have pending(unpaid) invoices" do
+      customers_with_pending_invoices = merchant.customers_with_pending_invoices
+      customers_with_pending_invoices.size.should_not == 0 
+    end
   end
- end 
+end 

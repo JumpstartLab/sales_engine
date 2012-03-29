@@ -8,15 +8,15 @@ describe SalesEngine::Transaction do
                   :created_at, :updated_at]
     attributes.each do |attribute|
       method_name = "find_by_#{attribute}".to_sym
-
+      let (:transaction) { SalesEngine::Transaction.find_by_id(25) }
       it "responds to #{method_name}" do
         SalesEngine::Transaction.should respond_to(method_name)
       end
     end
 
     it "returns a Transaction" do
-      a = SalesEngine::Transaction.find_by_id("1")
-      a.class.should == SalesEngine::Transaction
+      a = SalesEngine::Transaction.find_by_id(25)
+      a.id.should == transaction.id
     end
   end
 
@@ -33,8 +33,8 @@ describe SalesEngine::Transaction do
     end
 
     it "returns a collection of transactions" do
-      a = SalesEngine::Transaction.find_all_by_id("1")
-      a[0].class.should == SalesEngine::Transaction
+      a = SalesEngine::Transaction.find_all_by_invoice_id(15)
+      a.size.should_not == 0
     end
   end
 
@@ -48,5 +48,4 @@ describe SalesEngine::Transaction do
       transaction.invoice.id.should == transaction.invoice_id
     end
   end
-
 end

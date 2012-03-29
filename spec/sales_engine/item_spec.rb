@@ -46,6 +46,30 @@ describe SalesEngine::Item do
     end
   end
 
+  describe "#charged_invoice_items" do 
+    let (:item) { SalesEngine::Item.random }
+    it "returns an instance of InvoiceItems associated with Item" do 
+      ii = item.charged_invoice_items
+      ii.size.should_not == 0
+    end 
+  end 
+
+  describe "#revenue" do 
+    let (:item) { SalesEngine::Item.random }
+    it "calculates revenue across all items" do
+      rev = item.revenue 
+      rev.should_not == nil 
+    end
+  end 
+
+  # describe "#quantity_sold" do 
+  #   let(:item) { SalesEngine::Item.random } 
+  #   it "calculates the quantity sold of a particular item" do 
+  #     iq = item.quantity_sold
+  #     iq.class.should == integer
+  #   end 
+  # end 
+
   describe "#merchant" do
     let(:item) { SalesEngine::Item.random }
     it "responds to the method" do
@@ -57,10 +81,26 @@ describe SalesEngine::Item do
     end
   end
 
-  describe ".most_revenue(num_of_items)" do
+  describe ".most_revenue(num_items)" do
     it "should respond to the method" do
       SalesEngine::Item.should respond_to("most_revenue".to_sym)
     end
   end
+
+  describe "#best_day" do 
+    let (:item) { SalesEngine::Item.random}
+    it "returns the date with the most sales for a given item" do 
+      day = item.best_day 
+      day.class.should == Date
+    end 
+  end 
   
+  describe ".most_items(num_items)" do
+    let (:item) { SalesEngine::Item.random }
+    it "returns the top x item instances ranked by items sold" do 
+      num_items = 3
+      result = SalesEngine::Item.most_items(num_items)
+      result.size.should == num_items
+    end 
+  end
 end

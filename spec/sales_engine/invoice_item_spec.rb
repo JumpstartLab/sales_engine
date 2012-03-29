@@ -14,8 +14,8 @@ describe SalesEngine::InvoiceItem do
     end
 
     it "returns an InvoiceItem" do
-      a = SalesEngine::InvoiceItem.find_by_id("1")
-      a.class.should == SalesEngine::InvoiceItem
+      inv_item = SalesEngine::InvoiceItem.find_by_id(56)
+      inv_item.id.should == 56
     end
   end
 
@@ -31,10 +31,34 @@ describe SalesEngine::InvoiceItem do
     end
 
     it "returns a collection of InvoiceItems" do
-      a = SalesEngine::InvoiceItem.find_all_by_id("1")
-      a[0].class.should == SalesEngine::InvoiceItem
+      a = SalesEngine::InvoiceItem.find_all_by_invoice_id(15)
+      a.size.should_not == 0
     end
   end
+
+   describe "#date" do 
+    let (:invoice_item) {SalesEngine::InvoiceItem.find_by_id(24)}
+    it "truncates the date created" do 
+      date = invoice_item.date 
+      date.should == "2012-03-27"
+    end 
+  end 
+
+  describe "#inv_success" do
+    let (:invoice_item) { SalesEngine::InvoiceItem.random }
+    it "checks to see if an invoice is successful" do 
+      inv_s = invoice_item.inv_success 
+      inv_s.nil?.should_not == true
+    end 
+  end  
+
+  describe ".create(invoice_id, item)" do 
+    # let (:invoice_item) 
+    # it "creates new invoice items" do
+    #   inv_item = invoice_item.new 
+    #   inv_item.class.should == SalesEngine::InvoiceItem.class
+    # end
+  end 
 
   describe "#invoice" do
     let(:invoice_item) { SalesEngine::InvoiceItem.random }

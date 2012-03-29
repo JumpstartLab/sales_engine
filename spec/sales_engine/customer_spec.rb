@@ -44,7 +44,7 @@ describe SalesEngine::Customer do
   end
 
   describe "#transactions" do 
-    let (:customer) { SalesEngine::Customer.random }
+    let (:customer) { SalesEngine::Customer.find_by_id(24)}
     it "responds to the method" do 
       customer.should respond_to("transactions".to_sym)
     end 
@@ -53,7 +53,7 @@ describe SalesEngine::Customer do
       transactions = customer.transactions
       #invoices = customer.invoices
       transactions.select do |transaction|
-        transaction.invoice.customer_id.should == customer.id
+        transaction.customer_id.should == 24
       end
     end 
   end
@@ -65,6 +65,8 @@ describe SalesEngine::Customer do
     end 
 
     it "returns an instance of the merchant at which customer has most transactions" do 
-    end
+      merchant = customer.favorite_merchant 
+      merchant.should_not be nil 
+    end 
   end
 end
