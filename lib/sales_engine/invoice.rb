@@ -38,11 +38,7 @@ module SalesEngine
       end
 
       def revenue(date = nil)
-        if date
-          @revenue ||= calc_revenue_by_date(date)
-        else
-          @revenue ||= calc_revenue
-        end
+        @revenue ||= calc_revenue
       end
 
       def successful?
