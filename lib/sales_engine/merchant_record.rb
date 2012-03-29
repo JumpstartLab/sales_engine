@@ -88,7 +88,6 @@ module SalesEngine
 
     results = []
     Database.instance.db.execute(query)  do |row| 
-      puts row[0]
       results << Merchant.find_by_id(row[0])
     end
     results
