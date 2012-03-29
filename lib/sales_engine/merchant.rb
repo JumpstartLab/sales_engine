@@ -173,6 +173,5 @@ module SalesEngine
         self.find_by_id(merchant_id)
       end
     end
-
   end
 end
