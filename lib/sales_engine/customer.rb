@@ -2,7 +2,7 @@ require 'sales_engine/model'
 
 class SalesEngine
   class Customer
-    
+
     ATTRIBUTES = ["id", "created_at", "updated_at", "first_name", "last_name"]
     def self.finder_attributes
       ATTRIBUTES

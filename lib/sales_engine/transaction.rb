@@ -10,10 +10,12 @@ class SalesEngine
 
     include Model
 
-    attr_accessor :invoice_id, :credit_card_number, :credit_card_expiration_date, :rsult, :id, :created_at, :updated_at
+    attr_accessor :id, :invoice_id, :credit_card_number, :credit_card_expiration_date,
+      :created_at, :updated_at, :result
 
     def initialize(attr)
       super(attr)
+      @id = attr[:id]
       @invoice_id = attr[:invoice_id].to_i
       @credit_card_number = attr[:credit_card_number]
       @credit_card_expiration_date = attr[:credit_card_expiration_date]

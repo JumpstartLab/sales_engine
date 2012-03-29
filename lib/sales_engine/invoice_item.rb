@@ -11,7 +11,9 @@ class SalesEngine
     end
 
     include Model
-    attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :total, :updated_at, :unit_price
+
+    attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :total, 
+    :created_at, :updated_at, :unit_price
 
     def initialize(attributes)
         super

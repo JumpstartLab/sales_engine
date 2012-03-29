@@ -99,5 +99,184 @@ describe SalesEngine::Invoice do
       end
     end
   end
+
+  test_invoices = [ Fabricate(:invoice,
+                              :id => "1",
+                              :customer_id => "2",
+                              :merchant_id => "92",
+                              :status => "shipped",
+                              :created_at => "3/31/1985",
+                              :updated_at => "3/31/1985"),
+                    Fabricate(:invoice,
+                              :id => "2",
+                              :customer_id => "3",
+                              :merchant_id => "93",
+                              :status => "shipped",
+                              :created_at => "3/31/1985",
+                              :updated_at => "3/31/1985"),
+                    Fabricate(:invoice,
+                              :id => "3",
+                              :customer_id => "4",
+                              :merchant_id => "94",
+                              :status => "shipped",
+                              :created_at => "3/31/1985",
+                              :updated_at => "3/31/1985") ]
+
+  describe ".find_by_id()" do
+    it "returns one invoice" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      SalesEngine::Invoice.find_by_id("1").should be_a SalesEngine::Invoice
+    end
+
+    it "is associated with the id passed in" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      result = SalesEngine::Invoice.find_by_id("1")
+      result.id.should == "1"
+    end
+  end
+
+  describe ".find_by_customer_id()" do
+    it "returns one invoice" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      SalesEngine::Invoice.find_by_customer_id("4").should be_a SalesEngine::Invoice
+    end
+
+    it "is associated with the customer_id passed in" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      result = SalesEngine::Invoice.find_by_customer_id("4")
+      result.customer_id.should == "4"
+    end
+  end
+
+  describe ".find_by_merchant_id()" do
+    it "returns one merchant" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      SalesEngine::Invoice.find_by_merchant_id("93").should be_a SalesEngine::Invoice
+    end
+
+    it "is associated with the merchant_id passed in" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      result = SalesEngine::Invoice.find_by_merchant_id("93")
+      result.merchant_id.should == "93"
+    end
+  end
+
+  describe ".find_by_status()" do
+    it "returns one invoices" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      SalesEngine::Invoice.find_by_status("shipped").should be_a SalesEngine::Invoice
+    end
+
+    it "is associated with the status passed in" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      result = SalesEngine::Invoice.find_by_status("shipped")
+      result.status.should == "shipped"
+    end
+  end
+
+  describe ".find_by_created_at()" do
+    it "returns one invoice" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      SalesEngine::Invoice.find_by_created_at("3/31/1985").should be_a SalesEngine::Invoice
+    end
+
+    it "is associated with the created_at passed in" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      result = SalesEngine::Invoice.find_by_created_at("3/31/1985")
+      result.created_at.should == "3/31/1985"
+    end
+  end
+
+  describe ".find_by_updated_at()" do
+    it "returns one invoice" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      SalesEngine::Invoice.find_by_updated_at("3/31/1985").should be_a SalesEngine::Invoice
+    end
+
+    it "is associated with the updated_at passed in" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      result = SalesEngine::Invoice.find_by_updated_at("3/31/1985")
+      result.updated_at.should == "3/31/1985"
+    end
+  end
+
+  describe ".find_all_by_id()" do
+    it "returns an array of invoices" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      SalesEngine::Invoice.find_all_by_id("1").all?{|i| i.is_a? SalesEngine::Invoice}.should == true
+    end
+
+    it "contains invoices related to the id given" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      results = SalesEngine::Invoice.find_all_by_id("1")
+      results.sample.id.should == "1"
+    end
+  end
+
+  describe ".find_all_by_created_at()" do
+    it "returns an array of invoices" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      SalesEngine::Invoice.find_all_by_created_at("3/31/1985").all?{|i| i.is_a? SalesEngine::Invoice}.should == true
+    end
+
+    it "contains invoices related to the created_at given" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      results = SalesEngine::Invoice.find_all_by_created_at("3/31/1985")
+      results.sample.created_at.should == "3/31/1985"
+    end
+  end
+
+  describe ".find_all_by_updated_at()" do
+    it "returns an array of invoices" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      SalesEngine::Invoice.find_all_by_updated_at("3/31/1985").all?{|i| i.is_a? SalesEngine::Invoice}.should == true
+    end
+
+    it "contains invoices related to the date given" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      results = SalesEngine::Invoice.find_all_by_updated_at("3/31/1985")
+      results.sample.updated_at.should == "3/31/1985"
+    end
+  end
+
+  describe ".find_all_by_merchant_id()" do
+    it "returns an array of invoices" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      SalesEngine::Invoice.find_all_by_merchant_id("93").all?{|i| i.is_a? SalesEngine::Invoice}.should == true
+    end
+
+    it "contains invoices related to the merchant_id given" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      results = SalesEngine::Invoice.find_all_by_merchant_id("93")
+      results.sample.merchant_id.should == "93"
+    end
+  end
+
+  describe ".find_all_by_customer_id()" do
+    it "returns an array of invoices" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      SalesEngine::Invoice.find_all_by_customer_id("3").all?{|i| i.is_a? SalesEngine::Invoice}.should == true
+    end
+
+    it "contains invoices related to the customer_id given" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      results = SalesEngine::Invoice.find_all_by_customer_id("3")
+      results.sample.customer_id.should == "3"
+    end
+  end
+
+  describe ".find_all_by_status()" do
+    it "returns an array of invoices" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      SalesEngine::Invoice.find_all_by_status("shipped").all?{|i| i.is_a? SalesEngine::Invoice}.should == true
+    end
+
+    it "contains invoices related to the status given" do
+      SalesEngine::Database.instance.stub(:invoices).and_return(test_invoices)
+      results = SalesEngine::Invoice.find_all_by_status("shipped")
+      results.sample.status.should == "shipped"
+    end
+  end
+
 end
 

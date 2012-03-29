@@ -5,8 +5,8 @@ class SalesEngine
   class Item
     ATTRIBUTES = %w(id created_at updated_at name description unit_price merchant_id)
 
-    attr_accessor :merchant_id, :id, :item_id, :name, :description, :unit_price
-
+    attr_accessor :merchant_id, :id, :item_id, :name, :description, :unit_price, :created_at, :updated_at
+    
     def initialize(attributes)
       super
       @name = attributes[:name]

@@ -5,7 +5,9 @@ require 'bigdecimal'
 class SalesEngine
   class Merchant
     ATTRIBUTES = %w(id created_at updated_at name)
+
     attr_accessor :id, :created_at, :updated_at, :name
+
 
     def self.finder_attributes
       ATTRIBUTES
