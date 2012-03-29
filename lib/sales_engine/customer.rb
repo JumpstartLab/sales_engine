@@ -85,8 +85,8 @@ module SalesEngine
 
     def favorite_merchant
       unless merchants_hash == {}
-        merch_id = merchants_hash.sort_by{ |merchant, count| count}.reverse.first[0]
-        Merchant.find_by_id(merch_id)
+        m_id = merchants_hash.sort_by{ |merchant, count| count}.reverse.first[0]
+        Merchant.find_by_id(m_id)
       end
     end
   end

@@ -52,13 +52,15 @@ module SalesEngine
     def self.random
       self.invoices.sample
     end
-    
+
     def transactions
-      @transactions ||= transactions_array.select { |trans| trans.invoice_id ==  id }
+      @transactions ||= transactions_array.select
+                        { |trans| trans.invoice_id ==  id }
     end
 
     def invoice_items
-      @invoice_items ||= invoice_items_array.select { |inv| inv.invoice_id == id}
+      @invoice_items ||= invoice_items_array.select
+                          { |inv| inv.invoice_id == id}
     end
 
     def items
@@ -71,7 +73,7 @@ module SalesEngine
     end
 
     def successful?
-      passed_trans = transactions.select { |transaction| transaction.result == "success"}
+      passed_trans = transactions.select { |trans| trans.result == "success"}
       if passed_trans.count >0
         true
       elsif passed_trans.count == 0
@@ -119,7 +121,8 @@ module SalesEngine
     def self.create_inv_items(item_hash, new_invoice_id)
       increment = 1
       item_hash.each do |item, quantity|
-        invoice_item = SalesEngine::InvoiceItem.new(:id=> DataStore.instance.invoice_items.count + increment,
+        invoice_item = SalesEngine::InvoiceItem.new(
+          :id=> DataStore.instance.invoice_items.count + increment,
           :invoice_id => new_invoice_id,
           :item_id => item.id,
           :quantity => quantity,
@@ -127,7 +130,7 @@ module SalesEngine
           :created_at => Time.now.utc.to_s,
           :updated_at => Time.now.utc.to_s)
         DataStore.instance.invoice_items << invoice_item
-        increment += 1 
+        increment += 1
       end
     end
 
@@ -135,7 +138,8 @@ module SalesEngine
       new_transaction_id = DataStore.instance.transactions.count + 1
       transaction = SalesEngine::Transaction.new(:id => new_transaction_id,
         :credit_card_number => attributes[:credit_card_number],
-        :credit_card_expiration_date => attributes[:credit_card_expiration_date],
+        :credit_card_expiration_date =>
+          attributes[:credit_card_expiration_date],
         :invoice_id => id,
         :result => attributes[:result],
         :created_at => Time.now.utc.to_s,

@@ -72,12 +72,14 @@ module SalesEngine
 
     def invoice_items
       merch_invoice_item_ids = invoices.collect { |inv| inv.id}
-      invoice_items_array.select { |inv_item| merch_invoice_item_ids.include?(inv_item.invoice_id)}
+      invoice_items_array.select
+              { |inv_item| merch_invoice_item_ids.include?(inv_item.invoice_id)}
     end
 
     def successful_invoice_items
       merch_invoice_item_ids = successful_invoices.collect { |inv| inv.id}
-      invoice_items_array.select { |inv_item| merch_invoice_item_ids.include?(inv_item.invoice_id)}
+      invoice_items_array.select
+              { |inv_item| merch_invoice_item_ids.include?(inv_item.invoice_id)}
     end
 
     def merch_quantity
@@ -129,13 +131,15 @@ module SalesEngine
 
     def self.most_revenue(x)
       self.set_revenue
-      sorted_merchants = self.merchants.sort_by { |merchant| merchant.total_revenue }.reverse
+      sorted_merchants = self.merchants.sort_by
+              { |merchant| merchant.total_revenue }.reverse
       sorted_merchants[0..x-1]
     end
 
     def self.most_items(x)
       self.set_quantity
-      sorted_merchants = self.merchants.sort_by { |merchant| merchant.quantity }.reverse
+      sorted_merchants = self.merchants.sort_by
+              { |merchant| merchant.quantity }.reverse
       sorted_merchants[0..x-1]
     end
 
@@ -163,8 +167,8 @@ module SalesEngine
     end
 
     def customers_with_pending_invoices
-      pending_invoices = invoices.select { |invoice| !invoice.successful? }
-      pending_invoices.collect{|invoice| Customer.find_by_id(invoice.customer_id)}
+      pending_invoices = invoices.select { |inv| !inv.successful? }
+      pending_invoices.collect{|inv| Customer.find_by_id(inv.customer_id)}
     end
 
     def all_customers

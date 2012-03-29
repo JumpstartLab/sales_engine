@@ -13,12 +13,18 @@ module SalesEngine
                   :merchants
 
     def initialize
-     self.customers = load_file("data/customers.csv").collect {|line| SalesEngine::Customer.new(line)}
-     self.invoices = load_file("data/invoices.csv").collect {|line| SalesEngine::Invoice.new(line)}
-     self.merchants = load_file("data/merchants.csv").collect {|line| SalesEngine::Merchant.new(line)}
-     self.items = load_file("data/items.csv").collect {|line| SalesEngine::Item.new(line)}
-     self.invoice_items = load_file("data/invoice_items.csv").collect {|line| SalesEngine::InvoiceItem.new(line)}
-     self.transactions = load_file("data/transactions.csv").collect {|line| SalesEngine::Transaction.new(line)}
+     self.customers = load_file("data/customers.csv").collect
+                              {|line| SalesEngine::Customer.new(line)}
+     self.invoices = load_file("data/invoices.csv").collect
+                              {|line| SalesEngine::Invoice.new(line)}
+     self.merchants = load_file("data/merchants.csv").collect
+                              {|line| SalesEngine::Merchant.new(line)}
+     self.items = load_file("data/items.csv").collect
+                              {|line| SalesEngine::Item.new(line)}
+     self.invoice_items = load_file("data/invoice_items.csv").collect
+                              {|line| SalesEngine::InvoiceItem.new(line)}
+     self.transactions = load_file("data/transactions.csv").collect
+                              {|line| SalesEngine::Transaction.new(line)}
      puts "Data loaded."
    end
 

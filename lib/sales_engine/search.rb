@@ -4,7 +4,7 @@ module SalesEngine
     def self.find_by_attribute(name, value, array)
       if value.is_a?(String)
         array.detect { |i| i.send(name).downcase == value.downcase }
-      else  
+      else
         array.detect { |i| i.send(name) == value }
       end
     end
@@ -16,6 +16,5 @@ module SalesEngine
         array.select { |i| i.send(name) == value }
       end
     end
-    
   end
 end
