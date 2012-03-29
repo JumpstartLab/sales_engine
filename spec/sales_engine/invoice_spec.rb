@@ -70,11 +70,6 @@ describe SalesEngine::Invoice do
       it "contains things which are only items" do
         test_invoice.items.all?{|i| i.is_a? SalesEngine::Item}.should == true
       end
-
-      it "contains only related items"
-        # test_invoice.items.all?{|i|
-        #   test_invoice.invoice_item}
-      
     end
   end
 

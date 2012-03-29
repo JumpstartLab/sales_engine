@@ -62,9 +62,6 @@ describe SalesEngine::Merchant do
       end
     end
 
-    # it "contains invoices associated only with this merchant" do
-    #   test_merchant.invoices.all
-
   end
 
   describe "#revenue(date=nil)" do

@@ -16,8 +16,6 @@ describe SalesEngine::Database do
         test_db.merchants.count.should >= 1
       end
 
-      it "loaded as many merchants as are in the CSV file"
-
     end
 
   end
@@ -33,7 +31,6 @@ describe SalesEngine::Database do
         test_db.items.count.should >= 1
       end
 
-      it "loaded as many items as are in the CSV file"
     end
   end
 
@@ -48,7 +45,6 @@ describe SalesEngine::Database do
         test_db.invoices.count.should >= 1
       end
 
-      it "loaded as many invoices as are in the CSV file"
     end
   end
 
@@ -62,7 +58,6 @@ describe SalesEngine::Database do
         test_db.invoices.count.should >= 1
       end
 
-      it "loaded as many invoice_items as are in the CSV file"
     end
   end
 
@@ -76,7 +71,6 @@ describe SalesEngine::Database do
         test_db.customers.count.should >= 1
       end
 
-      it "loaded as many invoice_items as are in the CSV file"
     end
   end
 
@@ -90,7 +84,6 @@ describe SalesEngine::Database do
         test_db.customers.count.should >= 1
       end
 
-      it "loaded as many transactions as are in the csv file"
     end
   end
 
