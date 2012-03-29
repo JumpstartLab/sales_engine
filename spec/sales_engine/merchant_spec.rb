@@ -22,6 +22,11 @@ describe SalesEngine::Merchant do
         SalesEngine::Merchant.should respond_to(method_name)
       end
     end
+
+    it "returns multiple merchants" do
+      merchants = SalesEngine::Merchant.find_all_by_name "Williamson Group"
+      merchants.should have(2).merchants
+    end
   end
 
   describe ".random" do
@@ -121,7 +126,7 @@ describe SalesEngine::Merchant do
   end 
 
   describe "#pending_invoices" do 
-    let (:merchant) { SalesEngine::Merchant.random }
+    let (:merchant) { SalesEngine::Merchant.find_by_id(34)}
     it "returns a collection of pending invoices associated with the merchant" do
       pending_invoices = merchant.pending_invoices 
       pending_invoices.size.should_not == 0

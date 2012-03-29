@@ -11,6 +11,11 @@ describe SalesEngine::Item do
       it "responds to #{method_name}" do
         SalesEngine::Item.should respond_to(method_name)
       end
+
+      it "returns an item" do
+        result = SalesEngine::Item.find_by_id(2)
+        result.class.should == SalesEngine::Item
+      end
     end
   end
 

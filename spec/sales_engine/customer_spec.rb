@@ -27,6 +27,11 @@ describe SalesEngine::Customer do
       it "responds to #{method_name}" do
         SalesEngine::Customer.should respond_to(method_name)
       end
+
+      it "returns multiple customers" do
+        customers = SalesEngine::Customer.find_all_by_first_name "Sasha"
+        customers.should have(2).customers
+      end
     end
   end
 

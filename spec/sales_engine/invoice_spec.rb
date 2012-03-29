@@ -77,11 +77,45 @@ describe SalesEngine::Invoice do
       invoice.customer_id.should == customer.id
     end
   end
-  # describe "#charge" do
-  #   it "responds to the method" do 
-  #     invoice.should respond_to("charge".to_sym)
-  #   end 
-  #   it "will call new instance of transaction"
-  # end  
+
+  describe ".create" do
+    let(:customer) {SalesEngine::Customer.random}
+    let(:merchant) {SalesEngine::Merchant.random}
+    let(:items) do
+      (1..3).map {SalesEngine::Item.random}
+    end
+
+    it "responds to the method" do
+      SalesEngine::Invoice.should respond_to("create".to_sym)
+    end
+
+    it "creates a new invoice" do
+      invoice = SalesEngine::Invoice.create(:customer => customer, 
+                                            :merchant => merchant,
+                                            :items => items)
+
+      items.map(&:name).each do |name|
+          invoice.items.map(&:name).should include(name)
+      end
+
+      invoice.customer.id.should == customer.id
+    end
+  end
+
+  describe "#charge" do
+    # it "responds to the method" do 
+    #   SalesEngine::Invoice.should respond_to("charge".to_sym)
+    # end
+
+    it "creates a new instance of transaction" do 
+      invoice = SalesEngine::Invoice.find_by_id(99)
+      t_count = invoice.transactions.count
+
+      invoice.charge(credit_card_number: '1111222233334444',  credit_card_expiration_date: "10/14", result: "success")
+      
+      invoice = SalesEngine::Invoice.find_by_id(invoice.id)
+      invoice.transactions.count.should == t_count + 1
+    end
+  end  
 
 end
