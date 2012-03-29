@@ -138,8 +138,6 @@ describe SalesEngine::Merchant do
       end
     end
 
-
-
     describe ".dates_by_revenue(x)" do
       it  "returns the top x Dates in descending order of revenue" do
         dates = SalesEngine::Merchant.dates_by_revenue(5)
