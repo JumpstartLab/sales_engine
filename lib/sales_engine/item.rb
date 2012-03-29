@@ -81,11 +81,5 @@ module SalesEngine
       items_array.sort_by!{ |item| item.revenue }.reverse!
       items_array[0,total_items]
     end
-
-    def self.most_items(total_items)
-      items_array = items
-      items_array.sort_by!{ |item| item.quantity_sold }.reverse!
-      items_array[0,total_items]
-    end
   end
 end
