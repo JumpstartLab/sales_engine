@@ -11,16 +11,32 @@ SalesEngine.startup
 # printf date.to_s + "\t" + SalesEngine::Merchant.revenue(Date.parse(date)).to_f.to_s + "\n"
 # end
 
-puts SalesEngine::Invoice.average_revenue.to_f
 
 
-puts SalesEngine::Invoice.average_revenue(Date.parse("March 17, 2012")).to_f
+cust = SalesEngine::Customer.find_by_id(1)
+most_recent = cust.invoices.max_by do |invoice|
+          invoice.created_at
+        end
+puts most_recent.inspect
 
-all_succ = SalesEngine::Database.instance.all_invoices.select do |invoice|
-  invoice.successful?
-end
 
-puts all_succ.count
+
+
+
+
+# puts SalesEngine::Invoice.average_revenue.to_f
+
+
+# puts SalesEngine::Invoice.average_revenue(Date.parse("March 17, 2012")).to_f
+
+# all_succ = SalesEngine::Database.instance.all_invoices.select do |invoice|
+#   invoice.successful?
+# end
+
+# puts SalesEngine::Database.instance.all_invoices.count
+# puts all_succ.count
+
+# puts SalesEngine::Invoice.total_revenue.to_f
 
 
 # most = SalesEngine::Item.most_items(42)

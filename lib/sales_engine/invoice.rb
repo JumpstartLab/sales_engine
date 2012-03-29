@@ -143,6 +143,15 @@ module SalesEngine
             # WORK
 #           vvvvvvv
 #
+
+      def self.total_revenue
+        total = 0.0
+        Database.instance.all_invoices.each do |invoice|
+          total += invoice.revenue.to_f
+        end
+        total
+      end
+
       def self.average_revenue(date = nil)
 
         if date
@@ -153,22 +162,18 @@ module SalesEngine
               date_revenues[invoice.created_at.to_s][1] += 1
             end
           end
-          average = date_revenues[date.to_s][0]/(date_revenues[date.to_s][1])
+          average = date_revenues[date.to_s][0]/(date_revenues[date.to_s][1].to_f)
         else
-          total = 0
           count = 0
           Database.instance.all_invoices.each do |invoice|
             if invoice.successful?
-              total += invoice.revenue
               count += 1
             end
           end
-          average = total/count
+          average = total_revenue/count.to_f
         end
-        average
+        BigDecimal.new(average.round(2).to_s)
       end
-
-
 
       def self.average_items(date = nil)
         counter = 0
@@ -180,7 +185,7 @@ module SalesEngine
           end
           sum
         end
-        BigDecimal.new((total_items/counter).to_s)
+        BigDecimal.new((total_items/counter.to_f).round(2).to_s)
       end
     end
   end
