@@ -25,7 +25,7 @@ module SalesEngine
     load_transactions
     load_invoice_items
     load_merchants
-    load_invoices 
+    load_invoices
   end
 
   def self.load_merchants
@@ -34,11 +34,11 @@ module SalesEngine
     puts "Merchants loaded."
   end
 
-  def self.load_customers 
+  def self.load_customers
     cust_file = CSV.open(CUSTOMER_DATA, CSV_OPTIONS)
     Database.instance.customers = cust_file.collect { |c| Customer.new(c) }
     puts "Customers loaded."
-  end 
+  end
 
   def self.load_items
     items_file = CSV.open(ITEM_DATA, CSV_OPTIONS)
@@ -56,7 +56,7 @@ module SalesEngine
     ii_file = CSV.open(INVOICE_ITEMS_DATA, CSV_OPTIONS)
     Database.instance.invoice_items = ii_file.collect { |i| InvoiceItem.new(i) }
     puts "Invoice items loaded."
-  end 
+  end
 
   def self.load_transactions
     t_file = CSV.open(TRANSACTION_DATA, CSV_OPTIONS)

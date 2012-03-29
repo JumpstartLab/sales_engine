@@ -1,23 +1,21 @@
 require './lib/sales_engine/database'
 require './lib/sales_engine/find'
-#require './invoice'
 
 module SalesEngine
   class Transaction
     extend Find
-    # id,invoice_id,credit_card_number,credit_card_expiration_date,result,created_at,updated_at
 
     attr_accessor :id, :invoice_id, :credit_card_number,
                   :credit_card_expiration_date, :result,
                   :created_at, :updated_at
 
-    def initialize(attributes={})
-      self.id                           = attributes[:id].to_i
-      self.invoice_id                   = attributes[:invoice_id].to_i
-      self.credit_card_number           = attributes[:credit_card_number]
-      self.credit_card_expiration_date  = attributes[:credit_card_expiration_date]
-      self.result                       = attributes[:result]
-      self.created_at                   = attributes[:updated_at]
+    def initialize(atts={})
+      self.id                           = atts[:id].to_i
+      self.invoice_id                   = atts[:invoice_id].to_i
+      self.credit_card_number           = atts[:credit_card_number]
+      self.credit_card_expiration_date  = atts[:credit_card_expiration_date]
+      self.result                       = atts[:result]
+      self.created_at                   = atts[:updated_at]
     end
 
     class << self
@@ -43,15 +41,10 @@ module SalesEngine
     end
 
     def self.random
-      # just using for testing purposes
       Database.instance.transactions.sample
     end
 
     def invoice
-      #invoice returns an instance of Invoice associated with this object
-      # Database.instance.invoices.find do |i|
-      #   i.send(:id) == self.invoice_id
-      # end
       SalesEngine::Invoice.find_by_id(self.invoice_id)
     end
   end

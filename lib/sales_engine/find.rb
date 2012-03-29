@@ -4,14 +4,14 @@ module Find
 
   def find_customers(attribute, match)
     puts "finding #{match} for #{attribute}"
-    SalesEngine::Database.instance.customers.find do |c| 
+    SalesEngine::Database.instance.customers.find do |c|
       c.send(attribute.to_sym) == match
     end
   end
 
   def find_all_customers(attribute, match)
     puts "finding all #{match} for #{attribute}"
-    SalesEngine::Database.instance.customers.select do |c| 
+    SalesEngine::Database.instance.customers.select do |c|
       c.send(attribute.to_sym) == match
     end
   end

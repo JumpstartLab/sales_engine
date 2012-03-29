@@ -1,18 +1,11 @@
-#require './transaction'
-#require './customer'
-#require './invoice_item'
-#require './item'
 require './lib/sales_engine'
 
 module SalesEngine
   class Invoice
     extend Find
 
-    # id,customer_id,merchant_id,status,created_at,updated_at
-    # invoice = Invoice.new(:customer_id => customer, :merchant_id => merchant, :status => "shipped", :items => [item1, item2, item3], :transaction => transaction)
-
-    attr_accessor :id, :customer_id, :merchant_id, :status, 
-                  :created_at, :updated_at, :revenue, :success 
+    attr_accessor :id, :customer_id, :merchant_id, :status,
+                  :created_at, :updated_at, :revenue, :success
 
     def initialize(attributes={})
       self.id           = attributes[:id].to_i
@@ -30,7 +23,7 @@ module SalesEngine
       SalesEngine::InvoiceItem.create(inv_id, attributes[:items])
 
       inv = self.new({:id           => inv_id,
-                      :customer_id  => attributes[:customer].id, 
+                      :customer_id  => attributes[:customer].id,
                       :merchant_id  => attributes[:merchant].id,
                       :status       => attributes[:status],
                       :created_at   => DateTime.now.to_s,
@@ -43,18 +36,18 @@ module SalesEngine
 
     def charge(attributes)
      t = SalesEngine::Transaction.new({
-              :id => Database.instance.transactions.count + 1,
-              :invoice_id => self.id,
-              :credit_card_number => attributes[:credit_card_number],
-              :credit_card_expiration_date => attributes[:credit_card_expiration_date],
-              :result => attributes[:result]})
+      :id => Database.instance.transactions.count + 1,
+      :invoice_id => self.id,
+      :credit_card_number => attributes[:credit_card_number],
+      :credit_card_expiration_date => attributes[:credit_card_expiration_date],
+      :result => attributes[:result]})
      SalesEngine::Database.instance.transactions << t
 
      t
     end
 
     class << self
-      attributes = [:id, :customer_id, :merchant_id, :status, 
+      attributes = [:id, :customer_id, :merchant_id, :status,
                     :created_at, :updated_at, :date]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
@@ -71,7 +64,6 @@ module SalesEngine
     end
 
     def date
-      #self.created_at.split[0]
       self.created_at
     end
 
@@ -99,7 +91,6 @@ module SalesEngine
     end
 
     def items
-      #items returns a collection of associated Items by way of InvoiceItem objects
       self.invoice_items.collect do |inv_item|
         inv_item.item
       end
@@ -108,8 +99,6 @@ module SalesEngine
     def customer
       SalesEngine::Customer.find_by_id(self.customer_id)
     end
-
-
 
   end
 end

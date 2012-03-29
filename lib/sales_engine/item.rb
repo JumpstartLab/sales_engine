@@ -1,22 +1,17 @@
-#require './merchant'
-#require './invoice_item'
 require './lib/sales_engine/database'
 require './lib/sales_engine/find'
 
 module SalesEngine
   class Item
     extend Find
-   
-   # id,name,description,unit_price,merchant_id,created_at,updated_at
 
-    attr_accessor :id, :name, :description, :unit_price, :merchant_id, 
+    attr_accessor :id, :name, :description, :unit_price, :merchant_id,
                   :created_at, :updated_at
 
     def initialize(attributes={})
       self.id           = attributes[:id].to_i
       self.name         = attributes[:name]
       self.description  = attributes[:description]
-      #self.unit_price   = attributes[:unit_price]
       self.unit_price = BigDecimal.new(attributes[:unit_price])/100
       self.merchant_id  = attributes[:merchant_id].to_i
       self.created_at   = attributes[:created_at]
@@ -24,7 +19,7 @@ module SalesEngine
     end
 
     class << self
-      attributes = [:id, :name, :description, :unit_price, :merchant_id, 
+      attributes = [:id, :name, :description, :unit_price, :merchant_id,
                   :created_at, :updated_at]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
@@ -41,21 +36,18 @@ module SalesEngine
     end
 
     def invoice_items
-      #invoice_items returns an instance of InvoiceItems associated with this object
       Database.instance.invoice_items.select do |ii|
         ii.send(:item_id) == self.id
       end
     end
 
     def charged_invoice_items
-      #invoice_items returns an instance of InvoiceItems associated with this object
       Database.instance.invoice_items.select do |ii|
         (ii.send(:item_id) == self.id) && ii.inv_success
       end
     end
 
     def best_day
-      # best_day returns the date with the most sales for the given item
       rank = Hash.new(0)
       self.charged_invoice_items.each do |inv_item|
         inv = SalesEngine::Invoice.find_by_id(inv_item.invoice_id)
@@ -66,7 +58,6 @@ module SalesEngine
     end
 
     def merchant
-      #merchant returns an instance of Merchant associated with this object
       Database.instance.merchants.find do |m|
         m.send(:id) == self.merchant_id
       end
@@ -81,7 +72,6 @@ module SalesEngine
     end
 
     def self.most_revenue(num_items)
-      # .most_revenue(x) returns the top x item instances ranked by total revenue generated
       rank = Hash.new(0)
       Database.instance.items.each do |item|
         rank[item] = item.revenue
@@ -98,7 +88,6 @@ module SalesEngine
     end
 
     def self.most_items(num_items)
-      # .most_items(x) returns the top x item instances ranked by total number sold
       rank = Hash.new(0)
       Database.instance.items.each do |item|
         rank[item] = item.quantity_sold

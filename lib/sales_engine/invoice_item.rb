@@ -1,12 +1,11 @@
-#require './invoice'
 require './lib/sales_engine/find'
 
 module SalesEngine
   class InvoiceItem
     extend Find
 
-    attr_accessor :id, :item_id, :invoice_id, :quantity, 
-                  :unit_price, :created_at, :updated_at, 
+    attr_accessor :id, :item_id, :invoice_id, :quantity,
+                  :unit_price, :created_at, :updated_at,
                   :inv_success, :total
 
     def initialize(attributes={})
@@ -21,7 +20,7 @@ module SalesEngine
     end
 
     class << self
-      attributes = [:id, :item_id, :invoice_id, :quantity, 
+      attributes = [:id, :item_id, :invoice_id, :quantity,
                   :unit_price, :created_at, :updated_at, :date]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
@@ -41,9 +40,9 @@ module SalesEngine
 
       items_hash.each do |item_id, values|
         ii = InvoiceItem.new(:id => Database.instance.invoice_items.count + 2,
-                             :item_id     => item_id, 
+                             :item_id     => item_id,
                              :invoice_id  => invoice_id,
-                             :quantity    => values[0], 
+                             :quantity    => values[0],
                              :unit_price  => values[1].to_s,
                              :created_at  => DateTime.now.to_s,
                              :updated_at  => DateTime.now.to_s )
@@ -74,14 +73,12 @@ module SalesEngine
     end
 
     def invoice
-      # returns an instance of Invoice associated with this object
       Database.instance.invoices.find do |i|
         i.send(:id) == self.invoice_id
       end
     end
 
     def item
-      #item returns an instance of Item associated with this object
       Database.instance.items.find do |i|
         i.send(:id) == self.item_id
       end
