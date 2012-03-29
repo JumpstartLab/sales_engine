@@ -69,15 +69,32 @@ module SalesEngine
       invoice_items.map { |ii| ii.total }
     end
 
-    # def revenue
-    #   result = 0
-    #   invoices.each do |invoice|
-    #     result += invoice.total_amount
-    #   end
-    # end
+    def revenue(date=nil)
+      if date
+        revenue_by_date(date)
+      else
+        revenue
+        result = 0
+        invoices.each do |invoice|
+          result += invoice.total_amount
+        end
+      end
+    end
 
     def self.most_revenue(param)
-      @most_revenue ||= collection.sort_by { |m| m.revenue }
+      @most_revenue ||= collection.sort_by { |m| m.get_revenue }[0...param]
+    end
+
+    def get_revenue
+      @revenue ||= paid_invoices.inject(0) do |v, i|
+        v + i.total_amount
+      end
+    end
+
+    def paid_invoices
+      invoices.select do |i|
+        i.paid?
+      end
     end
 
     def self.revenue(date)
@@ -96,18 +113,13 @@ module SalesEngine
       result
     end
 
-    # def most_items()
-    #   # returns the top x merchant instances ranked by total number of items sold
-    # end
+    def self.most_items(param)
+      collection.sort_by { |m| m.add_items }[0...param]
+    end
 
-    def revenue(*date)
-      if date.nil?
-        result = 0
-        invoices.each do |invoice|
-          result += invoice.total_amount
-        end
-      else
-        revenue_by_date(date)
+    def add_items
+      paid_invoices.inject(0) do |acc,num|
+        acc + num.total_items
       end
     end
 

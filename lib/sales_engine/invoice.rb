@@ -85,9 +85,9 @@ module SalesEngine
 
     def total_amount
       if paid?
-        @total ||= invoice_items.map do |inv_item| 
-          inv_item.total
-        end.inject(:+)
+        @total ||= invoice_items.inject(0) do |sum,inv_item|
+          sum + inv_item.total
+        end
       else
         return 0
       end
@@ -95,7 +95,7 @@ module SalesEngine
 
     def revenue_by_date(date)
       result = 0
-      if paid?
+      if paid? && self.created_at == date
         invoice_items.each do |invoice_item|
           result += invoice_item.total
         end
@@ -105,6 +105,14 @@ module SalesEngine
 
     def revenue
       matched_invoiceitems.total
+    end
+
+    def get_revenue
+
+    end
+
+    def total_items
+      invoice_items.inject(0) { |sum,ii| sum + ii.quantity.to_i }
     end
 
   end
