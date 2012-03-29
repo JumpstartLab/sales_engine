@@ -54,6 +54,12 @@ module SalesEngine
       BigDecimal.new(revenue.to_s)/100
     end
 
+    def self.revenue(date)
+      result = 0
+      merchants.each { |merchant| result += merchant.revenue(date) } 
+      result
+    end
+
     def self.most_revenue(total_merchants)
       results = merchants.sort_by{ |merchant| merchant.revenue }.reverse!
       results[0,total_merchants]

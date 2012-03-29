@@ -245,5 +245,32 @@ describe Merchant do
       end
     end
   end
+
+  describe ".revenue(date)" do
+    let(:date) { Date.parse("Fri, 09 Mar 2012") }
+    let(:merchant) { double("merchant", :revenue => 100)}
+    let(:merchant2) { double("merchant", :revenue => 200)}
+    let(:merchant3) { double("merchant", :revenue => 300)}
+
+    context "when there are multiple merchants" do
+      it "returns the total revenue for all merchants " do
+        Merchant.stub(:merchants).and_return([merchant, merchant2, merchant3])
+        Merchant.revenue(date).should == 600
+      end
+    end
+
+    context "where there is one merchant" do 
+     it "returns the total revenue for one merchant" do
+        Merchant.stub(:merchants).and_return([merchant])
+        Merchant.revenue(date).should == 100 
+     end
+    end
+
+    context "where there are no merchants" do 
+      it "returns 0" do
+       Merchant.revenue(date).should == 0
+      end
+    end
+  end
 end
 end
