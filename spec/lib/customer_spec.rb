@@ -58,6 +58,18 @@ describe SalesEngine::Customer do
     end
   end
 
+  describe "#days_since_activity" do
+  end
+
+  # def days_since_activity
+  #     invoice_array = paid_invoices.sort_by do |inv|
+  #                             inv.created_at
+  #                           end
+  #     latest_invoice = invoice_array.reverse.first
+  #     last_purchase_date = Date.parse(latest_invoice.created_at.to_s)
+  #     ( Date.today - last_purchase_date )
+  #   end
+
   describe "#transactions" do
     before(:each) do
       invoice_list
