@@ -57,7 +57,9 @@ class SalesEngine
           sum + element.total
         end
       else
-        result =  SalesEngine::Invoice.invoices.inject(0) {|sum, element| sum + element.total }
+        result =  SalesEngine::Invoice.invoices.inject(0) do |sum, element|
+          sum + element.total
+        end
       end
       result
     end

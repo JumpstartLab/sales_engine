@@ -23,7 +23,7 @@ class SalesEngine
 
     include Model
 
-    def invoice_items     
+    def invoice_items
       @invoice_items ||= SalesEngine::InvoiceItem.find_all_by_item_id(@id)
     end
 
