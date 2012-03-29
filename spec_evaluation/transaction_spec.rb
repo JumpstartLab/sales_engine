@@ -6,9 +6,11 @@ describe SalesEngine::Transaction do
     describe ".random" do
       it "usually returns different things on subsequent calls" do
         transaction_one = SalesEngine::Transaction.random
+        transaction_two = SalesEngine::Transaction.random
+
         10.times do
-          transaction_two = SalesEngine::Transaction.random
           break if transaction_one.id != transaction_two.id
+          transaction_two = SalesEngine::Transaction.random
         end
 
         transaction_one.id.should_not == transaction_two.id
@@ -25,7 +27,7 @@ describe SalesEngine::Transaction do
     describe ".find_all_by_result" do
       it "can find multiple records" do
         transactions = SalesEngine::Transaction.find_all_by_result "success"
-        transactions.should have(4648).transactions
+        transactions.count.should be_within(2).of(4648)
       end
     end
   end

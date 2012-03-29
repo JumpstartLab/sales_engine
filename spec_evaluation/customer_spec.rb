@@ -7,9 +7,11 @@ describe SalesEngine::Customer do
     describe ".random" do
       it "usually returns different things on subsequent calls" do
         customer_one = SalesEngine::Customer.random
+        customer_two = SalesEngine::Customer.random
+
         10.times do
-          customer_two = SalesEngine::Customer.random
           break if customer_one.id != customer_two.id
+          customer_two = SalesEngine::Customer.random
         end
 
         customer_one.id.should_not == customer_two.id
@@ -19,7 +21,7 @@ describe SalesEngine::Customer do
     describe ".find_by_last_name" do
       it "finds a record" do
         customer = SalesEngine::Customer.find_by_last_name "Ullrich"
-        customer.first_name.should == "Ramon"
+        %w(Ramon Brice Annabell).should include(customer.first_name)
       end
     end
 

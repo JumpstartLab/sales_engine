@@ -5,9 +5,11 @@ describe SalesEngine::InvoiceItem do
     describe ".random" do
       it "usually returns different things on subsequent calls" do
         invoice_item_one = SalesEngine::InvoiceItem.random
+        invoice_item_two = SalesEngine::InvoiceItem.random
+
         10.times do
-          invoice_item_two = SalesEngine::InvoiceItem.random
           break if invoice_item_one.id != invoice_item_two.id
+          invoice_item_two = SalesEngine::InvoiceItem.random
         end
 
         invoice_item_one.id.should_not == invoice_item_two.id
@@ -17,7 +19,7 @@ describe SalesEngine::InvoiceItem do
     describe ".find_by_item_id" do
       it "can find a record" do
         invoice_item = SalesEngine::InvoiceItem.find_by_item_id 123
-        invoice_item.invoice_id.should == 184
+        invoice_item.item.name.should == "Item Doloribus Ducimus"
       end
     end
 
@@ -34,14 +36,13 @@ describe SalesEngine::InvoiceItem do
 
     describe "#item" do
       it "exists" do
-        invoice_item.item.name.should == "Item Qui Esse"
+        invoice_item.item.name.should == "Item Cupiditate Magni"
       end
     end
 
     describe "#invoice" do
       it "exists" do
-        invoice_customer = SalesEngine::Customer.find_by_id invoice_item.customer_id
-        invoice_item.customer.last_name.should == invoice.customer.last_name
+        invoice_item.invoice.should be
       end
     end
 

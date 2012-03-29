@@ -5,9 +5,11 @@ describe SalesEngine::Item do
     describe ".random" do
       it "usually returns different things on subsequent calls" do
         item_one =SalesEngine::Item.random
+        item_two = SalesEngine::Item.random
+
         10.times do
-          item_two = SalesEngine::Item.random
           break if item_one.id != item_two.id
+          item_two = SalesEngine::Item.random
         end
 
         item_one.id.should_not == item_two.id
@@ -16,7 +18,7 @@ describe SalesEngine::Item do
 
     describe ".find_by_unit_price" do
       it "can find one record" do
-        item =SalesEngine::Item.find_by_unit_price 93519
+        item = SalesEngine::Item.find_by_unit_price BigDecimal.new("935.19")
         item.name.should == "Item Alias Nihil"
       end
     end
@@ -65,10 +67,10 @@ describe SalesEngine::Item do
 
     describe ".most_items" do
       it "returns the top n items ranked by most sold" do
-        most = SalesEngine::Item.most_items(42)
+        most = SalesEngine::Item.most_items(37)
 
-        most.second.name.should == "Item Dicta Autem"
-        most.last.name.should   == "Item Quidem Dolorum"
+        most[1].name.should == "Item Nam Magnam"
+        most.last.name.should   == "Item Ut Quaerat"
       end
     end
 
@@ -76,7 +78,7 @@ describe SalesEngine::Item do
       let(:item) { SalesEngine::Item.find_by_name "Item Accusamus Ut" }
 
       it "returns something castable to date" do
-        date = Date.parse "Tue, 27 Mar 2012"
+        date = Date.parse "Sat, 24 Mar 2012"
         item.best_day.to_date.should == date
       end
     end
