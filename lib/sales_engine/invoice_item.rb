@@ -2,6 +2,7 @@ require 'bigdecimal'
 
 module SalesEngine
   class InvoiceItem
+    #include Sanitize
     extend Randomize
     extend Searchable
 
@@ -78,7 +79,8 @@ module SalesEngine
     end
 
     def item
-      SalesEngine::Item.find_by_id(self.item_id.to_s)
+      SalesEngine::Item.find_by_id(self.item_id)
+      #remove to_s here fixes 3 errors
       # SalesEngine::Database.instance.items.find do |i|
       #   i.send(:id) == self.item_id
       # end
