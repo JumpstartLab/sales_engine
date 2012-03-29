@@ -13,6 +13,25 @@ module SalesEngine
      end
   end
 
+  def customers_with_pending_invoices
+    query = "select customer_id, invoice_id, result from transactions 
+             INNER JOIN invoices on transactions.invoice_id = invoices.id
+             WHERE merchant_id = #{id}"
+             #AND result NOT LIKE 'success'"
+
+    transaction_hash = {} 
+    Database.instance.db.execute(query)  do |row| 
+      invoice_id = row[1]
+      if row[2] == "success"
+         transaction_hash.delete(invoice_id)
+      else
+        transaction_hash[invoice_id] = row[0]
+      end
+    end
+    
+    transaction_hash.values.collect { |id| Customer.find_by_id(id) } 
+  end
+
   def find_favorite_customer(merchant_id)
     query = "SELECT customer_id, count(customer_id) 
      AS total FROM invoice_items
