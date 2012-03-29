@@ -4,6 +4,7 @@
 ehthumbs.db
 Icon?
 Thumbs.db
+*.gem
 
 # Coverage files #
 coverage/*
