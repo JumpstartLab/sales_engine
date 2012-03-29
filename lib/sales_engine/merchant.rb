@@ -1,5 +1,5 @@
-require './lib/sales_engine'
-require './lib/sales_engine/find'
+require 'sales_engine'
+require 'sales_engine/find'
 
 module SalesEngine
   class Merchant

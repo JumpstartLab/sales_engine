@@ -64,14 +64,14 @@ describe SalesEngine::Customer do
   end
 
   describe "#favorite_merchant" do 
-    let (:customer) { SalesEngine::Customer.random }
+    let (:customer) { SalesEngine::Customer.find_by_id(13) }
     it "responds to the method" do 
       customer.should respond_to("favorite_merchant".to_sym)
     end 
 
     it "returns an instance of the merchant at which customer has most transactions" do 
       merchant = customer.favorite_merchant 
-      merchant.should_not be nil 
+      merchant.id.should == 76
     end 
   end
 end

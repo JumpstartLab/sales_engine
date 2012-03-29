@@ -1,23 +1,23 @@
 require 'csv'
 require 'date'
 require 'bigdecimal'
-require './lib/sales_engine/database'
-require './lib/sales_engine/merchant'
-require './lib/sales_engine/customer'
-require './lib/sales_engine/item'
-require './lib/sales_engine/invoice'
-require './lib/sales_engine/invoice_item'
-require './lib/sales_engine/transaction'
+require 'sales_engine/database'
+require 'sales_engine/merchant'
+require 'sales_engine/customer'
+require 'sales_engine/item'
+require 'sales_engine/invoice'
+require 'sales_engine/invoice_item'
+require 'sales_engine/transaction'
 
 module SalesEngine
 
   CSV_OPTIONS         = {:headers => true, :header_converters => :symbol}
-  MERCHANT_DATA       = "./data/evaluation_data/merchants.csv"
-  CUSTOMER_DATA       = "./data/evaluation_data/customers.csv"
-  ITEM_DATA           = "./data/evaluation_data/items.csv"
-  INVOICE_DATA        = "./data/evaluation_data/invoices.csv"
-  INVOICE_ITEMS_DATA  = "./data/evaluation_data/invoice_items.csv"
-  TRANSACTION_DATA    = "./data/evaluation_data/transactions.csv"
+  MERCHANT_DATA       = "data/merchants.csv"
+  CUSTOMER_DATA       = "data/customers.csv"
+  ITEM_DATA           = "data/items.csv"
+  INVOICE_DATA        = "data/invoices.csv"
+  INVOICE_ITEMS_DATA  = "data/invoice_items.csv"
+  TRANSACTION_DATA    = "data/transactions.csv"
 
   def self.startup
     load_customers

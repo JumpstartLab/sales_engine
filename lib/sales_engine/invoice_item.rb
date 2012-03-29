@@ -1,4 +1,4 @@
-require './lib/sales_engine/find'
+require 'sales_engine/find'
 
 module SalesEngine
   class InvoiceItem

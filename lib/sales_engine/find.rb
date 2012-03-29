@@ -1,4 +1,4 @@
-require './lib/sales_engine/database'
+require 'sales_engine/database'
 
 module Find
 
