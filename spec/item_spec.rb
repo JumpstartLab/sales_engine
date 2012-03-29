@@ -69,43 +69,6 @@ module SalesEngine
       end
     end
 
-    describe ".most_revenue(x)" do
-      let(:item1) { double("item") }
-      let(:item2) { double("item") }
-      let(:item3) { double("item") }
-
-      before(:each) do
-        item1.stub(:revenue).and_return(1)
-        item2.stub(:revenue).and_return(2)
-        item3.stub(:revenue).and_return(3)
-      end                                            
-
-      context "when number of items is greater than X" do
-        it "returns an array of items with the most revenue" do
-          Item.stub(:items).and_return([item1, item2, item3])
-          Item.most_revenue(2).should == [item3, item2]
-        end
-      end
-      context "when number of items is less than X" do
-        it "returns an array of all merchants" do
-          Item.stub(:items).and_return([item1, item2])
-          Item.most_revenue(3).should == [item2, item1]
-        end
-      end
-      context "when there is only one item" do
-        it "returns an array with one item" do
-          Item.stub(:items).and_return([item1])
-          Item.most_revenue(3).should == [item1]
-        end
-      end
-      context "when there are no items" do
-        it "returns an empty array" do
-          Item.stub(:items).and_return([])
-          Item.most_revenue(3).should == []
-        end
-      end 
-    end
-
     describe "#quantity" do
       let(:invoice_item1) { double("invoice_item", :quantity => 1) }
       let(:invoice_item2) { double("invoice_item", :quantity => 2) }
@@ -144,44 +107,6 @@ module SalesEngine
           item.quantity_sold.should == 0
         end
       end
-    end
-
-    describe ".most_items(x)" do
-      let(:item1) { double("item") }
-      let(:item2) { double("item") }
-      let(:item3) { double("item") }
-
-      before(:each) do
-        item1.stub(:quantity_sold).and_return(1)
-        item2.stub(:quantity_sold).and_return(2)
-        item3.stub(:quantity_sold).and_return(3)
-        Item.stub(:items).and_return([item1, item2, item3])
-      end                                            
-
-      context "when number of items is greater than X" do
-        it "returns an array of items with the most units sold" do
-          Item.stub(:items).and_return([item1, item2, item3])
-          Item.most_items(2).should == [item3, item2]
-        end
-      end
-      context "when number of items is less than X" do
-        it "returns an array of all merchants" do
-          Item.stub(:items).and_return([item1, item2])
-          Item.most_items(3).should == [item2, item1]
-        end
-      end
-      context "when there is only one item" do
-        it "returns an array with one item" do
-          Item.stub(:items).and_return([item1])
-          Item.most_items(3).should == [item1]
-        end
-      end
-      context "when there are no items" do
-        it "returns an empty array" do
-          Item.stub(:items).and_return([])
-          Item.most_items(3).should == []
-        end
-      end 
     end
 
     describe "#quantity_by_day" do

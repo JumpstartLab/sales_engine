@@ -118,40 +118,6 @@ describe Merchant do
     end
   end
 
-  describe "#customers_with_pending_invoices" do
-    let(:merchant) { merchant = Fabricate(:merchant) }
-    let(:customer1) { double("customer") }
-    let(:customer2) { double("customer") }
-    let(:customer3) { double("customer") }
-    let(:customer4) { double("customer") }
-
-    before(:each) do
-      customer1.stub(:has_pending_invoice?).and_return(true)
-      customer2.stub(:has_pending_invoice?).and_return(true) 
-      customer3.stub(:has_pending_invoice?).and_return(false)
-      customer4.stub(:has_pending_invoice?).and_return(false)     
-    end
-    context "the merchant has customers" do
-      context "there are customers with pending invoices" do
-        it "returns the customers with pending transactions" do
-          merchant.stub(:customers).and_return([customer1, customer2, customer3, customer4])
-          merchant.customers_with_pending_invoices.should == [customer1, customer2]
-        end
-      end
-      context "there are no customers with pending invoices" do
-        it "returns an empty array" do
-          merchant.stub(:customers).and_return([customer3, customer4])
-          merchant.customers_with_pending_invoices.should == []         
-        end
-      end
-    end
-    context "the merchant has no customers" do
-      it "returns an empty array" do
-        merchant.stub(:customers).and_return([])
-        merchant.customers_with_pending_invoices.should == []
-      end
-    end
-  end
 
   describe "#revenue" do
     let(:invoice_item) { mock(InvoiceItem)}
@@ -182,37 +148,6 @@ describe Merchant do
     end
   end
 
-  describe ".most_revenue" do
-    let(:merchant) { double("merchant", :revenue => 10) }
-    let(:merchant2) { double("merchant", :revenue => 20) }
-    let(:merchant3) { double("merchant", :revenue => 30) }
-    let(:merchant4) { double("merchant", :revenue => 40) }
-
-    context "when number of merchants is greater than X" do
-      it "returns an array of merchants with the most revenue" do
-        Merchant.stub(:merchants).and_return([merchant, merchant2, merchant3, merchant4])
-        Merchant.most_revenue(2).should == [merchant4, merchant3]
-      end
-    end
-    context "when number of merchants is less than X" do
-      it "returns an array of all merchants" do
-        Merchant.stub(:merchants).and_return([merchant, merchant2])
-        Merchant.most_revenue(3).should == [merchant2, merchant]
-      end
-    end
-    context "when there is only one merchant" do
-      it "returns an array with one merchant" do
-        Merchant.stub(:merchants).and_return([merchant])
-        Merchant.most_revenue(1).should == [merchant]
-      end
-    end
-    context "when there are no merchants" do
-      it "returns an empty array" do
-        Merchant.stub(:merchants).and_return([])
-        Merchant.most_revenue(3).should == []
-      end
-    end 
-  end
 
   describe "#revenue(date)" do
     let(:invoice) {double("invoice", :id => 1)}
