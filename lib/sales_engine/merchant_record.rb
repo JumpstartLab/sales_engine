@@ -63,7 +63,6 @@ module SalesEngine
              INNER JOIN invoice_items ON invoices.id = invoice_items.invoice_id
              INNER JOIN transactions ON invoices.id = transactions.invoice_id
              WHERE transactions.result LIKE 'success'" 
-
     if date 
       query += " AND Date(invoices.created_date) = Date('#{date.to_s}')"
     end
