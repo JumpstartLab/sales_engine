@@ -135,7 +135,7 @@ module SalesEngine
     def self.total_revenue_over_period(date)
       if date
         revenue_invoices_on_date(Date.parse(date.to_s))
-      else 
+      else
         revenue_invoices_on_all
       end
     end
@@ -161,7 +161,7 @@ module SalesEngine
     def self.total_items_over_period(date)
       if date
         items_on_date(Date.parse(date.to_s))
-      else 
+      else
         items_on_all
       end
     end
@@ -169,7 +169,7 @@ module SalesEngine
     def self.items_on_date(date)
       items = 0
       inv_results = invoices_on_date(date)
-      inv_results.each do |inv| 
+      inv_results.each do |inv|
         inv.invoice_items.each do |inv_items|
           items += inv_items.quantity
         end
@@ -180,7 +180,7 @@ module SalesEngine
     def self.items_on_all
       items = 0
       inv_results = successful_invoices
-      inv_results.each do |inv| 
+      inv_results.each do |inv|
         inv.invoice_items.each do |inv_items|
           items += inv_items.quantity
         end
@@ -198,7 +198,7 @@ module SalesEngine
 
     def self.average_items(*date)
       date = date.first
-      total_items, invoice_count = total_items_over_period(date)   
+      total_items, invoice_count = total_items_over_period(date)
       (BigDecimal.new(total_items.to_s) / invoice_count).round(2)
     end
 

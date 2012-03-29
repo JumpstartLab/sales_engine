@@ -2,7 +2,7 @@
   require 'sales_engine/dynamic_finder'
   class Customer
     attr_accessor :id, :first_name, :last_name, :created_at, :updated_at,
-                  :customer_invoices
+                  :customer_invs
 
     CUSTOMER_ATTS = [
      "id",
@@ -30,7 +30,7 @@
     extend SalesEngine::DynamicFinder
 
     def invoices
-      customer_invoices ||= SalesEngine::Invoice.find_all_by_customer_id(self.id)
+      customer_invs ||= SalesEngine::Invoice.find_all_by_customer_id(self.id)
     end
 
     def paid_invoices
@@ -38,8 +38,11 @@
     end
 
     def days_since_activity
-      purchase_date_array = paid_invoices.sort_by{ |inv| inv.created_at }.reverse.first
-      last_purchase_date = Date.parse(purchase_date_array.created_at.to_s)
+      invoice_array = paid_invoices.sort_by do |inv|
+                              inv.created_at
+                            end
+      latest_invoice = invoice_array.reverse.first
+      last_purchase_date = Date.parse(latest_invoice.created_at.to_s)
       ( Date.today - last_purchase_date )
     end
 
@@ -54,7 +57,7 @@
 
     def pending_invoices
       #Needs to do it uncached way b/c of Yoho's tests.
-      invoices.select do |inv| 
+      invoices.select do |inv|
         inv.transactions.none? { |trans| trans.result == "success" }
       end
     end
@@ -93,7 +96,7 @@
     end
 
     def self.most_revenue
-      revenue_data = customers_by_revenue_bought.sort_by do |customer_id, revenue|
+      revenue_data = customers_by_revenue_bought.sort_by do |c_id, revenue|
         -revenue
       end
 
