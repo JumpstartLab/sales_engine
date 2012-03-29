@@ -5,14 +5,14 @@ class SalesEngine
   class InvoiceItem
     ATTRIBUTES = ["id", "created_at", "updated_at", "item_id", "invoice_id",
                "quantity", "unit_price"]
-    
+
     def self.finder_attributes
       ATTRIBUTES
     end
 
     include Model
 
-    attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :total, 
+    attr_accessor :id, :item_id, :invoice_id, :quantity, :unit_price, :total,
     :created_at, :updated_at, :unit_price
 
     def initialize(attributes)

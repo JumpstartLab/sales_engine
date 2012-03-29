@@ -39,7 +39,9 @@ class SalesEngine
     def revenue(date=nil)
       result = ''
       if date
-        result = invoices_on_date(date).inject(0) {|sum, element| sum + element.total }
+        result = invoices_on_date(date).inject(0) do |sum, element|
+          sum + element.total
+        end
       else
         result = invoices.inject(0) {|sum, element| sum + element.total }
       end
@@ -58,8 +60,10 @@ class SalesEngine
 
     def favorite_customer
       grouped_by_customer = invoices.group_by{|invoice| invoice.customer}
-      sorted_and_grouped_by_customer = grouped_by_customer.sort_by{|customer, invoices| invoices.count }
-      customer_and_invoices = sorted_and_grouped_by_customer.last
+      std_and_gpd_by_cstmr = grouped_by_customer.sort_by do |customer,invoices|
+        invoices.count
+      end
+      customer_and_invoices = std_and_gpd_by_cstmr.last
       customer = customer_and_invoices.first
     end
   end

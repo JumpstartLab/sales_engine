@@ -44,7 +44,7 @@ class SalesEngine
       end
       puts "Items Loaded"
     end
- 
+
     def items
       @items
     end

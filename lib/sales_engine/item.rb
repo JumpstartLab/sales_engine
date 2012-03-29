@@ -3,10 +3,12 @@ require 'date'
 
 class SalesEngine
   class Item
-    ATTRIBUTES = %w(id created_at updated_at name description unit_price merchant_id)
+    ATTRIBUTES = %w(id created_at updated_at name
+      description unit_price merchant_id)
 
-    attr_accessor :merchant_id, :id, :item_id, :name, :description, :unit_price, :created_at, :updated_at
-    
+    attr_accessor :merchant_id, :id, :item_id, :name, :description,
+      :unit_price, :created_at, :updated_at
+
     def initialize(attributes)
       super
       @name = attributes[:name]
@@ -21,7 +23,7 @@ class SalesEngine
 
     include Model
 
-    def invoice_items     
+    def invoice_items
       @invoice_items || SalesEngine::InvoiceItem.find_all_by_item_id(@id)
     end
 
@@ -33,7 +35,7 @@ class SalesEngine
       SalesEngine::Merchant.find_by_id(@merchant_id)
     end
 
-    # returns the date with the most sales for 
+    # returns the date with the most sales for
     # the given item using the invoice date
     def best_day
       sorted_days = item_quantity_per_day.sort_by{|date, count| -count}
@@ -51,10 +53,10 @@ class SalesEngine
     end
 
     def self.most_revenue(x)
-      ranked_items_by_revenue = SalesEngine::Database.instance.items.sort do |a,b|
+      rnkd_items_by_rev = SalesEngine::Database.instance.items.sort do |a,b|
         b.revenue <=> a.revenue
       end
-      ranked_items_by_revenue.pop(x)
+      rnkd_items_by_rev.pop(x)
     end
 
     def self.most_items(x)
@@ -64,7 +66,9 @@ class SalesEngine
     end
 
     def sales_count
-      @sales_count || invoice_items.inject(0) {|sum, element| sum + element.quantity }
+      @sales_count || invoice_items.inject(0) do |sum, element|
+        sum + element.quantity
+      end
     end
 
     def sales_count=(input)

@@ -2,13 +2,14 @@ require 'sales_engine/model'
 
 class SalesEngine
   class Invoice
-    ATTRIBUTES = %w(id created_at updated_at merchant_id customer_id merchant status)
+    ATTRIBUTES = %w(id created_at updated_at
+          merchant_id customer_id merchant status)
     def self.finder_attributes
       ATTRIBUTES
     end
 
     include Model
-    
+
     attr_accessor :merchant_id, :customer_id, :customer,
       :id, :merchant, :status, :created_at, :updated_at
 
@@ -17,7 +18,7 @@ class SalesEngine
       @customer_id = attributes[:customer_id].to_i
       @merchant_id = attributes[:merchant_id].to_i
       @status = attributes[:status]
-    end  
+    end
 
     def customer=(input)
       @customer_id = input.id

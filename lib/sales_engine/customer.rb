@@ -33,9 +33,11 @@ class SalesEngine
     end
 
     def favorite_merchant
-      grouped_by_merchant = invoices.group_by{|invoice| invoice.merchant}
-      sorted_and_grouped_by_merchant = grouped_by_merchant.sort_by{|merchant, invoices| invoices.count }
-      merchant_and_invoices = sorted_and_grouped_by_merchant.last
+      grpd_by_merch = invoices.group_by{|invoice| invoice.merchant}
+      std_and_grpd_by_merch = grpd_by_merch.sort_by do |merchant, invoices|
+        invoices.count
+      end
+      merchant_and_invoices = std_and_grpd_by_merch.last
       merchant = merchant_and_invoices.first
     end
   end
