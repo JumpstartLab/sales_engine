@@ -61,20 +61,15 @@ module SalesEngine
       end
 
       def create(attributes)
-        attributes.each do |attribute, value|
-          new_key_value_pairs = []
-
+        kv_pairs = attributes.map do |attribute, value|
           if value.respond_to? :id
-            attributes[attribute] = nil
-            new_key_value_pairs.push ["#{attribute}_id".to_sym,value]
-          end
-
-          new_key_value_pairs.each do |kv_pair|
-            attributes[kv_pair[0] => kv_pair[1]]
+            ["#{attribute}_id".to_sym,value.id]
           end
         end
+
+        attributes = attributes.merge Hash[kv_pairs]
         
-        puts attributes.inspect
+        puts attributes.keys
         self.new(attributes)
       end
 

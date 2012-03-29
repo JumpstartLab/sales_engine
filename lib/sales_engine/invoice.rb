@@ -15,7 +15,6 @@ module SalesEngine
 
       validates_numericality_of :customer_id, @customer_id, :integer => true
       validates_numericality_of :merchant_id, @merchant_id, :integer => true
-      validates_presence_of :status, @status
     end
 
     def customer
