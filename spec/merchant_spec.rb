@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'bigdecimal'
 
 module SalesEngine
 describe Merchant do
@@ -170,7 +171,7 @@ describe Merchant do
     context "when there are invoice_items" do
       it "returns total revenue for merchant" do
         merchant.stub({:paid_invoice_items => [invoice_item, invoice_item2, other_invoice_item]})
-        merchant.revenue.should == 14.00 
+        merchant.revenue.should == BigDecimal.new("1400.0")
       end
     end
     context "when there are no invoice items" do
@@ -235,13 +236,40 @@ describe Merchant do
     context "invoice items exist for the provided date" do
       it "returns the total revenue for that date" do
         merchant.stub(:paid_invoice_items).with(date).and_return([invoice_item2, other_invoice_item])
-        merchant.revenue(date).should == BigDecimal.new("13.00")
+        merchant.revenue(date).should == BigDecimal.new("1300.0")
       end
     end
     context "no invoice items exist for the provided date" do
       it "returns zero" do
         merchant.stub(:paid_invoice_items).with(date).and_return([])
         merchant.revenue(date).should == 0
+      end
+    end
+  end
+
+  describe ".revenue(date)" do
+    let(:date) { Date.parse("Fri, 09 Mar 2012") }
+    let(:merchant) { double("merchant", :revenue => 100)}
+    let(:merchant2) { double("merchant", :revenue => 200)}
+    let(:merchant3) { double("merchant", :revenue => 300)}
+
+    context "when there are multiple merchants" do
+      it "returns the total revenue for all merchants " do
+        Merchant.stub(:merchants).and_return([merchant, merchant2, merchant3])
+        Merchant.revenue(date).should == 600
+      end
+    end
+
+    context "where there is one merchant" do 
+     it "returns the total revenue for one merchant" do
+        Merchant.stub(:merchants).and_return([merchant])
+        Merchant.revenue(date).should == 100 
+     end
+    end
+
+    context "where there are no merchants" do 
+      it "returns 0" do
+       Merchant.revenue(date).should == 0
       end
     end
   end

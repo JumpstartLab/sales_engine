@@ -12,4 +12,27 @@ module SalesEngine
        merchants
      end
   end
+
+  def find_favorite_customer(merchant_id)
+    query = "SELECT customer_id, count(customer_id) 
+     AS total FROM invoice_items
+     INNER JOIN invoices
+     ON invoice_items.invoice_id = invoices.id
+     INNER JOIN transactions ON invoices.id = transactions.invoice_id
+     WHERE invoices.merchant_id = #{merchant_id} 
+     AND transactions.result LIKE 'success'
+     GROUP BY customer_id"
+
+     most_transactions = 0
+     favorite_customer_id = 0
+     Database.instance.db.execute(query)  do |row| 
+       customer_id = row[0]
+       total_transactions = row[1]
+       if total_transactions > most_transactions
+         most_transactions = total_transactions
+         favorite_customer_id = customer_id
+       end
+     end
+     Customer.find_by_id(favorite_customer_id)
+  end
 end
