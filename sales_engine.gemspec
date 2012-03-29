@@ -12,7 +12,9 @@ Gem::Specification.new do |s|
                    "lib/sales_engine/dynamic_finder.rb",
                    "lib/sales_engine/invoice.rb",
                    "lib/sales_engine/invoice_item.rb",
+                   "lib/sales_engine/item.rb",
                    "lib/sales_engine/merchant.rb",
-                   "lib/sales_engine/transaction.rb"]
+                   "lib/sales_engine/transaction.rb",
+                   "lib/sales_engine/cleaner.rb" ]
   s.homepage    = 'https://github.com/eweng/sales_engine'
 end

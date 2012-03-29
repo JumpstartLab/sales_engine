@@ -1,1 +1,0 @@
-This is where we'll add the evaluation scripts so they don't conflict with your existing SPEC folder.
