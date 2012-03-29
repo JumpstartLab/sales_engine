@@ -7,6 +7,7 @@ group :test do
   gem "guard-rspec"
   gem 'simplecov'
   gem 'growl'
+  gem 'cane'
 end
 
 group :test, :development do
