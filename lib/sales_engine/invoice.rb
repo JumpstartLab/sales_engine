@@ -67,8 +67,7 @@ class SalesEngine
     end
 
     def self.create(attr)
-
-      invoice = self.new ( { :customer_id => attr[:customer].id, 
+      invoice = self.new ( { :customer_id => attr[:customer].id,
         :merchant_id => attr[:merchant].id, :status => attr[:status] } )
       # add invoice items
       last_id = SalesEngine::Database.instance.invoices.last.id

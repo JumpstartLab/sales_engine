@@ -277,15 +277,16 @@ describe SalesEngine::Invoice do
     merch_1 = Fabricate(:merchant)
     cust_1 = Fabricate(:customer)
 
-    item_1 = Fabricate(:item)
-    item_2 = Fabricate(:item)
-    item_3 = Fabricate(:item)
+    item_1 = Fabricate(:item, :name => "iPhone")
+    item_2 = Fabricate(:item, :name => "iPod")
+    item_3 = Fabricate(:item, :name => "Newton")
+    items = [item_1, item_2, item_3]
 
     attr = {}
     attr[:customer] = cust_1
     attr[:merchant] = merch_1
     attr[:status] = "shipped"
-    attr[:items] = [item_1, item_2, item_3]
+    attr[:items] = items
 
     it "returns a new invoice" do
       SalesEngine::Invoice.create(attr).should be_a SalesEngine::Invoice
@@ -295,6 +296,13 @@ describe SalesEngine::Invoice do
       last_id = SalesEngine::Database.instance.invoices.last.id 
       SalesEngine::Invoice.create(attr)
       SalesEngine::Invoice.find_by_id(last_id + 1).should be_a SalesEngine::Invoice
+    end
+
+    it "creates invoice items for each passed in item" do
+      invoice = SalesEngine::Invoice.create(attr)
+      items.map(&:name).each do |name|
+          invoice.items.map(&:name).should include(name)
+      end
     end
   end
 

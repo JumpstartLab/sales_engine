@@ -13,7 +13,7 @@ class SalesEngine
       super
       @name = attributes[:name]
       @description = attributes[:description]
-      @unit_price = attributes[:unit_price]
+      @unit_price = BigDecimal.new(attributes[:unit_price]).round(2)
       @merchant_id = attributes[:merchant_id].to_i
     end
 
@@ -22,7 +22,6 @@ class SalesEngine
     end
 
     include Model
-
 
     def invoice_items     
       @invoice_items ||= SalesEngine::InvoiceItem.find_all_by_item_id(@id)

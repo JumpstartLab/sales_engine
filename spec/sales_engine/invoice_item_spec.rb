@@ -232,5 +232,13 @@ describe SalesEngine::InvoiceItem do
     end
   end
 
+  describe ".create(attr)" do
+    item = Fabricate(:item)
+
+    it "creates an invoice item for an item" do
+      SalesEngine::InvoiceItem.create(item).should be_a SalesEngine::InvoiceItem
+    end
+  end
+
 end
 
