@@ -72,9 +72,9 @@ module SalesEngine
       results[0,total_merchants]
     end
 
-    def customers_with_pending_invoices
-      customers.select{ |customer| customer.has_pending_invoice? }
-    end
+    #def customers_with_pending_invoices
+      #customers.select{ |customer| customer.has_pending_invoice? }
+    #end
 
     def favorite_customer
       find_favorite_customer(id)
