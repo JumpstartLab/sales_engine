@@ -138,11 +138,6 @@ module SalesEngine
       end
 
       #couldn't get it working with dates; use strings, parse to dates below
-<<<<<<< HEAD
-
-=======
->>>>>>> 2fb9c7b578ae7f287b1f5554366e0c521548f7cb
-
       dates_array.slice(0...x)
     end
 
