@@ -46,6 +46,12 @@ module SalesEngine
       Transaction.insert(input)
     end
 
+    def ==(other)
+      id == other.id && customer_id == other.customer_id &&
+      merchant_id == other.merchant_id && status == other.status &&
+      created_at == other.created_at && updated_at == other.updated_at
+    end
+
     def self.create(input)
       invoice_hash = {}
       invoice_hash[:customer_id] = input[:customer].id

@@ -45,6 +45,25 @@ module SalesEngine
       return Database.instance.db.last_insert_row_id
      end
 
+     def pending 
+       query = "select invoice_id, result from transactions 
+               INNER JOIN invoices on transactions.invoice_id = invoices.id"
+
+       pending_invoices = []
+       Database.instance.db.execute(query)  do |row| 
+         invoice_id = row[0]
+         if row[1] == "success"
+           pending_invoices.delete(invoice_id)
+         else
+           pending_invoices << invoice_id
+         end
+      end
+    
+      pending_invoices.collect { |id| Invoice.find_by_id(id) } 
+     end
+
+     private
+
      def create_invoice(row)
        id = row[0]
        customer_id = row[1]
