@@ -100,14 +100,6 @@ module SalesEngine
       SalesEngine::Database.instance.invoice_list - successful_invoices
     end
 
-    def self.find_all_successful_invoices_by_date(date)
-      successful_invoices.select do |i|
-        dt = i.updated_at
-        date = Time.parse(date) if date.kind_of? String
-        i if date == Time.new(dt.year, dt.mon, dt.mday)
-      end
-    end
-
     def charge(attrs)
       SalesEngine::Transaction.create({:invoice_id => self.id,
         :credit_card_number => attrs[:credit_card_number],
@@ -158,8 +150,8 @@ module SalesEngine
       return tr, inv_results.size
     end
 
-    def self.total_items_over_period(date)
-      if date
+    def self.total_items_over_period(*date)
+      if date.any?
         items_on_date(Date.parse(date.to_s))
       else
         items_on_all
@@ -179,20 +171,17 @@ module SalesEngine
 
     def self.items_on_all
       items = 0
-      inv_results = successful_invoices
-      inv_results.each do |inv|
-        inv.invoice_items.each do |inv_items|
-          items += inv_items.quantity
+      successful_invoices.each do |inv|
+        inv.invoice_items.each do |inv_item|
+          items += inv_item.quantity
         end
       end
-      return items, inv_results.size
+      return items, successful_invoices.size
     end
 
     def self.average_revenue(*date)
       date = date.first
       total_revenue, invoice_count = total_revenue_over_period(date)
-      # puts total_revenue.inspect
-      # puts invoice_count.inspect
       total_revenue / invoice_count # average revenue
     end
 
