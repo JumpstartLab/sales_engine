@@ -18,7 +18,7 @@ module Cleaner
 
   def self.fetch_price(price)
     return nil if price.nil?
-    
+
     if price.class == BigDecimal
       price
     else
