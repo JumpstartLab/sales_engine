@@ -23,16 +23,16 @@ SalesEngine.startup
 # puts SalesEngine::Invoice.average_revenue.to_f
 
 
-# puts SalesEngine::Invoice.average_revenue(Date.parse("March 17, 2012")).to_f
+puts SalesEngine::Invoice.average_revenue(Date.parse("March 17, 2012")).to_f
 
-# all_succ = SalesEngine::Database.instance.all_invoices.select do |invoice|
-#   invoice.successful?
-# end
+all_succ = SalesEngine::Database.instance.all_invoices.select do |invoice|
+  invoice.successful?
+end
 
-# puts SalesEngine::Database.instance.all_invoices.count
-# puts all_succ.count
+puts SalesEngine::Database.instance.all_invoices.count
+puts all_succ.count
 
-# puts SalesEngine::Invoice.total_revenue.to_f
+puts SalesEngine::Invoice.total_revenue.to_f
 
 
 # most = SalesEngine::Item.most_items(42)

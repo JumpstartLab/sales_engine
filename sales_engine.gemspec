@@ -5,7 +5,7 @@ require 'bundler/version'
  
 Gem::Specification.new do |s|
   s.name        = "sales_engine"
-  s.version     = 1
+  s.version     = "1"
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Chris Maddox", "Horace Williams"]
   s.email       = ["chris.maddox@livingsocial.com", "horace.williams@livingsocial.com"]

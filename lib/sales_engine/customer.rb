@@ -71,11 +71,7 @@ module SalesEngine
 
     def calc_favorite_merchant
       if successful_transactions.any?
-        successful = successful_transactions
-        merchant_hash = Hash.new() {|hash, key| hash[key] = 0}
-        successful.each do |transaction|
-          merchant_hash[transaction.invoice.merchant_id] += 1
-        end
+        merchant_transactions = count_merchant_transactions
         sorted_array = merchant_hash.sort_by do |key, value|
           value
         end
@@ -83,6 +79,13 @@ module SalesEngine
           fav_id = sorted_array.first[0]
           @favorite_merchant = Database.instance.merchant[fav_id][:self]
         end
+      end
+    end
+
+    def count_merchant_transactions
+      merchant_hash = Hash.new() {|hash, key| hash[key] = 0}
+      successful_transactions.each do |transaction|
+          merchant_hash[transaction.invoice.merchant_id] += 1
       end
     end
 
