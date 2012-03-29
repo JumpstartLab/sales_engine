@@ -142,9 +142,7 @@ module SalesEngine
       end
 
       #couldn't get it working with dates; use strings, parse to dates below
-     dates_array.each do |date|
-        date = Date.parse(date)
-      end
+
 
       dates_array.slice(0...x)
     end

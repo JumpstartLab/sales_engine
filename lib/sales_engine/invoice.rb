@@ -158,7 +158,7 @@ module SalesEngine
         BigDecimal.new(average.round(2).to_s)
       end
 
-      def self.average_for_date
+      def self.average_for_all
         count = 0
         Database.instance.all_invoices.each do |invoice|
           if invoice.successful?

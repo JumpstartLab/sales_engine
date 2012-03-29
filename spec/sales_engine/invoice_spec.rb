@@ -80,5 +80,56 @@ describe SalesEngine::Invoice do
         end
       end
     end
+
+    describe ".create" do
+      let(:customer) { SalesEngine::Customer.random }
+      let(:merchant) { SalesEngine::Merchant.random }
+      let(:items) do
+        (1..3).map { SalesEngine::Item.random }
+      end
+      it "creates a new invoice and charges to it" do
+
+        invoice = SalesEngine::Invoice.create(customer: customer, merchant: merchant, items: items)
+
+        invoice.charge(credit_card_number: '1111222233334444',  credit_card_expiration_date: "10/14", result: "success")
+
+        invoice.should be_is_a(SalesEngine::Invoice)
+      end
+    end
   end
-end
+
+    context "extensions" do
+      describe ".pending" do
+        it "returns Invoices without a successful transaction" do
+          invoice =  SalesEngine::Invoice.find_by_id(13)
+          pending_invoices = SalesEngine::Invoice.pending
+
+          pending_invoices[1].should == invoice
+        end
+      end
+
+      describe ".average_revenue" do
+        it "returns the average of the totals of each invoice" do
+          SalesEngine::Invoice.average_revenue.should == BigDecimal("12369.53")
+        end
+      end
+
+      describe ".average_revenue(date)" do
+        it "returns the average of the invoice revenues for that date" do
+          SalesEngine::Invoice.average_revenue(DateTime.parse("March 17, 2012")).should == BigDecimal("11603.14")
+        end
+      end
+
+      describe ".average_items" do
+        it "returns the average of the number of items for each invoice" do
+          SalesEngine::Invoice.average_items.should == BigDecimal("24.45")
+        end
+      end
+
+      describe ".average_items(date)" do
+        it "returns the average of the invoice items for that date" do
+          SalesEngine::Invoice.average_items(DateTime.parse("March 21, 2012")).should == BigDecimal("24.29")
+        end
+      end
+    end
+  end
