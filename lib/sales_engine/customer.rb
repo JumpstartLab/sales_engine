@@ -16,10 +16,6 @@ module SalesEngine
       Database.instance.all_customers[id - 1] = self
     end
 
-    def all_customers
-      Database.instance.all_customers
-    end
-
     def invoices
       @invoices ||= Database.instance.customer[id][:invoices]
     end
@@ -72,7 +68,7 @@ module SalesEngine
     def calc_favorite_merchant
       if successful_transactions.any?
         merchant_transactions = count_merchant_transactions
-        sorted_array = merchant_hash.sort_by do |key, value|
+        sorted_array = merchant_transactions.sort_by do |key, value|
           value
         end
         if sorted_array.any?
@@ -87,6 +83,7 @@ module SalesEngine
       successful_transactions.each do |transaction|
           merchant_hash[transaction.invoice.merchant_id] += 1
       end
+      merchant_hash
     end
 
     def self.most_items

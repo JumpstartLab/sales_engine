@@ -16,10 +16,6 @@ module SalesEngine
       Database.instance.all_merchants[id - 1] = self
     end
 
-    def all_merchants
-      Database.instance.all_merchants
-    end
-
     def invoices
       @invoices ||= Database.instance.merchant[id][:invoices]
     end
@@ -142,9 +138,6 @@ module SalesEngine
       end
 
       #couldn't get it working with dates; use strings, parse to dates below
-     dates_array.each do |date|
-        date = Date.parse(date)
-      end
 
       dates_array.slice(0...x)
     end
