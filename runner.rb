@@ -4,10 +4,23 @@ require './lib/sales_engine'
 
 SalesEngine.startup
 
+# dates = SalesEngine::Merchant.dates_by_revenue(25)
+# puts dates.count
 
-cust = SalesEngine::Customer.find_by_id(1)
+# dates.each do |date|
+# printf date.to_s + "\t" + SalesEngine::Merchant.revenue(Date.parse(date)).to_f.to_s + "\n"
+# end
 
-ap cust.days_since_activity
+puts SalesEngine::Invoice.average_revenue.to_f
+
+
+puts SalesEngine::Invoice.average_revenue(Date.parse("March 17, 2012")).to_f
+
+all_succ = SalesEngine::Database.instance.all_invoices.select do |invoice|
+  invoice.successful?
+end
+
+puts all_succ.count
 
 
 # most = SalesEngine::Item.most_items(42)

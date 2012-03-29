@@ -128,7 +128,8 @@ module SalesEngine
       accumulator = Hash.new {|hash, key| hash[key] = 0 }
       Database.instance.all_merchants.each do |merchant|
         merchant.invoices.each do |invoice|
-          accumulator[invoice.created_at] += invoice.revenue
+          #couldn't match dates; used date.to_s for hash index
+          accumulator[invoice.created_at.to_s] += invoice.revenue
         end
       end
       sorted = accumulator.sort_by do |date, count|
@@ -137,6 +138,12 @@ module SalesEngine
       dates_array = sorted.collect do |date, value|
         date
       end
+
+      #couldn't get it working with dates; use strings, parse to dates below
+     dates_array.each do |date|
+        date = Date.parse(date)
+      end
+
       dates_array.slice(0...x)
     end
 

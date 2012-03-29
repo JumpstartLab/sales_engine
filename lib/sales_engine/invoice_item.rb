@@ -26,7 +26,7 @@ module SalesEngine
     end
 
     def revenue
-      @revenue||= quantity * unit_price
+      @revenue ||= quantity * unit_price
     end
   end
 end
