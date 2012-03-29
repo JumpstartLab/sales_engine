@@ -8,6 +8,7 @@ group :test do
   gem 'simplecov'
   gem 'growl'
   gem 'cane'
+  gem 'rake'
 end
 
 group :test, :development do
