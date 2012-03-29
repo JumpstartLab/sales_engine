@@ -154,16 +154,16 @@ describe SalesEngine::Merchant do
 
   #WHAT IF THERE IS A TIE?
   describe "#favorite_customer" do
-    let(:customer_one) { mock(SalesEngine::Customer, :id => "1") }
-    let(:inv_one)      { mock(SalesEngine::Invoice, :customer_id => "1" ) }
-    let(:inv_two)      { mock(SalesEngine::Invoice, :customer_id => "2" ) }
-    let(:inv_three)    { mock(SalesEngine::Invoice, :customer_id => "1" ) }
+    let(:customer_one) { mock(SalesEngine::Customer, :id => 1) }
+    let(:inv_one)      { mock(SalesEngine::Invoice, :customer_id => 1 ) }
+    let(:inv_two)      { mock(SalesEngine::Invoice, :customer_id => 2 ) }
+    let(:inv_three)    { mock(SalesEngine::Invoice, :customer_id => 1 ) }
     let(:invoices)     { [inv_one, inv_two, inv_three] }
 
     before(:each) do
       merchant_one.stub(:paid_invoices).and_return(invoices)
       merchant_two.stub(:paid_invoices).and_return([ ])
-      SalesEngine::Database.instance.stub(:customer_list).and_return([customer_one])
+      SalesEngine::Database.instance.stub(:find_by_id).with("customer", 1).and_return(customer_one)
     end
 
     it "returns the customer who has conducted the most successful transactions" do
@@ -331,7 +331,7 @@ describe SalesEngine::Merchant do
     end
 
     it "returns the num merchants who have sold the most" do
-      item_hash = { :"1" => 10, :"2" => 20, :"3" => 30 }
+      item_hash = { 1 => 10, 2 => 20, 3 => 30 }
       SalesEngine::Merchant.stub(:merchants_by_items_sold).and_return(item_hash)
       sorted_merchants = [ merchant_three, merchant_two ]
       SalesEngine::Merchant.most_items(2).should == sorted_merchants
@@ -357,14 +357,14 @@ describe SalesEngine::Merchant do
 
     it "returns the top x merchants" do
       sorted_merchants = [ merchant_one, merchant_three, merchant_two ]
-      revenue_hash = { :"1" => 400, :"2" => 200, :"3" => 300 }
+      revenue_hash = { 1 => 400, 2 => 200, 3 => 300 }
       SalesEngine::Merchant.stub(:merchants_by_revenue).and_return(revenue_hash)
       SalesEngine::Merchant.most_revenue(3).should == sorted_merchants
     end
 
     context "when there is a tie" do
       it "returns num merchants ranked by most rev, then id" do
-        revenue_hash = { :"1" => 400, :"2" => 600, :"3" => 400 }
+        revenue_hash = { 1 => 400, 2 => 600, 3 => 400 }
         SalesEngine::Merchant.stub(:merchants_by_revenue).and_return(revenue_hash)
         sorted_merchants = [ merchant_two, merchant_one, merchant_three ]
         SalesEngine::Merchant.most_revenue(3).should == sorted_merchants

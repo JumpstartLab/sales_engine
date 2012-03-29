@@ -18,7 +18,7 @@ module SalesEngine
       else
         self.id = (SalesEngine::Database.instance.invoice_list.size + 1).to_i
       end
-      self.invoice_id = attrs[:invoice_id]
+      self.invoice_id = attrs[:invoice_id].to_i
       self.credit_card_number = attrs[:credit_card_number]
       self.credit_card_expiration_date = attrs[:credit_card_expiration_date]
       self.result = attrs[:result]

@@ -49,8 +49,8 @@ module SalesEngine
       paid_invoice_count = { }
 
       successful_invoices.each do |invoice|
-        paid_invoice_count[ invoice.merchant_id.to_sym ] ||= 0
-        paid_invoice_count[ invoice.merchant_id.to_sym ] += 1
+        paid_invoice_count[ invoice.merchant_id ] ||= 0
+        paid_invoice_count[ invoice.merchant_id ] += 1
       end
       paid_invoice_count
     end

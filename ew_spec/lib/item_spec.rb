@@ -8,8 +8,8 @@ describe SalesEngine::Item do
                                                     :invoice_id => "2", :item_id => "2", :updated_at => "2012-9-09") } 
   let(:inv_item_three){ SalesEngine::InvoiceItem.new( :unit_price => "10", :quantity => "4",
                                                     :invoice_id => "3", :item_id => "1", :updated_at => "2012-1-01") }
-  let(:item_one){ SalesEngine::Item.new( :id => "1", :merchant_id => "1" ) }
-  let(:item_two){ SalesEngine::Item.new( :id => "2", :merchant_id => "2" )}
+  let(:item_one){ SalesEngine::Item.new( :id => 1, :merchant_id => 1 ) }
+  let(:item_two){ SalesEngine::Item.new( :id => 2, :merchant_id => 2 )}
   let(:inv_one)   { SalesEngine::Invoice.new( :id => "1", :customer_id => "1",
                                    :updated_at => "2012-2-19" ) }
   let(:inv_two)   { SalesEngine::Invoice.new( :id => "2", :customer_id => "2",
@@ -43,13 +43,6 @@ describe SalesEngine::Item do
       SalesEngine::Database.instance.merchant_list = [ merchant_one, merchant_two ]
       item_one.merchant.should == merchant_one
     end
-
-    context "when an invoice has an invalid item id" do
-      it "returns nil" do
-        SalesEngine::Database.instance.merchant_list = [ merchant_two ]
-        item_one.merchant.should be_nil
-      end
-    end
   end
 
   describe ".most_revenue(x)" do
@@ -75,6 +68,7 @@ describe SalesEngine::Item do
       SalesEngine::Database.instance.invoice_item_list = [ inv_item_one, inv_item_two, inv_item_three ]
       SalesEngine::Database.instance.item_list = [ item_two, item_one ]
       SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two, inv_three ]
+      transaction_list
       SalesEngine::Item.most_items(2).should == [ item_one, item_two ]
     end
 

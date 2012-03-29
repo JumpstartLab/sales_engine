@@ -18,9 +18,9 @@ module SalesEngine
             SalesEngine::Database.instance.random(class_name)
           end
 
-          # define_singleton_method "find_by_id".to_sym do |param|
-          #   SalesEngine::Database.instance.find_by_id(class_name, param)
-          # end
+          define_singleton_method "find_by_id".to_sym do |param|
+            SalesEngine::Database.instance.find_by_id(class_name, param)
+          end
         end
       end
     end

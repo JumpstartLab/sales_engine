@@ -15,14 +15,14 @@ module SalesEngine
     ]
     def initialize(attributes)
       if attributes[:id]
-        self.id = attributes[:id]
+        self.id = attributes[:id].to_i
       else
-        self.id = (SalesEngine::Database.instance.invoice_item_list.size + 1).to_s
+        self.id = (SalesEngine::Database.instance.invoice_item_list.size + 1).to_i
         # puts self.id
         # puts SalesEngine::Database.instance.invoice_item_list.inspect
       end
-      self.item_id = attributes[:item_id]
-      self.invoice_id = attributes[:invoice_id]
+      self.item_id = attributes[:item_id].to_i
+      self.invoice_id = attributes[:invoice_id].to_i
       self.quantity =   attributes[:quantity].to_i
       if attributes[:unit_price].class == BigDecimal
         self.unit_price = attributes[:unit_price]
@@ -103,6 +103,7 @@ module SalesEngine
       successful_list = invoice_item_list.select do |invoice_item|
         invoice_item.is_successful?
       end
+      successful_list
     end
 
     # def self.total_revenue_by_invoice_ids(invoice_ids)

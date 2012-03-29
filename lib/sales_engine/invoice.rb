@@ -2,7 +2,7 @@ module SalesEngine
   require 'sales_engine/dynamic_finder'
   class Invoice
     INVOICE_ATTS = [
-      "id",
+      # "id",
       "customer_id",
       "merchant_id",
       "status",
@@ -15,12 +15,12 @@ module SalesEngine
 
     def initialize(attributes)
       if attributes[:id]
-        self.id = attributes[:id]
+        self.id = attributes[:id].to_i
       else
-        self.id = (SalesEngine::Database.instance.invoice_list.size + 1).to_s
+        self.id = (SalesEngine::Database.instance.invoice_list.size + 1).to_i
       end
       self.customer_id = attributes[:customer_id].to_i
-      self.merchant_id = attributes[:merchant_id]
+      self.merchant_id = attributes[:merchant_id].to_i
       self.status = attributes[:status]
       if attributes[:created_at]
         self.created_at = Date.parse(attributes[:created_at])
@@ -34,7 +34,7 @@ module SalesEngine
       end
 
       SalesEngine::Database.instance.invoice_list << self
-      SalesEngine::Database.instance.invoice_id_hash[ self.id.to_s.to_sym ] = self
+      SalesEngine::Database.instance.invoice_id_hash[ self.id ] = self
     end
 
     def self.attributes_for_finders

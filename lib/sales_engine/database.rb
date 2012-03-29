@@ -34,10 +34,13 @@ module SalesEngine
       end
     end
 
-    # def find_by_id(object_type, param)
-      # raise self.send("#{object_type}_id_hash").inspect 
-      # self.send("#{object_type}_id_hash")
-    # end
+    def find_by_id(object_type, param)
+      # puts SalesEngine::Database.instance.transaction_id_hash.inspect
+      # raise self.send("#{object_type}_id_hash".to_sym).inspect 
+      # puts [:debug, :find_by_id, param].inspect
+      # puts self.send("#{object_type}_id_hash".to_sym)
+      self.send("#{object_type}_id_hash".to_sym)[param]
+    end
 
     def random(object_type)
       random_id = Random.rand(self.send("#{object_type}_list").size)

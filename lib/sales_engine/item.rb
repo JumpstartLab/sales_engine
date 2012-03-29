@@ -5,7 +5,7 @@ module SalesEngine
                   :merchant_id, :created_at, :updated_at
 
     ITEM_ATTS = [
-      "id",
+      # "id",
       "name",
       "description",
       "unit_price",
@@ -15,13 +15,13 @@ module SalesEngine
       ]
 
     def initialize(attributes)
-      self.id = attributes[:id]
+      self.id = attributes[:id].to_i
       self.name = attributes[:name]
       self.description = attributes[:description]
       if attributes[:unit_price]
         self.unit_price = BigDecimal.new(attributes[:unit_price])/100 
       end
-      self.merchant_id = attributes[:merchant_id]
+      self.merchant_id = attributes[:merchant_id].to_i
       self.created_at = attributes[:created_at]
       self.updated_at = attributes[:updated_at]
 
@@ -34,6 +34,10 @@ module SalesEngine
     end
 
     extend SalesEngine::DynamicFinder
+
+    # def self.find_by_id(id)
+    #   SalesEngine::Database.instance.item_id_hash[ id ]
+    # end
 
     def invoice_items
       SalesEngine::InvoiceItem.find_all_by_item_id(self.id)
@@ -51,8 +55,8 @@ module SalesEngine
       item_data = { }
 
       paid_invoice_items.each do |invoice_item|
-        item_data[ invoice_item.item_id.to_sym ] ||= 0
-        item_data[ invoice_item.item_id.to_sym ] += invoice_item.revenue
+        item_data[ invoice_item.item_id ] ||= 0
+        item_data[ invoice_item.item_id ] += invoice_item.revenue
       end
       item_data
     end
@@ -69,9 +73,8 @@ module SalesEngine
 
     def self.item_quantity_by_id
       item_data = { }
-
       paid_invoice_items.each do |invoice_item|
-        invoice_item_id = invoice_item.item_id.to_sym
+        invoice_item_id = invoice_item.item_id
         item_data[ invoice_item_id ] ||= 0
         item_data[ invoice_item_id ] += invoice_item.quantity
       end
@@ -82,7 +85,6 @@ module SalesEngine
       sorted_results = item_quantity_by_id.sort_by do |item_id, quantity|
         -quantity
       end
-
       sorted_results[0..(num-1)].collect do |item_id, quantity|
         SalesEngine::Item.find_by_id(item_id)
       end

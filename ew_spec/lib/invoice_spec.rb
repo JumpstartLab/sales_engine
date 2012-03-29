@@ -72,7 +72,7 @@ describe SalesEngine::Invoice do
     end
 
     it "assigns a merchant id" do
-      invoice.merchant_id.should == "1"
+      invoice.merchant_id.should == 1
     end
 
     it "assigns a status" do
@@ -88,7 +88,7 @@ describe SalesEngine::Invoice do
     end
 
     it "assigns an invoice id" do
-      invoice.id.should == "1"
+      invoice.id.should == 1
     end
 
     it "adds the invoice to the invoice_list" do
@@ -220,11 +220,6 @@ describe SalesEngine::Invoice do
       inv_one.customer.should == cust_one
     end
 
-    context "when an invoice has no customer" do
-      it "returns nil" do
-        inv_three.customer.should be_nil
-      end
-    end
   end
 
   describe "#items" do

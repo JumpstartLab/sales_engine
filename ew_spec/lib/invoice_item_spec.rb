@@ -35,26 +35,12 @@ describe SalesEngine::InvoiceItem do
       SalesEngine::Database.instance.invoice_list = [ inv_one, inv_two ]
       inv_item_one.invoice.should == inv_one
     end
-
-    context "when an invoice has an invalid invoice id" do
-      it "returns nil" do
-        SalesEngine::Database.instance.invoice_list = [ inv_two ]
-        inv_item_one.invoice.should be_nil
-      end
-    end
   end
 
   describe "#item" do
     it "returns an instance of item associated with the invoice item" do
       SalesEngine::Database.instance.item_list = [ item_one, item_two ]
       inv_item_one.item.should == item_one
-    end
-
-    context "when an invoice has an invalid item id" do
-      it "returns nil" do
-        database = SalesEngine::Database.instance.item_list = [ item_two ]
-        inv_item_one.item.should be_nil
-      end
     end
   end
 
@@ -68,15 +54,15 @@ describe SalesEngine::InvoiceItem do
     end
 
     it "assigns invoice id" do
-      @invoice_item.invoice_id.should == "1"
+      @invoice_item.invoice_id.should == 1
     end
 
     it "assigns an id" do
-      @invoice_item.id.should == "1"
+      @invoice_item.id.should == 1
     end
 
     it "assigns the item id" do
-      @invoice_item.item_id.should == "1"
+      @invoice_item.item_id.should == 1
     end
 
     it "assigns the unit price" do

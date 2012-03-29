@@ -11,7 +11,7 @@ module SalesEngine
     ]
 
     def initialize(attributes)
-      self.id = attributes[:id]
+      self.id = attributes[:id].to_i
       self.name = attributes[:name]
       self.created_at = attributes[:created_at]
       self.updated_at = attributes[:updated_at]
@@ -66,8 +66,8 @@ module SalesEngine
     def paid_invoices_by_customer
       customer_data = { }
       paid_invoices.each do |invoice|
-        customer_data[ invoice.customer_id.to_s.to_sym ] ||= 0
-        customer_data[ invoice.customer_id.to_s.to_sym ] += 1
+        customer_data[ invoice.customer_id ] ||= 0
+        customer_data[ invoice.customer_id ] += 1
       end
       customer_data
     end
@@ -125,7 +125,7 @@ module SalesEngine
     def self.merchants_by_revenue
       data = { }
       SalesEngine::Invoice.successful_invoices.each do |i|
-        merchant_id = i.merchant_id.to_sym
+        merchant_id = i.merchant_id
         data[ merchant_id ] ||= 0
         data[ merchant_id ] += i.invoice_revenue
       end
@@ -147,8 +147,8 @@ module SalesEngine
       item_data = { }
 
       paid_invoice_items.each do |invoice_item|
-        item_data[ invoice_item.merchant_id.to_sym ] ||= 0
-        item_data[ invoice_item.merchant_id.to_sym ] += invoice_item.quantity
+        item_data[ invoice_item.merchant_id ] ||= 0
+        item_data[ invoice_item.merchant_id ] += invoice_item.quantity
       end
       item_data
     end
