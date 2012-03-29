@@ -63,13 +63,14 @@ describe SalesEngine::Merchant do
   context "#revenue" do
     it "returns a valid total revenue without argument" do
       revenue = test_merchant.revenue
-      revenue.should be_is_a(BigDecimal) || revenue.should == 0
+      revenue.should be_is_a(BigDecimal) 
     end
 
     it "returns a valid number for a given date" do
       test_date = Date.parse("2012-02-08 01:56:56 UTC")
       revenue = test_merchant.revenue(test_date)
-      revenue.should be_is_a(BigDecimal) || revenue.should == 0
+      puts revenue.class
+      revenue.should be_is_a(BigDecimal)
     end
   end
 
@@ -113,7 +114,7 @@ describe SalesEngine::Merchant do
       customers.should be_is_a(Array)
       if customers.any?
         customers.each do |customer|
-          customer.should be_is_a(Customer)
+          customer.should be_is_a(SalesEngine::Customer)
         end
       end
     end 
