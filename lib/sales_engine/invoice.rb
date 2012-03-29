@@ -21,10 +21,15 @@ module SalesEngine
       self.status       = attributes[:status]
       self.created_at   = Date.parse(attributes[:created_at])
       self.updated_at   = Date.parse(attributes[:updated_at])
+      self.revenue
     end
 
     def self.create(attributes={})
-      inv = self.new({:id           => Database.instance.invoices.count + 1,
+      inv_id = Database.instance.invoices.count + 1
+
+      SalesEngine::InvoiceItem.create(inv_id, attributes[:items])
+
+      inv = self.new({:id           => inv_id,
                       :customer_id  => attributes[:customer].id, 
                       :merchant_id  => attributes[:merchant].id,
                       :status       => attributes[:status],
@@ -32,8 +37,6 @@ module SalesEngine
                       :updated_at   => DateTime.now.to_s})
 
       SalesEngine::Database.instance.invoices << inv
-
-      SalesEngine::InvoiceItem.create(inv.id, attributes[:items])
 
       inv
     end

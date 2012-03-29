@@ -17,6 +17,7 @@ module SalesEngine
       self.unit_price = BigDecimal.new(attributes[:unit_price])/100
       self.created_at = attributes[:created_at]
       self.updated_at = attributes[:updated_at]
+      self.total
     end
 
     class << self
@@ -43,7 +44,7 @@ module SalesEngine
                              :item_id     => item_id, 
                              :invoice_id  => invoice_id,
                              :quantity    => values[0], 
-                             :unit_price  => values[1],
+                             :unit_price  => values[1].to_s,
                              :created_at  => DateTime.now.to_s,
                              :updated_at  => DateTime.now.to_s )
         SalesEngine::Database.instance.invoice_items << ii
