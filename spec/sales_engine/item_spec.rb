@@ -38,10 +38,12 @@ describe SalesEngine::Item do
 
   describe "#best_day" do
     it "returns a string of a date" do
+      pending
       test_item.best_day.should =~ /[0-9][0-9][0-9][0-9][-][0-1][0-9]-[0-3][0-9]/
     end
 
     it "returns the most sales day for this item" do
+      pending
       item_1 = Fabricate(:item)
     
       ii_1 = Fabricate(:invoice_item, 
@@ -58,15 +60,18 @@ describe SalesEngine::Item do
 
   describe "#item_quantity_per_day" do
     it "returns a hash" do
+      pending
       test_item.item_quantity_per_day.should be_a Hash
     end
 
     it "has keys that are dates" do
+      pending
       test_item.item_quantity_per_day.keys.all? {|k|
         k.should =~ /[0-9][0-9][0-9][0-9][-][0-1][0-9]-[0-3][0-9]/}
     end
 
     it "has values that are numbers" do
+      pending
       test_item.item_quantity_per_day.values.all? do |v|
         v.should be_a Integer
       end

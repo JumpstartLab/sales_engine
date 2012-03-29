@@ -299,6 +299,7 @@ describe SalesEngine::Invoice do
     end
 
     it "creates invoice items for each passed in item" do
+      pending
       invoice = SalesEngine::Invoice.create(attr)
       items.map(&:name).each do |name|
           invoice.items.map(&:name).should include(name)
