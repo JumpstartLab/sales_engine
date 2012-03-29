@@ -39,6 +39,34 @@ describe SalesEngine::Merchant do
     end
   end
 
+  describe "#invoices_on_date()" do
+
+    merchant_1 = Fabricate(:merchant)
+    merchant_1_invoices = [Fabricate(:invoice, :updated_at => "3/31"),
+                           Fabricate(:invoice, :updated_at => "3/32"),
+                           Fabricate(:invoice, :updated_at => "3/33"),
+                           Fabricate(:invoice, :updated_at => "3/31")]
+    merchant_1.invoices = merchant_1_invoices
+
+    it "contains things which are only invoices" do
+      SalesEngine::Database.instance.stub(:merchants).and_return(merchant_1)
+      merchant_1.invoices_on_date("3/31").each do |invoice|
+        invoice.class.should == SalesEngine::Invoice
+      end
+    end
+
+    it "contains invoices updated on the provided date" do
+      SalesEngine::Database.instance.stub(:merchants).and_return(merchant_1)
+      merchant_1.invoices_on_date("3/31").each do |invoice|
+        invoice.updated_at.should == "3/31"
+      end
+    end
+
+    # it "contains invoices associated only with this merchant" do
+    #   test_merchant.invoices.all
+
+  end
+
   describe "#revenue(date=nil)" do
     invoice_1 = Fabricate(:invoice, :total => 2000)
     invoice_2 = Fabricate(:invoice, :total => 1000)
