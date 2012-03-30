@@ -64,8 +64,9 @@ module SalesEngine
     def successful_invoice_items
       valid_items = invoice_items.select do |ii|
         id = ii.invoice_id
-        transactions = SalesEngine::Transaction.find_all_by_invoice_id(id).select do |t|
-          t.successful? 
+        transactions =
+        SalesEngine::Transaction.find_all_by_invoice_id(id).select do |t|
+          t.successful?
         end
         transactions.any?
       end

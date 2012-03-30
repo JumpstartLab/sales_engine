@@ -82,7 +82,7 @@ module SalesEngine
     end
 
     def self.most_revenue(param)
-      @most_revenue ||= collection.sort_by do |m| 
+      @most_revenue ||= collection.sort_by do |m|
         m.get_revenue
       end.last(param).reverse
     end
@@ -99,7 +99,7 @@ module SalesEngine
       end
     end
 
-    def self.revenue(date) 
+    def self.revenue(date)
       result = 0
       collection.each do |merchant|
         result += merchant.revenue_by_date(date)
