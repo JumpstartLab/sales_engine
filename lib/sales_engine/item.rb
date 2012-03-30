@@ -66,7 +66,7 @@ module SalesEngine
         id = ii.invoice_id
         transactions = SalesEngine::Transaction.find_all_by_invoice_id(id).select do |t|
           t.successful? 
-        end 
+        end
         transactions.any?
       end
     end
@@ -119,12 +119,20 @@ module SalesEngine
       end
     end
 
+    # def best_day
+    #   results = Hash.new(0)
+    #   paid_invoices.each do |invoice|
+    #     results[invoice.created_at] += invoice.quantity.to_i
+    #   end
+    #   results.sort_by { |key,value| value }.last.first
+    # end
+
     def best_day
-      results = Hash.new(0)
-      paid_invoices.each do |invoice|
-        results[invoice.created_at] += invoice.quantity.to_i
+      days = Hash.new { |hash, key|  hash[key] = 0 }
+      self.invoice_items.each do |invoice_item|
+        days[invoice_item.invoice.created_at] += invoice_item.quantity.to_i
       end
-      results.sort_by { |key,value| value }.last.first
+      days.sort_by {|key, value| -value }.first.first
     end
 
     private

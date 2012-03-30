@@ -41,7 +41,7 @@ module SalesEngine
       items_hash = {}
 
       items.each do |item|
-        items_hash[item.id.to_sym] = [items.count(item),item.unit_price]
+        items_hash[item.id] = [items.count(item),item.unit_price]
       end
 
       items_hash.each do|item_id,values|
