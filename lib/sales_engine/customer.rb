@@ -6,7 +6,9 @@ module SalesEngine
 
 
     def self.records
-      @customers ||= get_customers
+      @customers ||= HashyHash.new(get_customers) do |h|
+        h.unique :id
+      end
     end
 
     # def self.csv_headers

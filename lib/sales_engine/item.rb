@@ -6,7 +6,10 @@ module SalesEngine
     # attr_accessor :raw_csv
 
     def self.records
-      @items ||= get_items
+      @items ||= HashyHash.new(get_items) do |h|
+        h.unique :id
+        h.foreign :merchant_id
+      end
     end
 
     def self.get_items

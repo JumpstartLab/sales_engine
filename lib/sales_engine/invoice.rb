@@ -6,7 +6,11 @@ module SalesEngine
 
 
     def self.records
-      @invoices ||= get_invoices
+      @invoices ||= HashyHash.new(get_invoices) do |h|
+        h.unique :id
+        h.foreign :customer_id
+        h.foreign :merchant_id
+      end
     end
 
     def self.get_invoices

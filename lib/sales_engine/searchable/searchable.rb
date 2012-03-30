@@ -1,11 +1,11 @@
 module SalesEngine
   module Searchable
     def all
-      self.records
+      self.records.all
     end
 
     def random
-      self.records.sample
+      all.sample
     end
 
     def method_missing(method, *args, &block)
@@ -21,11 +21,11 @@ module SalesEngine
     end
 
     def valid_field?(field)
-      self.records.first.respond_to?(field.to_sym)
+      all.first.respond_to?(field.to_sym)
     end
 
     def find_by_id(id)
-      records[id-1]
+      records.find_by_id(id)
     end
 
     def find_by(attribute, query)

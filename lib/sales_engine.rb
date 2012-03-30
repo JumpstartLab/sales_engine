@@ -10,9 +10,9 @@ require 'sales_engine/item'
 require 'sales_engine/transaction'
 require 'sales_engine/csv_manager'
 require 'date'
+require 'hashyhash'
 
 module SalesEngine
-  EXTENSIONS = %w(customer invoice merchant)
 
   def self.startup
     # Hi, Jeff!

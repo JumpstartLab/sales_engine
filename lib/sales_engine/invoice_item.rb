@@ -6,7 +6,11 @@ module SalesEngine
     # attr_accessor :raw_csv
 
     def self.records
-      @invoice_items ||= get_invoice_items
+      @invoice_items ||= HashyHash.new(get_invoice_items) do |h|
+        h.unique :id
+        h.foreign :invoice_id
+        h.foreign :item_id
+      end
     end
 
     def self.get_invoice_items
@@ -28,7 +32,7 @@ module SalesEngine
     end
 
     def self.populate_stats
-      records.each do |record|
+      all.each do |record|
         record.populate_stats if record.invoice.successful_transaction
       end
     end

@@ -5,7 +5,9 @@ module SalesEngine
     # attr_accessor :raw_csv
 
     def self.records
-      @merchants ||= get_merchants
+      @merchants ||= HashyHash.new(get_merchants) do |h|
+        h.unique :id
+      end
     end
 
     # def self.csv_headers

@@ -1,4 +1,5 @@
 source :rubygems
+gem 'hashyhash', :git => 'git://github.com/marktabler/hashyhash.git'
 
 group :test, :development do
   gem 'rspec'
@@ -13,5 +14,4 @@ group :development do
   gem 'guard'
   gem 'guard-rspec'
   gem 'growl'
-  gem 'hashyhash', :path => '../hashyhash/'
 end

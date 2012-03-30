@@ -10,7 +10,7 @@ describe SalesEngine::Invoice do
     {id: 1, customer_id: 1,
       merchant_id: 92, status: "shipped"}.each do |attribute, value|
         it "records #{attribute}" do
-          SalesEngine::Invoice.records.first.send(attribute).should == value
+          SalesEngine::Invoice.all.first.send(attribute).should == value
         end
       end
       # it "stores the raw CSV for each Invoice" do
@@ -165,11 +165,12 @@ describe SalesEngine::Invoice do
         bad_transaction = double("transaction")
         bad_transaction.stub(:result => "pending")
         bad_transaction.stub(:invoice_id => 1)
+        bad_transaction.stub(:id => 400000)
         invoice.stub(:transactions => [bad_transaction])
         SalesEngine::Transaction.records << bad_transaction
         SalesEngine::Invoice.pending.should == [invoice]
       end
-      after(:all) { SalesEngine::Transaction.records.pop }
+      after(:all) { SalesEngine::Transaction.records.all.pop }
     end
     describe ".average_revenue" do
       context "when date is not passed" do
@@ -179,7 +180,7 @@ describe SalesEngine::Invoice do
             mock_invoice[i] = double("invoice")
             mock_invoice[i].stub(:successful_transaction => true, :total_paid => (i * 3))
           end
-          SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
+          SalesEngine::Invoice.stub(:all => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
           SalesEngine::Invoice.average_revenue.should == BigDecimal("3")
         end
       end
@@ -191,7 +192,7 @@ describe SalesEngine::Invoice do
             mock_invoice[i].stub(:successful_transaction => true, :total_paid => (i * 3), :created_at => DateTime.now)
           end
           mock_invoice[0].stub(:created_at => DateTime.parse("Jan 1, 2012"))
-          SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
+          SalesEngine::Invoice.stub(:all => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
           SalesEngine::Invoice.average_revenue(DateTime.now).should == BigDecimal("4.5")
         end
       end
@@ -204,7 +205,7 @@ describe SalesEngine::Invoice do
             mock_invoice[i] = double("invoice")
             mock_invoice[i].stub(:successful_transaction => true, :num_items => (i * 3))
           end
-          SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
+          SalesEngine::Invoice.stub(:all => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
           SalesEngine::Invoice.average_items.should == BigDecimal("3")
         end
       end
@@ -216,7 +217,7 @@ describe SalesEngine::Invoice do
             mock_invoice[i].stub(:successful_transaction => true, :num_items => (i * 3), :created_at => DateTime.now)
           end
           mock_invoice[0].stub(:created_at => DateTime.parse("Jan 1, 2012"))
-          SalesEngine::Invoice.stub(:records => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
+          SalesEngine::Invoice.stub(:all => [mock_invoice[0], mock_invoice[1], mock_invoice[2]])
           SalesEngine::Invoice.average_items(DateTime.now).should == BigDecimal("4.5")
         end
       end

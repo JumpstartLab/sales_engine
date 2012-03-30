@@ -4,11 +4,6 @@ CLASSES = {SalesEngine::Merchant => "merchants", SalesEngine::Customer => "custo
 
 CLASSES.each do |klass, attribute|
   describe "#{klass}" do
-    describe ".all" do
-      it "returns all of the existing #{klass} records" do
-        klass.all.should == klass.send(:records)
-      end
-    end
 
     describe ".random" do
       it "returns a single instance of #{klass}" do

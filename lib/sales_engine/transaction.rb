@@ -6,7 +6,10 @@ module SalesEngine
     # attr_accessor :raw_csv
 
     def self.records
-      @transactions ||= get_transactions
+      @transactions ||= HashyHash.new(get_transactions) do |h|
+        h.unique :id
+        h.foreign :invoice_id
+      end
     end
 
     def self.get_transactions
