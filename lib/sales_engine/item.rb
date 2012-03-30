@@ -1,6 +1,7 @@
 require 'sales_engine/searchable'
 require 'sales_engine/randomize'
 require 'bigdecimal'
+require 'sales_engine/transaction'
 
 module SalesEngine
   class Item
@@ -60,6 +61,16 @@ module SalesEngine
       }
     end
 
+    def successful_invoice_items
+      valid_items = invoice_items.select do |ii|
+        id = ii.invoice_id
+        transactions = SalesEngine::Transaction.find_all_by_invoice_id(id).select do |t|
+          t.successful? 
+        end 
+        transactions.any?
+      end
+    end
+
     def merchant
       match_merchant_to_item[0]
     end
@@ -89,7 +100,7 @@ module SalesEngine
     end
 
     def items_quantity
-      @quantity ||= invoice_items.inject(0){
+      @quantity ||= successful_invoice_items.inject(0){
         |acc,num| num.quantity.to_i + acc
       }
     end
@@ -104,7 +115,7 @@ module SalesEngine
       if param == 1
         sort_by_items.first
       else
-        sort_by_items.last(param)
+          sort_by_items[0, param]
       end
     end
 
