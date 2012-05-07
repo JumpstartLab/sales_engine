@@ -29,39 +29,38 @@ module SalesEngine
 
     private
 
-    def load_customers(options=CSV_OPTIONS)
-      customers = CSV.open("data/customers.csv", options)
-      self.customers = customers.collect {|line| Customer.new(line)}
-      successful_load("customers")
+    def load_data(file, klass, options)
+      rows = CSV.open("data/#{file}", options)
+      rows.collect {|line| klass.new(line)}
     end
 
     def load_invoices(options=CSV_OPTIONS)
-      invoices = CSV.open("data/invoices.csv", options)
-      self.invoices = invoices.collect {|line| Invoice.new(line)}
+      self.invoices = load_data("invoices.csv", Invoice, options)
       successful_load("invoices")
     end
 
+    def load_customers(options=CSV_OPTIONS)
+      self.customers = load_data("customers.csv", Customer, options)
+      successful_load("customers")
+    end
+
     def load_invoiceitems(options=CSV_OPTIONS)
-      invoiceitems = CSV.open("data/invoice_items.csv", options)
-      self.invoiceitems = invoiceitems.collect {|line| InvoiceItem.new(line)}
+      self.invoiceitems = load_data("invoices.csv", Invoiceitem, options)
       successful_load("invoice items")
     end
 
     def load_items(options=CSV_OPTIONS)
-      items = CSV.open("data/items.csv", options)
-      self.items = items.collect {|line| Item.new(line)}
+      self.items = load_data("items.csv", Item, options)
       successful_load("items")
     end
 
     def load_transactions(options=CSV_OPTIONS)
-      transactions = CSV.open("data/transactions.csv", options)
-      self.transactions = transactions.collect {|line| Transaction.new(line)}
+      self.transactions = load_data("transactions.csv", Transaction, options)
       successful_load("transactions")
     end
 
     def load_merchants(options=CSV_OPTIONS)
-      merchants = CSV.open("data/merchants.csv", options)
-      self.merchants = merchants.collect {|line| Merchant.new(line)}
+      self.merchants = load_data("merchants.csv", Merchant, options)
       successful_load("merchants")
     end
 
