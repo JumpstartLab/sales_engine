@@ -10,12 +10,6 @@ module SalesEngine
     extend SearchMethods
     include AccessorBuilder
 
-    def initialize(attributes = {})
-      define_attributes(attributes)
-      Database.instance.merchant[id][:self] = self
-      Database.instance.all_merchants[id - 1] = self
-    end
-
     def invoices
       @invoices ||= Database.instance.merchant[id][:invoices]
     end
