@@ -21,8 +21,8 @@ module SalesEngine
     class << self
       [:id, :first_name, :last_name, :created_at,
        :updated_at].each do |attribute|
-        define_method "find_by_#{attribute}" { find_by_(attribute, input) }
-        define_method "find_all_by_#{attribute}" { find_all_by_(attribute, input) }
+        define_method "find_by_#{attribute}" {find_by_(attribute, input)}
+        define_method "find_all_by_#{attribute}" {find_all_by_(attribute,input)}
       end
     end
 
