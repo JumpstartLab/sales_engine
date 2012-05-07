@@ -9,12 +9,6 @@ module SalesEngine
      extend SearchMethods
      include AccessorBuilder
 
-     def initialize (attributes = {})
-      initialize_part_un(attributes)
-      Database.instance.invoice[invoice_id][:invoice_items] << self
-      Database.instance.item[item_id][:invoice_items] << self
-    end
-
     def invoice
       @invoice ||= Database.instance.invoice[invoice_id][:self]
     end

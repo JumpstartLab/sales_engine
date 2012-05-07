@@ -150,10 +150,15 @@ module SalesEngine
   end
 
   module invoice_ish_initializers
-    def initialize_part_un(attributes)
+    def initialize(attributes)
       define_attributes(attributes)
       Database.instance.send(self.class)[id][:self] = self
       Database.instance.send("all_#{self.class}")[id-1] = self
+      attributes.each do |key, value|
+        if key =~ /_id$/
+          Database.instance.send(key.to_s.delete("_id"))[key][self.class] << self
+        end
+      end
     end
   end
 
