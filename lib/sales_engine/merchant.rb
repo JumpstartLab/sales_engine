@@ -123,15 +123,31 @@ module SalesEngine
       end
     end
 
+    # def self.most_revenue(x)
+    #   self.set_revenue
+    #   sorted_merchants = self.merchants.sort_by { |merch| merch.total_revenue }
+    #   sorted_merchants.reverse[0..x-1]
+    # end
+
+    # def self.most_items(x)
+    #   self.set_quantity
+
+    #   sorted_merchants = self.merchants.sort_by { |merch| merch.quantity }
+    #   sorted_merchants.reverse[0..x-1]
+    # end
+
     def self.most_revenue(x)
       self.set_revenue
-      sorted_merchants = self.merchants.sort_by { |merch| merch.total_revenue }
-      sorted_merchants.reverse[0..x-1]
+      self.most_count(:revenue, x)
     end
 
     def self.most_items(x)
       self.set_quantity
-      sorted_merchants = self.merchants.sort_by { |merch| merch.quantity }
+      self.most_count(:quantity, x)
+    end
+
+    def self.most_count(param, x)
+      sorted_merchants = self.merchants.sort_by { |merch| merch.send(param) }
       sorted_merchants.reverse[0..x-1]
     end
 
