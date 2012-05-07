@@ -31,7 +31,6 @@ module SalesEngine
       end
     end
 
-
     def self.create(invoice_id, attributes={})
       t = Transaction.new(
         :id => database.transactions.count + 1,
