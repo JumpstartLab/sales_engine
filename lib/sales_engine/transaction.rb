@@ -25,11 +25,6 @@ module SalesEngine
         define_method "find_by_#{attribute}" do |input|
           find_by_(attribute, input)
         end
-      end
-
-      [:id, :invoice_id, :credit_card_number,
-       :credit_card_expiration_date, :result,
-       :created_at, :updated_at].each do |attribute|
         define_method "find_all_by_#{attribute}" do |input|
           find_all_by_(attribute, input)
         end
