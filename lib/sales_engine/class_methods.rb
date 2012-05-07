@@ -149,4 +149,12 @@ module SalesEngine
     end
   end
 
+  module invoice_ish_initializers
+    def initialize_part_un(attributes)
+      define_attributes(attributes)
+      Database.instance.send(self.class)[id][:self] = self
+      Database.instance.send("all_#{self.class}")[id-1] = self
+    end
+  end
+
 end

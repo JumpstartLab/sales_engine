@@ -12,11 +12,9 @@ module SalesEngine
       include AccessorBuilder
 
       def initialize(attributes = {})
-        define_attributes(attributes)
-        Database.instance.invoice[id][:self] = self
+        initialize_part_un(attributes)
         Database.instance.customer[customer_id][:invoices] << self
         Database.instance.merchant[merchant_id][:invoices] << self
-        Database.instance.all_invoices[id - 1] = self
       end
 
       def transactions
