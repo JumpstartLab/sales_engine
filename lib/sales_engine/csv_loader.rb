@@ -18,13 +18,16 @@ module SalesEngine
 
     DB = SalesEngine::Database.instance
 
-    def initialize
-      load_transactions
-      load_customers
-      load_items
-      load_merchants
-      load_invoice_items
-      load_invoices
+    def self.load(object_name)
+      puts "Loading #{object_name}s..."
+
+      filename = "./data/#{object_name}s.csv"
+
+      file = CSV.open(filename, { :headers => true,
+                                  :header_converters => :symbol})
+      file.each do |line|
+        x = send("SalesEngine::#{object_name.capitalize}.new".to_sym, line)
+      end 
     end
 
     def self.load_transactions(filename="./data/transactions.csv")

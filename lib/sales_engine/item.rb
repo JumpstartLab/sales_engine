@@ -48,18 +48,17 @@ module SalesEngine
       SalesEngine::Merchant.find_by_id(self.merchant_id)
     end
 
-    def self.item_revenue_by_id
+    def self.aggregate_by_id(attr_to_aggregate)
       item_data = { }
-
       paid_invoice_items.each do |invoice_item|
         item_data[ invoice_item.item_id ] ||= 0
-        item_data[ invoice_item.item_id ] += invoice_item.revenue
+        item_data[ invoice_item.item_id ] += invoice_item.send(attr_to_aggregate.to_sym)
       end
       item_data
     end
 
     def self.most_revenue(num)
-      sorted_results = item_revenue_by_id.sort_by do |item_id, revenue|
+      sorted_results = aggregate_by_id("revenue").sort_by do |item_id, revenue|
         -revenue
       end
 
@@ -68,17 +67,8 @@ module SalesEngine
       end
     end
 
-    def self.item_quantity_by_id
-      item_data = { }
-      paid_invoice_items.each do |invoice_item|
-        item_data[ invoice_item.item_id ] ||= 0
-        item_data[ invoice_item.item_id ] += invoice_item.quantity
-      end
-      item_data
-    end
-
     def self.most_items(num)
-      sorted_results = item_quantity_by_id.sort_by do |item_id, quantity|
+      sorted_results = aggregate_by_id("quantity").sort_by do |item_id, quantity|
         -quantity
       end
       sorted_results[0..(num-1)].collect do |item_id, quantity|

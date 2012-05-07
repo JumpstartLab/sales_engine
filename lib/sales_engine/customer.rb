@@ -43,7 +43,7 @@
                             end
       latest_invoice = invoice_array.reverse.first
       last_purchase_date = Date.parse(latest_invoice.created_at.to_s)
-      ( Date.today - last_purchase_date )
+      ( Date.today - last_purchase_date ).to_i
     end
 
     def transactions
@@ -67,10 +67,9 @@
     end
 
     def self.customers_by_items_bought
-      item_data = { }
+      item_data = Hash.new(0)
 
       paid_invoice_items.each do |invoice_item|
-        item_data[ invoice_item.invoice.customer_id ] ||= 0
         item_data[ invoice_item.invoice.customer_id ] += invoice_item.quantity
       end
       item_data
