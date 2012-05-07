@@ -66,13 +66,26 @@ module SalesEngine
       invoices.select { |invoice| invoice.successful? }
     end
 
+    # def invoice_items
+    #   merch_i_item_ids = invoices.collect { |inv| inv.id}
+    #   i_items_array.select { |i_i| merch_i_item_ids.include?(i_i.invoice_id)}
+    # end
+
+    # def successful_invoice_items
+    #   merch_i_item_ids = successful_invoices.collect { |inv| inv.id}
+    #   i_items_array.select { |i_i| merch_i_item_ids.include?(i_i.invoice_id)}
+    # end
+
     def invoice_items
-      merch_i_item_ids = invoices.collect { |inv| inv.id}
-      i_items_array.select { |i_i| merch_i_item_ids.include?(i_i.invoice_id)}
+      invoice_items_from_invoices(invoices)
     end
 
     def successful_invoice_items
-      merch_i_item_ids = successful_invoices.collect { |inv| inv.id}
+      invoice_items_from_invoices(successful_invoices)
+    end
+
+    def invoice_items_from_invoices(invs)
+      merch_i_item_ids = invs.collect { |inv| inv.id}
       i_items_array.select { |i_i| merch_i_item_ids.include?(i_i.invoice_id)}
     end
 
