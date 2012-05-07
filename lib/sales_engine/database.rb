@@ -10,40 +10,34 @@ class SalesEngine
   class Database
     include Singleton
 
+    ARRAY_TYPES = ["Merchant", "Item", "Invoice", "Customer", "InvoiceItem", "Transaction"]
+
     def initialize
-      load_merchants
-      load_items
-      load_invoices
-      load_customers
-      load_invoice_items
-      load_transactions
+      # load_merchants
+
+      ARRAY_TYPES.each do |a|
+        load_data(a)
+      end
     end
 
     def load(filename)
       CSV.open(filename, :headers => true, :header_converters => :symbol)
     end
 
-    def load_merchants
-      @merchants = []
-      data = load("data/merchants.csv")
+    def load_data(type)
+      instance_variable_set(("@" + type.underscores), [])
+      data = load("data/#{type.underscores}.csv")
       data.each do |line|
-        @merchants << Merchant.new(line)
+        instance_variable_get("@" + type.underscores) << SalesEngine.const_get(type).new(line)
       end
-      puts "Merchants loaded"
+      puts "#{type} loaded"
     end
+
 
     def merchants
       @merchants
     end
 
-    def load_items
-      @items = []
-      data = load("data/items.csv")
-      data.each do |line|
-        @items << Item.new(line)
-      end
-      puts "Items Loaded"
-    end
 
     def items
       @items
@@ -53,14 +47,6 @@ class SalesEngine
       @items = input
     end
 
-    def load_invoices
-      @invoices = []
-      data = load("data/invoices.csv")
-      data.each do |line|
-        @invoices << Invoice.new(line)
-      end
-      puts "Invoices Loaded"
-    end
 
     def invoices
       @invoices
@@ -70,14 +56,6 @@ class SalesEngine
       @invoices << input
     end
 
-    def load_customers
-      @customers = []
-      data = load("data/customers.csv")
-      data.each do |line|
-        @customers << Customer.new(line)
-      end
-      puts "customers loaded"
-    end
 
     def customers
       @customers
@@ -91,27 +69,10 @@ class SalesEngine
       @merchants << input
     end
 
-    def load_invoice_items
-      @invoice_items = []
-      data = load("data/invoice_items.csv")
-      data.each do |line|
-        @invoice_items << InvoiceItem.new(line)
-      end
-      puts "Invoice Items Loaded"
-    end
-
     def invoice_items
       @invoice_items
     end
 
-    def load_transactions
-      @transactions = []
-      data = load("data/transactions.csv")
-      data.each do |line|
-        @transactions << Transaction.new(line)
-      end
-      puts "transactions Loaded"
-    end
 
     def transactions
       @transactions
