@@ -19,21 +19,13 @@ module SalesEngine
       end
     end
 
-    # def self.csv_headers
-    #   @csv_headers
-    # end
-
-    # def self.csv_headers=(value)
-    #   @csv_headers=(value)
-    # end
-
     def self.create(invoice_attributes)
       new_invoice = self.new( { created_at: DateTime.now.to_s } )
       set_new_invoice_attributes(new_invoice, invoice_attributes)
       invoice_attributes[:items].each do |item|
         SalesEngine::InvoiceItem.create( { item_id: item.id,
-          invoice_id: new_invoice.id, created_at: DateTime.now.to_s,
-          quantity: 1, unit_price: (item.unit_price*100).to_s } )
+                                           invoice_id: new_invoice.id, created_at: DateTime.now.to_s,
+                                           quantity: 1, unit_price: (item.unit_price*100).to_s } )
       end
       records << new_invoice
       new_invoice
@@ -51,30 +43,24 @@ module SalesEngine
       ids.uniq.map { |id| Invoice.find_by_id(id) }
     end
 
-    def self.average_revenue(date = nil)
-      if date
-        di = all.select do |i|
-          next unless i.successful_transaction
-          i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
-        end
-        tr = di.map(&:total_paid).inject(:+)
-        BigDecimal((tr / di.size.to_f).round(2).to_s) rescue BigDecimal("0")
-      else
-        BigDecimal((all.map(&:total_paid).inject(:+) / suc_size).round(2).to_s)
+    def self.average(method_name, date)
+      invoices = date ? with_date(date) : all
+      BigDecimal((invoices.map{ |i| i.send(method_name)}.inject(:+) / invoices.size.to_f).round(2).to_s)
+    end
+
+    def self.with_date(date)
+      all.select do |i|
+        next unless i.successful_transaction
+        i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
       end
     end
 
+    def self.average_revenue(date = nil)
+      average(:total_paid, date)
+    end
+
     def self.average_items(date = nil)
-      if date
-        di = all.select do |i|
-          next unless i.successful_transaction
-          i.created_at.strftime("%y%m%d") == date.strftime("%y%m%d")
-        end
-        ti = di.map(&:num_items).inject(:+)
-        BigDecimal((ti / di.size.to_f).round(2).to_s) rescue BigDecimal("0")
-      else
-        BigDecimal((all.map(&:num_items).inject(:+) / suc_size).round(2).to_s)
-      end
+      average(:num_items, date)
     end
 
     def self.suc_size
