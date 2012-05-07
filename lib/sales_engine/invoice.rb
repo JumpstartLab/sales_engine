@@ -102,17 +102,25 @@ module SalesEngine
           i_item.id
         end.id
         last_i_item += 1
+        batch_invoice_items(last_i_item, accumulator)
+      end
+
+      def batch_invoice_items(start_id, item_quantities)
         accumulator.each do |item,quantity|
           SalesEngine::InvoiceItem.new({
             :id => last_i_item.to_s,
             :invoice_id => id,
-            :item_id => item.id.to_s, :quantity => quantity.to_s,
+            :item_id => item.id.to_s,
+            :quantity => quantity.to_s,
             :unit_price => item.unit_price.to_s,
-            :created_at=> Date.today.to_s, :updated_at=> Date.today.to_s}
-            )
+            :created_at=> Date.today.to_s,
+            :updated_at=> Date.today.to_s
+            })
           last_i_item += 1
         end
       end
+
+
 
       def self.pending
         pending = Database.instance.all_invoices.select do |invoice|
