@@ -2,6 +2,12 @@ module SalesEngine
   class Database
     include Singleton
     CSV_OPTIONS = {:headers => true, :header_converters => :symbol}
+    TABLES = [["invoices", SalesEngine::Invoice],
+              ["merchants", SalesEngine::Merchant],
+              ["items", SalesEngine::Item],
+              ["customers", SalesEngine::Customer], 
+              ["invoice_items", SalesEngine::InvoiceItem],
+              ["transactions", SalesEngine::Transaction]]
     EVAL_DATA_DIR = "./data"
     attr_accessor :merchants, :items, :invoices, :transactions,
                   :customers, :invoiceitems
@@ -55,54 +61,48 @@ module SalesEngine
       self.send(class_name)[rand(self.send(class_name).count)]
     end
 
-    def load_data
-      load_first_half
-      load_second_half
+    def load_tables
+      TABLES.each { |table_info| load_data(table_info.first, table_info.last) }
     end
 
-    def load_first_half
-      load_merchants_data
-      load_items_data
-      load_customers_data
-    end
-
-    def load_second_half
-      load_invoices_data
-      load_invoice_items_data
-      load_transactions_data
-    end
-
-    def load_merchants_data(filename="#{EVAL_DATA_DIR}/merchants.csv")
+    def load_data(list_name, factory, filename=nil)
+      filename ||= "#{EVAL_DATA_DIR}/#{list_name}.csv"
       @file = CSV.open(filename, CSV_OPTIONS)
-      self.merchants = @file.collect {|line| SalesEngine::Merchant.new(line) }
+      self.send(list_name) = @file.collect {|line| factory.new(line)}
+      # TBD
     end
 
-    def load_items_data(filename="#{EVAL_DATA_DIR}/items.csv")
-      @file = CSV.open(filename, CSV_OPTIONS)
-      self.items = @file.collect {|line| SalesEngine::Item.new(line) }
-    end
+    # def load_merchants_data(filename="#{EVAL_DATA_DIR}/merchants.csv")
+    #   @file = CSV.open(filename, CSV_OPTIONS)
+    #   self.merchants = @file.collect {|line| SalesEngine::Merchant.new(line) }
+    # end
 
-    def load_invoices_data(filename="#{EVAL_DATA_DIR}/invoices.csv")
-      @file = CSV.open(filename, CSV_OPTIONS)
-      self.invoices = @file.collect {|line| SalesEngine::Invoice.new(line) }
-    end
+    # def load_items_data(filename="#{EVAL_DATA_DIR}/items.csv")
+    #   @file = CSV.open(filename, CSV_OPTIONS)
+    #   self.items = @file.collect {|line| SalesEngine::Item.new(line) }
+    # end
 
-    def load_customers_data(filename="#{EVAL_DATA_DIR}/customers.csv")
-      @file = CSV.open(filename, CSV_OPTIONS)
-      self.customers = @file.collect {|line| SalesEngine::Customer.new(line) }
-    end
+    # def load_invoices_data(filename="#{EVAL_DATA_DIR}/invoices.csv")
+    #   @file = CSV.open(filename, CSV_OPTIONS)
+    #   self.invoices = @file.collect {|line| SalesEngine::Invoice.new(line) }
+    # end
 
-    def load_invoice_items_data(filename="#{EVAL_DATA_DIR}/invoice_items.csv")
-      @file = CSV.open(filename, CSV_OPTIONS)
-      self.invoiceitems = @file.collect {|line|
-        SalesEngine::InvoiceItem.new(line) }
-    end
+    # def load_customers_data(filename="#{EVAL_DATA_DIR}/customers.csv")
+    #   @file = CSV.open(filename, CSV_OPTIONS)
+    #   self.customers = @file.collect {|line| SalesEngine::Customer.new(line) }
+    # end
 
-    def load_transactions_data(filename="#{EVAL_DATA_DIR}/transactions.csv")
-      @file = CSV.open(filename, CSV_OPTIONS)
-      self.transactions = @file.collect {|line|
-        SalesEngine::Transaction.new(line) }
-    end
+    # def load_invoice_items_data(filename="#{EVAL_DATA_DIR}/invoice_items.csv")
+    #   @file = CSV.open(filename, CSV_OPTIONS)
+    #   self.invoiceitems = @file.collect {|line|
+    #     SalesEngine::InvoiceItem.new(line) }
+    # end
+
+    # def load_transactions_data(filename="#{EVAL_DATA_DIR}/transactions.csv")
+    #   @file = CSV.open(filename, CSV_OPTIONS)
+    #   self.transactions = @file.collect {|line|
+    #     SalesEngine::Transaction.new(line) }
+    # end
 
     def add_to_list(thing)
       self.send(thing.class.to_s.split("::").last.downcase+"s") << thing
