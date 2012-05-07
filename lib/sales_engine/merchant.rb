@@ -18,10 +18,10 @@ module SalesEngine
       attributes = [:id, :name, :created_at, :updated_at]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
-          find_merchants(attribute, input)
+          find("merchants", attribute, input)
         end
         define_method "find_all_by_#{attribute}" do |input|
-          find_all_merchants(attribute, input)
+          find_all("merchants", attribute, input)
         end
       end
     end

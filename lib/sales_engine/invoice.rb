@@ -51,10 +51,10 @@ module SalesEngine
                     :created_at, :updated_at, :date]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
-          find_invoices(attribute, input)
+          find("invoices", attribute, input)
         end
         define_method "find_all_by_#{attribute}" do |input|
-          find_all_invoices(attribute, input)
+          find_all("invoices", attribute, input)
         end
       end
     end

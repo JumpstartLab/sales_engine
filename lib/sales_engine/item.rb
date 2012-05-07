@@ -23,10 +23,10 @@ module SalesEngine
                   :created_at, :updated_at]
       attributes.each do |attribute|
         define_method "find_by_#{attribute}" do |input|
-          find_items(attribute, input)
+          find("items", attribute, input)
         end
         define_method "find_all_by_#{attribute}" do |input|
-          find_all_items(attribute, input)
+          find_all("items", attribute, input)
         end
       end
     end
