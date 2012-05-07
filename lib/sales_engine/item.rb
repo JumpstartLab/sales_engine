@@ -57,21 +57,12 @@ module SalesEngine
       item_data
     end
 
-    def self.most_revenue(num)
-      sorted_results = aggregate_by_id("revenue").sort_by do |item_id, revenue|
-        -revenue
+    def self.most(attr_to_aggregate, num)
+      sorted_results = aggregate_by_id(attr_to_aggregate).sort_by do |item_id, attr|
+        -attr
       end
 
-      sorted_results[0..(num-1)].collect do |item_id, revenue|
-        SalesEngine::Item.find_by_id(item_id)
-      end
-    end
-
-    def self.most_items(num)
-      sorted_results = aggregate_by_id("quantity").sort_by do |item_id, quantity|
-        -quantity
-      end
-      sorted_results[0..(num-1)].collect do |item_id, quantity|
+      sorted_results[0..(num-1)].collect do |item_id, attr|
         SalesEngine::Item.find_by_id(item_id)
       end
     end

@@ -26,63 +26,10 @@ module SalesEngine
       file = CSV.open(filename, { :headers => true,
                                   :header_converters => :symbol})
       file.each do |line|
-        x = send("SalesEngine::#{object_name.capitalize}.new".to_sym, line)
+        name = object_name.split('_').map(&:capitalize).join('')
+        value = eval "SalesEngine::#{name}"
+        x = value.send(:new, line)
       end 
-    end
-
-    def self.load_transactions(filename="./data/transactions.csv")
-      puts "Loading transactions..."
-
-      file = CSV.open(filename, { :headers => true,
-                                  :header_converters => :symbol})
-      file.each do |line|
-        x = SalesEngine::Transaction.new(line)
-      end
-    end
-
-    def self.load_customers(filename="./data/customers.csv")
-      puts "Loading customers..."
-      file = CSV.open(filename, { :headers => true,
-                                  :header_converters => :symbol} )
-      file.each do |line|
-        x = SalesEngine::Customer.new(line)
-      end
-    end
-
-    def self.load_items(filename="./data/items.csv")
-      puts "Loading items..."
-      file = CSV.open(filename, { :headers => true,
-                                  :header_converters => :symbol})
-      file.each do |line|
-        x = SalesEngine::Item.new(line)
-      end
-    end
-
-    def self.load_merchants(filename="./data/merchants.csv")
-      puts "Loading merchants..."
-      file = CSV.open(filename, { :headers => true,
-                                  :header_converters => :symbol})
-      file.each do |line|
-        x = SalesEngine::Merchant.new(line)
-      end
-    end
-
-    def self.load_invoice_items(filename="./data/invoice_items.csv")
-      puts "Loading invoice items..."
-      file = CSV.open(filename, { :headers => true,
-                                  :header_converters => :symbol})
-      file.each do |line|
-        x = SalesEngine::InvoiceItem.new(line)
-      end
-    end
-
-    def self.load_invoices(filename="./data/invoices.csv")
-      puts "Loading invoices..."
-      file = CSV.open(filename, { :headers => true,
-                                  :header_converters => :symbol})
-      file.each do |line|
-        x = SalesEngine::Invoice.new(line)
-      end
     end
   end
 end
