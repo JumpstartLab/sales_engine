@@ -1,6 +1,7 @@
 module SalesEngine
   class Merchant
-    extend SalesEngine::Searchable
+    extend Searchable
+    include Searchable
     attr_accessor :name, :id, :total_revenue, :items_sold
     # attr_accessor :raw_csv
 
@@ -9,10 +10,6 @@ module SalesEngine
         h.unique :id
       end
     end
-
-    # def self.csv_headers
-    #   @csv_headers
-    # end
 
     # def self.csv_headers=(value)
     #   @csv_headers=(value)
@@ -91,9 +88,7 @@ module SalesEngine
     end
 
     def favorite_customer
-      inv = invoices.group_by { |i| i.customer_id }
-      fc_id = inv.sort_by{ |i| i.last.size }.last.first
-      SalesEngine::Customer.find_by_id(fc_id)
+      favorite_record(Customer)
     end
 
     def customers_with_pending_invoices

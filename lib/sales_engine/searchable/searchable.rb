@@ -43,5 +43,12 @@ module SalesEngine
         end
       end
     end
+
+    def favorite_record(record_class)
+      record_type = record_class.to_s.downcase.gsub("salesengine::", "")
+      inv = invoices.group_by { |i| i.send("#{record_type}_id".to_sym) }
+      favorite_id = inv.sort_by{ |i| i.last.size }.last.first
+      SalesEngine::record_class.find_by_id(favorite_id)
+    end
   end
 end

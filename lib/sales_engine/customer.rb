@@ -1,6 +1,7 @@
 module SalesEngine
   class Customer
     extend Searchable
+    include Searchable
     attr_accessor :first_name, :last_name, :id, :items_bought, :revenue_bought
     # attr_accessor :raw_csv
 
@@ -52,9 +53,7 @@ module SalesEngine
     end
 
     def favorite_merchant
-      inv = invoices.group_by { |i| i.merchant_id }
-      fm_id = inv.sort_by{|i| i.last.size}.last.first
-      SalesEngine::Merchant.find_by_id(fm_id)
+      favorite_record(Merchant)
     end
 
     def days_since_activity
