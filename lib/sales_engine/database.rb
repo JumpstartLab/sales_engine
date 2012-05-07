@@ -73,7 +73,6 @@ class SalesEngine
       @invoice_items
     end
 
-
     def transactions
       @transactions
     end
