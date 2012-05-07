@@ -33,24 +33,21 @@ module SalesEngine
         @items_sold ||= calc_items_sold
       end
 
-      def calc_items_sold
+      def self.sum(thing)
         self.invoice_items.inject(0) do |sum, invoice_item|
           if invoice_item.invoice.successful?
-            sum+=invoice_item.quantity
+            sum+=invoice_item.send(thing)
           end
           sum
         end
       end
 
+      def calc_items_sold
+        sum(quantity)
+      end
+
       def calc_revenue
-        revenue = 0
-        revenue = self.invoice_items.inject(0) do |sum, invoice_item|
-          if invoice_item.invoice.successful?
-            sum += invoice_item.revenue
-          end
-          sum
-        end
-        revenue
+        sum(revenue)
       end
 
       def best_day
