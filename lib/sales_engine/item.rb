@@ -65,18 +65,18 @@ module SalesEngine
         top_day[0]
       end
 
-      def self.most_revenue(number)
-        sorted_items = Database.instance.all_items.sort_by do |item|
-          -item.revenue
+      def self.sort_items_by(criterion)
+        Database.all_items.sort_by do |item|
+          -item.send(criterion)
         end
-        top_items = sorted_items.slice(0...number)
+      end
+
+      def self.most_revenue(number)
+        sort_items_by(revenue).slice(0...number)
       end
 
       def self.most_items(number)
-        sorted_items = Database.instance.all_items.sort_by do |item|
-          -item.items_sold
-        end
-        top_items = sorted_items.slice(0...number)
+        sort_items_by(items_sold).slice(0...number)
       end
     end
   end
