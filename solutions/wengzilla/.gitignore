@@ -1,0 +1,12 @@
+# OS generated files #
+######################
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+*.gem
+
+# Coverage files #
+coverage/*
+coverage/*/*
+coverage/.resultset.json
