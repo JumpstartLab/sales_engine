@@ -1,0 +1,8 @@
+*.DS_Store
+./lib/.DS_Store
+/lib/sales_engine/.DS_Store
+coverage/
+Gemfile.lock
+/spec2/*
+runner.rb
+sample_db
